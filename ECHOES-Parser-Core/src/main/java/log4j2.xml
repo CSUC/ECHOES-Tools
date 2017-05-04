@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <File name="file" fileName="tmp/echoes.log">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Pattern>
+      </PatternLayout>
+    </File>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+   <logger name="org.apache.commons.httpclient" level="WARN" />
+   <logger name="org.apache.http.headers" level="WARN" />
+   <logger name="org.apache.http.wire" level="WARN" />
+    
+   <Root level="trace">
+      <AppenderRef ref="file" level="DEBUG"/>
+      <AppenderRef ref="STDOUT" level="INFO"/>
+    </Root>
+  </Loggers>
+  
+</Configuration>
