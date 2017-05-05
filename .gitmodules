@@ -1,8 +1,6 @@
-[submodule "corelib"]
-	path = corelib
-	url = https://github.com/CSUC/corelib.git
-	branch = echoes
 [submodule "europeana-parent-pom"]
 	path = europeana-parent-pom
 	url = https://github.com/europeana/europeana-parent-pom.git
-	branch = master
+[submodule "corelib"]
+	path = corelib
+	url = https://github.com/CSUC/corelib.git

@@ -11,7 +11,7 @@
 
     <modules>
         <module>europeana-parent-pom</module>
-        <module>corelib/corelib-edm-definitions</module>
+        <module>corelib</module>
 	<module>ECHOES-Parser-Core</module>
     </modules>
 
