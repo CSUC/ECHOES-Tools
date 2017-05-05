@@ -10,7 +10,6 @@
     <name>Echoes-Parser</name>
 
     <modules>
-        <module>europeana-parent-pom</module>
         <module>corelib</module>
 	<module>ECHOES-Parser-Core</module>
     </modules>
