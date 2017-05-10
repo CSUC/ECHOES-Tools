@@ -1,0 +1,15 @@
+language: java
+
+sudo: false
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - git submodule update --init --recursive
+
+script: mvn verify
+
+after_success:
+  - mvn clean generate-sources install -DskipTests
+  - bash <(curl -s https://codecov.io/bash)
