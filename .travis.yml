@@ -8,8 +8,12 @@ jdk:
 before_install:
   - git submodule update --init --recursive
 
-script: mvn verify
+script: mvn clean generate-sources
 
 after_success:
-  - mvn clean generate-sources install -DskipTests
+  - mvn install -Dmaven.test.skip=true
   - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    - albert.martinez@csuc.cat
