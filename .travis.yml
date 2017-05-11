@@ -16,4 +16,7 @@ after_success:
 
 notifications:
   email:
-    - albert.martinez@csuc.cat
+    recipients:
+      - albert.martinez@csuc.cat
+    on_success: always # default: change
+    on_failure: always # default: always
