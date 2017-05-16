@@ -4,6 +4,7 @@
 package org.csuc.parser;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -17,6 +18,8 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.xmlbeans.XmlException;
+import org.openarchives.oai.x20.OAIPMHDocument;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -31,6 +34,8 @@ public class Sax implements ParserStrategy{
 	private FragmentContentHandler contentHandler;	
 	private SAXParser parser;
 	
+	//OAIDocument
+	OAIPMHDocument oaipmh;
 	
 	private AtomicInteger iter = new AtomicInteger(0);	
 	
@@ -139,7 +144,6 @@ public class Sax implements ParserStrategy{
         }
 	}
 	
-	
 	@Override
 	public void execute() {
 		//is File&Folder
@@ -159,23 +163,64 @@ public class Sax implements ParserStrategy{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}		
-		}else{//URL
-			if(contentHandler.getResumptionTokenValue() != null) contentHandler.setResumptionTokenValue(null);
+		}else{//URL			
 			try{
+				oaipmh = OAIPMHDocument.Factory.parse(new URL(url));				
 	            parser.parse(url, contentHandler);
 	            
-	            if(contentHandler.getResumptionTokenValue() != null){
-					logger.info(iter.incrementAndGet() + "\t" + contentHandler.getResumptionTokenValue());
-					setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, contentHandler.getResumptionTokenValue()));
-					execute();
-				}
+	            if(oaipmh.getOAIPMH().getListRecords().getResumptionToken() != null){
+	            	if(!oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue().isEmpty()){
+						logger.info(iter.incrementAndGet() + "\t" + oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue());
+						setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue()));
+						execute();
+					}
+	            }				
 			}catch(SAXException e){   
 	        	e.printStackTrace();
 	        }catch (IOException e){ 
 	        	e.printStackTrace();
-	        }
+	        } catch (XmlException e) {
+				e.printStackTrace();
+			}
 		}		
-	}	
+	}
+	
+//	@Override
+//	public void execute() {
+//		//is File&Folder
+//		if(this.path != null && Files.exists(this.path, LinkOption.NOFOLLOW_LINKS)){			
+//			try {
+//				Files.walk(this.path)				
+//				.filter(Files::isRegularFile)
+//				.filter(f-> f.toString().endsWith(".xml"))
+//				.forEach(f->{
+//					logger.info(String.format("file: %s", f.getFileName()));
+//					try {						
+//						parser.parse(f.toFile(), contentHandler);
+//					} catch (SAXException | IOException e) {
+//						e.printStackTrace();
+//					}				
+//				});
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}		
+//		}else{//URL
+//			if(contentHandler.getResumptionTokenValue() != null) contentHandler.setResumptionTokenValue(null);
+//			try{
+//	            parser.parse(url, contentHandler);
+//	            
+//	            if(contentHandler.getResumptionTokenValue() != null || !contentHandler.getResumptionTokenValue().isEmpty()){
+//					logger.info(iter.incrementAndGet() + "\t" + contentHandler.getResumptionTokenValue());
+//					setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, contentHandler.getResumptionTokenValue()));
+//					execute();
+//				}
+//			}catch(SAXException e){   
+//	        	e.printStackTrace();
+//	        }catch (IOException e){ 
+//	        	e.printStackTrace();
+//	        }
+//		}		
+//	}	
 	
 	public String getUrl() {
 		return url;

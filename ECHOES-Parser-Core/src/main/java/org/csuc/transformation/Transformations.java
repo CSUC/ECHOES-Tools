@@ -23,7 +23,7 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class Transformations {
 
-	private String folder = "/amartinez/projectes/echoes/Entitats/tmp/";
+	private String folder = "./tmp/";
 	
 	private TransformerFactory fact = new net.sf.saxon.TransformerFactoryImpl();
 	private StreamSource xlsStreamSource;
@@ -40,7 +40,8 @@ public class Transformations {
 	    Transformer transformer = fact.newTransformer(xlsStreamSource);
 	    
 	    transformer.setParameter("collectionSet", set);
-	    transformer.setParameter("dir", folder + UUID.randomUUID().toString().replaceAll("-", ""));
+	    transformer.setParameter("folder", folder);
+	    transformer.setParameter("dir", UUID.randomUUID().toString().replaceAll("-", ""));
 	    
 	    transformer.transform(new StreamSource(sourceID.openStream()), new StreamResult(System.out));
 	}
@@ -49,6 +50,7 @@ public class Transformations {
 	    Transformer transformer = fact.newTransformer(xlsStreamSource);
 
 	    transformer.setParameter("collectionSet", set);
+	    transformer.setParameter("folder", folder);
 	    transformer.setParameter("dir", UUID.randomUUID().toString().replaceAll("-", ""));
 	    
 	    

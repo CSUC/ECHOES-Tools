@@ -85,14 +85,7 @@
 	    <artifactId>ph-commons</artifactId>
 	    <version>8.6.1</version>
 	</dependency>	
-		
-	<!-- https://mvnrepository.com/artifact/com.helger/ph-commons -->
-	<dependency>
-	    <groupId>com.helger</groupId>
-	    <artifactId>ph-commons</artifactId>
-	    <version>8.6.1</version>
-	</dependency>
-	
+			
 	<!-- https://mvnrepository.com/artifact/net.sf.supercsv/super-csv -->
 	<dependency>
 	    <groupId>net.sf.supercsv</groupId>
@@ -134,6 +127,71 @@
 	    <artifactId>testng</artifactId>
 	    <version>6.11</version>
 	</dependency>	
+	<dependency>
+		<groupId>org.csuc</groupId>
+		<artifactId>oai-pmh-definitions</artifactId>
+		<version>0.1</version>
+	</dependency>
   </dependencies>
- 	
+  
+  <build>
+	<plugins>
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-assembly-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <phase>package</phase>
+		      <goals>
+		        <goal>single</goal>
+		      </goals>
+		      <configuration>
+		        <archive>
+		          <manifest>
+		            <mainClass>org.csuc.test.App</mainClass>
+		          </manifest>
+		        </archive>
+		        <finalName>${project.name}-${project.version}</finalName>
+		        <descriptorRefs>		        
+		          <descriptorRef>jar-with-dependencies</descriptorRef>
+		        </descriptorRefs>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin>
+	        <artifactId>maven-resources-plugin</artifactId>
+	        <version>3.0.2</version>
+	        <executions>
+	          <execution>
+	            <id>copy-resources</id>
+	            <!-- here the phase you need -->
+	            <phase>install</phase>
+	            <goals>
+	              <goal>copy-resources</goal>
+	            </goals>
+	            <configuration>
+	              <outputDirectory>${basedir}/target/</outputDirectory>
+	              <resources>          
+	                <resource>
+	                  <directory>src/main/resources</directory>
+	                  <filtering>true</filtering>
+	                </resource>
+	              </resources>              
+	            </configuration>            
+	          </execution>
+	        </executions>
+      	</plugin>  
+	</plugins>	
+	<resources>
+    	<resource>
+       		<directory>src/main/resources</directory>
+       		<excludes>
+       			<exclude>**/*.xslt</exclude>
+       			<exclude>**/*.sch</exclude>       			
+       		</excludes>
+    	</resource>
+   	</resources>
+</build>
+	
 </project>
