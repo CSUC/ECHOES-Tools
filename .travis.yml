@@ -8,10 +8,9 @@ jdk:
 before_install:
   - git submodule update --init --recursive
 
-script: mvn clean generate-sources
+script: mvn clean generate-sources install cobertura:cobertura
 
 after_success:
-  - mvn install -Dmaven.test.skip=true
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
