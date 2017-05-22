@@ -28,6 +28,7 @@ import org.xml.sax.XMLReader;
  *
  */
 public class Sax implements ParserStrategy{
+	
 	static final Logger logger = LogManager.getLogger(Sax.class.getName());
 	
 	//SAX
@@ -89,9 +90,9 @@ public class Sax implements ParserStrategy{
 			logger.info(String.format("url: %s", getUrl()));
 			
 		}catch (ParserConfigurationException e){        
-        	e.printStackTrace();
+        	logger.error(e);
         }catch(SAXException e){   
-        	e.printStackTrace();
+        	logger.error(e);
         }
 	}
 	
@@ -115,9 +116,9 @@ public class Sax implements ParserStrategy{
 			logger.info(String.format("url: %s", getUrl()));
 			
 		}catch (ParserConfigurationException e){        
-        	e.printStackTrace();
+        	logger.error(e);
         }catch(SAXException e){   
-        	e.printStackTrace();
+        	logger.error(e);
         }
 	}
 	
@@ -138,9 +139,9 @@ public class Sax implements ParserStrategy{
 			logger.info(String.format("path: %s", this.path));
 			
 		}catch (ParserConfigurationException e){        
-        	e.printStackTrace();
+        	logger.error(e);
         }catch(SAXException e){   
-        	e.printStackTrace();
+        	logger.error(e);
         }
 	}
 	
@@ -157,11 +158,11 @@ public class Sax implements ParserStrategy{
 					try {						
 						parser.parse(f.toFile(), contentHandler);
 					} catch (SAXException | IOException e) {
-						e.printStackTrace();
+						logger.error(e);
 					}				
 				});
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}		
 		}else{//URL			
 			try{
@@ -176,11 +177,11 @@ public class Sax implements ParserStrategy{
 					}
 	            }				
 			}catch(SAXException e){   
-	        	e.printStackTrace();
+	        	logger.error(e);
 	        }catch (IOException e){ 
-	        	e.printStackTrace();
+	        	logger.error(e);
 	        } catch (XmlException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}		
 	}
@@ -198,11 +199,11 @@ public class Sax implements ParserStrategy{
 //					try {						
 //						parser.parse(f.toFile(), contentHandler);
 //					} catch (SAXException | IOException e) {
-//						e.printStackTrace();
+//						logger.error(e);
 //					}				
 //				});
 //			} catch (IOException e) {
-//				e.printStackTrace();
+//				logger.error(e);
 //			}		
 //		}else{//URL
 //			if(contentHandler.getResumptionTokenValue() != null) contentHandler.setResumptionTokenValue(null);
@@ -215,9 +216,9 @@ public class Sax implements ParserStrategy{
 //					execute();
 //				}
 //			}catch(SAXException e){   
-//	        	e.printStackTrace();
+//	        	logger.error(e);
 //	        }catch (IOException e){ 
-//	        	e.printStackTrace();
+//	        	logger.error(e);
 //	        }
 //		}		
 //	}	

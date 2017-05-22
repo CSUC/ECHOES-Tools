@@ -67,9 +67,9 @@ public class App {
 				try {
 					download(new URL(url_base + "?verb=ListRecords&metadataPrefix=a2a&set=" + set), set, xslt);
 				} catch (MalformedURLException e) {
-					e.printStackTrace();
+					logger.error(e);
 				}	
-			}else if(args[1].equals("--help") || args[1].equals("-h")){
+			}else if(args[1].equals("--help") || args[1].equals("-h")){				
 				logger.info("--host [host] --set [set] --xslt [verb]");
 			}
 			else{
@@ -77,9 +77,9 @@ public class App {
 			}
 					
 		} catch (SAXException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}catch ( ParserConfigurationException e){
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class App {
 					try {
 						download(new URL(url_base + "?verb=ListRecords&metadataPrefix=a2a&set=" + set), set, xslt);
 					} catch (MalformedURLException e) {
-						e.printStackTrace();
+						logger.error(e);
 					}
 				});	
 			}else if(args[1].equals("--help") || args[1].equals("-h")){
@@ -111,15 +111,15 @@ public class App {
 			}
 					
 		} catch (SAXException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}catch ( ParserConfigurationException e){
-			e.printStackTrace();
+			logger.error(e);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (XmlException e1) {
-			e1.printStackTrace();
+			logger.info(e1);
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.info(e1);
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class App {
 			OAIPMHDocument oai = OAIPMHDocument.Factory.parse(url, options);
 	
 			transformation.transformationsFromString(oai.xmlText(options), set);
-//			transformation.transformationsFromUrl(url, set);
+			//transformation.transformationsFromUrl(url, set);
 			
 			if(oai.getOAIPMH().getListRecords().getResumptionToken() != null){
 				if(!oai.getOAIPMH().getListRecords().getResumptionToken().getStringValue().isEmpty()){				
@@ -142,11 +142,11 @@ public class App {
 				}			
 			}
 		} catch (XmlException | IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	

@@ -53,7 +53,7 @@ public class Dom implements ParserStrategy {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class Dom implements ParserStrategy {
 				System.out.println("Null");
 			}
 		} catch (Exception e) {			
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class Dom implements ParserStrategy {
 		try {			
 			return IOUtils.toString(new URL(url), "UTF-8");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 			return null;
 		}        
 	}
@@ -141,7 +141,7 @@ public class Dom implements ParserStrategy {
 		        }
 		    }
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    logger.error(e);
 		}   
 	}
 	

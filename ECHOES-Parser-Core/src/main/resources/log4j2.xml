@@ -18,6 +18,7 @@
    <Root level="trace">
       <AppenderRef ref="file" level="DEBUG"/>
       <AppenderRef ref="STDOUT" level="INFO"/>
+      <AppenderRef ref="STDOUT" level="ERROR"/>
     </Root>
   </Loggers>
   

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -23,6 +25,8 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class FragmentContentHandler extends DefaultHandler{
 	
+	private static Logger logger = LogManager.getLogger(FragmentContentHandler.class.getName());
+			
 	private Map<String,String> mapValues = new HashMap<String,String>();
 	private Map<String,String> namespaces = new HashMap<String,String>();
 	private Map<String, AtomicInteger> elementNameCount = new HashMap<String, AtomicInteger>();
@@ -168,17 +172,17 @@ public class FragmentContentHandler extends DefaultHandler{
 
 	@Override
 	public void warning(SAXParseException e) throws SAXException {
-		e.printStackTrace();
+		logger.error(e);
 	}
 
 	@Override
 	public void error(SAXParseException e) throws SAXException {
-		e.printStackTrace();
+		logger.error(e);
 	}
 
 	@Override
 	public void fatalError(SAXParseException e) throws SAXException {		
-		e.printStackTrace();
+		logger.error(e);
 	}
 	
 	public Map<String, String> getMapValues() {

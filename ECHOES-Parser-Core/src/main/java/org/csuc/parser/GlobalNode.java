@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -18,6 +20,8 @@ import org.w3c.dom.NodeList;
  */
 public class GlobalNode {
 
+	private static Logger logger = LogManager.getLogger(GlobalNode.class.getName());
+	
 	private AtomicInteger iterNamespaces = new AtomicInteger(0);
 	
 	private Map<String,String> namespaces = new HashMap<String,String>();
@@ -63,7 +67,7 @@ public class GlobalNode {
 		        }
 		    }
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    logger.error(e);
 		}   
 	}
 	

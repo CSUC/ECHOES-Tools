@@ -17,12 +17,17 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * @author amartinez
  *
  */
 public class Stax implements ParserStrategy{
 
+	private static Logger logger = LogManager.getLogger(Stax.class.getName());
+			
 	public Stax(String url) {
 
 		try{
@@ -41,12 +46,14 @@ public class Stax implements ParserStrategy{
 		        System.out.println("Text: " + characters.getData());
 		      }
 		    }
-		}catch(FileNotFoundException | XMLStreamException e) {
-			e.printStackTrace();
+		}catch(FileNotFoundException e) {			
+			logger.error(e);
+		}catch(XMLStreamException e){
+			logger.error(e);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} 
 	}
 

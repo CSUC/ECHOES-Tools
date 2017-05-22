@@ -1,4 +1,4 @@
-# ECHOES-Parser [![Build Status](https://travis-ci.org/CSUC/ECHOES-Parser.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Parser)
+# ECHOES-Parser [![Build Status](https://travis-ci.org/CSUC/ECHOES-Parser.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Parser) [![codecov](https://codecov.io/gh/CSUC/ECHOES-Parser/branch/develop/graph/badge.svg)](https://codecov.io/gh/CSUC/ECHOES-Parser)
 Java mapping tool that generates EDM compliant items
 
 Donwload submodules corelib and europeana-parent-pom
@@ -32,6 +32,8 @@ java -jar Parser-Core-${project.version}-jar-with-dependencies.jar OAIParser --h
 ```
 java -jar Parser-Core-0.0.1-SNAPSHOT-jar-with-dependencies.jar OAIParser --host https://webservices.picturae.com/a2a/20a181d4-c896-489f-9d16-20a3b7306b15 --verb ListRecords --metadataPrefix a2a --set bs_e
 ```
+Result:
+
 | tag  | total | xpath |
 | ------------- | ------------- | ------------- |
 |a2a:Value|1179|/ns1:OAI-PMH/ns1:ListRecords/ns1:record/ns1:metadata/a2a:A2A[@Version]/a2a:Person[@pid]/a2a:PersonRemark[@Key]/a2a:Value|
