@@ -24,16 +24,16 @@
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
-    <dependency>
+    <!--<dependency>
 	<groupId>org.apache.xmlbeans</groupId>
 	<artifactId>xmlbeans</artifactId>
 	<version>2.6.0</version>
-	</dependency>
+	</dependency>-->
     </dependencies>
   
   <build>
   	<plugins>
-  		<plugin>
+  	<!--	<plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xmlbeans-maven-plugin</artifactId>
             <version>2.3.3</version>
@@ -54,9 +54,28 @@
                <sourceGenerationDirectory>src/main/java</sourceGenerationDirectory>
                <verbose>true</verbose>
                <quiet>true</quiet>
-	       <!--<outputJar>${basedir}/target/${project.artifactId}-xmlbeans-${project.version}.jar</outputJar>-->
+	       <outputJar>${basedir}/target/${project.artifactId}-xmlbeans-${project.version}.jar</outputJar>
             </configuration>
-         </plugin>
+         </plugin>-->
+		<plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>jaxb2-maven-plugin</artifactId>
+	            <version>2.2</version>
+	            <executions>
+	                <execution>
+	                    <id>xjc</id>
+	                    <goals>
+	                        <goal>xjc</goal>
+	                    </goals>
+	                </execution>	               
+	            </executions>	
+	            <configuration>
+	            	<outputDirectory>src/main/java</outputDirectory>
+	            	<sources>
+                    	<source>src/main/resources</source>
+                    </sources>
+	            </configuration>           
+        	</plugin>
   	</plugins>
   	
   </build>

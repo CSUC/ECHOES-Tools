@@ -18,10 +18,11 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xmlbeans.XmlException;
-import org.openarchives.oai.x20.OAIPMHDocument;
+import org.csuc.jaxb.UnmarshalOAIPMH;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
+import org.openarchives.oai._2.*;
 
 /**
  * @author amartinez
@@ -36,7 +37,8 @@ public class Sax implements ParserStrategy{
 	private SAXParser parser;
 	
 	//OAIDocument
-	OAIPMHDocument oaipmh;
+//	OAIPMHDocument oaipmh;
+	OAIPMHtype oaipmh;
 	
 	private AtomicInteger iter = new AtomicInteger(0);	
 	
@@ -59,6 +61,7 @@ public class Sax implements ParserStrategy{
 	 * @param resumptionToken resumptionToken si en te
 	 */
 	public Sax(String host, String verb, String metadataPrefix, String set, String resumptionToken) {	
+		
 		logger.info("Sax Stretategy Parser");		
 		if(resumptionToken == null){
 			Objects.requireNonNull(host, "host must not be null");
@@ -166,13 +169,14 @@ public class Sax implements ParserStrategy{
 			}		
 		}else{//URL			
 			try{
-				oaipmh = OAIPMHDocument.Factory.parse(new URL(url));				
+				//oaipmh = OAIPMHDocument.Factory.parse(new URL(url));
+				oaipmh = new UnmarshalOAIPMH(new URL(url)).getOaipmh();
 	            parser.parse(url, contentHandler);
-	            
-	            if(oaipmh.getOAIPMH().getListRecords().getResumptionToken() != null){
-	            	if(!oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue().isEmpty()){
-						logger.info(iter.incrementAndGet() + "\t" + oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue());
-						setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, oaipmh.getOAIPMH().getListRecords().getResumptionToken().getStringValue()));
+	            	            
+	            if(oaipmh.getListRecords().getResumptionToken() != null){
+	            	if(!oaipmh.getListRecords().getResumptionToken().getValue().isEmpty()){
+						logger.info(iter.incrementAndGet() + "\t" + oaipmh.getListRecords().getResumptionToken().getValue());
+						setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, oaipmh.getListRecords().getResumptionToken().getValue()));
 						execute();
 					}
 	            }				
@@ -180,9 +184,7 @@ public class Sax implements ParserStrategy{
 	        	logger.error(e);
 	        }catch (IOException e){ 
 	        	logger.error(e);
-	        } catch (XmlException e) {
-				logger.error(e);
-			}
+	        }
 		}		
 	}
 	
