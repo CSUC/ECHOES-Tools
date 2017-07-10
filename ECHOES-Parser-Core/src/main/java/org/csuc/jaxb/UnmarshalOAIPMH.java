@@ -56,7 +56,7 @@ public class UnmarshalOAIPMH {
 	}
 	
 	public OAIPMHtype getOaipmh() {
-		return jaxb.getValue();
+		return (jaxb != null) ? jaxb.getValue() : null;
 	}
 	
 }

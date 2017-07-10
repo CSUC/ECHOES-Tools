@@ -3,6 +3,7 @@
 .project
 .settings/
 .externalToolBuilders/
+.metadata/
 
 #IntelliJ project files
 .idea

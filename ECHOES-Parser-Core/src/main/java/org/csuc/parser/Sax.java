@@ -45,6 +45,7 @@ public class Sax implements ParserStrategy{
 	private String url;
 	
 	private String verb;
+	private String key;
 	private String host;
 	private String metadataPrefix;
 	private String set;
@@ -60,7 +61,7 @@ public class Sax implements ParserStrategy{
 	 * @param set	set de la col·lecció 
 	 * @param resumptionToken resumptionToken si en te
 	 */
-	public Sax(String host, String verb, String metadataPrefix, String set, String resumptionToken) {	
+	public Sax(String host, String verb, String key, String metadataPrefix, String set, String resumptionToken) {	
 		
 		logger.info("Sax Stretategy Parser");		
 		if(resumptionToken == null){
@@ -72,6 +73,8 @@ public class Sax implements ParserStrategy{
 		
 		this.host = host;
 		this.verb = verb;
+		this.key = key;
+		
 		this.metadataPrefix = metadataPrefix;
 		this.set = set;
 		this.resumptionToken = resumptionToken;
@@ -86,9 +89,13 @@ public class Sax implements ParserStrategy{
 	        
 			contentHandler = new FragmentContentHandler(xr);
 			
-			if(this.resumptionToken == null)					
-				setUrl(String.format("%s?verb=%s&metadataPrefix=%s&set=%s", this.host, this.verb, this.metadataPrefix, this.set));
-			else	setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, this.resumptionToken));
+			if(this.resumptionToken == null){
+				if(Objects.isNull(this.key))	setUrl(String.format("%s?verb=%s&metadataPrefix=%s&set=%s", this.host, this.verb, this.metadataPrefix, this.set));
+				else setUrl(String.format("%s?verb=%s&key=%s&metadataPrefix=%s&set=%s", this.host, this.verb, this.key, this.metadataPrefix, this.set));
+			}else{
+				if(Objects.isNull(this.key))	setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, this.resumptionToken));
+				else	setUrl(String.format("%s?verb=ListRecords&key=%s&resumptionToken=%s", this.host, this.key, this.resumptionToken));
+			}
 			
 			logger.info(String.format("url: %s", getUrl()));
 			
@@ -176,7 +183,9 @@ public class Sax implements ParserStrategy{
 	            if(oaipmh.getListRecords().getResumptionToken() != null){
 	            	if(!oaipmh.getListRecords().getResumptionToken().getValue().isEmpty()){
 						logger.info(iter.incrementAndGet() + "\t" + oaipmh.getListRecords().getResumptionToken().getValue());
-						setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, oaipmh.getListRecords().getResumptionToken().getValue()));
+						
+						if(Objects.isNull(this.key))	setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, oaipmh.getListRecords().getResumptionToken().getValue()));
+						else	setUrl(String.format("%s?verb=ListRecords&key=%s&resumptionToken=%s", this.host,this.key, oaipmh.getListRecords().getResumptionToken().getValue()));
 						execute();
 					}
 	            }				
@@ -187,43 +196,6 @@ public class Sax implements ParserStrategy{
 	        }
 		}		
 	}
-	
-//	@Override
-//	public void execute() {
-//		//is File&Folder
-//		if(this.path != null && Files.exists(this.path, LinkOption.NOFOLLOW_LINKS)){			
-//			try {
-//				Files.walk(this.path)				
-//				.filter(Files::isRegularFile)
-//				.filter(f-> f.toString().endsWith(".xml"))
-//				.forEach(f->{
-//					logger.info(String.format("file: %s", f.getFileName()));
-//					try {						
-//						parser.parse(f.toFile(), contentHandler);
-//					} catch (SAXException | IOException e) {
-//						logger.error(e);
-//					}				
-//				});
-//			} catch (IOException e) {
-//				logger.error(e);
-//			}		
-//		}else{//URL
-//			if(contentHandler.getResumptionTokenValue() != null) contentHandler.setResumptionTokenValue(null);
-//			try{
-//	            parser.parse(url, contentHandler);
-//	            
-//	            if(contentHandler.getResumptionTokenValue() != null || !contentHandler.getResumptionTokenValue().isEmpty()){
-//					logger.info(iter.incrementAndGet() + "\t" + contentHandler.getResumptionTokenValue());
-//					setUrl(String.format("%s?verb=ListRecords&resumptionToken=%s", this.host, contentHandler.getResumptionTokenValue()));
-//					execute();
-//				}
-//			}catch(SAXException e){   
-//	        	logger.error(e);
-//	        }catch (IOException e){ 
-//	        	logger.error(e);
-//	        }
-//		}		
-//	}	
 	
 	public String getUrl() {
 		return url;

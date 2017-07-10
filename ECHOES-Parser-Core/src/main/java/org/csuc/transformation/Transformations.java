@@ -7,6 +7,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -37,8 +40,13 @@ public class Transformations {
 	
 	
 	public void transformationsFromUrl(URL sourceID, String set) throws TransformerException, TransformerConfigurationException, IOException{
-	    Transformer transformer = fact.newTransformer(xlsStreamSource);
+		LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
 	    
+		Transformer transformer = fact.newTransformer(xlsStreamSource);
+	    
+		transformer.setParameter("year", ldt.getYear());
+		transformer.setParameter("month", ldt.getMonthValue());
+		transformer.setParameter("day", ldt.getDayOfMonth());		 
 	    transformer.setParameter("collectionSet", set);
 	    transformer.setParameter("folder", folder);
 	    transformer.setParameter("dir", UUID.randomUUID().toString().replaceAll("-", ""));
@@ -47,8 +55,13 @@ public class Transformations {
 	}
 	
 	public void transformationsFromString(String content, String set) throws TransformerException, TransformerConfigurationException{
-	    Transformer transformer = fact.newTransformer(xlsStreamSource);
+		LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+		
+		Transformer transformer = fact.newTransformer(xlsStreamSource);
 
+	    transformer.setParameter("year", ldt.getYear());
+		transformer.setParameter("month", ldt.getMonthValue());
+		transformer.setParameter("day", ldt.getDayOfMonth());	
 	    transformer.setParameter("collectionSet", set);
 	    transformer.setParameter("folder", folder);
 	    transformer.setParameter("dir", UUID.randomUUID().toString().replaceAll("-", ""));
