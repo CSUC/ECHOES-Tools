@@ -13,6 +13,7 @@
     	<module>corelib/corelib-edm-definitions</module>
 		<module>oai-pmh-definitions</module>
 		<module>ECHOES-Parser-Core</module>
+		<module>loadBlazegraph</module>
   </modules>
 
 	<build>
