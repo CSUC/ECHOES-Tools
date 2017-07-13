@@ -10,6 +10,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -65,6 +67,8 @@ public class App {
 	}
 
 	private static void OAIDownloadSet(String[] args){
+		Instant inici = Instant.now();
+		
 		String url = null;
 		String verb = null;
 		String key = null;
@@ -73,7 +77,7 @@ public class App {
 		String xslt = null;
 		String sch = null;
 		
-		for(int i = 0; i < args.length; i++){
+		for(int i = 0; i < args.length -1; i++){
 			if(args[i].equals("--host"))	url= args[i+1];
 			if(args[i].equals("--verb"))	verb = args[i+1];
 			if(args[i].equals("--key"))	key = args[i+1];
@@ -98,7 +102,8 @@ public class App {
 				Objects.requireNonNull(type, String.format("%s requiere non null!", type.getClass().getName()));
 			}
 			logger.info("--host [host] --verb [verb] --key [key] --metadataPrefix [metadataPrefix] --set [set] --xslt [verb]");
-		}
+		}		
+		logger.info(String.format("Duration: %s", duration(inici)));
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -250,11 +255,11 @@ public class App {
 							}
 						});
 					}else{
-//						if(SchematronUtil.isInvalid(sch, new StreamSource(f.toFile()))){
-//							logger.info(SchematronUtil.getFailedAssert(sch, new StreamSource(f.toFile())));					
-////							if(Files.deleteIfExists(f))						
-//								logger.info(String.format("delete file %s", f.getFileName()));
-//						}
+						if(SchematronUtil.isInvalid(sch, new StreamSource(f.toFile()))){
+							logger.info(SchematronUtil.getFailedAssert(sch, new StreamSource(f.toFile())));					
+							if(Files.deleteIfExists(f))						
+								logger.info(String.format("delete file %s", f.getFileName()));
+						}
 					}					
 				}catch(Exception e){
 					logger.error(e);
@@ -263,5 +268,10 @@ public class App {
 		}catch (Exception e){
 			logger.error(e);
 		}
+	}
+	
+	public static String duration(Instant inici) {
+		long diff = Duration.between(inici, Instant.now()).getSeconds();
+	    return String.format("%02d:%02d:%02d", diff / 3600, diff % 3600 / 60, diff % 60);
 	}
 }

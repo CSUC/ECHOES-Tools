@@ -500,8 +500,7 @@
 									</edm:Place>
 								</xsl:if>
 							</xsl:if>							
-						</xsl:for-each>
-				
+						</xsl:for-each>				
 				</rdf:RDF>
 			</xsl:result-document>
 		</xsl:for-each>

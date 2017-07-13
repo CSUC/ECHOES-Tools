@@ -18,7 +18,7 @@
 
 	<xsl:template match="@*|node()">
 		<xsl:for-each select="/ns1:OAI-PMH/ns1:ListRecords/ns1:record">			
-			<xsl:result-document method="xml" href="{$folder}/{$collectionSet}/{$year}/{$month}/{$day}/{$dir}/{$collectionSet}_{$dir}_file{position()}.xml">
+			<xsl:result-document method="xml" href="{$folder}/{$year}/{$month}/{$day}/{$collectionSet}/{$dir}/{$collectionSet}_{$dir}_file{position()}.xml">
 				<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/"
 					xmlns:edm="http://www.europeana.eu/schemas/edm/"
 					xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#"

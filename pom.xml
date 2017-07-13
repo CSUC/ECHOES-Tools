@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.csuc</groupId>
@@ -10,10 +10,10 @@
     <name>Echoes-Parser</name>
 
     <modules>
-        <module>corelib/corelib-edm-definitions</module>
-	<module>oai-pmh-definitions</module>
-	<module>ECHOES-Parser-Core</module>
-    </modules>
+    	<module>corelib/corelib-edm-definitions</module>
+		<module>oai-pmh-definitions</module>
+		<module>ECHOES-Parser-Core</module>
+  </modules>
 
 	<build>
         <pluginManagement>
@@ -38,7 +38,7 @@
 						<format>html</format>
 						<format>xml</format>
 					</formats>
-					<check />
+					<check/>
 				</configuration>
 			</plugin>
 			<plugin>
