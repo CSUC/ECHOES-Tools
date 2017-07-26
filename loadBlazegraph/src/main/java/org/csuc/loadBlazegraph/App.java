@@ -23,6 +23,8 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -35,12 +37,12 @@ public class App {
 	
     private static Logger logger = LogManager.getLogger(App.class);
 	
-	private static String HOST = "localhost"; //default
-	private static int PORT = 9999; //default	
+	private static String host = "localhost"; //default
+	private static int port = 9999; //default	
 	private static String contentType = "application/rdf+xml"; //default
 	private static String context = "blazegraph"; //default
 	private static String charset = Charsets.UTF_8.name(); //default
-	
+	private static int threads = 1; // default;
 	private static String folderOrFile = null;
 	/**
 	 * 
@@ -49,21 +51,28 @@ public class App {
 	 * @throws IOException
 	 */
 	public static void main( String[] args ) throws ClientProtocolException, IOException {
-		Instant now = Instant.now();
+		Instant now = Instant.now();		
 		
 		logger.info(String.format("start %s %s", logger.getName(), now));
 		
 		for(int i = 0; i < args.length; i++){
-			if(args[i].equals("--host"))	HOST = args[i+1];
-			if(args[i].equals("--port"))	PORT = Integer.parseInt(args[i+1]);
+			if(args[i].equals("--host"))	host = args[i+1];
+			if(args[i].equals("--port"))	port = Integer.parseInt(args[i+1]);
 			if(args[i].equals("--folderOrFile"))	folderOrFile = args[i+1];
 			if(args[i].equals("--contentType"))	contentType = args[i+1];			
-			if(args[i].equals("--context"))	context = args[i+1];			
+			if(args[i].equals("--context"))	context = args[i+1];
+			if(args[i].equals("--charset"))	charset = args[i+1];
+			if(args[i].equals("--threads"))	threads = Integer.parseInt(args[i+1]);
 		}
+		
+		logger.info(
+			String.format(
+				"Properties: [host: %s, port: %s, contentType: %s, context: %s, charset: %s, threads: %s, folderOrFile: %s]",
+				host, port, contentType, context, charset, threads, folderOrFile));
 		
 		try {
 			if(Objects.nonNull(folderOrFile)) {
-				new ForkJoinPool(3).submit(()->{
+				new ForkJoinPool(threads).submit(()->{
 					try{
 						Files.walk(Paths.get(folderOrFile))
 						.filter(Files::isRegularFile)
@@ -94,11 +103,11 @@ public class App {
 	 */
 	private static void httpPost(String type, File data) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-	    HttpPost httppost = new HttpPost("http://" + HOST + ":" + PORT + File.separator + context + File.separator + "sparql");
+	    HttpPost httppost = new HttpPost("http://" + host + ":" + port + File.separator + context + File.separator + "sparql");
 
 	    RequestConfig requestConfig = 
 	    		RequestConfig.copy(RequestConfig.DEFAULT)
-	    			.setProxy(new HttpHost(HOST, PORT))
+	    			.setProxy(new HttpHost(host, port))
 	    			.build();
 	    
 	    httppost.setConfig(requestConfig);
@@ -128,7 +137,7 @@ public class App {
 		    httpclient.close();
 		    
 	    }catch( IOException e){
-	    	logger.error(e);
+	    	logger.error(String.format("%s %s\n%s", "ERROR", data.getAbsolutePath(), e));
 	    }	    
 	}
 	
@@ -136,16 +145,14 @@ public class App {
 	 * 
 	 * @param value
 	 * @return
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
-	public static BlazegraphResponse xmlMapper(String value) {
+	public static BlazegraphResponse xmlMapper(String value) throws JsonParseException, JsonMappingException, IOException {
 		JacksonXmlModule module = new JacksonXmlModule();
 		module.setDefaultUseWrapper(true);
   	  	XmlMapper xmlMapper = new XmlMapper(module);	    
-		try {
-			return xmlMapper.readValue(value, BlazegraphResponse.class);				   
-		} catch (IOException e) {
-			logger.error(e);
-			return null;
-		}	    
+		return xmlMapper.readValue(value, BlazegraphResponse.class);		   
 	}
 }
