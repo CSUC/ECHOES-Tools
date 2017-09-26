@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>csuc.cat</groupId>
+      <artifactId>Recollect</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   <artifactId>metadata.schema.definitions</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+   <name>Metadata Schema Formats</name>
+   <url>http://maven.apache.org</url>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <artifactId>maven-jaxb2-plugin</artifactId>
+            <version>0.12.3</version>
+            <executions>
+               <execution>
+                  <id>add-source-for-oaidc</id>
+                  <goals>
+                     <goal>generate</goal>
+                  </goals>
+                  <configuration>
+                     <schemaDirectory>src/main/resources/oaidc</schemaDirectory>
+                     <schemaIncludes>
+                        <include>oai_dc.xsd</include>
+                     </schemaIncludes>
+                     <generateDirectory>target/generated-sources/xjc-oaidc</generateDirectory>
+                  </configuration>
+               </execution>
+               <!-- 		        <execution> -->
+               <!-- 		            <id>add-source-for-dcterms</id> -->
+               <!-- 		            <goals> -->
+               <!-- 		                <goal>generate</goal> -->
+               <!-- 		            </goals> -->
+               <!-- 		            <configuration> -->
+               <!-- 		                <schemaDirectory>src/main/resources/dcterms</schemaDirectory> -->
+               <!-- 		                <schemaIncludes> -->
+               <!-- 		                    <include>dcterms.xsd</include> -->
+               <!-- 		                </schemaIncludes> -->
+               <!-- 		                <generateDirectory>target/generated-sources/xjc-dcterms</generateDirectory> -->
+               <!-- 		            </configuration> -->
+               <!-- 		        </execution> -->
+               <execution>
+                  <id>add-source-for-oaipmh</id>
+                  <goals>
+                     <goal>generate</goal>
+                  </goals>
+                  <configuration>
+                     <schemaDirectory>src/main/resources/oaipmh</schemaDirectory>
+                     <schemaIncludes>
+                        <include>OAI-PMH.xsd</include>
+                     </schemaIncludes>
+                     <generateDirectory>target/generated-sources/xjc-oaipmh</generateDirectory>
+                     <extension>true</extension>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.9</version>
+            <executions>
+               <execution>
+                  <id>add-source</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                     <goal>add-source</goal>
+                  </goals>
+                  <configuration>
+                     <sources>
+                        <source>${basedir}/target/generated-sources/xjc-oaidc</source>
+                        <!-- 		                    <source>${basedir}/target/generated-sources/xjc-dcterms</source> -->
+                        <source>${basedir}/target/generated-sources/xjc-oaipmh</source>
+                     </sources>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+</project>
