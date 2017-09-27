@@ -14,6 +14,8 @@ import org.Recollect.Core.client.OAIClient;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
+import org.Recollect.Core.util.Granularity;
+import org.Recollect.Core.util.UTCDateProvider;
 import org.Recollect.Core.util.Verb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +38,7 @@ public class Main {
 	
 	private static Instant inici = Instant.now();
 	
-	private static String echoesFolder = "/tmp/echoes";
+//	private static String echoesFolder = "/tmp/echoes";
 	
 	private static String host = null;
 	private static String verb = null;
@@ -45,12 +47,15 @@ public class Main {
 	private static String from = null;
 	private static String until = null;	
 	private static String set = null;
+	private static String granularity = null;
 	private static String resumptionToken = null;
 	
+	
+	private static String out = null;
 	private static String edmType = null;
 	private static String provider = null;
 	
-		
+	private static UTCDateProvider dateProvider = new UTCDateProvider();;
 	
 	/**
 	 * 
@@ -59,8 +64,7 @@ public class Main {
 	 */
     public static void main( String[] args ) throws Exception {    	
     	if(Objects.nonNull(args) && args.length != 0) {
-    		for(int i = 0; i < args.length; i++) {
-    			
+    		for(int i = 0; i < args.length; i++) {    			
     			if(args[i].equals("--host"))	host = args[i+1];
     			if(args[i].equals("--verb"))	verb = args[i+1];
     			if(args[i].equals("--identifier"))	identifier = args[i+1];    			
@@ -68,20 +72,19 @@ public class Main {
     			if(args[i].equals("--from"))	from = args[i+1];
     			if(args[i].equals("--until"))	until = args[i+1];    			
     			if(args[i].equals("--set"))	set = args[i+1];
+    			if(args[i].equals("--granularity"))	granularity = args[i+1];
     			if(args[i].equals("--resumptionToken"))	resumptionToken = args[i+1];
     			
     			if(args[i].equals("--xslt"))	GlobalAttributes.XSLT = args[i+1];
-    			if(args[i].equals("--out"))	echoesFolder = args[i+1];
+    			if(args[i].equals("--out"))	out = args[i+1];
     			
     			if(args[i].equals("--edmType"))	edmType = args[i+1];
-    			if(args[i].equals("--provider"))	provider = args[i+1];
-    			
+    			if(args[i].equals("--provider"))	provider = args[i+1];    			
     		}
     		
-    		Objects.requireNonNull(host, "host must not be null");
-    		Objects.requireNonNull(verb, 
-    				String.format("select valid verb: %s", 
-    						"Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords"));
+    		if(Objects.isNull(host)) throw new Exception("host must not be null");
+    		if(Objects.isNull(verb)) throw new Exception(String.format("select valid verb: %s", 
+					"Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords"));
     		
         	if(verb.equals(Verb.Type.ListRecords.toString())) 	ListRecords();
         	else if(verb.equals(Verb.Type.Identify.toString())) Identify();     		
@@ -103,32 +106,53 @@ public class Main {
      */
     private static void ListRecords() throws Exception {
     	//Check parameters
-		Objects.requireNonNull(metadataPrefix, "metadataPrefix must not be null");
-		Objects.requireNonNull(set, "set must not be null");
-		Objects.requireNonNull(edmType, 
-				String.format("select valid edmType: %s", 
-						"TEXT, VIDEO, IMAGE, SOUND, 3D"));    		
-		Objects.requireNonNull(provider, "provider must not be null");
-		Objects.requireNonNull(GlobalAttributes.XSLT, "xslt must not be null");    		   
+    	if(Objects.isNull(metadataPrefix)) throw new Exception("metadataPrefix must not be null");
+    	if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
+				
+    	if(Objects.isNull(provider))	throw new Exception("provider must not be null");
 		if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
 			throw new Exception(String.format("select valid edmType: %s", 
     				"TEXT, VIDEO, IMAGE, SOUND, 3D"));
+		
+		GlobalAttributes.edmType = new String[] {"edmType", edmType};
+		GlobalAttributes.dataProvider = new String[] {"dataProvider", provider};
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);
     	
 		ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
     	listRecordsParameters.withMetadataPrefix(metadataPrefix);
-        listRecordsParameters.withSetSpec(set);
-        //listRecordsParameters.withFrom(new Date());
         
-        GlobalAttributes.echoesPathWithSetSpec = 
-        		Files.createDirectories(Paths.get(echoesFolder + File.separator + listRecordsParameters.getSetSpec()));
+    	
+    	if(Objects.nonNull(set)) listRecordsParameters.withSetSpec(set);
+        
+        if(Objects.nonNull(from)) {
+        	if(Objects.nonNull(granularity))	listRecordsParameters.withFrom(dateProvider.parse(from, Granularity.fromRepresentation(granularity)));
+        	else	listRecordsParameters.withFrom(dateProvider.parse(from));
+        }
+        if(Objects.nonNull(granularity))	listRecordsParameters.withGranularity(granularity);        
+        if(Objects.nonNull(until)) {
+        	if(Objects.nonNull(granularity)) listRecordsParameters.withUntil(dateProvider.parse(until, Granularity.fromRepresentation(granularity)));
+        	else	listRecordsParameters.withFrom(dateProvider.parse(until)); 
+        }
+        
+        if(Objects.nonNull(out)) {
+        	if(Objects.nonNull(set)) {
+        		GlobalAttributes.echoesPathWithSetSpec = 
+                		Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
+        	}else {
+        		GlobalAttributes.echoesPathWithSetSpec = 
+                		Files.createDirectories(Paths.get(out));
+        	}
+        }   
         
         Iterator<RecordType> records = recollect.listRecords(listRecordsParameters);
     	
-       	try {        						
-       		DownloadListRecordData downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
+       	try {
+       		DownloadListRecordData downloadData;
+       		if(Objects.nonNull(GlobalAttributes.echoesPathWithSetSpec))	downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
+       		else	downloadData = new DownloadListRecordData();
+       		
        		downloadData.executeWithNode(records);
         		
        		logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s",
@@ -187,16 +211,19 @@ public class Main {
 	 */
 	private static void GetRecord() throws Exception {
 		//Check parameters
-		Objects.requireNonNull(identifier, "identifier must not be null");
-		Objects.requireNonNull(metadataPrefix, "metadataPrefix must not be null");        		
-		Objects.requireNonNull(edmType, 
-				String.format("select valid edmType: %s", 
-						"TEXT, VIDEO, IMAGE, SOUND, 3D"));    		
-		Objects.requireNonNull(provider, "provider must not be null");
-		Objects.requireNonNull(GlobalAttributes.XSLT, "xslt must not be null");    		   
+		if(Objects.isNull(identifier)) throw new Exception("identifier must not be null");
+		if(Objects.isNull(metadataPrefix)) throw new Exception("metadataPrefix must not be null");
+		if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
+		  		
+		if(Objects.isNull(provider)) throw new Exception("provider must not be null");
+		if(Objects.isNull(GlobalAttributes.XSLT)) throw new Exception("xslt must not be null");
+		
 		if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
 			throw new Exception(String.format("select valid edmType: %s", 
     				"TEXT, VIDEO, IMAGE, SOUND, 3D"));
+		
+		GlobalAttributes.edmType = new String[] {"edmType", edmType};
+		GlobalAttributes.dataProvider = new String[] {"dataProvider", provider};
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);
@@ -205,14 +232,19 @@ public class Main {
 		getRecordParameters.withIdentifier(identifier);
 		getRecordParameters.withMetadataFormatPrefix(metadataPrefix);
 		
-		GlobalAttributes.echoesPathWithSetSpec = 
-        		Files.createDirectories(Paths.get(echoesFolder + File.separator + set));
+		
+		if(Objects.nonNull(out))
+			GlobalAttributes.echoesPathWithSetSpec = 
+				Files.createDirectories(Paths.get(out));
 		
 		RecordType record = recollect.getRecord(getRecordParameters);
 		
-		try { 
-			DownloadListRecordData downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
-	   		downloadData.executeWithNode(record);
+		try {
+			DownloadListRecordData downloadData;
+			if(Objects.nonNull(GlobalAttributes.echoesPathWithSetSpec))	downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
+			else downloadData = new DownloadListRecordData();
+			
+			downloadData.executeWithNode(record);
 	    		
 	   		logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s",
 	   				oaiClient.getURL(), getRecordParameters.getIdentifier(), downloadData.getStatus()));
@@ -231,7 +263,7 @@ public class Main {
     	Recollect recollect = new Recollect(oaiClient);
     	
     	//Check parameters
-    	Objects.requireNonNull(metadataPrefix, "metadataPrefix must not be null");
+    	if(Objects.isNull(metadataPrefix)) throw new Exception("metadataPrefix must not be null");
     	
     	ListIdentifiersParameters listIdentifiersParameters = new ListIdentifiersParameters();
     	listIdentifiersParameters.withMetadataPrefix(metadataPrefix);

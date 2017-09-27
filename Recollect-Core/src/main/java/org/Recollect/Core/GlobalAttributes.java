@@ -15,6 +15,9 @@ public class GlobalAttributes {
 	public static Path echoesPathWithSetSpec;	
 	public static String XSLT;
 	
-//	public static Map<String, String> parametersTransformation;
+	
+	public static String[] edmType;
+	public static String[] dataProvider;
+	
 	
 }

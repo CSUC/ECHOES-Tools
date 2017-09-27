@@ -6,15 +6,14 @@ package org.Recollect.Core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
@@ -30,8 +29,10 @@ import org.Recollect.Core.serialize.JaxbMarshal;
 import org.Recollect.Core.transformation.Transformations;
 import org.Recollect.Core.util.StatusCollection;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.io.IoBuilder;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2.StatusType;
 import org.w3c.dom.Node;
@@ -48,20 +49,33 @@ public class DownloadListRecordData extends StatusCollection{
 	private Class<?> classType;
 	private Path path;
 	
+	private OutputStream out;
 	
-	public DownloadListRecordData(Path path, Class<?> classType) {
+	public DownloadListRecordData(Path path, Class<?> classType) throws Exception {
 		super();		
 		this.classType = classType;
 		this.path = path;
-		Objects.requireNonNull(classType, "classType must not be null");
-		Objects.requireNonNull(path, "path must not be null");		
+		
+		if(Objects.isNull(classType)) throw new Exception("classType must not be null");
+		if(Objects.isNull(path)) throw new Exception("path must not be null");	
 	}
 	
-	public DownloadListRecordData(Path path) {
+	public DownloadListRecordData(Class<?> classType) throws Exception {
+		super();		
+		this.classType = classType;
+		if(Objects.isNull(classType)) throw new Exception("classType must not be null");
+	}
+	
+	
+	
+	public DownloadListRecordData() throws Exception {
+		super();
+	}
+	
+	public DownloadListRecordData(Path path) throws Exception {
 		super();
 		this.path = path;
-		Objects.requireNonNull(path, "records must not be null");
-		Objects.requireNonNull(GlobalAttributes.XSLT, "xslt must not be null");
+		if(Objects.isNull(path)) throw new Exception("path must not be null");
 	}
 	
 	
@@ -122,7 +136,8 @@ public class DownloadListRecordData extends StatusCollection{
 		Path file = Paths.get(path + File.separator + StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
 			
 			if(!Files.exists(file, LinkOption.NOFOLLOW_LINKS)) {
-				FileOutputStream out = new FileOutputStream(file.toFile());
+				if(Objects.nonNull(path))	out = new FileOutputStream(file.toFile());
+				else out = IoBuilder.forLogger(DownloadListRecordData.class).setLevel(Level.INFO).buildOutputStream();
 				
 				JaxbMarshal jaxbMarshal = new JaxbMarshal(jaxbElement, classType, out);
 				
@@ -156,18 +171,21 @@ public class DownloadListRecordData extends StatusCollection{
 				try {
 					String result = nodeToString((Node) record.getMetadata().getAny());							
 					if(Objects.nonNull(result)) {
-						Path file = Paths.get(path + File.separator + StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
+						Path file = Paths.get(path + File.separator + StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");						
+						if(Objects.nonNull(path)) 	out = new FileOutputStream(file.toFile());
+						else out = IoBuilder.forLogger(DownloadListRecordData.class).setLevel(Level.INFO).buildOutputStream();
 						
-						Transformations tansformation = new Transformations(GlobalAttributes.XSLT, file);
-	    					
-						Map<String,String> parameters = new HashMap<String,String>();
-						parameters.put("identifier", record.getHeader().getIdentifier());
-						parameters.put("edmType", "IMAGE");
-						parameters.put("dataProvider", "Erfgoed");
-						
-	    				tansformation.transformationsFromString(result, parameters);
+						if(Objects.nonNull(GlobalAttributes.XSLT)) {
+							Transformations tansformation = new Transformations(GlobalAttributes.XSLT, out);	    				
 							
-						logger.debug(String.format("File save %s", file));	
+							tansformation.addParameter("identifier", record.getHeader().getIdentifier());
+							tansformation.addParameter(GlobalAttributes.edmType[0], GlobalAttributes.edmType[1]);
+							tansformation.addParameter(GlobalAttributes.dataProvider[0], GlobalAttributes.dataProvider[1]);
+							
+		    				tansformation.transformationsFromString(result);
+						}else	out.write(result.getBytes());
+							
+	    				if(Objects.nonNull(path))	logger.debug(String.format("File save %s", file));	
 	    				totalDownloadRecord.incrementAndGet();
 	    				
 					}			
@@ -185,7 +203,7 @@ public class DownloadListRecordData extends StatusCollection{
 		    Transformer t = TransformerFactory.newInstance().newTransformer();
 		    t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 		    t.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.toString());
-		    t.setOutputProperty(OutputKeys.INDENT, "no");
+		    t.setOutputProperty(OutputKeys.INDENT, "yes");
 		    t.transform(new DOMSource(node), new StreamResult(sw));
 		    return sw.toString();
 		} catch (TransformerException te) {
