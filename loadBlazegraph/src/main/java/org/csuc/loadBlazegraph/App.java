@@ -72,7 +72,7 @@ public class App {
 		
 		try {
 			if(Objects.nonNull(folderOrFile)) {
-				new ForkJoinPool(threads).submit(()->{
+//				new ForkJoinPool(threads).submit(()->{
 					try{
 						Files.walk(Paths.get(folderOrFile))
 						.filter(Files::isRegularFile)
@@ -84,7 +84,7 @@ public class App {
 					} catch (IOException e) {
 						logger.error(e);
 					}					
-				}).join();
+//				}).join();
 			}else{
 				logger.info("select folderOrFile");
 			}			

@@ -11,11 +11,10 @@
 
     <modules>
     	<module>corelib/corelib-edm-definitions</module>
-		<module>oai-pmh-definitions</module>
-		<module>ECHOES-Parser-Core</module>
-		<module>loadBlazegraph</module>
-		<module>metadata-schema-definitions</module>
-		<module>Recollect-Core</module>
+	<module>Parser-Core</module>
+	<module>loadBlazegraph</module>
+	<module>metadata-schema-definitions</module>
+	<module>Recollect-Core</module>
   </modules>
 
 	<build>
