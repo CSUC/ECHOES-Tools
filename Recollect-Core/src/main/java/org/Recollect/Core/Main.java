@@ -216,7 +216,6 @@ public class Main {
 		if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
 		  		
 		if(Objects.isNull(provider)) throw new Exception("provider must not be null");
-		if(Objects.isNull(GlobalAttributes.XSLT)) throw new Exception("xslt must not be null");
 		
 		if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
 			throw new Exception(String.format("select valid edmType: %s", 
