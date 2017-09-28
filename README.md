@@ -1,4 +1,4 @@
-# ECHOES-Parser [![Build Status](https://travis-ci.org/CSUC/ECHOES-Parser.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Parser) [![codecov](https://codecov.io/gh/CSUC/ECHOES-Parser/branch/develop/graph/badge.svg)](https://codecov.io/gh/CSUC/ECHOES-Parser)
+# ECHOES-Tools [![Build Status](https://travis-ci.org/CSUC/ECHOES-Tools.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Tools) [![codecov](https://codecov.io/gh/CSUC/ECHOES-Tools/branch/develop/graph/badge.svg)](https://codecov.io/gh/CSUC/ECHOES-Tools)
 Java mapping tool that generates EDM compliant items
 
 ## Resources
