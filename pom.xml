@@ -3,19 +3,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.csuc</groupId>
-    <artifactId>ECHOES-Parser</artifactId>
+    <artifactId>ECHOES-Tools</artifactId>
     <packaging>pom</packaging>
     <version>0.1</version>
 
-    <name>Echoes-Parser</name>
+    <name>Echoes-Tools</name>
 
     <modules>
     	<module>corelib/corelib-edm-definitions</module>
-	<module>Parser-Core</module>
-	<module>loadBlazegraph</module>
-	<module>metadata-schema-definitions</module>
-	<module>Recollect-Core</module>
-  </modules>
+		<module>Parser-Core</module>
+		<module>loadBlazegraph</module>
+		<module>metadata-schema-definitions</module>
+		<module>Recollect-Core</module>
+  	</modules>
 
 	<build>
         <pluginManagement>
