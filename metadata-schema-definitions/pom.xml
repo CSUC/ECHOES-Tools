@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <parent>
    	<groupId>org.csuc</groupId>
-	<artifactId>ECHOES-Parser</artifactId>
+	<artifactId>ECHOES-Tools</artifactId>
 	<version>0.1</version>
    </parent>
 
@@ -32,6 +32,8 @@
                         <include>oai_dc.xsd</include>
                      </schemaIncludes>
                      <generateDirectory>target/generated-sources/xjc-oaidc</generateDirectory>
+                     <extension>true</extension>
+                     <cleanPackageDirectories>true</cleanPackageDirectories>
                   </configuration>
                </execution>
                <!-- 		        <execution> -->
@@ -59,8 +61,9 @@
                      </schemaIncludes>
                      <generateDirectory>target/generated-sources/xjc-oaipmh</generateDirectory>
                      <extension>true</extension>
+                     <cleanPackageDirectories>true</cleanPackageDirectories>
                   </configuration>
-               </execution>
+               </execution>              
             </executions>
          </plugin>
          <plugin>
@@ -70,14 +73,14 @@
             <executions>
                <execution>
                   <id>add-source</id>
-                  <phase>generate-sources</phase>
+                  <phase>install</phase>
                   <goals>
                      <goal>add-source</goal>
                   </goals>
                   <configuration>
                      <sources>
                         <source>${basedir}/target/generated-sources/xjc-oaidc</source>
-                        <!-- 		                    <source>${basedir}/target/generated-sources/xjc-dcterms</source> -->
+<!--                         <source>${basedir}/target/generated-sources/xjc-dcterms</source> --> -->
                         <source>${basedir}/target/generated-sources/xjc-oaipmh</source>
                      </sources>
                   </configuration>

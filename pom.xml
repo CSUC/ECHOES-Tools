@@ -3,18 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.csuc</groupId>
-    <artifactId>ECHOES-Parser</artifactId>
+    <artifactId>ECHOES-Tools</artifactId>
     <packaging>pom</packaging>
     <version>0.1</version>
 
-    <name>Echoes-Parser</name>
+    <name>Echoes-Tools</name>
 
     <modules>
-    	<module>corelib/corelib-edm-definitions</module>
-	<module>Parser-Core</module>
-	<module>loadBlazegraph</module>
-	<module>metadata-schema-definitions</module>
-	<module>Recollect-Core</module>
+	   <module>europeana-parent-pom</module>
+	   <module>corelib/corelib-edm-definitions</module>
+	   <module>Parser-Core</module>
+	   <module>loadBlazegraph</module>
+	   <module>metadata-schema-definitions</module>
+	   <module>Recollect-Core</module>
+       	   <module>Validation-Core</module>
+	   <module>Morphia-Core</module>
   </modules>
 
 	<build>
@@ -53,21 +56,49 @@
 	      	</plugin>  	
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
+    
+    <dependencyManagement>
+    	<dependencies>
+    		<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-core</artifactId>
+         <version>2.9.1</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-api</artifactId>
+         <version>2.9.1</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-iostreams -->
+	  <dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-iostreams</artifactId>
+	    <version>2.9.1</version>
+	  </dependency>    	
+	  <dependency>
+  		<groupId>eu.europeana.corelib</groupId>
+		<artifactId>corelib-edm-definitions</artifactId>	
+		<version>2.6.6-SNAPSHOT</version>
+  	   </dependency>
+	</dependencies>
+    </dependencyManagement>
+    
+    
     
 	<properties>
  		<maven.compiler.target>1.8</maven.compiler.target>
     	<maven.compiler.source>1.8</maven.compiler.source>
     	<maven.compiler.testTarget>1.8</maven.compiler.testTarget>
     	<maven.compiler.testSource>1.8</maven.compiler.testSource>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    	
+    	<echoes.log.path>/tmp/echoes/logs</echoes.log.path>
  	 </properties>
 </project>

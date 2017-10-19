@@ -29,7 +29,7 @@ public class Transformations {
 	private StreamSource xlsStreamSource;
 	
 	private OutputStream out;
-	private Map<String,String> parameters = new HashMap<String,String>();
+	private Map<String,String> xsltProperties = new HashMap<String,String>();
 	
 	
 	
@@ -45,6 +45,19 @@ public class Transformations {
 	}
 	
 	
+	public Transformations(String xslt, OutputStream out, Map<String,String> xsltProperties) throws Exception {
+		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+		if(Objects.isNull(out)) throw new Exception("out must not be null");
+		if(Objects.isNull(xsltProperties)) throw new Exception("xsltProperties must not be null");
+		
+		xlsStreamSource = new StreamSource(Paths
+	            .get(xslt)
+	            .toAbsolutePath().toFile());
+		
+		this.out = out;
+		this.xsltProperties = xsltProperties;
+	}
+	
 	/**
 	 * 
 	 * @param sourceID
@@ -56,8 +69,8 @@ public class Transformations {
 	public void transformationsFromUrl(URL sourceID) throws TransformerException, TransformerConfigurationException, IOException{    
 		Transformer transformer = fact.newTransformer(xlsStreamSource);
 	    
-		if(Objects.nonNull(parameters)) {
-			parameters.forEach((k,v)->{
+		if(Objects.nonNull(xsltProperties)) {
+			xsltProperties.forEach((k,v)->{
 				 transformer.setParameter(k,v);
 			});			
 		}
@@ -76,8 +89,8 @@ public class Transformations {
 	public void transformationsFromString(String content) throws TransformerException, TransformerConfigurationException, IOException{		
 		Transformer transformer = fact.newTransformer(xlsStreamSource);
 
-		if(Objects.nonNull(parameters)) {
-			parameters.forEach((k,v)->{
+		if(Objects.nonNull(xsltProperties)) {
+			xsltProperties.forEach((k,v)->{
 				 transformer.setParameter(k,v);
 			});			
 		}
@@ -90,7 +103,8 @@ public class Transformations {
 	 * @param key
 	 * @param value
 	 */
-	public void addParameter(String key, String value) {
-		parameters.put(key, value);
-	}	
+	public void addProperty(String key, String value) {
+		xsltProperties.put(key, value);
+	}
+	
 }

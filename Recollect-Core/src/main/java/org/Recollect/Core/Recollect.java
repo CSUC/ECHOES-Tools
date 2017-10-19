@@ -59,21 +59,18 @@ public class Recollect {
     public RecordType getRecord (GetRecordParameters parameters) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("GetRecord verb requires identifier and metadataPrefix parameters");
-//        	logger.info("GetRecord verb requires identifier and metadataPrefix parameters");
         return getRecordHandler.handle(parameters);
     }
 
     public Iterator<RecordType> listRecords (ListRecordsParameters parameters) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListRecords verb requires the metadataPrefix");
-//        	logger.info("ListRecords verb requires the metadataPrefix");
         return new ItemIterator<RecordType>(new ListRecordHandler(client, parameters));
     }
 
     public Iterator<HeaderType> listIdentifiers (ListIdentifiersParameters parameters) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListIdentifiers verb requires the metadataPrefix");
-//        	logger.info("ListIdentifiers verb requires the metadataPrefix");
         return new ItemIterator<HeaderType>(new ListIdentifierHandler(client, parameters));
     }
 
@@ -82,8 +79,6 @@ public class Recollect {
             return new ItemIterator<SetType>(new ListSetsHandler(client));
         } catch (Exception ex) {
         	throw new Exception(ex);
-//        	logger.error(ex);
-//        	return null;
         }
     }
 }

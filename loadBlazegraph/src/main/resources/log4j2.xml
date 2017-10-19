@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration>
-	<Properties>
-		<Property name="log-path">logs</Property>
-	</Properties>
+<Configuration>	
    <Appenders>
    	  <!-- All -->
-      <RollingFile name="RollingFile" fileName="${log-path}/loadBlazegraph-${date:yyyy-MM-dd}.log" filePattern="${log-path}/loadBlazegraph-%d{yyyy-MM-dd}-%i.log">
+      <RollingFile name="RollingFile" fileName="${echoes.log.path}/loadBlazegraph-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/loadBlazegraph-%d{yyyy-MM-dd}-%i.log">
          <PatternLayout>
             <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %m%n</Pattern>
          </PatternLayout>

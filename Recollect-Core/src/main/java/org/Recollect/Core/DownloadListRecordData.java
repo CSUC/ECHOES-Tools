@@ -14,6 +14,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
@@ -48,6 +49,8 @@ public class DownloadListRecordData extends StatusCollection{
 	
 	private Class<?> classType;
 	private Path path;
+	private String xslt;
+	private Map<String,String> xsltProperties;
 	
 	private OutputStream out;
 	
@@ -66,8 +69,6 @@ public class DownloadListRecordData extends StatusCollection{
 		if(Objects.isNull(classType)) throw new Exception("classType must not be null");
 	}
 	
-	
-	
 	public DownloadListRecordData() throws Exception {
 		super();
 	}
@@ -78,6 +79,37 @@ public class DownloadListRecordData extends StatusCollection{
 		if(Objects.isNull(path)) throw new Exception("path must not be null");
 	}
 	
+	public DownloadListRecordData(Path path, String xslt) throws Exception {
+		super();
+		this.path = path;
+		this.xslt = xslt;
+		if(Objects.isNull(path)) throw new Exception("path must not be null");
+		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+	}
+	
+	public DownloadListRecordData(Path path, String xslt, Map<String,String> xsltProperties) throws Exception {
+		super();
+		this.path = path;
+		this.xslt = xslt;
+		this.xsltProperties = xsltProperties;
+		if(Objects.isNull(path)) throw new Exception("path must not be null");
+		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+		if(Objects.isNull(xsltProperties)) throw new Exception("xsltProperties must not be null");
+	}
+	
+	public DownloadListRecordData(String xslt, Map<String,String> xsltProperties) throws Exception {
+		super();
+		this.xslt = xslt;
+		this.xsltProperties = xsltProperties;
+		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+		if(Objects.isNull(xsltProperties)) throw new Exception("xsltProperties must not be null");
+	}
+	
+	public DownloadListRecordData(String xslt) throws Exception {
+		super();
+		this.xslt = xslt;
+		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+	}
 	
 	/**
 	 * 
@@ -167,6 +199,7 @@ public class DownloadListRecordData extends StatusCollection{
 			if(Objects.nonNull(record.getHeader().getStatus()) && record.getHeader().getStatus().equals(StatusType.DELETED)) {
 				logger.debug(String.format("%s %s", record.getHeader().getIdentifier(), StatusType.DELETED));
 				totalDeletedRecord.incrementAndGet();
+				deletedRecord.add(record.getHeader().getIdentifier());
 			}else {
 				try {
 					String result = nodeToString((Node) record.getMetadata().getAny());							
@@ -175,13 +208,12 @@ public class DownloadListRecordData extends StatusCollection{
 						if(Objects.nonNull(path)) 	out = new FileOutputStream(file.toFile());
 						else out = IoBuilder.forLogger(DownloadListRecordData.class).setLevel(Level.INFO).buildOutputStream();
 						
-						if(Objects.nonNull(GlobalAttributes.XSLT)) {
-							Transformations tansformation = new Transformations(GlobalAttributes.XSLT, out);	    				
-							
-							tansformation.addParameter("identifier", record.getHeader().getIdentifier());
-							tansformation.addParameter(GlobalAttributes.edmType[0], GlobalAttributes.edmType[1]);
-							tansformation.addParameter(GlobalAttributes.dataProvider[0], GlobalAttributes.dataProvider[1]);
-							
+						if(Objects.nonNull(xslt)) {
+							Transformations tansformation;
+							if(Objects.nonNull(xsltProperties)) {
+								tansformation = new Transformations(xslt, out, xsltProperties);
+								tansformation.addProperty("identifier", record.getHeader().getIdentifier());								
+							}else 	tansformation = new Transformations(xslt, out);							
 		    				tansformation.transformationsFromString(result);
 						}else	out.write(result.getBytes());
 							
@@ -213,7 +245,7 @@ public class DownloadListRecordData extends StatusCollection{
 	}
 	
 	public String getStatus() {
-		return String.format("TotalReadRecords:%s TotalDownloadRecords: %s TotalDeletedRecord: %s TotalFileAlreadyExistsRecordAndReplace: %s",
-				totalReadRecord.get(), totalDownloadRecord.get(), totalDeletedRecord.getAndIncrement(), totalFileAlreadyExistsRecordAndReplace.get());
+		return String.format("TotalReadRecords:%s TotalDownloadRecords: %s TotalDeletedRecord: %s TotalFileAlreadyExistsRecordAndReplace: %s\nlistDeletedRecord: %s",
+			totalReadRecord.get(), totalDownloadRecord.get(), totalDeletedRecord.getAndIncrement(), totalFileAlreadyExistsRecordAndReplace.get(), deletedRecord);
 	}
 }
