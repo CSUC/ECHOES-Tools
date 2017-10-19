@@ -114,7 +114,16 @@
                     </edm:dataProvider>
                 </xsl:otherwise>
             </xsl:choose>
-            <edm:isShownAt>
+
+            <xsl:for-each select="/ead/archdesc/dsc[@type='combined']/c01[@level='series']/c02/c03[@level='file']/did/dao/@xlink:href">
+                <edm:hasView>
+                    <xsl:attribute name="rdf:resource">
+                        <xsl:value-of select="string(.)"/>                                 
+                    </xsl:attribute>
+                </edm:hasView>
+            </xsl:for-each>
+
+            <edm:isShownBy>
                 <xsl:choose>
                     <xsl:when test="@url">
                         <xsl:attribute name="rdf:resource" select="@url"/>
@@ -130,11 +139,26 @@
                         </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
-            </edm:isShownAt>
+            </edm:isShownBy>
             <edm:object>
-                <xsl:attribute name="rdf:resource"
+                <!--<xsl:attribute name="rdf:resource"
                     select="concat('http://', $host, '/Portal-theme/images/ape/icons/dao_types/europeana/text.png')"
-                />
+                />-->
+                <xsl:choose>
+                    <xsl:when test="@url">
+                        <xsl:attribute name="rdf:resource" select="@url"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="$landingPage = 'ape'">
+                                <xsl:attribute name="rdf:resource" select="concat($id_base, $eadidEncoded)"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="rdf:resource" select="normalize-space($landingPage)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
             </edm:object>
             <edm:provider>
                 <xsl:value-of select="$europeana_provider"/>
@@ -293,9 +317,9 @@
                     </xsl:call-template>
                 </xsl:for-each>
             </xsl:if>
-            <xsl:if test="/ead/archdesc/controlaccess">
+            <xsl:if test="/ead/archdesc/descgrp/controlaccess">
                 <xsl:call-template name="controlaccess">
-                    <xsl:with-param name="controlaccesses" select="/ead/archdesc/controlaccess"/>
+                    <xsl:with-param name="controlaccesses" select="/ead/archdesc/descgrp/controlaccess"/>
                 </xsl:call-template>
             </xsl:if>
             <xsl:if test="$minimalConversion = 'false' and /ead/archdesc/did/materialspec[text() != '']">
@@ -313,8 +337,8 @@
                     <dc:type><xsl:value-of select="/ead/archdesc/did/physdesc/genreform[text() != '']"/></dc:type>
                 </xsl:when>
                 <xsl:otherwise>
-                    <!--<xsl:if test="not(/ead/archdesc/controlaccess) or not(/ead/archdesc/controlaccess/*/text())">-->
-                    <xsl:if test="not(/ead/archdesc/controlaccess/*/text())">
+                    <!--<xsl:if test="not(/ead/archdesc/descgrp/controlaccess) or not(/ead/archdesc/descgrp/controlaccess/*/text())">-->
+                    <xsl:if test="not(/ead/archdesc/descgrp/controlaccess/*/text())">
                         <dc:type><xsl:value-of select="'Archival material'"/></dc:type>
                     </xsl:if>
                 </xsl:otherwise>
@@ -379,7 +403,8 @@
                 </dcterms:temporal>
             </xsl:if>
             <edm:type>
-                <xsl:value-of select="'TEXT'"/>
+                <!--<xsl:value-of select="'TEXT'"/>-->
+                <xsl:value-of select="$europeana_type"/>
             </edm:type>
         </edm:ProvidedCHO>
         <edm:WebResource>
@@ -1500,7 +1525,8 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <edm:type>
-                        <xsl:value-of select="'TEXT'"/>
+                        <!--<xsl:value-of select="'TEXT'"/>-->
+                        <xsl:value-of select="$europeana_type"/>
                     </edm:type>
                 </xsl:otherwise>
             </xsl:choose>
@@ -1599,7 +1625,7 @@
                 </dcterms:spatial>
             </xsl:if>
         </xsl:for-each>
-        <xsl:for-each select="$controlaccesses/function | $controlaccesses/occupation | $controlaccesses/subject">
+        <xsl:for-each select="$controlaccesses/function | $controlaccesses/occupation | $controlaccesses/subject | $controlaccesses/category | $controlaccesses/keywords ">
             <xsl:if test="text() != ''">
                 <dc:subject>
                     <xsl:value-of select="."/>
