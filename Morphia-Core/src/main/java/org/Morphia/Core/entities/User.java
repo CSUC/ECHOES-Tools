@@ -4,6 +4,8 @@
 package org.Morphia.Core.entities;
 
 
+import java.util.Objects;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.mongodb.morphia.annotations.Entity;
@@ -99,5 +101,14 @@ public class User {
 			}
 		}
 		return builder.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(Objects.isNull(obj))	return false;		        
+		if(!(obj instanceof User)) return false;
+		
+        User other = (User) obj;
+        return Objects.equals(this.id, other.id);
 	}
 }

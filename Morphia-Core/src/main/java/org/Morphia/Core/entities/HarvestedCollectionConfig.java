@@ -4,6 +4,7 @@
 package org.Morphia.Core.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -164,5 +165,14 @@ public class HarvestedCollectionConfig {
 			}
 		}
 		return builder.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(Objects.isNull(obj))	return false;		        
+		if(!(obj instanceof HarvestedCollectionConfig)) return false;
+		
+		HarvestedCollectionConfig other = (HarvestedCollectionConfig) obj;
+        return Objects.equals(this.id, other.id);
 	}
 }

@@ -4,6 +4,7 @@
 package org.Morphia.Core.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -25,7 +26,7 @@ import org.mongodb.morphia.annotations.Reference;
 	@Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true)) 
 )
 public class HarvestedItems {
-
+	
 	@Id
 	private String id;
 	
@@ -87,5 +88,14 @@ public class HarvestedItems {
 			}
 		}
 		return builder.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(Objects.isNull(obj))	return false;		        
+		if(!(obj instanceof HarvestedItems)) return false;
+		
+		HarvestedItems other = (HarvestedItems) obj;
+        return Objects.equals(this.id, other.id);
 	}
 }

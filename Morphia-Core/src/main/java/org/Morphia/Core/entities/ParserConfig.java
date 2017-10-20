@@ -4,6 +4,7 @@
 package org.Morphia.Core.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -120,5 +121,14 @@ public class ParserConfig {
 			}
 		}
 		return builder.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(Objects.isNull(obj))	return false;		        
+		if(!(obj instanceof ParserConfig)) return false;
+		
+		ParserConfig other = (ParserConfig) obj;
+        return Objects.equals(this.id, other.id);
 	}
 }
