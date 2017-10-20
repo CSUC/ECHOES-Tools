@@ -1,4 +1,5 @@
 language: java
+services: mongodb
 
 sudo: false
 
@@ -8,7 +9,7 @@ jdk:
 before_install:
   - git submodule update --init --recursive
 
-script: mvn clean generate-sources install cobertura:cobertura
+script: mvn clean install cobertura:cobertura
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

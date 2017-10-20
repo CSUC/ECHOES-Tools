@@ -107,13 +107,14 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindAllHarvestedCollectionConfig() {
-		List<HarvestedItems> result = itemsDAO.findAll(harvest_uuid);
+		List<HarvestedItems> result = itemsDAO.findAll(harvested);
 
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {
-			assertTrue(harvest_uuid.equals(h.getHarvestedcollection()));
+			
+			assertTrue(harvested.equals(h.getHarvestedcollection()));
 			logger.info(h.toJson());
 		});
 	}
@@ -123,13 +124,13 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindAllString() {
-		List<HarvestedItems> result = itemsDAO.findAll(harvested);
+		List<HarvestedItems> result = itemsDAO.findAll(harvest_uuid);
 
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {
-			assertTrue(harvest_uuid.equals(h.getHarvestedcollection()));
+			assertEquals(harvest_uuid, h.getHarvestedcollection().getId());			
 			logger.info(h.toJson());
 		});
 	}
