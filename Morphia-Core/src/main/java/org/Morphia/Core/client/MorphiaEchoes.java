@@ -13,7 +13,6 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoSocketOpenException;
-import com.mongodb.ReadPreference;
 import com.mongodb.ReplicaSetStatus;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;

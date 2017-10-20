@@ -14,6 +14,7 @@ import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.IndexOptions;
 import org.mongodb.morphia.annotations.Indexes;
 import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 
 /**
  * @author amartinez
@@ -52,6 +53,9 @@ public class HarvestedCollectionConfig {
 	@Property("xsd_config")
 	private String xsdconfig;
 
+	@Reference("user_id")
+	private User user_id;
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -123,6 +127,14 @@ public class HarvestedCollectionConfig {
 	public String getXsdconfig() {
 		return xsdconfig;
 	}
+	
+	public User getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(User user_id) {
+		this.user_id = user_id;
+	}
 
 	@Override
 	public String toString() {
@@ -132,6 +144,21 @@ public class HarvestedCollectionConfig {
 			try {
 				Object value = f.get(this);
 				builder.append(f.getName(), value);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		return builder.toString();
+	}
+	
+	public String toJson() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.JSON_STYLE);
+		for(java.lang.reflect.Field f : getClass().getDeclaredFields()){			
+			f.setAccessible(true);
+			try {
+				Object value = f.get(this);
+				if(value instanceof User)	builder.append(f.getName(), ((User)value).toJson());
+				else builder.append(f.getName(), value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

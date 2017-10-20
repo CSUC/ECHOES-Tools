@@ -3,37 +3,40 @@
  */
 package org.Morphia.Core.entities;
 
-import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.IndexOptions;
 import org.mongodb.morphia.annotations.Indexes;
-import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
 /**
  * @author amartinez
  *
  */
-@Entity(value="harvested_item", noClassnameStored = true )
+@Entity(value="parser_results", noClassnameStored = true )
 @Indexes(
 	@Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true)) 
 )
-public class HarvestedItems {
+public class ParserResults {
 
 	@Id
 	private String id;
 	
-	@Property("last_haravested")
-	private Date lastharavested;
+	@Reference("parser_config_id")
+	private ParserConfig parser_config_id;
 	
-	@Reference("harvested_collection_config_id")
-	private HarvestedCollectionConfig harvestedcollection;
+	@Embedded("namespace")
+	private List<Namespace> namespace;
+	
+	@Embedded("result")
+	private List<ParserResultsJSON> json;
 
 	public String getId() {
 		return id;
@@ -43,20 +46,28 @@ public class HarvestedItems {
 		this.id = id;
 	}
 
-	public Date getLastharavested() {
-		return lastharavested;
+	public ParserConfig getParser_config_id() {
+		return parser_config_id;
 	}
 
-	public void setLastharavested(Date lastharavested) {
-		this.lastharavested = lastharavested;
+	public void setParser_config_id(ParserConfig parser_config_id) {
+		this.parser_config_id = parser_config_id;
 	}
 
-	public HarvestedCollectionConfig getHarvestedcollection() {
-		return harvestedcollection;
+	public List<Namespace> getNamespace() {
+		return namespace;
 	}
 
-	public void setHarvestedcollection(HarvestedCollectionConfig harvestedcollection) {
-		this.harvestedcollection = harvestedcollection;
+	public void setNamespace(List<Namespace> namespace) {
+		this.namespace = namespace;
+	}
+
+	public List<ParserResultsJSON> getJson() {
+		return json;
+	}
+
+	public void setJson(List<ParserResultsJSON> json) {
+		this.json = json;
 	}
 	
 	@Override
@@ -80,8 +91,8 @@ public class HarvestedItems {
 			f.setAccessible(true);
 			try {
 				Object value = f.get(this);
-				if(value instanceof HarvestedCollectionConfig)	builder.append(f.getName(), ((HarvestedCollectionConfig)value).toJson());
-				else builder.append(f.getName(), value);		
+				if(value instanceof ParserConfig)	builder.append(f.getName(), ((ParserConfig)value).toJson());
+				else builder.append(f.getName(), value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

@@ -20,20 +20,29 @@ import org.mongodb.morphia.annotations.Reference;
  * @author amartinez
  *
  */
-@Entity(value="harvested_item", noClassnameStored = true )
+@Entity(value="parser_config", noClassnameStored = true )
 @Indexes(
 	@Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true)) 
 )
-public class HarvestedItems {
+public class ParserConfig {
 
 	@Id
 	private String id;
 	
-	@Property("last_haravested")
-	private Date lastharavested;
+	@Property("type")
+	private String type;
 	
-	@Reference("harvested_collection_config_id")
-	private HarvestedCollectionConfig harvestedcollection;
+	@Property("source")
+	private String source;
+	
+	@Property("status")
+	private int status;
+	
+	@Property("start_time")
+	private Date starttime;
+	
+	@Reference("user_id")
+	private User userid;
 
 	public String getId() {
 		return id;
@@ -43,20 +52,44 @@ public class HarvestedItems {
 		this.id = id;
 	}
 
-	public Date getLastharavested() {
-		return lastharavested;
+	public String getType() {
+		return type;
 	}
 
-	public void setLastharavested(Date lastharavested) {
-		this.lastharavested = lastharavested;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public HarvestedCollectionConfig getHarvestedcollection() {
-		return harvestedcollection;
+	public String getSource() {
+		return source;
 	}
 
-	public void setHarvestedcollection(HarvestedCollectionConfig harvestedcollection) {
-		this.harvestedcollection = harvestedcollection;
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Date getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(Date starttime) {
+		this.starttime = starttime;
+	}
+
+	public User getUserid() {
+		return userid;
+	}
+
+	public void setUserid(User userid) {
+		this.userid = userid;
 	}
 	
 	@Override
@@ -80,8 +113,8 @@ public class HarvestedItems {
 			f.setAccessible(true);
 			try {
 				Object value = f.get(this);
-				if(value instanceof HarvestedCollectionConfig)	builder.append(f.getName(), ((HarvestedCollectionConfig)value).toJson());
-				else builder.append(f.getName(), value);		
+				if(value instanceof User)	builder.append(f.getName(), ((User)value).toJson());
+				else builder.append(f.getName(), value);					
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

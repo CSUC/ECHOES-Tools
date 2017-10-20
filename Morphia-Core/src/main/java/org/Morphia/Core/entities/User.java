@@ -3,7 +3,6 @@
  */
 package org.Morphia.Core.entities;
 
-import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,26 +13,32 @@ import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.IndexOptions;
 import org.mongodb.morphia.annotations.Indexes;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
 
 /**
  * @author amartinez
  *
  */
-@Entity(value="harvested_item", noClassnameStored = true )
+/**
+ * @author amartinez
+ *
+ */
+@Entity(value="user", noClassnameStored = true )
 @Indexes(
 	@Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true)) 
 )
-public class HarvestedItems {
+public class User {
 
 	@Id
 	private String id;
 	
-	@Property("last_haravested")
-	private Date lastharavested;
+	@Property("email")
+	private String email;
 	
-	@Reference("harvested_collection_config_id")
-	private HarvestedCollectionConfig harvestedcollection;
+	@Property("password")
+	private String password;
+	
+	@Property("digest_algorithm")
+	private String digest;
 
 	public String getId() {
 		return id;
@@ -43,20 +48,28 @@ public class HarvestedItems {
 		this.id = id;
 	}
 
-	public Date getLastharavested() {
-		return lastharavested;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setLastharavested(Date lastharavested) {
-		this.lastharavested = lastharavested;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public HarvestedCollectionConfig getHarvestedcollection() {
-		return harvestedcollection;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setHarvestedcollection(HarvestedCollectionConfig harvestedcollection) {
-		this.harvestedcollection = harvestedcollection;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getDigest() {
+		return digest;
+	}
+
+	public void setDigest(String digest) {
+		this.digest = digest;
 	}
 	
 	@Override
@@ -80,8 +93,7 @@ public class HarvestedItems {
 			f.setAccessible(true);
 			try {
 				Object value = f.get(this);
-				if(value instanceof HarvestedCollectionConfig)	builder.append(f.getName(), ((HarvestedCollectionConfig)value).toJson());
-				else builder.append(f.getName(), value);		
+				builder.append(f.getName(), value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

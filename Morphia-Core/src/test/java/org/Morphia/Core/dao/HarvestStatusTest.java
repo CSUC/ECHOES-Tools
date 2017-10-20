@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.Morphia.Core.dao.impl;
+package org.Morphia.Core.dao;
 
 import org.Morphia.Core.dao.HarvestStatus;
 import org.junit.Test;

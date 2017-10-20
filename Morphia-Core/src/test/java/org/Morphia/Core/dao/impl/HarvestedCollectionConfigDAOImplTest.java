@@ -1,5 +1,6 @@
 package org.Morphia.Core.dao.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -9,21 +10,32 @@ import org.Morphia.Core.client.MorphiaEchoes;
 import org.Morphia.Core.dao.HarvestStatus;
 import org.Morphia.Core.dao.HarvestedCollectionConfigDAO;
 import org.Morphia.Core.entities.HarvestedCollectionConfig;
+import org.Morphia.Core.entities.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
-public class HarvestedCollectionDAOImplTest extends TestCase {
+public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 
+	private static Logger logger = LogManager.getLogger(HarvestedCollectionConfigDAOImplTest.class);
+	
 	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
-	private String uuid = UUID.randomUUID().toString();
+	private HarvestedCollectionConfigDAO harvestedDAO = 
+			new HarvestedCollectionConfigDAOImpl(HarvestedCollectionConfig.class, echoes.getDatastore());
+	
+	private String harvested_uuid = UUID.randomUUID().toString();
+	private String user_uuid = UUID.randomUUID().toString();
+	
+	private HarvestedCollectionConfig harvested = new HarvestedCollectionConfig();
+	private User user = new User();
 	
 	@Override
 	protected void setUp() throws Exception {	
 		super.setUp();
 		
-		HarvestedCollectionConfig harvested = new HarvestedCollectionConfig();
-		harvested.setId(uuid);
+		harvested.setId(harvested_uuid);
 		
 		harvested.setOaisetid("oai_set_id");
 		harvested.setOaisource("oai_source");
@@ -34,20 +46,21 @@ public class HarvestedCollectionDAOImplTest extends TestCase {
 		harvested.setLastharvested(null);
 		harvested.setXsdconfig(null);
 		
-		echoes.getDatastore().save(harvested);
+		user.setId(user_uuid);
+		user.setEmail("pir@csuc.cat");
+		user.setPassword("1234");
+		user.setDigest("digest");
+		harvested.setUser_id(user);
+		
+		echoes.getDatastore().save(Arrays.asList(user, harvested));
 	}
 	
 	
 	@Test
-	public void testFindAll() {
-		HarvestedCollectionConfigDAO harvestedDAO = 
-				new HarvestedCollectionConfigDAOImpl(HarvestedCollectionConfig.class, echoes.getDatastore());
-		
+	public void testFindAll() {		
 		List<HarvestedCollectionConfig> result = harvestedDAO.findAll();
 		
-		result.forEach(harvestedCollectionConfig->{
-			System.out.println(harvestedCollectionConfig.toString());
-		});
+		result.forEach(h->{logger.info(h.toJson());});
 		
 		assertNotNull(result);
 		assertEquals(1, result.size());
@@ -55,11 +68,9 @@ public class HarvestedCollectionDAOImplTest extends TestCase {
 
 	@Test
 	public void testFindById() {
-		HarvestedCollectionConfigDAO harvestedDAO = 
-				new HarvestedCollectionConfigDAOImpl(HarvestedCollectionConfig.class, echoes.getDatastore());
+		HarvestedCollectionConfig result = harvestedDAO.findById(harvested_uuid);
 		
-		HarvestedCollectionConfig result = harvestedDAO.findById(uuid);		
-		System.out.println(result.toString());
+		logger.info(result.toJson());
 		
 		assertNotNull(result);
 		
