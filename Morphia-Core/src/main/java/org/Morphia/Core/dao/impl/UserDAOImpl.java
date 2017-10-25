@@ -31,4 +31,9 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
 		return createQuery().field("id").equal(id).get();
 	}
 
+	@Override
+	public User findByEmail(String email) {
+		return createQuery().field("email").equal(email).get();
+	}
+
 }

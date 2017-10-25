@@ -5,6 +5,7 @@ package org.Morphia.Core.entities;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -38,6 +39,14 @@ public class ParserResults {
 	
 	@Embedded("result")
 	private List<ParserResultsJSON> json;
+
+	public ParserResults() {
+		setId(UUID.randomUUID().toString());
+	}
+	
+	public ParserResults(UUID uuid) {
+		setId(uuid.toString());
+	}
 
 	public String getId() {
 		return id;

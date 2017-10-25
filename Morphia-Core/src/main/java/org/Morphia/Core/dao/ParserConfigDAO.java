@@ -20,7 +20,7 @@ public interface ParserConfigDAO extends DAO<ParserConfig, ObjectId> {
 	
 	public List<ParserConfig> findByUser(User user);
 	
-	public List<ParserConfig> findByUserId(String user_id);
+	public List<ParserConfig> findByUser(String user_id);
 	
 	public ParserConfig findById(String id);
 	

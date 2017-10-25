@@ -7,14 +7,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.Morphia.Core.client.MorphiaEchoes;
-import org.Morphia.Core.dao.HarvestStatus;
 import org.Morphia.Core.dao.ParserConfigDAO;
-import org.Morphia.Core.dao.ParserType;
 import org.Morphia.Core.entities.ParserConfig;
 import org.Morphia.Core.entities.User;
+import org.Morphia.Core.utils.HarvestStatus;
+import org.Morphia.Core.utils.ParserType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -35,18 +34,15 @@ public class ParserConfigDAOImplTest extends TestCase {
 	private ParserConfigDAO dao = new ParserConfigDAOImpl(ParserConfig.class, echoes.getDatastore());
 
 	private User user = new User();
-	private String user_id = UUID.randomUUID().toString();
-
 	private ParserConfig config = new ParserConfig();
-	private String config_id = UUID.randomUUID().toString();
 
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-
-		user.setId(user_id);
-
-		config.setId(config_id);
+		
 		config.setStatus(HarvestStatus.READY.getValue());
 		config.setSource("http://csuc.cat/");
 		config.setStarttime(new Date());
@@ -54,12 +50,9 @@ public class ParserConfigDAOImplTest extends TestCase {
 		config.setUserid(user);
 
 		echoes.getDatastore().save(Arrays.asList(user, config));
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	@After
@@ -70,8 +63,7 @@ public class ParserConfigDAOImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for
-	 * {@link org.Morphia.Core.dao.impl.ParserConfigDAOImplTest#findAll()}.
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserConfigDAOImpl#findAll()}.
 	 */
 	@Test
 	public void testFindAll() {
@@ -86,16 +78,45 @@ public class ParserConfigDAOImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for
-	 * {@link org.Morphia.Core.dao.impl.ParserConfigDAOImplTest#findById(java.lang.String)}.
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserConfigDAOImpl#findById(java.lang.String)}.
 	 */
 	@Test
 	public void testFindById() {
-		ParserConfig result = dao.findById(config_id);
+		ParserConfig result = dao.findById(config.getId());
 
 		assertNotNull(result);
 
 		logger.info(result.toJson());
+	}
+
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserConfigDAOImpl#findByUser(org.Morphia.Core.entities.User)}.
+	 */
+	@Test
+	public void testFindByUser() {
+		List<ParserConfig> result = dao.findByUser(user);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		result.forEach(p -> {
+			logger.info(p.toJson());
+		});
+	}
+
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserConfigDAOImpl#findByUser(java.lang.String)}.
+	 */
+	@Test
+	public void testFindByUserId() {
+		List<ParserConfig> result = dao.findByUser(user.getId());
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		result.forEach(p -> {
+			logger.info(p.toJson());
+		});
 	}
 
 }

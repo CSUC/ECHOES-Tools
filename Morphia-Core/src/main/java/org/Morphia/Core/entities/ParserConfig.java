@@ -5,6 +5,7 @@ package org.Morphia.Core.entities;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -45,6 +46,14 @@ public class ParserConfig {
 	@Reference("user_id")
 	private User userid;
 
+	public ParserConfig() {
+		setId(UUID.randomUUID().toString());
+	}
+	
+	public ParserConfig(UUID uuid) {
+		setId(uuid.toString());
+	}
+	
 	public String getId() {
 		return id;
 	}

@@ -21,5 +21,4 @@ public interface HarvestedItemsDAO extends DAO<HarvestedItems, ObjectId>{
 	public List<HarvestedItems> findAll(String colConfig_id);
 		
 	public HarvestedItems findById(String id);
-
 }

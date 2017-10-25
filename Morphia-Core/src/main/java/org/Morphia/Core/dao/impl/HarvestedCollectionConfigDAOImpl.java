@@ -5,7 +5,7 @@ package org.Morphia.Core.dao.impl;
 
 import java.util.List;
 
-import org.Morphia.Core.dao.HarvestStatus;
+import org.Morphia.Core.utils.HarvestStatus;
 import org.Morphia.Core.dao.HarvestedCollectionConfigDAO;
 import org.Morphia.Core.entities.HarvestedCollectionConfig;
 import org.Morphia.Core.entities.User;

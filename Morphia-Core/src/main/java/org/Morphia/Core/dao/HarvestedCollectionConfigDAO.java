@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.Morphia.Core.entities.HarvestedCollectionConfig;
 import org.Morphia.Core.entities.User;
+import org.Morphia.Core.utils.HarvestStatus;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.dao.DAO;
 

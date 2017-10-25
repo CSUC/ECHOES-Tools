@@ -5,6 +5,7 @@ package org.Morphia.Core.entities;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -36,6 +37,14 @@ public class HarvestedItems {
 	@Reference("harvested_collection_config_id")
 	private HarvestedCollectionConfig harvestedcollection;
 
+	public HarvestedItems() {
+		setId(UUID.randomUUID().toString());
+	}
+	
+	public HarvestedItems(UUID uuid) {
+		setId(uuid.toString());
+	}
+	
 	public String getId() {
 		return id;
 	}

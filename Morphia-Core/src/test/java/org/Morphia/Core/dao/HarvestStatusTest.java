@@ -3,7 +3,7 @@
  */
 package org.Morphia.Core.dao;
 
-import org.Morphia.Core.dao.HarvestStatus;
+import org.Morphia.Core.utils.HarvestStatus;
 import org.junit.Test;
 
 import junit.framework.TestCase;

@@ -4,12 +4,12 @@
 package org.Morphia.Core.dao.impl;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 import org.Morphia.Core.client.MorphiaEchoes;
 import org.Morphia.Core.dao.UserDAO;
 import org.Morphia.Core.entities.User;
+import org.Morphia.Core.utils.Password;
+import org.Morphia.Core.utils.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -30,7 +30,6 @@ public class UserDAOImplTest extends TestCase {
 	private UserDAO userdao = new UserDAOImpl(User.class, echoes.getDatastore());
 
 	private User user = new User();
-	private String user_id = UUID.randomUUID().toString();
 
 	/**
 	 * @throws java.lang.Exception
@@ -38,11 +37,12 @@ public class UserDAOImplTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		user.setId(user_id);
 		user.setEmail("pir@csuc.cat");
-		user.setDigest("digest");
-		user.setPassword("password");
-
+		Password psswd = new Password("md5", "pir@csuc.cat");
+		user.setPassword(psswd.getSecurePassword());
+		user.setDigest(psswd.getAlgorithm());
+		user.setRole(Role.Admin);
+		
 		echoes.getDatastore().save(user);
 	}
 
@@ -70,7 +70,7 @@ public class UserDAOImplTest extends TestCase {
 	public void testFindById() {
 		UserDAO userdao = new UserDAOImpl(User.class, echoes.getDatastore());
 
-		User result = userdao.findById(user_id);
+		User result = userdao.findById(user.getId());
 
 		logger.info(result.toJson());
 		assertNotNull(result);
@@ -82,8 +82,8 @@ public class UserDAOImplTest extends TestCase {
 	@After
 	public void tearDown() throws Exception {
 		super.tearDown();
-		if (Objects.nonNull(echoes.getDatastore()))
-			echoes.getDatastore().getMongo().dropDatabase("echoes");
+//		if (Objects.nonNull(echoes.getDatastore()))
+//			echoes.getDatastore().getMongo().dropDatabase("echoes");
 	}
 
 }

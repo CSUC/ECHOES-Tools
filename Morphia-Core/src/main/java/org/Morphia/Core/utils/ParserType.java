@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.Morphia.Core.dao;
+package org.Morphia.Core.utils;
 
 /**
  * @author amartinez

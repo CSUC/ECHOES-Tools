@@ -10,6 +10,7 @@ import org.Morphia.Core.entities.ParserConfig;
 import org.Morphia.Core.entities.User;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.mongodb.DBRef;
@@ -36,11 +37,14 @@ public class ParserConfigDAOImpl extends BasicDAO<ParserConfig, ObjectId> implem
 
 	@Override
 	public List<ParserConfig> findByUser(User user) {	
-		return createQuery().field("user_id").equal(new DBRef("user", user.getId())).asList();	
+		return createQuery()
+				.field("user_id")
+				.equal(new DBRef(User.class.getAnnotation(Entity.class).value(), user.getId()))
+				.asList();	
 	}
 
 	@Override
-	public List<ParserConfig> findByUserId(String user_id) {
+	public List<ParserConfig> findByUser(String user_id) {
 		return createQuery().field("user_id").equal(new DBRef("user", user_id)).asList();	
 	}
 

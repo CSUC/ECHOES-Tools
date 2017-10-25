@@ -5,6 +5,7 @@ package org.Morphia.Core.entities;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -36,7 +37,7 @@ public class HarvestedCollectionConfig {
 	@Property("oai_set_id")
 	private String oaisetid;
 	
-	@Property("harcest_message")
+	@Property("harvest_message")
 	private String harcestmessage;
 	
 	@Property("metadata_config")
@@ -56,6 +57,14 @@ public class HarvestedCollectionConfig {
 
 	@Reference("user_id")
 	private User user_id;
+	
+	public HarvestedCollectionConfig() {
+		setId(UUID.randomUUID().toString());
+	}
+	
+	public HarvestedCollectionConfig(UUID uuid) {
+		setId(uuid.toString());
+	}
 	
 	public void setId(String id) {
 		this.id = id;

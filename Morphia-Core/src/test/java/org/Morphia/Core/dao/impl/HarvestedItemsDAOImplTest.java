@@ -7,13 +7,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.Morphia.Core.client.MorphiaEchoes;
-import org.Morphia.Core.dao.HarvestStatus;
+import org.Morphia.Core.utils.HarvestStatus;
 import org.Morphia.Core.dao.HarvestedItemsDAO;
 import org.Morphia.Core.entities.HarvestedCollectionConfig;
 import org.Morphia.Core.entities.HarvestedItems;
+import org.Morphia.Core.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -36,10 +36,10 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	private HarvestStatus status = HarvestStatus.READY;
 	
 	private HarvestedCollectionConfig harvested = new HarvestedCollectionConfig();
-	private String harvest_uuid = UUID.randomUUID().toString();
 
 	private HarvestedItems items = new HarvestedItems();
-	private String item_id = UUID.randomUUID().toString();
+	
+	private User user = new User();
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -48,8 +48,6 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		harvested.setId(harvest_uuid);
-
 		harvested.setOaisetid("col_10803_78");
 		harvested.setOaisource("http://tdx.cat/oai/request");
 		harvested.setHarcestmessage(status.getDescription());
@@ -58,12 +56,12 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 		harvested.setHarveststarttime(new Date());
 		harvested.setLastharvested(null);
 		harvested.setXsdconfig(null);
+		harvested.setUser_id(user);
 
-		items.setId(item_id);
 		items.setLastharavested(new Date());
 		items.setHarvestedcollection(harvested);
 
-		echoes.getDatastore().save(Arrays.asList(harvested, items));
+		echoes.getDatastore().save(Arrays.asList(harvested, items, user));
 	}
 
 	/* (non-Javadoc)
@@ -94,10 +92,10 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindById() {
-		HarvestedItems result = itemsDAO.findById(item_id);
+		HarvestedItems result = itemsDAO.findById(items.getId());
 
 		assertNotNull(result);
-		assertEquals(item_id, result.getId());
+		assertEquals(items.getId(), result.getId());
 		
 		logger.info(result.toJson());
 	}
@@ -124,13 +122,13 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindAllString() {
-		List<HarvestedItems> result = itemsDAO.findAll(harvest_uuid);
+		List<HarvestedItems> result = itemsDAO.findAll(harvested.getId());
 
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {
-			assertEquals(harvest_uuid, h.getHarvestedcollection().getId());			
+			assertEquals(harvested.getId(), h.getHarvestedcollection().getId());			
 			logger.info(h.toJson());
 		});
 	}

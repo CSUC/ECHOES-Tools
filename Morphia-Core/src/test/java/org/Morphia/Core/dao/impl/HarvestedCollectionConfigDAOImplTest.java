@@ -7,10 +7,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.Morphia.Core.client.MorphiaEchoes;
-import org.Morphia.Core.dao.HarvestStatus;
+import org.Morphia.Core.utils.HarvestStatus;
 import org.Morphia.Core.dao.HarvestedCollectionConfigDAO;
 import org.Morphia.Core.entities.HarvestedCollectionConfig;
 import org.Morphia.Core.entities.User;
@@ -35,9 +34,6 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 			HarvestedCollectionConfig.class, echoes.getDatastore());
 
 	private HarvestStatus status = HarvestStatus.READY;
-	
-	private String harvested_uuid = UUID.randomUUID().toString();
-	private String user_uuid = UUID.randomUUID().toString();
 
 	private HarvestedCollectionConfig harvested = new HarvestedCollectionConfig();
 	private User user = new User();
@@ -49,7 +45,6 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-		harvested.setId(harvested_uuid);
 
 		harvested.setOaisetid("oai_set_id");
 		harvested.setOaisource("oai_source");
@@ -60,7 +55,6 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 		harvested.setLastharvested(null);
 		harvested.setXsdconfig(null);
 
-		user.setId(user_uuid);
 		user.setEmail("pir@csuc.cat");
 		user.setPassword("1234");
 		user.setDigest("digest");
@@ -99,10 +93,10 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindById() {
-		HarvestedCollectionConfig result = harvestedDAO.findById(harvested_uuid);
+		HarvestedCollectionConfig result = harvestedDAO.findById(harvested.getId());
 
 		assertNotNull(result);
-		assertEquals(harvested_uuid, result.getId());
+		assertEquals(harvested.getId(), result.getId());
 		
 		logger.info(result.toJson());	
 	}
@@ -130,10 +124,10 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindAllString() {
-		List<HarvestedCollectionConfig> result = harvestedDAO.findAll(user_uuid);
+		List<HarvestedCollectionConfig> result = harvestedDAO.findAll(user.getId());
 
 		result.forEach(h -> {
-			assertEquals(user_uuid, h.getUser_id().getId());
+			assertEquals(user.getId(), h.getUser_id().getId());
 			logger.info(h.toJson());
 		});
 				
@@ -182,14 +176,14 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindByStatusHarvestStatusString() {
-		List<HarvestedCollectionConfig> result = harvestedDAO.findByStatus(status, user_uuid);
+		List<HarvestedCollectionConfig> result = harvestedDAO.findByStatus(status, user.getId());
 		
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {			
 			assertEquals(status.getValue(), h.getHarveststatus());
-			assertEquals(user_uuid, h.getUser_id().getId());
+			assertEquals(user.getId(), h.getUser_id().getId());
 			logger.info(h.toJson());
 		});
 		
@@ -238,14 +232,14 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindByXsdConfigStringString() {
-		List<HarvestedCollectionConfig> result = harvestedDAO.findByXsdConfig(null, user_uuid);
+		List<HarvestedCollectionConfig> result = harvestedDAO.findByXsdConfig(null, user.getId());
 		
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {
 			assertEquals(null, h.getXsdconfig());
-			assertEquals(user_uuid, h.getUser_id().getId());
+			assertEquals(user.getId(), h.getUser_id().getId());
 			logger.info(h.toJson());
 		});
 		
@@ -274,13 +268,13 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	 */
 	@Test
 	public void testFindByUserString() {
-		List<HarvestedCollectionConfig> result = harvestedDAO.findByUser(user_uuid);
+		List<HarvestedCollectionConfig> result = harvestedDAO.findByUser(user.getId());
 		
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		
 		result.forEach(h -> {
-			assertEquals(user_uuid, h.getUser_id().getId());
+			assertEquals(user.getId(), h.getUser_id().getId());
 			logger.info(h.toJson());
 			});		
 	}

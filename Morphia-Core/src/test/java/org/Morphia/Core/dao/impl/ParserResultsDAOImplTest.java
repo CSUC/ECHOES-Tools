@@ -1,20 +1,22 @@
+/**
+ * 
+ */
 package org.Morphia.Core.dao.impl;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.Morphia.Core.client.MorphiaEchoes;
-import org.Morphia.Core.dao.HarvestStatus;
 import org.Morphia.Core.dao.ParserResultsDAO;
-import org.Morphia.Core.dao.ParserType;
 import org.Morphia.Core.entities.Namespace;
 import org.Morphia.Core.entities.ParserConfig;
 import org.Morphia.Core.entities.ParserResults;
 import org.Morphia.Core.entities.ParserResultsJSON;
 import org.Morphia.Core.entities.User;
+import org.Morphia.Core.utils.HarvestStatus;
+import org.Morphia.Core.utils.ParserType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -23,6 +25,10 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * @author amartinez
+ *
+ */
 public class ParserResultsDAOImplTest extends TestCase {
 
 	private static Logger logger = LogManager.getLogger(ParserResultsDAOImplTest.class);
@@ -30,32 +36,28 @@ public class ParserResultsDAOImplTest extends TestCase {
 	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
 	private ParserResultsDAO dao = new ParserResultsDAOImpl(ParserResults.class, echoes.getDatastore());
 
-	private String parser_results_uuid = UUID.randomUUID().toString();
-	private String parser_config_uuid = UUID.randomUUID().toString();
-	private String user_uuid = UUID.randomUUID().toString();
-
 	private ParserConfig config = new ParserConfig();
 	private ParserResults results = new ParserResults();
 	private User user = new User();
-
+	
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-
-		config.setId(parser_config_uuid);
+		
 		config.setStatus(HarvestStatus.READY.getValue());
 		config.setSource("http://csuc.cat/");
 		config.setStarttime(new Date());
 		config.setType(ParserType.URL.toString());
 
-		user.setId(user_uuid);
 		user.setEmail("pir@csuc.cat");
 		user.setPassword("1234");
 		user.setDigest("digest");
 		config.setUserid(user);
-		;
-
-		results.setId(parser_results_uuid);
+	
+		
 		results.setParser_config_id(config);
 		results.setNamespace(Arrays.asList(new Namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi")));
 		results.setJson(Arrays.asList(new ParserResultsJSON("ns1:date[@calendar and @era and @normal]", 173,
@@ -64,6 +66,9 @@ public class ParserResultsDAOImplTest extends TestCase {
 		echoes.getDatastore().save(Arrays.asList(user, config, results));
 	}
 
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#tearDown()
+	 */
 	@After
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -71,6 +76,9 @@ public class ParserResultsDAOImplTest extends TestCase {
 			echoes.getDatastore().getMongo().dropDatabase("echoes");
 	}
 
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserResultsDAOImpl#findAll()}.
+	 */
 	@Test
 	public void testFindAll() {
 		List<ParserResults> result = dao.findAll();
@@ -83,9 +91,42 @@ public class ParserResultsDAOImplTest extends TestCase {
 		});
 	}
 
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserResultsDAOImpl#findAll(org.Morphia.Core.entities.ParserConfig)}.
+	 */
+	@Test
+	public void testFindAllParserConfig() {
+		List<ParserResults> result = dao.findAll(config);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		result.forEach(p -> {
+			logger.info(p.toJson());
+		});
+	}
+
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserResultsDAOImpl#findAll(java.lang.String)}.
+	 */
+	@Test
+	public void testFindAllString() {
+		List<ParserResults> result = dao.findAll(config.getId());
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		result.forEach(p -> {
+			logger.info(p.toJson());
+		});
+	}
+
+	/**
+	 * Test method for {@link org.Morphia.Core.dao.impl.ParserResultsDAOImpl#findById(java.lang.String)}.
+	 */
 	@Test
 	public void testFindById() {
-		ParserResults result = dao.findById(parser_results_uuid);
+		ParserResults result = dao.findById(results.getId());
 
 		assertNotNull(result);
 
