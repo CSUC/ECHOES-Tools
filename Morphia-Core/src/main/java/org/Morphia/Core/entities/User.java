@@ -28,7 +28,7 @@ import org.mongodb.morphia.annotations.Property;
  */
 @Entity(value="user", noClassnameStored = true )
 @Indexes(
-	@Index(fields = {@Field("_id"), @Field("email")}, options = @IndexOptions(unique = true)) 
+	@Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true)) 
 )
 //@Validation(value = "{password:{$ne:null}}")
 public class User {
@@ -36,8 +36,8 @@ public class User {
 	@Id
 	private String id;
 	
-	@Property("email")
-	private String email;
+	@Property("uuid")
+	private String uuid;
 	
 	@Property("password")
 	private String password;
@@ -49,11 +49,16 @@ public class User {
 	private Role role;
 	
 	public User() {
-		setId(UUID.randomUUID().toString());
 	}
+	
+	public User(String email) {
+		setId(email);
+		setUuid(UUID.randomUUID().toString());
+	}	
 	
 	public User(UUID uuid) {
 		setId(uuid.toString());
+		setUuid(uuid.toString());
 	}
 	
 	public String getId() {
@@ -62,14 +67,6 @@ public class User {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
@@ -94,6 +91,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	@Override

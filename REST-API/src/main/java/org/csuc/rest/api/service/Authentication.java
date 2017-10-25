@@ -1,10 +1,7 @@
 package org.csuc.rest.api.service;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -36,12 +33,10 @@ public class Authentication {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String isAuthenticate() {
 		return securityContext.getUserPrincipal().getName();
-		// return String.format("user %s is authenticate",
-		// securityContext.getUserPrincipal().getName());
 	}
 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response authenticateUser(Credentials credentials) {
 		try {

@@ -39,7 +39,7 @@ public class HarvestedItemsDAOImplTest extends TestCase {
 
 	private HarvestedItems items = new HarvestedItems();
 	
-	private User user = new User();
+	private User user = new User("pir@csuc.cat");
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()

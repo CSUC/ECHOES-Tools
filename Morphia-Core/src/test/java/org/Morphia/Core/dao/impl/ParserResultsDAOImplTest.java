@@ -38,7 +38,7 @@ public class ParserResultsDAOImplTest extends TestCase {
 
 	private ParserConfig config = new ParserConfig();
 	private ParserResults results = new ParserResults();
-	private User user = new User();
+	private User user = new User("pir@csuc.cat");
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -52,7 +52,6 @@ public class ParserResultsDAOImplTest extends TestCase {
 		config.setStarttime(new Date());
 		config.setType(ParserType.URL.toString());
 
-		user.setEmail("pir@csuc.cat");
 		user.setPassword("1234");
 		user.setDigest("digest");
 		config.setUserid(user);

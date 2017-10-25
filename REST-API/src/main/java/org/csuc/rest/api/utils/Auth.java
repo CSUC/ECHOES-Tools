@@ -26,7 +26,7 @@ public class Auth {
 	private String password;
 	
 	private String token;
-	
+
 	public Auth(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -38,11 +38,11 @@ public class Auth {
 
 	public void authenticate() throws Exception {
 		UserDAO userDAO = new UserDAOImpl(User.class, echoes.getDatastore());
-		User user = userDAO.findByEmail(username);
+		User user = userDAO.findById(username);
 		
 		if(Objects.nonNull(user)) {
 			Password psswd = new Password(user.getDigest(), password);
-        	if(!(user.getEmail().equals(username) && user.getPassword().equals(psswd.getSecurePassword())))	throw new Exception();
+        	if(!(user.getId().equals(username) && user.getPassword().equals(psswd.getSecurePassword())))	throw new Exception();
         }else throw new Exception(); 
 	}
 
@@ -68,7 +68,7 @@ public class Auth {
 		String[] split = decoded.split(":");
 
 		UserDAO userDAO = new UserDAOImpl(User.class, echoes.getDatastore());
-		User user = userDAO.findByEmail(split[0]);
+		User user = userDAO.findById(split[0]);
 
 		Password psswd = new Password(user.getDigest(), split[1]);
 		if (user == null || !user.getPassword().equals(psswd.getSecurePassword())

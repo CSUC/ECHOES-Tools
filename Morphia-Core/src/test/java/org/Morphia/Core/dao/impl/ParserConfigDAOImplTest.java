@@ -33,7 +33,7 @@ public class ParserConfigDAOImplTest extends TestCase {
 	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
 	private ParserConfigDAO dao = new ParserConfigDAOImpl(ParserConfig.class, echoes.getDatastore());
 
-	private User user = new User();
+	private User user = new User("pir@csuc.cat");
 	private ParserConfig config = new ParserConfig();
 
 	/* (non-Javadoc)

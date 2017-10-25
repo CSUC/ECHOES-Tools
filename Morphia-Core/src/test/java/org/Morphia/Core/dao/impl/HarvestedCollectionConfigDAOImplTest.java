@@ -36,7 +36,7 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 	private HarvestStatus status = HarvestStatus.READY;
 
 	private HarvestedCollectionConfig harvested = new HarvestedCollectionConfig();
-	private User user = new User();
+	private User user = new User("pir@csuc.cat");
 	
 	
 	/* (non-Javadoc)
@@ -55,7 +55,6 @@ public class HarvestedCollectionConfigDAOImplTest extends TestCase {
 		harvested.setLastharvested(null);
 		harvested.setXsdconfig(null);
 
-		user.setEmail("pir@csuc.cat");
 		user.setPassword("1234");
 		user.setDigest("digest");
 		harvested.setUser_id(user);

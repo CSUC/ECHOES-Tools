@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.csuc.rest.api.service;
+package org.csuc.rest.api.context;
 
 import java.security.Principal;
 

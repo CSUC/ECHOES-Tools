@@ -19,7 +19,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.Morphia.Core.entities.User;
 import org.Morphia.Core.utils.Role;
-import org.csuc.rest.api.service.BasicSecurityContext;
+import org.csuc.rest.api.context.BasicSecurityContext;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Secured;
 

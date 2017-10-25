@@ -17,5 +17,6 @@ public interface UserDAO extends DAO<User, ObjectId>{
 
 	public List<User> findAll();	
 	public User findById(String id);
-	public User findByEmail(String email);
+	
+	public User findByUUID(String uuid);
 }
