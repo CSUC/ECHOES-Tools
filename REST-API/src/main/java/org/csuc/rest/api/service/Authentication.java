@@ -11,10 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import org.Morphia.Core.entities.UserToken;
 import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Credentials;
 import org.csuc.rest.api.utils.Secured;
+import org.csuc.rest.api.utils.UnauthorizedToken;
 
 @Path("/authentication")
 public class Authentication {
@@ -24,9 +26,6 @@ public class Authentication {
 
 	@Context
 	private HttpServletRequest servletRequest;
-
-	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
-			.entity("You cannot access this resource").build();
 
 	@GET
 	@Secured({ Role.Admin, Role.User })
@@ -48,13 +47,18 @@ public class Authentication {
 			auth.authenticate();
 
 			// Issue a token for the user
-			String token = auth.issueToken();
-
+			UserToken token = auth.issueToken();
+			
 			// Return the token on the response
 			return Response.ok(token).build();
 
 		} catch (Exception e) {
-			return ACCESS_DENIED;
+			return Response.status(Response.Status.UNAUTHORIZED)
+				.entity(new UnauthorizedToken(
+						Response.Status.UNAUTHORIZED.getReasonPhrase(), 
+						"[AUTHENTICATION_FAILURE] Authentication failed due to invalid authentication credentials.", 
+						Response.Status.UNAUTHORIZED.getStatusCode()))
+				.build();
 		}
 	}
 

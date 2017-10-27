@@ -60,14 +60,14 @@
 			<artifactId>Morphia-Core</artifactId>
 			<version>0.1</version>
 		</dependency>
-	<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-<dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>javax.servlet-api</artifactId>
-    <version>4.0.0</version>
-    <scope>provided</scope>
-</dependency>
-	
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>REST-API</finalName>
@@ -103,7 +103,7 @@
 				<version>2.2</version>
 				<configuration>
 					<update>true</update>
-					 <failOnMissingWebXml>false</failOnMissingWebXml>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<path>/</path>
 				</configuration>
 			</plugin>

@@ -22,6 +22,7 @@ import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.context.BasicSecurityContext;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Secured;
+import org.csuc.rest.api.utils.UnauthorizedToken;
 
 @Secured
 @Provider
@@ -66,7 +67,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 			requestContext.setSecurityContext(new BasicSecurityContext(user, true));
 		} catch (Exception e) {
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+			abortWithUnauthorized(requestContext);
 		}
 	}
 
@@ -94,7 +95,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	 */
 	private void abortWithUnauthorized(ContainerRequestContext requestContext) { 
 		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-				.header(HttpHeaders.WWW_AUTHENTICATE, AUTHENTICATION_SCHEME).build());
+				.entity(new UnauthorizedToken(
+						Response.Status.UNAUTHORIZED.getReasonPhrase(), 
+						"[AUTHENTICATION_FAILURE] Authentication failed due to invalid authentication credentials.", 
+						Response.Status.UNAUTHORIZED.getStatusCode()))
+				.build());
 	}
 
 	/**

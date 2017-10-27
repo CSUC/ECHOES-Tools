@@ -43,9 +43,6 @@ public class User {
 	@Context
 	private HttpServletRequest servletRequest;
 
-	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
-			.entity("You cannot access this resource").build();
-
 	@GET
 	@Secured({ Role.Admin })
 	@Produces(MediaType.APPLICATION_JSON)
@@ -78,21 +75,17 @@ public class User {
 		if(Objects.isNull(user.getId()))	return Response.status(Response.Status.BAD_GATEWAY).build();
 		if(Objects.isNull(user.getPassword()))	return Response.status(Response.Status.BAD_GATEWAY).build();
 		if(Objects.isNull(user.getDigest()))	return Response.status(Response.Status.BAD_GATEWAY).build();
-		if(Objects.isNull(user.getRole()))	return Response.status(Response.Status.BAD_GATEWAY).build();
-		
+		if(Objects.isNull(user.getRole()))	return Response.status(Response.Status.BAD_GATEWAY).build();		
 		if(Objects.isNull(user.getUuid()))	user.setUuid(UUID.randomUUID().toString());
 		
 		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
-		org.Morphia.Core.entities.User userDAO = dao.findById(user.getId());
+	
+		if(Objects.isNull(dao.findById(user.getId())))	dao.insert(user);
 		
-		
-		if(Objects.isNull(userDAO))	echoes.getDatastore().save(user); 
 		else return Response.status(Response.Status.BAD_GATEWAY)
 				.entity(new BasicResponse(String.format("%s exist user. Select another email.", user.getId())))
 				.build();
-		
-		
-		
+			
 		return Response.status(Response.Status.ACCEPTED).entity(user).build();
 	}
 	
