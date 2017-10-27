@@ -15,8 +15,9 @@ import org.Morphia.Core.entities.UserToken;
 import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Credentials;
+import org.csuc.rest.api.utils.HTTPStatusCode;
 import org.csuc.rest.api.utils.Secured;
-import org.csuc.rest.api.utils.UnauthorizedToken;
+import org.csuc.rest.api.utils.ResponseError;
 
 @Path("/authentication")
 public class Authentication {
@@ -54,10 +55,7 @@ public class Authentication {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED)
-				.entity(new UnauthorizedToken(
-						Response.Status.UNAUTHORIZED.getReasonPhrase(), 
-						"[AUTHENTICATION_FAILURE] Authentication failed due to invalid authentication credentials.", 
-						Response.Status.UNAUTHORIZED.getStatusCode()))
+				.entity(new ResponseError(HTTPStatusCode.UNAUTHORIZED))
 				.build();
 		}
 	}
