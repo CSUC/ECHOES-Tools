@@ -19,4 +19,6 @@ public interface UserDAO extends DAO<User, ObjectId>{
 	public User findById(String id);
 	
 	public User findByUUID(String uuid);
+	
+	public User insert(User user);
 }

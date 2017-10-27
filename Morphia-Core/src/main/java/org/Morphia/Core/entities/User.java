@@ -47,6 +47,10 @@ public class User {
 
 	@Property("role")
 	private Role role;
+
+//	@Embedded("token")
+//	private Token token;
+	
 	
 	public User() {
 	}
@@ -100,7 +104,7 @@ public class User {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-
+	
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);		

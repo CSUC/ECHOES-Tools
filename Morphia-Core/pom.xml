@@ -47,12 +47,7 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-iostreams</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20170516</version>
-		</dependency>
+		
 
 	</dependencies>
 	<build>
