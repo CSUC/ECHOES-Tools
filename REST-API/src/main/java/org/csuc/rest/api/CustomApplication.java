@@ -7,6 +7,7 @@ import javax.ws.rs.Priorities;
 
 import org.csuc.rest.api.filters.AuthenticationFilter;
 import org.csuc.rest.api.service.Authentication;
+import org.csuc.rest.api.service.User;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -21,15 +22,17 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 @SuppressWarnings("deprecation")
 public class CustomApplication extends ResourceConfig {
-	
+
 	public CustomApplication() {
 		packages("org.csuc.rest.api");
+
+		register(LoggingFilter.class);
+		register(Authentication.class);
+		register(User.class);
+		register(Priorities.AUTHENTICATION);
 		
-        register(LoggingFilter.class);        
-        register(Authentication.class);
-        register(Priorities.AUTHENTICATION);
-        
-        //Register Auth Filter here
-        register(AuthenticationFilter.class);
+		// Register Auth Filter here
+		register(AuthenticationFilter.class);
+
 	}
 }

@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Objects;
 
 import org.Morphia.Core.client.MorphiaEchoes;
-import org.Morphia.Core.dao.TokenDAO;
 import org.Morphia.Core.dao.UserDAO;
-import org.Morphia.Core.dao.impl.TokenDAOImpl;
 import org.Morphia.Core.dao.impl.UserDAOImpl;
 import org.Morphia.Core.entities.User;
-import org.Morphia.Core.entities.UserToken;
 import org.Morphia.Core.utils.Password;
 import org.Morphia.Core.utils.Role;
 
 /**
+ * 
+ * 
  * @author amartinez
  *
  */
@@ -30,17 +29,29 @@ public class Auth {
 	private String token;
 
 	private UserDAO userDAO = new UserDAOImpl(User.class, echoes.getDatastore());
-	private TokenDAO tokenDAO = new TokenDAOImpl(UserToken.class, echoes.getDatastore());
 	
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 */
 	public Auth(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 	
+	/**
+	 * 
+	 * @param token
+	 */
 	public Auth(String token) {
 		this.token = token;		
 	}
 
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public void authenticate() throws Exception {
 		User user = userDAO.findById(username);
 		
@@ -50,10 +61,12 @@ public class Auth {
         }else throw new Exception(); 
 	}
 
-	public UserToken issueToken() {
-		User user = userDAO.findById(username);		
-		
-		return tokenDAO.findById(user.getUuid());		
+	/**
+	 * 
+	 * @return
+	 */
+	public TokenResponse issueToken() {		
+		return new TokenResponse(userDAO.findById(username).getToken());	
 	}
 
 	/**
@@ -67,13 +80,8 @@ public class Auth {
 	 * @throws Exception
 	 */
 	public User validateToken(List<Role> allowedRoles) throws Exception {
-		UserToken t = tokenDAO.findByToken(token);
-		
-		if (t == null)	throw new Exception();
-		
-		User user = userDAO.findByUUID(t.getId());
-		
-		if (user == null || !allowedRoles.contains(user.getRole()))	throw new Exception();
+		User user = userDAO.findByToken(token);
+		if (Objects.isNull(user) || !allowedRoles.contains(user.getRole()))	throw new Exception();
 			
 		return user;
 	}

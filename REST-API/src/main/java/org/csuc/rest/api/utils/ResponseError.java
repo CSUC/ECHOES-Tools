@@ -18,20 +18,16 @@ public class ResponseError implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
 	private String error;
 	private String description;
 	private int responseCode;
 	
-	public ResponseError(HTTPStatusCode status) {
-//		{
-//			  "error": "invalid_request",
-//			  "error_description": "Request was missing the 'redirect_uri' parameter.",
-//			  "error_uri": "See the full API docs at https://authorization-server.com/docs/access_token"
-//			}
-		this.error = status.getError();
-		this.description = status.getError_description();
-		this.responseCode = status.getCode();
+	public ResponseError(@JsonProperty("error") String error, @JsonProperty("error_description") String description,
+			@JsonProperty("responseCode") int code) {
+
+		this.error = error;
+		this.description = description;
+		this.responseCode = code;
 	}
 
 	@JsonProperty("error")
@@ -60,7 +56,5 @@ public class ResponseError implements Serializable{
 	public void setResponseCode(int responseCode) {
 		this.responseCode = responseCode;
 	}
-
-	
 	
 }

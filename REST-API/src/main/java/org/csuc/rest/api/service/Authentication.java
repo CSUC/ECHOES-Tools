@@ -11,17 +11,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.Morphia.Core.entities.UserToken;
 import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Credentials;
-import org.csuc.rest.api.utils.HTTPStatusCode;
+import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
-import org.csuc.rest.api.utils.ResponseError;
+import org.csuc.rest.api.utils.TokenResponse;
 
 @Path("/authentication")
 public class Authentication {
-
+	
 	@Context
 	SecurityContext securityContext;
 
@@ -38,7 +37,7 @@ public class Authentication {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response authenticateUser(Credentials credentials) {
+	public Response authenticateUser(Credentials credentials) {		
 		try {
 			String username = credentials.getUsername();
 			String password = credentials.getPassword();
@@ -48,24 +47,13 @@ public class Authentication {
 			auth.authenticate();
 
 			// Issue a token for the user
-			UserToken token = auth.issueToken();
+			TokenResponse token = auth.issueToken();
 			
 			// Return the token on the response
 			return Response.ok(token).build();
-
 		} catch (Exception e) {
-			return Response.status(Response.Status.UNAUTHORIZED)
-				.entity(new ResponseError(HTTPStatusCode.UNAUTHORIZED))
-				.build();
+			return ResponseStatusCode.UNAUTHORIZED.build();
 		}
 	}
 
-	@GET
-	@Path("/logout")
-	@Secured({ Role.Admin, Role.User })
-	@Produces("text/xml")
-	public Response logout() {
-		servletRequest.getSession().invalidate();
-		return Response.status(Response.Status.ACCEPTED).entity("logout").build();
-	}
 }

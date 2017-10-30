@@ -14,15 +14,13 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import org.Morphia.Core.entities.User;
 import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.context.BasicSecurityContext;
 import org.csuc.rest.api.utils.Auth;
-import org.csuc.rest.api.utils.HTTPStatusCode;
-import org.csuc.rest.api.utils.ResponseError;
+import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
 
 @Secured
@@ -95,9 +93,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	 * @param requestContext
 	 */
 	private void abortWithUnauthorized(ContainerRequestContext requestContext) { 
-		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-				.entity(new ResponseError(HTTPStatusCode.UNAUTHORIZED))
-				.build());
+		requestContext.abortWith(ResponseStatusCode.UNAUTHORIZED.build());
 	}
 
 	/**

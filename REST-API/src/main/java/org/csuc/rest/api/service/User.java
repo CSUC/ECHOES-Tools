@@ -24,12 +24,9 @@ import org.Morphia.Core.client.MorphiaEchoes;
 import org.Morphia.Core.dao.UserDAO;
 import org.Morphia.Core.dao.impl.UserDAOImpl;
 import org.Morphia.Core.utils.Role;
-import org.csuc.rest.api.utils.BasicResponse;
-import org.csuc.rest.api.utils.HTTPStatusCode;
-import org.csuc.rest.api.utils.ResponseError;
+import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
 
-import com.mongodb.WriteResult;
 
 /**
  * @author amartinez
@@ -39,12 +36,6 @@ import com.mongodb.WriteResult;
 public class User {
 
 	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
-
-	
-	
-	private Response BAD_REQUEST = Response.status(Response.Status.BAD_REQUEST)
-			.entity(new ResponseError(HTTPStatusCode.BAD_REQUEST))
-			.build();
 	
 	@Context
 	SecurityContext securityContext;
@@ -52,11 +43,12 @@ public class User {
 	@Context
 	private HttpServletRequest servletRequest;
 
+	private UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
+	
 	@GET
 	@Secured({ Role.Admin })
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response allUsers(@PathParam("id") String id) {
-		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
 		return Response.status(Response.Status.ACCEPTED).entity(dao.findAll()).build();
 	}
 
@@ -65,15 +57,15 @@ public class User {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response getUser(@PathParam("id") String id) {
-		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
-		org.Morphia.Core.entities.User user = dao.findByUUID(id);
+		try {
+			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
+			org.Morphia.Core.entities.User user = dao.findByUUID(id);
 
-		if (Objects.isNull(user))
-			return Response.status(Response.Status.BAD_GATEWAY)
-					.entity(new BasicResponse(String.format("%s User not exist.", id)))
-					.build();			
-		else return Response.status(Response.Status.ACCEPTED).entity(user).build();
-			
+			if (Objects.isNull(user))	return ResponseStatusCode.NOT_FOUND.build();			
+			else return Response.status(Response.Status.ACCEPTED).entity(user).build();
+		}catch(Exception e) {
+			return ResponseStatusCode.INTERNAL_SERVER_ERROR.build();
+		}		
 	}
 	
 	@POST
@@ -81,21 +73,22 @@ public class User {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addUser(org.Morphia.Core.entities.User user) {
-		if(Objects.isNull(user.getId()))	return BAD_REQUEST;
-		if(Objects.isNull(user.getPassword()))	return BAD_REQUEST;
-		if(Objects.isNull(user.getDigest()))	return BAD_REQUEST;
-		if(Objects.isNull(user.getRole()))	return BAD_REQUEST;		
-		if(Objects.isNull(user.getUuid()))	user.setUuid(UUID.randomUUID().toString());
-		
-		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
-	
-		if(Objects.isNull(dao.findById(user.getId())))	dao.insert(user);
-		
-		else return Response.status(Response.Status.BAD_GATEWAY)
-				.entity(new BasicResponse(String.format("%s exist user. Select another email.", user.getId())))
-				.build();
+		try {
+			if(Objects.isNull(user.getId()))	return ResponseStatusCode.BAD_REQUEST.build();
+			if(Objects.isNull(user.getPassword()))	return ResponseStatusCode.BAD_REQUEST.build();
+			if(Objects.isNull(user.getDigest()))	return ResponseStatusCode.BAD_REQUEST.build();
+			if(Objects.isNull(user.getRole()))	return ResponseStatusCode.BAD_REQUEST.build();		
+			if(Objects.isNull(user.getUuid()))	user.setUuid(UUID.randomUUID().toString());
 			
-		return Response.status(Response.Status.ACCEPTED).entity(user).build();
+			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
+		
+			if(Objects.isNull(dao.findById(user.getId())))	dao.insertNewUser(user);
+			else return ResponseStatusCode.CONFLICT.build();
+					
+			return Response.status(Response.Status.CREATED).entity(user).build();
+		}catch(Exception e) {
+			return ResponseStatusCode.INTERNAL_SERVER_ERROR.build();
+		}		
 	}
 	
 	
@@ -104,16 +97,19 @@ public class User {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editUser(org.Morphia.Core.entities.User user) {
-		if(Objects.isNull(user.getId()))	return BAD_REQUEST;
-		if(Objects.isNull(user.getUuid()))	return BAD_REQUEST;
-		
-		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
-		
-		if(Objects.isNull(dao.findById(user.getId())))	return BAD_REQUEST;
-		
-		dao.getDatastore().save(user);
-		
-		return Response.status(Response.Status.ACCEPTED).entity(user).build();
+		try {
+			if(Objects.isNull(user.getId()))	return ResponseStatusCode.BAD_REQUEST.build();
+			if(Objects.isNull(user.getUuid()))	return ResponseStatusCode.BAD_REQUEST.build();
+			
+			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
+			
+			if(Objects.isNull(dao.findById(user.getId())))	return ResponseStatusCode.BAD_REQUEST.build();
+			dao.getDatastore().save(user);
+			
+			return Response.status(Response.Status.ACCEPTED).entity(user).build();
+		}catch(Exception e) {
+			return ResponseStatusCode.INTERNAL_SERVER_ERROR.build();
+		}		
 	}
 	
 	
@@ -122,20 +118,18 @@ public class User {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(org.Morphia.Core.entities.User user) {
-		WriteResult result;
-		if(Objects.isNull(user.getId()))	return BAD_REQUEST;
-		
-		UserDAO dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
-		org.Morphia.Core.entities.User userDAO = dao.findById(user.getId());
-		
-		if(Objects.isNull(userDAO))
-			return Response.status(Response.Status.ACCEPTED)
-					.entity(new BasicResponse("User not exist"))
-					.build();
-		else result= echoes.getDatastore().delete(user); 
-		
-		return Response.status(Response.Status.ACCEPTED).entity(result).build();
+		try {
+			if(Objects.isNull(user.getId()))	return ResponseStatusCode.BAD_REQUEST.build();
+			
+			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
+			org.Morphia.Core.entities.User userDAO = dao.findById(user.getId());
+			
+			if(Objects.isNull(userDAO))	return ResponseStatusCode.NOT_FOUND.build();
+			
+			return Response.status(Response.Status.ACCEPTED).entity(dao.delete(user)).build();
+		}catch(Exception e) {
+			return ResponseStatusCode.INTERNAL_SERVER_ERROR.build();
+		}		
 	}
 	
-
 }
