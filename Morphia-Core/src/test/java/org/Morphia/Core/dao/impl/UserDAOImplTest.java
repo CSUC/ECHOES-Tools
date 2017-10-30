@@ -3,14 +3,12 @@
  */
 package org.Morphia.Core.dao.impl;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import org.Morphia.Core.client.MorphiaEchoes;
 import org.Morphia.Core.dao.UserDAO;
 import org.Morphia.Core.entities.User;
-import org.Morphia.Core.entities.UserToken;
 import org.Morphia.Core.utils.Password;
 import org.Morphia.Core.utils.Role;
 import org.apache.logging.log4j.LogManager;
@@ -45,19 +43,13 @@ public class UserDAOImplTest extends TestCase {
 		Password psswd = new Password("md5", "pir@csuc.cat");
 		user.setPassword(psswd.getSecurePassword());
 		user.setDigest(psswd.getAlgorithm());
-		user.setRole(Role.Admin);
-		
-		UserToken token = 
-				new UserToken(
-						user.getUuid(),
-						"Bearer", 
-						Password.getSecurePassword(String.format("%s:%s", user.getId(), user.getPassword()), "SHA-256"));
+		user.setRole(Role.Admin);		
+		user.setToken(Password.getSecurePassword(String.format("%s:%s", user.getId(), user.getPassword()), "SHA-256"));
 		
 		Key<?> userKey = echoes.getDatastore().exists(user);
-		Key<?> tokenKey = echoes.getDatastore().exists(token);
 		
-		if(Objects.isNull(userKey) && Objects.isNull(tokenKey))
-			echoes.getDatastore().save(Arrays.asList(user, token));
+		if(Objects.isNull(userKey))
+			echoes.getDatastore().save(user);
 		else logger.info(String.format("exist key %s", userKey));
 	}
 

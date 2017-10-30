@@ -9,6 +9,7 @@ import org.Morphia.Core.entities.User;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.dao.DAO;
 
+
 /**
  * @author amartinez
  *
@@ -20,5 +21,11 @@ public interface UserDAO extends DAO<User, ObjectId>{
 	
 	public User findByUUID(String uuid);
 	
-	public User insert(User user);
+	public User findByToken(String token);
+	
+	public User insertNewUser(User user);
+	public User insertNewUser(User user, String tokenType, String digest);
+	
+	public User update(User user);
+	
 }
