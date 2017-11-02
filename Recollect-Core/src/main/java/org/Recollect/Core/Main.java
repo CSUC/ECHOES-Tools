@@ -2,11 +2,14 @@ package org.Recollect.Core;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import org.Recollect.Core.client.HttpOAIClient;
@@ -55,6 +58,9 @@ public class Main {
 	private static String edmType = null;
 	private static String provider = null;
 	
+	private static Path pathWithSetSpec;
+	private static String xslt = null;
+	
 	private static UTCDateProvider dateProvider = new UTCDateProvider();;
 	
 	/**
@@ -75,7 +81,7 @@ public class Main {
     			if(args[i].equals("--granularity"))	granularity = args[i+1];
     			if(args[i].equals("--resumptionToken"))	resumptionToken = args[i+1];
     			
-    			if(args[i].equals("--xslt"))	GlobalAttributes.XSLT = args[i+1];
+    			if(args[i].equals("--xslt"))	xslt = args[i+1];
     			if(args[i].equals("--out"))	out = args[i+1];
     			
     			if(args[i].equals("--edmType"))	edmType = args[i+1];
@@ -114,8 +120,9 @@ public class Main {
 			throw new Exception(String.format("select valid edmType: %s", 
     				"TEXT, VIDEO, IMAGE, SOUND, 3D"));
 		
-		GlobalAttributes.edmType = new String[] {"edmType", edmType};
-		GlobalAttributes.dataProvider = new String[] {"dataProvider", provider};
+		Map<String,String> xsltProperties = new HashMap<String,String>();
+		xsltProperties.put("edmType", edmType);
+		xsltProperties.put("dataProvider", provider);
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);
@@ -137,29 +144,30 @@ public class Main {
         }
         
         if(Objects.nonNull(out)) {
-        	if(Objects.nonNull(set)) {
-        		GlobalAttributes.echoesPathWithSetSpec = 
-                		Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
-        	}else {
-        		GlobalAttributes.echoesPathWithSetSpec = 
-                		Files.createDirectories(Paths.get(out));
-        	}
+        	if(Objects.nonNull(set))
+        		pathWithSetSpec = Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
+        	else	pathWithSetSpec = Files.createDirectories(Paths.get(out));        	
         }   
         
         Iterator<RecordType> records = recollect.listRecords(listRecordsParameters);
     	
        	try {
        		DownloadListRecordData downloadData;
-       		if(Objects.nonNull(GlobalAttributes.echoesPathWithSetSpec))	downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
-       		else	downloadData = new DownloadListRecordData();
-       		
+       		if(Objects.nonNull(pathWithSetSpec)) {
+       			if(Objects.nonNull(xslt)) downloadData = new DownloadListRecordData(pathWithSetSpec, xslt, xsltProperties);
+       			else	downloadData = new DownloadListRecordData(pathWithSetSpec);
+       		}
+       		else {
+       			if(Objects.nonNull(xslt)) downloadData = new DownloadListRecordData(xslt, xsltProperties);
+       			else downloadData = new DownloadListRecordData();
+       		}
        		downloadData.executeWithNode(records);
         		
        		logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s",
        				oaiClient.getURL(), listRecordsParameters.getSetSpec(), downloadData.getStatus()));
 		} catch (Exception e) {
 			logger.error(e);
-		}
+		}	
     }
     
     /**
@@ -221,8 +229,9 @@ public class Main {
 			throw new Exception(String.format("select valid edmType: %s", 
     				"TEXT, VIDEO, IMAGE, SOUND, 3D"));
 		
-		GlobalAttributes.edmType = new String[] {"edmType", edmType};
-		GlobalAttributes.dataProvider = new String[] {"dataProvider", provider};
+		Map<String,String> xsltProperties = new HashMap<String,String>();
+		xsltProperties.put("edmType", edmType);
+		xsltProperties.put("dataProvider", provider);
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);
@@ -232,24 +241,27 @@ public class Main {
 		getRecordParameters.withMetadataFormatPrefix(metadataPrefix);
 		
 		
-		if(Objects.nonNull(out))
-			GlobalAttributes.echoesPathWithSetSpec = 
-				Files.createDirectories(Paths.get(out));
+		if(Objects.nonNull(out))	pathWithSetSpec = Files.createDirectories(Paths.get(out));
 		
 		RecordType record = recollect.getRecord(getRecordParameters);
 		
 		try {
-			DownloadListRecordData downloadData;
-			if(Objects.nonNull(GlobalAttributes.echoesPathWithSetSpec))	downloadData = new DownloadListRecordData(GlobalAttributes.echoesPathWithSetSpec);
-			else downloadData = new DownloadListRecordData();
-			
+       		DownloadListRecordData downloadData;
+       		if(Objects.nonNull(pathWithSetSpec)) {
+       			if(Objects.nonNull(xslt)) 	downloadData = new DownloadListRecordData(pathWithSetSpec, xslt, xsltProperties);
+       			else	downloadData = new DownloadListRecordData(pathWithSetSpec);
+       		}
+       		else {
+       			if(Objects.nonNull(xslt))	downloadData = new DownloadListRecordData(xslt, xsltProperties);
+       			else downloadData = new DownloadListRecordData();       			
+       		}
 			downloadData.executeWithNode(record);
 	    		
 	   		logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s",
 	   				oaiClient.getURL(), getRecordParameters.getIdentifier(), downloadData.getStatus()));
 		} catch (Exception e) {
 			logger.error(e);
-		}	
+		}		
 	}
 	
 	
