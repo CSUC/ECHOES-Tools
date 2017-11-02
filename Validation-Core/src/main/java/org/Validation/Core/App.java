@@ -1,6 +1,7 @@
 package org.Validation.Core;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.Validation.Core.deserialize.Validate;
+import org.Validation.Core.schematron.SchematronUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +29,7 @@ public class App {
 	
 	private static String file;
 	private static String charset = StandardCharsets.UTF_8.toString();
+	private static String sch;
 	
 	private static AtomicInteger providedCHOSize = new AtomicInteger(0);
 	private static AtomicInteger aggregationSize = new AtomicInteger(0);
@@ -46,6 +49,7 @@ public class App {
     		for(int i = 0; i < args.length; i++) {
     			if(args[i].equals("--file"))	file = args[i+1];
     			if(args[i].equals("--charset"))	charset = args[i+1];
+    			if(args[i].equals("--sch"))	sch = args[i+1];
     		}
     	if(Objects.isNull(file)) throw new Exception("file must not be null");
 		
@@ -81,10 +85,17 @@ public class App {
 						logger.info(validate.getError());				
 					}	
 				} catch (FileNotFoundException e) {
-					logger.error(e);
-					
-				} 
-						
+					logger.error(e);					
+				}
+				if(Objects.nonNull(sch)) {
+					SchematronUtil schUtil = new SchematronUtil(new File(sch), f.toFile());					
+					try {
+						if(!schUtil.isValid())
+							logger.info(schUtil.getFailedAssert());
+					} catch (Exception e) {
+						logger.error(e);
+					}
+				}
 			});
 		} catch (IOException e) {
 			logger.error(e);

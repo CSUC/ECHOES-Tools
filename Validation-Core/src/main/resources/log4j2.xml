@@ -2,7 +2,7 @@
 <Configuration>	
    <Appenders>
    <!-- All -->
-      <RollingFile name="RollingFile" fileName="${echoes.log.path}/Recollect-Core-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/Recollect-Core-%d{yyyy-MM-dd}-%i.log">
+      <RollingFile name="RollingFile" fileName="${echoes.log.path}/Validation-Core-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/Validation-Core-%d{yyyy-MM-dd}-%i.log">
          <PatternLayout>
             <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
          </PatternLayout>
