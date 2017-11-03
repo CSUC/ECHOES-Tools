@@ -62,7 +62,7 @@ public class App {
 					Validate validate = 
 							new Validate(new FileInputStream(f.toFile()), charset , RDF.class);
 					
-					logger.info(String.format("%s isValid %s", f.getFileName(), validate.isValid()));
+					logger.info(String.format("%s isValid %s XML", f.getFileName(), validate.isValid()));
 					
 					if(validate.isValid()) {			
 						RDF rdf = (RDF) validate.getElement();
@@ -90,8 +90,10 @@ public class App {
 				if(Objects.nonNull(sch)) {
 					SchematronUtil schUtil = new SchematronUtil(new File(sch), f.toFile());					
 					try {
-						if(!schUtil.isValid())
-							logger.info(schUtil.getFailedAssert());
+						if(!schUtil.isValid()) {
+							logger.info(String.format("%s isValid %s SCH", f.getFileName(), schUtil.isValid()));
+							logger.info(schUtil.getSVRLFailedAssert());
+						}						
 					} catch (Exception e) {
 						logger.error(e);
 					}
