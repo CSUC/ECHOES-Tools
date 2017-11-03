@@ -51,7 +51,6 @@ public class User {
 	@Property("access_token")
 	private String token;
 	
-	
 	public User() {
 	}
 	

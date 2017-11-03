@@ -117,4 +117,10 @@ public class HarvestedCollectionConfigDAOImpl extends BasicDAO<HarvestedCollecti
 				.equal(new DBRef(User.class.getAnnotation(Entity.class).value(), user_id)).asList();
 	}
 
+	@Override
+	public HarvestedCollectionConfig insertNewHarvested(HarvestedCollectionConfig h) {
+		save(h);
+		return h;
+	}
+
 }

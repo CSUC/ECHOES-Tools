@@ -34,7 +34,7 @@ public class HarvestedCollectionConfig {
 	@Property("oai_source")
 	private String oaisource;
 	
-	@Property("oai_set_id")
+	@Property("oai_set")
 	private String oaisetid;
 	
 	@Property("harvest_message")
@@ -141,7 +141,7 @@ public class HarvestedCollectionConfig {
 	public User getUser_id() {
 		return user_id;
 	}
-
+	
 	public void setUser_id(User user_id) {
 		this.user_id = user_id;
 	}

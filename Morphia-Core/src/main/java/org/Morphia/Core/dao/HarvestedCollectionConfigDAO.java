@@ -34,4 +34,6 @@ public interface HarvestedCollectionConfigDAO extends DAO<HarvestedCollectionCon
 	public List<HarvestedCollectionConfig> findByUser(User user);
 	public List<HarvestedCollectionConfig> findByUser(String user_id);
 	
+	
+	public HarvestedCollectionConfig insertNewHarvested(HarvestedCollectionConfig h);
 }

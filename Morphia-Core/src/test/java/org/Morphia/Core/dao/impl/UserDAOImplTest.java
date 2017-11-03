@@ -89,8 +89,8 @@ public class UserDAOImplTest extends TestCase {
 	@After
 	public void tearDown() throws Exception {
 		super.tearDown();
-//		if (Objects.nonNull(echoes.getDatastore()))
-//			echoes.getDatastore().getMongo().dropDatabase("echoes");
+		if (Objects.nonNull(echoes.getDatastore()))
+			echoes.getDatastore().getMongo().dropDatabase("echoes");
 	}
 
 }
