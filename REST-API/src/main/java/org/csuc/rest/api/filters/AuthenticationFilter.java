@@ -19,6 +19,8 @@ import javax.ws.rs.ext.Provider;
 import org.Morphia.Core.entities.User;
 import org.Morphia.Core.utils.Role;
 import org.csuc.rest.api.context.BasicSecurityContext;
+import org.csuc.rest.api.typesafe.ApplicationConfig;
+import org.csuc.rest.api.typesafe.TypesafeToken;
 import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
@@ -31,7 +33,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	@Context
 	private ResourceInfo resourceInfo;
 
-	private static final String AUTHENTICATION_SCHEME = "Bearer";
+	private TypesafeToken tokenConf = new ApplicationConfig().getTokenConfig();
+	 
+	private String AUTHENTICATION_SCHEME = tokenConf.getToken_type();
 	
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -47,7 +51,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 		// Get the Authorization header from the request
 		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-
+		
 		// Validate the Authorization header
 		if (!isTokenBasedAuthentication(authorizationHeader)) {
 			abortWithUnauthorized(requestContext);
@@ -56,6 +60,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 		// Extract the token from the Authorization header
 		String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+		
 		try {
 			Auth auth = new Auth(token);
 			User user;

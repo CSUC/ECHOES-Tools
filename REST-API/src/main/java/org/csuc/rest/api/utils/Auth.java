@@ -12,6 +12,15 @@ import org.Morphia.Core.dao.impl.UserDAOImpl;
 import org.Morphia.Core.entities.User;
 import org.Morphia.Core.utils.Password;
 import org.Morphia.Core.utils.Role;
+import org.csuc.rest.api.typesafe.ApplicationConfig;
+import org.csuc.rest.api.typesafe.TypesafeMongoDB;
+import org.csuc.rest.api.utils.jwt.JWTCreate;
+import org.csuc.rest.api.utils.jwt.JWTDecode;
+import org.csuc.rest.api.utils.jwt.JWTVerification;
+import org.csuc.rest.api.utils.jwt.Token;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
  * 
@@ -21,15 +30,19 @@ import org.Morphia.Core.utils.Role;
  */
 public class Auth {
 
-	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
-	
+	private TypesafeMongoDB mongodbConf = new ApplicationConfig().getMongodbConfig();
+
+	private MorphiaEchoes echoes = new MorphiaEchoes(mongodbConf.getHost(), mongodbConf.getPort(),
+			mongodbConf.getDatabase());
+
 	private String username;
 	private String password;
-	
+
 	private String token;
 
-	private UserDAO userDAO = new UserDAOImpl(User.class, echoes.getDatastore());
-	
+	private UserDAO dao = new UserDAOImpl(User.class, echoes.getDatastore());
+	private User user;
+
 	/**
 	 * 
 	 * @param username
@@ -39,13 +52,13 @@ public class Auth {
 		this.username = username;
 		this.password = password;
 	}
-	
+
 	/**
 	 * 
 	 * @param token
 	 */
 	public Auth(String token) {
-		this.token = token;		
+		this.token = token;
 	}
 
 	/**
@@ -53,20 +66,26 @@ public class Auth {
 	 * @throws Exception
 	 */
 	public void authenticate() throws Exception {
-		User user = userDAO.findById(username);
-		
-		if(Objects.nonNull(user)) {
+		user = dao.findById(username);
+		if (Objects.nonNull(user)) {
 			Password psswd = new Password(user.getDigest(), password);
-        	if(!(user.getId().equals(username) && user.getPassword().equals(psswd.getSecurePassword())))	throw new Exception();
-        }else throw new Exception(); 
+			if (!(user.getId().equals(username) && user.getPassword().equals(psswd.getSecurePassword())))
+				throw new Exception();
+		} else
+			throw new Exception();
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public TokenResponse issueToken() {		
-		return new TokenResponse(userDAO.findById(username).getToken());	
+	public Token issueToken() throws Exception {
+		String token = new JWTCreate(user.getId(), Password.getSecurePassword(password, user.getDigest()),
+				user.getRole().name()).sign();
+
+		DecodedJWT jwtd = JWT.decode(token);
+
+		return new Token(jwtd.getToken(), jwtd.getExpiresAt().getTime(), jwtd.getIssuedAt().getTime(), jwtd.getId());
 	}
 
 	/**
@@ -79,11 +98,19 @@ public class Auth {
 	 * @param token
 	 * @throws Exception
 	 */
-	public User validateToken(List<Role> allowedRoles) throws Exception {
-		User user = userDAO.findByToken(token);
-		if (Objects.isNull(user) || !allowedRoles.contains(user.getRole()))	throw new Exception();
-			
-		return user;
+	public User validateToken(List<Role> allowedRoles) throws Exception {		
+		DecodedJWT jwtd = new JWTDecode(token).decode();
+		
+		if(Objects.isNull(jwtd))	throw new Exception();
+		else {
+			User user = dao.findById(jwtd.getIssuer());
+			if(Objects.isNull(user))	throw new Exception();
+			else {
+				DecodedJWT jwtvd = new JWTVerification(user.getPassword(), jwtd.getToken()).verify();
+				if(Objects.isNull(jwtvd) || !allowedRoles.contains(user.getRole()))	throw new Exception();				
+				return user;
+			}
+		}		
 	}
-	
+
 }

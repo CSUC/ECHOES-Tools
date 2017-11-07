@@ -47,9 +47,6 @@ public class User {
 
 	@Property("role")
 	private Role role;
-
-	@Property("access_token")
-	private String token;
 	
 	public User() {
 	}
@@ -104,14 +101,6 @@ public class User {
 		this.uuid = uuid;
 	}
 	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);		

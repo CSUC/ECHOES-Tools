@@ -16,7 +16,7 @@ import org.csuc.rest.api.utils.Auth;
 import org.csuc.rest.api.utils.Credentials;
 import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
-import org.csuc.rest.api.utils.TokenResponse;
+import org.csuc.rest.api.utils.jwt.Token;
 
 @Path("/authentication")
 public class Authentication {
@@ -29,9 +29,9 @@ public class Authentication {
 
 	@GET
 	@Secured({ Role.Admin, Role.User })
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String isAuthenticate() {
-		return securityContext.getUserPrincipal().getName();
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isAuthenticate() {
+		return Response.ok(securityContext.getUserPrincipal().getName()).build();
 	}
 
 	@POST
@@ -47,7 +47,7 @@ public class Authentication {
 			auth.authenticate();
 
 			// Issue a token for the user
-			TokenResponse token = auth.issueToken();
+			Token token = auth.issueToken();
 			
 			// Return the token on the response
 			return Response.ok(token).build();
@@ -55,5 +55,4 @@ public class Authentication {
 			return ResponseStatusCode.UNAUTHORIZED.build();
 		}
 	}
-
 }

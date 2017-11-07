@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.Morphia.Core.dao.UserDAO;
 import org.Morphia.Core.entities.User;
-import org.Morphia.Core.utils.Password;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -39,14 +38,6 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
 
 	@Override
 	public User insertNewUser(User user) {
-		user.setToken(Password.getSecurePassword(String.format("%s:%s", user.getId(), user.getPassword()), "SHA-256"));
-		getDatastore().save(user);
-		return user;
-	}
-
-	@Override
-	public User insertNewUser(User user, String tokenType, String digest) {		
-		user.setToken(Password.getSecurePassword(String.format("%s:%s", user.getId(), user.getPassword()), "SHA-256"));
 		save(user);
 		return user;
 	}

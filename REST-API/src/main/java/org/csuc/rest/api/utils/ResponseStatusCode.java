@@ -76,8 +76,17 @@ public enum ResponseStatusCode {
 			.entity(
 				new ResponseError(
 					Response.Status.NO_CONTENT.getReasonPhrase(),
-					"[NO_CONTENT] The server successfully executed the method but returns no response body.", 
-					Response.Status.NO_CONTENT.getStatusCode())));
+					"[INTERNAL_SERVER_ERROR] An internal server error has occurred.", 
+					Response.Status.NO_CONTENT.getStatusCode()))),
+	NOT_MODIFIED(
+		Response
+			.status(
+				Response.Status.NOT_MODIFIED)
+			.entity(
+				new ResponseError(
+					Response.Status.NOT_MODIFIED.getReasonPhrase(),
+					"[INTERNAL_SERVER_ERROR] An internal server error has occurred.", 
+					Response.Status.NOT_MODIFIED.getStatusCode())));
 //	RESET_CONTENT(),
 //	PARTIAL_CONTENT(),
 //	MOVED_PERMANENTLY(),

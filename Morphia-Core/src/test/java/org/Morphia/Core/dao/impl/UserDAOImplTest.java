@@ -44,7 +44,6 @@ public class UserDAOImplTest extends TestCase {
 		user.setPassword(psswd.getSecurePassword());
 		user.setDigest(psswd.getAlgorithm());
 		user.setRole(Role.Admin);		
-		user.setToken(Password.getSecurePassword(String.format("%s:%s", user.getId(), user.getPassword()), "SHA-256"));
 		
 		Key<?> userKey = echoes.getDatastore().exists(user);
 		

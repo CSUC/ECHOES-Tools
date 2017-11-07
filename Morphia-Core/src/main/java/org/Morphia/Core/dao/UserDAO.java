@@ -24,7 +24,6 @@ public interface UserDAO extends DAO<User, ObjectId>{
 	public User findByToken(String token);
 	
 	public User insertNewUser(User user);
-	public User insertNewUser(User user, String tokenType, String digest);
 	
 	public User update(User user);
 	

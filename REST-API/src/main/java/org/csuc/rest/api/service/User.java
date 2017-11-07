@@ -24,6 +24,8 @@ import org.Morphia.Core.client.MorphiaEchoes;
 import org.Morphia.Core.dao.UserDAO;
 import org.Morphia.Core.dao.impl.UserDAOImpl;
 import org.Morphia.Core.utils.Role;
+import org.csuc.rest.api.typesafe.ApplicationConfig;
+import org.csuc.rest.api.typesafe.TypesafeMongoDB;
 import org.csuc.rest.api.utils.ResponseStatusCode;
 import org.csuc.rest.api.utils.Secured;
 
@@ -35,7 +37,10 @@ import org.csuc.rest.api.utils.Secured;
 @Path("/user")
 public class User {
 
-	private MorphiaEchoes echoes = new MorphiaEchoes("echoes");
+private TypesafeMongoDB mongodbConf = new ApplicationConfig().getMongodbConfig();
+	
+	private MorphiaEchoes echoes = 
+			new MorphiaEchoes(mongodbConf.getHost(), mongodbConf.getPort(), mongodbConf.getDatabase());
 	
 	@Context
 	SecurityContext securityContext;
@@ -48,8 +53,13 @@ public class User {
 	@GET
 	@Secured({ Role.Admin })
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response allUsers(@PathParam("id") String id) {
-		return Response.status(Response.Status.ACCEPTED).entity(dao.findAll()).build();
+	public Response allUsers() {
+		try {
+			return Response.status(Response.Status.ACCEPTED).entity(dao.findAll()).build();
+		}catch(Exception e) {
+			return ResponseStatusCode.INTERNAL_SERVER_ERROR.build();
+		}
+		
 	}
 
 	@GET
@@ -58,7 +68,6 @@ public class User {
 	@Path("{id}")
 	public Response getUser(@PathParam("id") String id) {
 		try {
-			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
 			org.Morphia.Core.entities.User user = dao.findByUUID(id);
 
 			if (Objects.isNull(user))	return ResponseStatusCode.NOT_FOUND.build();			
@@ -79,8 +88,6 @@ public class User {
 			if(Objects.isNull(user.getDigest()))	return ResponseStatusCode.BAD_REQUEST.build();
 			if(Objects.isNull(user.getRole()))	return ResponseStatusCode.BAD_REQUEST.build();		
 			if(Objects.isNull(user.getUuid()))	user.setUuid(UUID.randomUUID().toString());
-			
-			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
 		
 			if(Objects.isNull(dao.findById(user.getId())))	dao.insertNewUser(user);
 			else return ResponseStatusCode.CONFLICT.build();
@@ -101,8 +108,6 @@ public class User {
 			if(Objects.isNull(user.getId()))	return ResponseStatusCode.BAD_REQUEST.build();
 			if(Objects.isNull(user.getUuid()))	return ResponseStatusCode.BAD_REQUEST.build();
 			
-			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());
-			
 			if(Objects.isNull(dao.findById(user.getId())))	return ResponseStatusCode.BAD_REQUEST.build();
 			dao.getDatastore().save(user);
 			
@@ -121,7 +126,6 @@ public class User {
 		try {
 			if(Objects.isNull(user.getId()))	return ResponseStatusCode.BAD_REQUEST.build();
 			
-			dao = new UserDAOImpl(org.Morphia.Core.entities.User.class, echoes.getDatastore());		
 			org.Morphia.Core.entities.User userDAO = dao.findById(user.getId());
 			
 			if(Objects.isNull(userDAO))	return ResponseStatusCode.NOT_FOUND.build();

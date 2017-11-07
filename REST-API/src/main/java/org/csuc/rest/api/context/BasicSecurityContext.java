@@ -10,6 +10,8 @@ import javax.ws.rs.core.SecurityContext;
 import org.Morphia.Core.entities.User;
 import org.Morphia.Core.utils.Role;
 import org.apache.commons.lang3.EnumUtils;
+import org.csuc.rest.api.typesafe.ApplicationConfig;
+import org.csuc.rest.api.typesafe.TypesafeToken;
 
 /**
  * @author amartinez
@@ -17,7 +19,9 @@ import org.apache.commons.lang3.EnumUtils;
  */
 public class BasicSecurityContext implements SecurityContext {
 
-	private static final String AUTHENTICATION_SCHEME = "Bearer";
+	private TypesafeToken tokenConf = new ApplicationConfig().getTokenConfig();
+	
+	private String AUTHENTICATION_SCHEME = tokenConf.getToken_type();
 
 	private final User user;
 	private final boolean secure;
