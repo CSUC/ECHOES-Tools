@@ -2,11 +2,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:mmm="http://api.memorix-maior.nl/REST/3.0/" xmlns:ns1="http://www.openarchives.org/OAI/2.0/"
 	xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:a2a="http://Mindbus.nl/A2A" version="2.0">
+	xmlns:a2a="http://Mindbus.nl/A2A" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	version="2.0">
 	<xsl:output omit-xml-declaration="no" method="xml" indent="yes" />
 	<xsl:param name="identifier" />
 	<xsl:param name="edmType" />
 	<xsl:param name="dataProvider" />
+	<xsl:param name="set" />
+
 	<xsl:template match="@*|node()">
 		<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 			xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/"
@@ -15,7 +18,6 @@
 			xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#">
 
 			<xsl:variable name="providedCHOAbout" select="replace($identifier,'\s','_')" />
-
 
 			<xsl:variable name="dc:contributor" select="/oai_dc:dc/dc:contributor" />
 			<xsl:variable name="dc:coverage"
@@ -53,6 +55,9 @@
 			<xsl:variable name="a2a:SourceDigitalOriginal"
 				select="/a2a:A2A/a2a:Source/a2a:SourceDigitalOriginal/text()" />
 
+			<xsl:variable name="edm:TimeSpan"
+				select="/a2a:A2A/a2a:Source/a2a:SourceIndexDate" />
+
 
 			<xsl:if test="$providedCHOAbout != ''">
 				<edm:ProvidedCHO>
@@ -75,14 +80,6 @@
 							<dc:contributor>
 								<xsl:value-of select="text()" />
 							</dc:contributor>
-						</xsl:for-each>
-					</xsl:if>
-
-					<xsl:if test="$dc:coverage != '' ">
-						<xsl:for-each select="$dc:coverage">
-							<dc:coverage>
-								<xsl:value-of select="text()" />
-							</dc:coverage>
 						</xsl:for-each>
 					</xsl:if>
 
@@ -190,7 +187,7 @@
 					<xsl:if test="$edm:isRelatedToAgents != ''">
 						<xsl:for-each select="$edm:isRelatedToAgents">
 							<xsl:variable name="pid" select="./@pid" />
-							<edm:isRelatedTo>
+							<dc:contributor>
 								<xsl:choose>
 									<xsl:when test="starts-with($pid, 'http')">
 										<xsl:attribute name="rdf:resource">
@@ -199,11 +196,12 @@
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
+										<xsl:value-of
+											select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
 										</xsl:attribute>
 									</xsl:otherwise>
 								</xsl:choose>
-							</edm:isRelatedTo>
+							</dc:contributor>
 						</xsl:for-each>
 					</xsl:if>
 
@@ -213,7 +211,8 @@
 							<xsl:choose>
 								<xsl:when test="starts-with($edm:isRelatedToConcept, 'http')">
 									<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToConcept, '\s','_'))" />									
+										<xsl:value-of
+										select="iri-to-uri(replace($edm:isRelatedToConcept, '\s','_'))" />									
 										</xsl:attribute>
 								</xsl:when>
 								<xsl:otherwise>
@@ -228,54 +227,39 @@
 
 					<xsl:if test="$edm:isRelatedToPlace != ''">
 						<!-- Relation Place -->
-						<edm:isRelatedTo>
+						<dc:coverage>
 							<xsl:choose>
 								<xsl:when test="starts-with($edm:isRelatedToPlace, 'http')">
 									<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToPlace, '\s','_'))" />									
+										<xsl:value-of
+										select="iri-to-uri(replace($edm:isRelatedToPlace, '\s','_'))" />									
 										</xsl:attribute>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:attribute name="rdf:resource">
 										<xsl:value-of
-										select="iri-to-uri(concat('Place:', replace($edm:isRelatedToPlace, '\s','_')))" />									
+										select="iri-to-uri(concat('Place:', replace($edm:isRelatedToPlace, '\s','_')))" />								
 										</xsl:attribute>
 								</xsl:otherwise>
 							</xsl:choose>
-						</edm:isRelatedTo>
+						</dc:coverage>
 					</xsl:if>
 
-					<xsl:if test="$edm:isRelatedToTimeSpan != ''">
+					<xsl:if test="$edm:TimeSpan != ''">
 						<!-- Relation TimeSpan -->
-						<edm:isRelatedTo>
-							<xsl:choose>
-								<xsl:when test="starts-with($edm:isRelatedToTimeSpan, 'http')">
+						<xsl:for-each select="$edm:TimeSpan">
+							<xsl:variable name="from" select="a2a:From" />
+							<xsl:if test="$from castable as xs:date">
+								<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
+								<dcterms:temporal>
 									<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToTimeSpan, '\s','_'))" />									
+											<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
 										</xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="rdf:resource">
-										<xsl:value-of
-										select="iri-to-uri(concat('TimeSpan:', replace($edm:isRelatedToTimeSpan, '\s','_')))" />									
-										</xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
-						</edm:isRelatedTo>
+								</dcterms:temporal>
+							</xsl:if>
+
+						</xsl:for-each>
 					</xsl:if>
-
-					<!-- Relation Aggregation -->
-					<!-- <xsl:if test="$ore:Aggregation != ''"> -->
-					<!-- <xsl:for-each select="$ore:Aggregation"> -->
-					<!-- <edm:isRelatedTo> -->
-					<!-- <xsl:attribute name="rdf:resource"> -->
-					<!--<xsl:value-of select="replace($ore:Aggregation,'\s','_')"/> -->
-					<!-- <xsl:value-of select="$ore:Aggregation"/> -->
-					<!-- </xsl:attribute> -->
-					<!-- </edm:isRelatedTo> -->
-					<!-- </xsl:for-each> -->
-					<!-- </xsl:if> -->
-
 					<edm:type>
 						<xsl:value-of select="$edmType" />
 					</edm:type>
@@ -294,7 +278,8 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="rdf:about">
-							<xsl:value-of select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
+							<xsl:value-of
+								select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
 							</xsl:attribute>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -319,20 +304,27 @@
 						<xsl:value-of select="$pid" />
 					</dc:identifier>
 
-					<!-- <xsl:if test="$providedCHOAbout != ''"> -->
-					<!-- <dcterms:isPartOf> -->
-					<!-- <xsl:value-of select="$providedCHOAbout"/> -->
-					<!-- </dcterms:isPartOf> -->
-					<!-- </xsl:if> -->
 
-					<!-- <xsl:for-each select="../a2a:RelationEP"> -->
-					<!-- <xsl:variable name="PersonKeyRef" select="./a2a:PersonKeyRef"/> -->
-					<!-- <xsl:if test="$PersonKeyRef = $pid"> -->
-					<!-- <edm:isRelatedTo> -->
-					<!-- <xsl:value-of select="./a2a:RelationType/text()"/> -->
-					<!-- </edm:isRelatedTo> -->
-					<!-- </xsl:if> -->
-					<!-- </xsl:for-each> -->
+					<xsl:if test="../a2a:RelationEP = $pid">
+						<xsl:for-each select="../a2a:RelationEP">
+							<xsl:variable name="PersonKeyRef" select="./a2a:PersonKeyRef" />
+							<xsl:if test="$PersonKeyRef = $pid">
+								<edm:isRelatedTo>
+									<xsl:attribute name="rdf:resource">									
+										<xsl:value-of
+										select="iri-to-uri(concat('Concept:', replace(./a2a:RelationType/text(), '\s','_')))" />
+									</xsl:attribute>
+								</edm:isRelatedTo>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:if>
+
+					<xsl:if test="./a2a:Gender != ''">
+						<rdaGr2:gender>
+							<xsl:value-of select="./a2a:Gender" />
+						</rdaGr2:gender>
+					</xsl:if>
+
 
 					<xsl:if test="./a2a:Profession != ''">
 						<xsl:for-each select="./a2a:Profession">
@@ -346,12 +338,51 @@
 			</xsl:for-each>
 
 			<!-- Concept -->
+			<xsl:if test="/a2a:A2A/a2a:RelationEP != ''">
+				<xsl:for-each select="/a2a:A2A/a2a:RelationEP">
+					<skos:Concept>
+						<xsl:attribute name="rdf:about">									
+							<xsl:value-of
+							select="iri-to-uri(concat('Concept:', replace(./a2a:RelationType/text(), '\s','_')))" />
+						</xsl:attribute>
+
+						<xsl:if test="./a2a:RelationType != ''">
+							<skos:prefLabel>
+								<xsl:value-of select="./a2a:RelationType" />
+							</skos:prefLabel>
+						</xsl:if>
+
+						<xsl:if test="./a2a:PersonKeyRef != ''">
+							<xsl:choose>
+								<xsl:when test="starts-with(./a2a:PersonKeyRef, 'http')">
+									<edm:isRelatedTo>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+											select="iri-to-uri(replace(./a2a:PersonKeyRef, '\s','_'))" />			
+										</xsl:attribute>
+									</edm:isRelatedTo>
+								</xsl:when>
+								<xsl:otherwise>
+									<edm:isRelatedTo>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+											select="iri-to-uri(concat('Agent:', replace(./a2a:PersonKeyRef, '\s','_')))" />			
+										</xsl:attribute>
+									</edm:isRelatedTo>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
+					</skos:Concept>
+				</xsl:for-each>
+			</xsl:if>
+
 			<xsl:if test="$edm:isRelatedToConcept != ''">
 				<skos:Concept>
 					<xsl:choose>
 						<xsl:when test="starts-with($edm:isRelatedToConcept, 'http')">
 							<xsl:attribute name="rdf:about">
-							<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToConcept, '\s','_'))" />									
+							<xsl:value-of
+								select="iri-to-uri(replace($edm:isRelatedToConcept, '\s','_'))" />									
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:otherwise>
@@ -366,11 +397,6 @@
 						<xsl:value-of select="$edm:isRelatedToConcept" />
 					</skos:prefLabel>
 
-					<!-- <xsl:if test="$providedCHOAbout != ''"> -->
-					<!-- <dcterms:isPartOf> -->
-					<!-- <xsl:value-of select="$providedCHOAbout"/> -->
-					<!-- </dcterms:isPartOf> -->
-					<!-- </xsl:if> -->
 				</skos:Concept>
 			</xsl:if>
 
@@ -380,7 +406,8 @@
 					<xsl:choose>
 						<xsl:when test="starts-with($edm:isRelatedToPlace, 'http')">
 							<xsl:attribute name="rdf:about">
-							<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToPlace, '\s','_'))" />									
+							<xsl:value-of
+								select="iri-to-uri(replace($edm:isRelatedToPlace, '\s','_'))" />									
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:otherwise>
@@ -395,48 +422,26 @@
 						<xsl:value-of select="$edm:isRelatedToPlace" />
 					</skos:prefLabel>
 
-					<!-- <xsl:if test="$providedCHOAbout != ''"> -->
-					<!-- <dcterms:isPartOf> -->
-					<!-- <xsl:value-of select="$providedCHOAbout"/> -->
-					<!-- </dcterms:isPartOf> -->
-					<!-- </xsl:if> -->
 
 				</edm:Place>
 			</xsl:if>
 
 			<!-- TimeSpan -->
-			<xsl:if test="$edm:isRelatedToTimeSpan != ''">
-				<edm:TimeSpan>
-					<xsl:choose>
-						<xsl:when test="starts-with($edm:isRelatedToTimeSpan, 'http')">
+			<xsl:if test="$edm:TimeSpan != ''">
+				<xsl:for-each select="$edm:TimeSpan">
+					<xsl:variable name="from" select="a2a:From" />
+					<xsl:if test="$from castable as xs:date">
+						<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
+						<edm:TimeSpan>
 							<xsl:attribute name="rdf:about">
-							<xsl:value-of select="iri-to-uri(replace($edm:isRelatedToTimeSpan, '\s','_'))" />									
+								<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
 							</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="rdf:about">
-							<xsl:value-of
-								select="iri-to-uri(concat('TimeSpan:', replace($edm:isRelatedToTimeSpan, '\s','_')))" />									
-							</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
+						</edm:TimeSpan>
+					</xsl:if>
 
-					<edm:begin>
-						<xsl:value-of select="/a2a:A2A/a2a:Source/a2a:SourceIndexDate/a2a:From" />
-					</edm:begin>
-
-					<edm:end>
-						<xsl:value-of select="/a2a:A2A/a2a:Source/a2a:SourceIndexDate/a2a:To" />
-					</edm:end>
-
-					<!-- <xsl:if test="$providedCHOAbout != ''"> -->
-					<!-- <dcterms:isPartOf> -->
-					<!-- <xsl:value-of select="$providedCHOAbout"/> -->
-					<!-- </dcterms:isPartOf> -->
-					<!-- </xsl:if> -->
-
-				</edm:TimeSpan>
+				</xsl:for-each>
 			</xsl:if>
+
 
 			<xsl:if test="$edm:WebResource != ''">
 				<xsl:for-each select="$edm:WebResource">
@@ -480,12 +485,20 @@
 					</xsl:choose>
 
 					<edm:aggregatedCHO>
-						<xsl:attribute name="rdf:resource">
+						<xsl:choose>
+							<xsl:when test="starts-with($a2a:SourceDigitalOriginal, 'http')">
+								<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="iri-to-uri($a2a:SourceDigitalOriginal)" />									
+							</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="rdf:resource">
 							<xsl:value-of
-							select="iri-to-uri(concat('ProvidedCHO:', replace($a2a:SourceDigitalOriginal,'\s','_')))" />	
-						</xsl:attribute>
+									select="iri-to-uri(concat('Aggregation:', $a2a:SourceDigitalOriginal))" />									
+							</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
 					</edm:aggregatedCHO>
-
 					<!--<xsl:if test="../../../a2a:SourceReference/a2a:InstitutionName != 
 						''"> -->
 					<xsl:if test="$dataProvider != ''">
@@ -505,33 +518,30 @@
 						</xsl:for-each>
 					</xsl:if>
 
-
-					<edm:isShownAt>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="replace($ore:Aggregation,'\s','_')" />	
-						</xsl:attribute>
-					</edm:isShownAt>
-
-
 					<edm:isShownBy>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="replace($providedCHOAbout,'\s','_')" />	
+							<xsl:value-of
+							select="concat('ProvidedCHO:', replace($providedCHOAbout,'\s','_'))" />	
 						</xsl:attribute>
 					</edm:isShownBy>
 
 					<edm:object>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="replace($providedCHOAbout,'\s','_')" />
+							<xsl:value-of
+							select="concat('ProvidedCHO:', replace($providedCHOAbout,'\s','_'))" />
 						</xsl:attribute>
 					</edm:object>
 
-					<!--<xsl:if test="../../../a2a:SourceReference/a2a:InstitutionName != 
-						''"> -->
 					<xsl:if test="$dataProvider  != ''">
 						<edm:provider>
-							<!--<xsl:value-of select="../../../a2a:SourceReference/a2a:InstitutionName"/> -->
 							<xsl:value-of select="$dataProvider" />
 						</edm:provider>
+					</xsl:if>
+
+					<xsl:if test="$set  != ''">
+						<edm:intermediateProvider>
+							<xsl:value-of select="$set" />
+						</edm:intermediateProvider>
 					</xsl:if>
 
 					<edm:rights>

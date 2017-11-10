@@ -68,7 +68,7 @@ public class Main {
 	 * @param args
 	 * @throws Exception
 	 */
-    public static void main( String[] args ) throws Exception {    	
+    public static void main( String[] args ) throws Exception {
     	if(Objects.nonNull(args) && args.length != 0) {
     		for(int i = 0; i < args.length; i++) {    			
     			if(args[i].equals("--host"))	host = args[i+1];
@@ -114,7 +114,7 @@ public class Main {
     	//Check parameters
     	if(Objects.isNull(metadataPrefix)) throw new Exception("metadataPrefix must not be null");
     	if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
-				
+    	
     	if(Objects.isNull(provider))	throw new Exception("provider must not be null");
 		if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
 			throw new Exception(String.format("select valid edmType: %s", 
@@ -123,13 +123,15 @@ public class Main {
 		Map<String,String> xsltProperties = new HashMap<String,String>();
 		xsltProperties.put("edmType", edmType);
 		xsltProperties.put("dataProvider", provider);
+		if(Objects.nonNull(set))	xsltProperties.put("set", set);
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);
     	
 		ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
     	listRecordsParameters.withMetadataPrefix(metadataPrefix);
-        
+    	
+    	if(Objects.nonNull(resumptionToken)) listRecordsParameters.withgetResumptionToken(resumptionToken);
     	
     	if(Objects.nonNull(set)) listRecordsParameters.withSetSpec(set);
         
@@ -150,7 +152,6 @@ public class Main {
         }   
         
         Iterator<RecordType> records = recollect.listRecords(listRecordsParameters);
-    	
        	try {
        		DownloadListRecordData downloadData;
        		if(Objects.nonNull(pathWithSetSpec)) {

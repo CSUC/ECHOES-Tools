@@ -3,6 +3,7 @@ package org.Recollect.Core.parameters;
 import java.util.Date;
 
 public class ListRecordsParameters {
+	
     public static ListRecordsParameters request() {
         return new ListRecordsParameters();
     }
@@ -12,6 +13,8 @@ public class ListRecordsParameters {
     private Date from;
     private Date until;
 	private String granularity;
+	
+	private String resumptionToken;
 
     public String getMetadataPrefix() {
         return metadataPrefix;
@@ -60,5 +63,14 @@ public class ListRecordsParameters {
 
 	public String getGranularity() {
 		return granularity;
+	}
+	
+	public String getResumptionToken() {
+		return resumptionToken;
+	}
+	
+	public void withgetResumptionToken(String resumptionToken) {
+		this.resumptionToken = resumptionToken;
+		
 	}
 }

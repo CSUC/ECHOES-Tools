@@ -38,7 +38,9 @@ public class ListRecordHandler implements Source<RecordType> {
 	
 	public ListRecordHandler(OAIClient client, ListRecordsParameters parameters) {
 		this.client = client;
-		this.parameters = parameters;		
+		this.parameters = parameters;
+		System.out.println(parameters.getResumptionToken());
+		this.resumptionToken = parameters.getResumptionToken();
 	}
 	
 	@Override
