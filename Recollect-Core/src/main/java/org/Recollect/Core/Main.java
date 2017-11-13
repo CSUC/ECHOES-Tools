@@ -34,15 +34,12 @@ import org.openarchives.oai._2.RecordType;
  * 
  *
  */
-@SuppressWarnings("unused")
 public class Main {
 	
 	private static Logger logger = LogManager.getLogger(Main.class);
 	
 	private static Instant inici = Instant.now();
-	
-//	private static String echoesFolder = "/tmp/echoes";
-	
+		
 	private static String host = null;
 	private static String verb = null;
 	private static String identifier = null;	
@@ -60,6 +57,8 @@ public class Main {
 	
 	private static Path pathWithSetSpec;
 	private static String xslt = null;
+	
+	private static String language = "und";
 	
 	private static UTCDateProvider dateProvider = new UTCDateProvider();;
 	
@@ -85,7 +84,9 @@ public class Main {
     			if(args[i].equals("--out"))	out = args[i+1];
     			
     			if(args[i].equals("--edmType"))	edmType = args[i+1];
-    			if(args[i].equals("--provider"))	provider = args[i+1];    			
+    			if(args[i].equals("--provider"))	provider = args[i+1];
+    			
+    			if(args[i].equals("--language"))	language = args[i+1];
     		}
     		
     		if(Objects.isNull(host)) throw new Exception("host must not be null");
@@ -124,6 +125,7 @@ public class Main {
 		xsltProperties.put("edmType", edmType);
 		xsltProperties.put("dataProvider", provider);
 		if(Objects.nonNull(set))	xsltProperties.put("set", set);
+		if(Objects.nonNull(language))	xsltProperties.put("language", language);
 		
 		OAIClient oaiClient = new HttpOAIClient(host);         	
     	Recollect recollect = new Recollect(oaiClient);

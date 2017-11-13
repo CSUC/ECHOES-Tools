@@ -6,18 +6,23 @@ package org.Recollect.Core.transformation;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author amartinez
@@ -25,6 +30,8 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class Transformations {
 
+	private static Logger logger = LogManager.getLogger(Transformations.class);
+	
 	private TransformerFactory fact = new net.sf.saxon.TransformerFactoryImpl();
 	private StreamSource xlsStreamSource;
 	
@@ -61,41 +68,57 @@ public class Transformations {
 	/**
 	 * 
 	 * @param sourceID
-	 * @param map
-	 * @throws TransformerException
-	 * @throws TransformerConfigurationException
-	 * @throws IOException
 	 */
-	public void transformationsFromUrl(URL sourceID) throws TransformerException, TransformerConfigurationException, IOException{    
-		Transformer transformer = fact.newTransformer(xlsStreamSource);
-	    
-		if(Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach((k,v)->{
-				 transformer.setParameter(k,v);
-			});			
-		}
-		
-		transformer.transform(new StreamSource(sourceID.openStream()), new StreamResult(out));
+	public void transformationsFromUrl(URL sourceID) {    
+		try {
+			Transformer transformer = fact.newTransformer(xlsStreamSource);
+		    
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
+			
+			if(Objects.nonNull(xsltProperties)) {
+				xsltProperties.forEach((k,v)->{
+					 transformer.setParameter(k,v);
+				});			
+			}
+			
+			transformer.transform(
+					new StreamSource(sourceID.openStream()),
+					new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+			
+		} catch (TransformerException | IOException exception) {			
+			logger.error(exception);
+		}		
 	}
 	
 	/**
 	 * 
 	 * @param content
-	 * @param map
-	 * @throws TransformerException
-	 * @throws TransformerConfigurationException
-	 * @throws IOException
 	 */
-	public void transformationsFromString(String content) throws TransformerException, TransformerConfigurationException, IOException{		
-		Transformer transformer = fact.newTransformer(xlsStreamSource);
+	public void transformationsFromString(String content) {		
+		try {
+			Transformer transformer = fact.newTransformer(xlsStreamSource);
+			
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
+			
+			if(Objects.nonNull(xsltProperties)) {
+				xsltProperties.forEach((k,v)->{
+					 transformer.setParameter(k,v);
+				});			
+			}
 
-		if(Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach((k,v)->{
-				 transformer.setParameter(k,v);
-			});			
-		}
-	    
-		transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())), new StreamResult(out));
+			transformer.transform(
+					new StreamSource(new ByteArrayInputStream(content.getBytes())),
+					new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+		
+		} catch (TransformerException | IOException exception) {			
+			logger.error(exception);
+		}  
 	}
 	
 	/**
