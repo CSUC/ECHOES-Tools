@@ -42,8 +42,11 @@ public class App {
 	private static String contentType = "application/rdf+xml"; //default
 	private static String context = "blazegraph"; //default
 	private static String charset = Charsets.UTF_8.name(); //default
-	private static int threads = 1; // default;
+	private static int threads = 4; // default;
 	private static String folderOrFile = null;
+	private static String namespace = "kb"; //default
+	
+	
 	/**
 	 * 
 	 * @param args
@@ -63,6 +66,7 @@ public class App {
 			if(args[i].equals("--context"))	context = args[i+1];
 			if(args[i].equals("--charset"))	charset = args[i+1];
 			if(args[i].equals("--threads"))	threads = Integer.parseInt(args[i+1]);
+			if(args[i].equals("--namespace"))	namespace = args[i+1];
 		}
 		
 		logger.info(
@@ -72,19 +76,19 @@ public class App {
 		
 		try {
 			if(Objects.nonNull(folderOrFile)) {
-//				new ForkJoinPool(threads).submit(()->{
+				new ForkJoinPool(threads).submit(()->{
 					try{
 						Files.walk(Paths.get(folderOrFile))
 						.filter(Files::isRegularFile)
 				        .filter(f -> f.toString().endsWith(".xml"))
 				        .parallel()
 				        .forEach(f->{
-				        	httpPost(contentType, f.toFile());
+			        		httpPost(contentType, f.toFile());
 				        });
 					} catch (IOException e) {
 						logger.error(e);
 					}					
-//				}).join();
+				}).join();
 			}else{
 				logger.info("select folderOrFile");
 			}			
@@ -103,7 +107,7 @@ public class App {
 	 */
 	private static void httpPost(String type, File data) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-	    HttpPost httppost = new HttpPost("http://" + host + ":" + port + File.separator + context + File.separator + "sparql");
+	    HttpPost httppost = new HttpPost(String.format("http://%s:%s/%s/namespace/%s/sparql", host, port, context, namespace));
 
 	    RequestConfig requestConfig = 
 	    		RequestConfig.copy(RequestConfig.DEFAULT)
@@ -126,9 +130,12 @@ public class App {
 		    if (resEntity != null) {		    	
 		    	BlazegraphResponse blazegraphResponse = xmlMapper(EntityUtils.toString(resEntity));
 		    	if(Objects.nonNull(blazegraphResponse)){
-		    		if(Integer.parseInt(blazegraphResponse.getModified()) != 0)
+		    		if(Integer.parseInt(blazegraphResponse.getModified()) != 0) {
 		    			logger.info(String.format("%s %s %s", "OK", data.getAbsolutePath(), blazegraphResponse.toString()));
-			    	else
+		    		
+		    			Files.delete(Paths.get(data.toURI()));
+		    			logger.info(String.format("%s deleted %s", "OK", data));
+		    		}else
 			    		logger.error(String.format("%s %s %s", "ERROR", data.getAbsolutePath(), blazegraphResponse.toString()));
 		    	}else
 		    		logger.error(String.format("%s %s", "ERROR", data.getAbsolutePath()));
