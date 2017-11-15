@@ -208,6 +208,31 @@
 						</xsl:for-each>
 					</xsl:if>
 
+					<!-- Relation TimeSpan -->
+					<xsl:if test="$a2a:SourceIndexDate != ''">
+						<xsl:variable name="from" select="$a2a:SourceIndexDate/a2a:From" />
+						<xsl:if test="$from castable as xs:date">
+							<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
+							<dcterms:temporal>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
+								</xsl:attribute>
+							</dcterms:temporal>
+						</xsl:if>
+					</xsl:if>
+
+					<!-- Relation Place -->
+					<xsl:if test="$a2a:SourcePlace != ''">
+						<xsl:variable name="a2a:Place"
+							select="$a2a:SourcePlace/a2a:Place/text()" />
+						<dc:coverage>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of
+								select="iri-to-uri(concat('Place:', replace($a2a:Place, '\s','_')))" />								
+								</xsl:attribute>
+						</dc:coverage>
+					</xsl:if>
+
 					<!-- Relation Persons -->
 					<xsl:if test="$a2a:Person != ''">
 						<xsl:for-each select="$a2a:Person">
@@ -231,31 +256,6 @@
 						</edm:isRelatedTo>
 					</xsl:if>
 
-					<!-- Relation Place -->
-					<xsl:if test="$a2a:SourcePlace != ''">
-						<xsl:variable name="a2a:Place"
-							select="$a2a:SourcePlace/a2a:Place/text()" />
-						<dc:coverage>
-							<xsl:attribute name="rdf:resource">
-						<xsl:value-of
-								select="iri-to-uri(concat('Place:', replace($a2a:Place, '\s','_')))" />								
-						</xsl:attribute>
-						</dc:coverage>
-					</xsl:if>
-
-					<!-- Relation TimeSpan -->
-					<xsl:if test="$a2a:SourceIndexDate != ''">
-						<xsl:variable name="from" select="$a2a:SourceIndexDate/a2a:From" />
-						<xsl:if test="$from castable as xs:date">
-							<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
-							<dcterms:temporal>
-								<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
-									</xsl:attribute>
-							</dcterms:temporal>
-						</xsl:if>
-					</xsl:if>
-
 					<!-- edm:Type -->
 					<xsl:if test="$edmType != ''">
 						<edm:type>
@@ -273,7 +273,7 @@
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of
 							select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
-					</xsl:attribute>
+						</xsl:attribute>
 
 						<xsl:if test="a2a:PersonName/a2a:PersonNameFirstName/text() != ''">
 							<skos:prefLabel>
@@ -295,6 +295,15 @@
 							<xsl:value-of select="$pid" />
 						</dc:identifier>
 
+						<xsl:if test="a2a:Residence != ''">
+							<edm:hasMet>
+								<xsl:attribute name="rdf:resource">									
+									<xsl:value-of
+									select="iri-to-uri(concat('Place:', replace(a2a:Residence/a2a:Place, '\s','_')))" />
+								</xsl:attribute>
+							</edm:hasMet>
+						</xsl:if>
+						
 						<xsl:if test="$a2a:RelationEP != ''">
 							<xsl:for-each select="$a2a:RelationEP">
 								<xsl:variable name="PersonKeyRef" select="a2a:PersonKeyRef" />
@@ -306,16 +315,9 @@
 									</xsl:attribute>
 									</edm:isRelatedTo>
 								</xsl:if>
-
 							</xsl:for-each>
 						</xsl:if>
-
-						<xsl:if test="a2a:Gender != ''">
-							<rdaGr2:gender>
-								<xsl:value-of select="a2a:Gender" />
-							</rdaGr2:gender>
-						</xsl:if>
-
+							
 						<xsl:if test="a2a:BirthDate != ''">
 							<xsl:variable name="a2a:Year" select="a2a:BirthDate/a2a:Year" />
 							<xsl:variable name="a2a:Month" select="a2a:BirthDate/a2a:Month" />
@@ -333,13 +335,10 @@
 							</xsl:if>
 						</xsl:if>
 
-						<xsl:if test="a2a:Residence != ''">
-							<edm:hasMet>
-								<xsl:attribute name="rdf:resource">									
-									<xsl:value-of
-									select="iri-to-uri(concat('Place:', replace(a2a:Residence/a2a:Place, '\s','_')))" />
-								</xsl:attribute>
-							</edm:hasMet>
+						<xsl:if test="a2a:Gender != ''">
+							<rdaGr2:gender>
+								<xsl:value-of select="a2a:Gender" />
+							</rdaGr2:gender>
 						</xsl:if>
 
 						<xsl:if test="a2a:BirthPlace">
@@ -395,12 +394,12 @@
 							</skos:prefLabel>
 
 							<xsl:if test="a2a:PersonKeyRef">
-								<edm:isRelatedTo>
+								<skos:related>
 									<xsl:attribute name="rdf:resource">
 										<xsl:value-of
 										select="iri-to-uri(concat('Agent:', replace(a2a:PersonKeyRef, '\s','_')))" />			
 									</xsl:attribute>
-								</edm:isRelatedTo>
+								</skos:related>
 							</xsl:if>
 
 
@@ -441,13 +440,13 @@
 				</xsl:if>
 			</xsl:if>
 
-			<!-- edm:WebResource and ore:Aggregation -->
+			<!-- edm:WebResource -->
 			<xsl:if test="$a2a:SourceAvailableScans != ''">
 				<xsl:variable name="a2a:Scan" select="$a2a:SourceAvailableScans/a2a:Scan" />
+
 				<xsl:if test="$a2a:Scan != ''">
 					<xsl:for-each select="$a2a:Scan">
 						<xsl:variable name="a2a:Uri" select="a2a:Uri" />
-						<xsl:variable name="a2a:UriViewer" select="a2a:UriViewer" />
 						<xsl:variable name="a2a:UriPreview" select="a2a:UriPreview" />
 
 						<edm:WebResource>
@@ -470,114 +469,164 @@
 			</xsl:if>
 
 			<!-- ore:Aggregation -->
-			<ore:Aggregation>
-				<xsl:choose>
-					<xsl:when test="$a2a:SourceAvailableScans != ''">
+			<xsl:choose>
+				<xsl:when test="$a2a:SourceAvailableScans != ''">
+					<xsl:variable name="a2a:UriViewer"
+						select="distinct-values($a2a:SourceAvailableScans/a2a:Scan/a2a:UriViewer)" />
+
+					<xsl:variable name="a2a:Scan"
+						select="$a2a:SourceAvailableScans/a2a:Scan" />
+
+					<xsl:for-each select="$a2a:UriViewer">
 						<xsl:variable name="a2a:Scan"
 							select="$a2a:SourceAvailableScans/a2a:Scan" />
-						<xsl:for-each select="$a2a:Scan">
-							<xsl:variable name="a2a:Uri" select="a2a:Uri" />
-							<xsl:variable name="a2a:UriViewer" select="a2a:UriViewer" />
-							<xsl:variable name="a2a:UriPreview" select="a2a:UriPreview" />
-
+						<ore:Aggregation>
 							<xsl:choose>
 								<xsl:when test="starts-with($a2a:UriViewer, 'http')">
 									<xsl:attribute name="rdf:about">
-											<xsl:value-of select="iri-to-uri($a2a:UriViewer)" />									
-										</xsl:attribute>
+										<xsl:value-of select="iri-to-uri($a2a:UriViewer)" />									
+									</xsl:attribute>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:attribute name="rdf:about">
 											<xsl:value-of
-										select="iri-to-uri(concat('Aggregation:', replace($a2a:UriPreview,'\s','_')))" />									
+										select="iri-to-uri(concat('Aggregation:', replace($a2a:UriViewer, '\s','_')))" />									
 										</xsl:attribute>
 								</xsl:otherwise>
 							</xsl:choose>
 
-							<xsl:if test="$a2a:UriViewer != ''">
-								<edm:isShownAt>
-									<xsl:choose>
-										<xsl:when test="starts-with($a2a:UriViewer, 'http')">
-											<xsl:attribute name="rdf:resource">
-													<xsl:value-of select="iri-to-uri($a2a:UriViewer)" />									
-												</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="rdf:resource">
-													<xsl:value-of
-												select="iri-to-uri(replace($a2a:UriViewer,'\s','_'))" />									
-												</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
-								</edm:isShownAt>
+							<edm:aggregatedCHO>
+								<xsl:choose>
+									<xsl:when test="starts-with($ProvidedCHOAbout, 'http')">
+										<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="iri-to-uri($ProvidedCHOAbout)" />									
+											</xsl:attribute>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:attribute name="rdf:resource">
+												<xsl:value-of
+											select="iri-to-uri(concat('ProvidedCHO:', replace($ProvidedCHOAbout, '\s','_')))" />									
+											</xsl:attribute>
+									</xsl:otherwise>
+								</xsl:choose>
+							</edm:aggregatedCHO>
+							
+							<xsl:if test="$dataProvider != ''">
+								<edm:dataProvider>
+									<xsl:value-of select="$dataProvider" />
+								</edm:dataProvider>
 							</xsl:if>
 
-							<xsl:if test="$a2a:UriPreview != ''">
-								<edm:isShownBy>
-									<xsl:choose>
-										<xsl:when test="starts-with($a2a:UriPreview, 'http')">
-											<xsl:attribute name="rdf:resource">
-													<xsl:value-of select="iri-to-uri($a2a:UriPreview)" />									
-												</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="rdf:resource">
-													<xsl:value-of
-												select="iri-to-uri(replace($a2a:UriPreview,'\s','_'))" />									
-												</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
-								</edm:isShownBy>
+							<xsl:if test="$a2a:Scan != ''">
+								<xsl:for-each select="$a2a:Scan">
+									<xsl:variable name="a2a:Uri" select="a2a:Uri" />
+									<xsl:variable name="a2a:UriPreview" select="a2a:UriPreview" />
+
+									<xsl:if test="$a2a:UriPreview != ''">
+										<edm:hasView>
+											<xsl:choose>
+												<xsl:when test="starts-with($a2a:UriPreview, 'http')">
+													<xsl:attribute name="rdf:resource">
+																<xsl:value-of select="iri-to-uri($a2a:UriPreview)" />									
+															</xsl:attribute>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:attribute name="rdf:resource">
+																<xsl:value-of
+														select="iri-to-uri(replace($a2a:UriPreview,'\s','_'))" />									
+															</xsl:attribute>
+												</xsl:otherwise>
+											</xsl:choose>
+										</edm:hasView>
+									</xsl:if>
+								</xsl:for-each>
+							</xsl:if>
+							
+							<edm:isShownAt>
+								<xsl:choose>
+									<xsl:when test="starts-with(., 'http')">
+										<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="iri-to-uri(.)" />									
+											</xsl:attribute>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="iri-to-uri(replace(., '\s','_'))" />									
+											</xsl:attribute>
+									</xsl:otherwise>
+								</xsl:choose>
+							</edm:isShownAt>
+							
+							<xsl:if test="$dataProvider  != ''">
+								<edm:provider>
+									<xsl:value-of select="$dataProvider" />
+								</edm:provider>
 							</xsl:if>
 
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
+							<edm:rights>
+								<xsl:attribute name="rdf:resource">
+											<xsl:text>http://creativecommons.org/publicdomain/mark/1.0/</xsl:text>
+										</xsl:attribute>
+							</edm:rights>
+
+							<xsl:if test="$set  != ''">
+								<edm:intermediateProvider>
+									<xsl:value-of select="$set" />
+								</edm:intermediateProvider>
+							</xsl:if>
+						</ore:Aggregation>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:otherwise>
+					<ore:Aggregation>
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of
 							select="iri-to-uri(concat('Aggregation:', concat('ProvidedCHO:', replace($ProvidedCHOAbout, '\s','_'))))" />									
 						</xsl:attribute>
-					</xsl:otherwise>
-				</xsl:choose>
-				<edm:aggregatedCHO>
-					<xsl:choose>
-						<xsl:when test="starts-with($ProvidedCHOAbout, 'http')">
+
+						<edm:aggregatedCHO>
+							<xsl:choose>
+								<xsl:when test="starts-with($ProvidedCHOAbout, 'http')">
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of select="iri-to-uri($ProvidedCHOAbout)" />									
+									</xsl:attribute>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of
+										select="iri-to-uri(concat('ProvidedCHO:', replace($ProvidedCHOAbout, '\s','_')))" />									
+									</xsl:attribute>
+								</xsl:otherwise>
+							</xsl:choose>
+						</edm:aggregatedCHO>
+
+						<xsl:if test="$dataProvider != ''">
+							<edm:dataProvider>
+								<xsl:value-of select="$dataProvider" />
+							</edm:dataProvider>
+						</xsl:if>
+						<xsl:if test="$dataProvider  != ''">
+							<edm:provider>
+								<xsl:value-of select="$dataProvider" />
+							</edm:provider>
+						</xsl:if>
+
+						<edm:rights>
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="iri-to-uri($ProvidedCHOAbout)" />									
-							</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of
-								select="iri-to-uri(concat('ProvidedCHO:', replace($ProvidedCHOAbout, '\s','_')))" />									
-							</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-				</edm:aggregatedCHO>
+									<xsl:text>http://creativecommons.org/publicdomain/mark/1.0/</xsl:text>
+								</xsl:attribute>
+						</edm:rights>
 
-				<xsl:if test="$dataProvider != ''">
-					<edm:dataProvider>
-						<xsl:value-of select="$dataProvider" />
-					</edm:dataProvider>
-				</xsl:if>
-				<xsl:if test="$dataProvider  != ''">
-					<edm:provider>
-						<xsl:value-of select="$dataProvider" />
-					</edm:provider>
-				</xsl:if>
+						<xsl:if test="$set  != ''">
+							<edm:intermediateProvider>
+								<xsl:value-of select="$set" />
+							</edm:intermediateProvider>
+						</xsl:if>
 
-				<xsl:if test="$set  != ''">
-					<edm:intermediateProvider>
-						<xsl:value-of select="$set" />
-					</edm:intermediateProvider>
-				</xsl:if>
+					</ore:Aggregation>
 
-				<edm:rights>
-					<xsl:attribute name="rdf:resource">
-							<xsl:text>http://creativecommons.org/publicdomain/mark/1.0/</xsl:text>
-						</xsl:attribute>
-				</edm:rights>
-			</ore:Aggregation>
+				</xsl:otherwise>
+			</xsl:choose>
 
 		</rdf:RDF>
 	</xsl:template>

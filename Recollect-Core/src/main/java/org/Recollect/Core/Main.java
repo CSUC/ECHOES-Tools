@@ -114,12 +114,12 @@ public class Main {
     private static void ListRecords() throws Exception {
     	//Check parameters
     	if(Objects.isNull(metadataPrefix)) throw new Exception("metadataPrefix must not be null");
-    	if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
+    	//if(Objects.isNull(edmType)) throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
     	
-    	if(Objects.isNull(provider))	throw new Exception("provider must not be null");
-		if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
-			throw new Exception(String.format("select valid edmType: %s", 
-    				"TEXT, VIDEO, IMAGE, SOUND, 3D"));
+    	//if(Objects.isNull(provider))	throw new Exception("provider must not be null");
+		//if(!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
+		//	throw new Exception(String.format("select valid edmType: %s", 
+    	//			"TEXT, VIDEO, IMAGE, SOUND, 3D"));
 		
 		Map<String,String> xsltProperties = new HashMap<String,String>();
 		xsltProperties.put("edmType", edmType);
