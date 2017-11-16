@@ -53,7 +53,7 @@ public class App {
 	 * @throws IOException 
 	 * @throws XmlException 
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {		
 		if(Objects.nonNull(args) && args.length != 0) {
 			for(int i = 0; i < args.length -1; i++){
 				if(args[i].equals("--type"))	type = args[i+1];
@@ -75,23 +75,31 @@ public class App {
 			else if(EnumTypes.FILE.equalsName(type)) file();
 			
 			if(Objects.nonNull(factoryELO)) {
-				factoryELO.instanceFactory().execute();				
+				factoryELO.instanceFactory().execute();
 				if(Objects.isNull(out)) {
-					factoryELO.getMapValues().entrySet().forEach(e->{
-						String elementNameCount = factoryELO.getElementNameCount().entrySet().stream().filter(f-> f.getKey().equals(e.getValue())).map(m->m.getValue().toString()).collect(Collectors.joining());            	
-						logger.info(String.format("tag: %s total: %s xpath: %s", e.getValue(), elementNameCount, e.getKey()));
-					});	
-					logger.info(factoryELO.getDuration());
+					if(!factoryELO.getMapValues().isEmpty()) {
+						logger.info(String.format("tag;total;xpath"));
+						factoryELO.getMapValues().entrySet().forEach(e->{
+							String elementNameCount = factoryELO.getElementNameCount().entrySet().stream().filter(f-> f.getKey().equals(e.getValue())).map(m->m.getValue().toString()).collect(Collectors.joining());            	
+							logger.info(String.format("%s;%s;%s", e.getValue(), elementNameCount, e.getKey()));
+						});					
+						logger.info(factoryELO.getNamespaces());
+						logger.info(factoryELO.getDuration());
+					}					
 				}else {
 					Path outpath = Files.createDirectories(Paths.get(out));				
-					StringBuffer buffer = new StringBuffer();
-					factoryELO.getMapValues().entrySet().forEach(e->{
-						String elementNameCount = factoryELO.getElementNameCount().entrySet().stream().filter(f-> f.getKey().equals(e.getValue())).map(m->m.getValue().toString()).collect(Collectors.joining());            	
-						buffer.append(String.format("tag: %s total: %s xpath: %s\n", e.getValue(), elementNameCount, e.getKey()));
-					});											
-					buffer.append(factoryELO.getDuration());
-					
-					Files.write(Paths.get(outpath.toString() + File.separator + String.format("%sParser", type)), buffer.toString().getBytes(), new OpenOption[] { StandardOpenOption.CREATE, StandardOpenOption.APPEND });
+					if(!factoryELO.getMapValues().isEmpty()) {
+						StringBuffer buffer = new StringBuffer();
+						buffer.append(String.format("tag;total;xpath\n"));
+						factoryELO.getMapValues().entrySet().forEach(e->{
+							String elementNameCount = factoryELO.getElementNameCount().entrySet().stream().filter(f-> f.getKey().equals(e.getValue())).map(m->m.getValue().toString()).collect(Collectors.joining());            	
+							buffer.append(String.format("%s;%s;%s\n", e.getValue(), elementNameCount, e.getKey()));
+						});
+						factoryELO.getNamespaces().entrySet().forEach(e->buffer.append(String.format("%s\n", e)));
+						buffer.append(factoryELO.getDuration());
+						
+						Files.write(Paths.get(outpath.toString() + File.separator + String.format("%sParser", type)), buffer.toString().getBytes(), new OpenOption[] { StandardOpenOption.CREATE, StandardOpenOption.APPEND });
+					}					
 				}
 			}
 			logger.info(String.format("End %s", duration(inici)));
