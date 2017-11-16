@@ -6,3 +6,7 @@
 	path = corelib
 	url = https://github.com/CSUC/corelib.git
 	branch = echoes
+[submodule "YASGUI.server"]
+	path = YASGUI.server
+	url = https://github.com/CSUC/YASGUI.server.git
+	branch = echoes
