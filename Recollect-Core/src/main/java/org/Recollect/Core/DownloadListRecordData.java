@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.transform.OutputKeys;
@@ -28,6 +29,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.Recollect.Core.deserialize.JaxbUnmarshal;
 import org.Recollect.Core.serialize.JaxbMarshal;
 import org.Recollect.Core.transformation.Transformations;
+import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.StatusCollection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -53,6 +55,10 @@ public class DownloadListRecordData extends StatusCollection{
 	private Map<String,String> xsltProperties;
 	
 	private OutputStream out;
+	
+	private int garbage = 1500;
+	
+	private AtomicInteger iter = new AtomicInteger(0);
 	
 	public DownloadListRecordData(Path path, Class<?> classType) throws Exception {
 		super();		
@@ -119,7 +125,8 @@ public class DownloadListRecordData extends StatusCollection{
 		if(Objects.nonNull(records)) {
 			Objects.requireNonNull(classType, "classType must not be null");
 			records.forEachRemaining(record->{
-				recordJaxb(record);
+		   		if(iter.incrementAndGet() % garbage == 0) Garbage.gc();
+				else	recordJaxb(record);
 			});		
 		}
 	}
@@ -141,7 +148,8 @@ public class DownloadListRecordData extends StatusCollection{
 	public void executeWithNode(Iterator<RecordType> records) {
 		if(Objects.nonNull(records)) {
 			records.forEachRemaining(record->{
-				recordNode(record);
+				if(iter.incrementAndGet() % garbage == 0) Garbage.gc();
+				else	recordNode(record);
 			});
 		}
 	}
@@ -188,6 +196,7 @@ public class DownloadListRecordData extends StatusCollection{
 			logger.error(e);
 		}
 		totalReadRecord.incrementAndGet();
+		
 	}
 	
 	/**
@@ -219,13 +228,12 @@ public class DownloadListRecordData extends StatusCollection{
 							
 	    				if(Objects.nonNull(path))	logger.debug(String.format("File save %s", file));	
 	    				totalDownloadRecord.incrementAndGet();
-	    				
 					}			
 				}catch(Exception e) {
 					logger.error(String.format("Identifier %s Message %s", record.getHeader().getIdentifier(), e));
 				}
 			}
-			totalReadRecord.incrementAndGet();
+			totalReadRecord.incrementAndGet();			
 		}
 	}
 	
