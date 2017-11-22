@@ -14,7 +14,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.ValidationEventCollector;
-import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -42,59 +41,50 @@ public class JaxbUnmarshal {
 	private static Logger logger = LogManager.getLogger(JaxbUnmarshal.class);
 	
 	private Object data;
-	private JAXBElement<?> jaxbElement;
 		
-	public JaxbUnmarshal(File file, Class<?> classType) {
+	public JaxbUnmarshal(File file, Class[] classType) {
 		logger.debug(String.format("read file %s", file));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 			Unmarshaller u = jc.createUnmarshaller();
 			
 			data = ((JAXBElement<Object>) u.unmarshal(file)).getValue();			
-			jaxbElement = new JAXBElement(
-		    		new QName(classType.getSimpleName()), classType, data);
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal file %s", e));
 		}	   
 	}
 	
-	
-	public JaxbUnmarshal(InputStream inputStream, Class<?> classType) {
+	public JaxbUnmarshal(InputStream inputStream, Class[] classType) {
 		try {
 		    JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 		    
 		    data = ((JAXBElement<Object>) u.unmarshal(inputStream)).getValue();		    
-		    jaxbElement = new JAXBElement(
-		    		new QName(classType.getSimpleName()), classType, data);
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal InputStream %s", e));
 		}
 	}
 	
 	
-	public JaxbUnmarshal(URL url, Class<?> classType) {
+	public JaxbUnmarshal(URL url, Class[] classType) {
 		logger.debug(String.format("read url %s", url));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 		    
 		    data = ((JAXBElement<Object>) u.unmarshal(url)).getValue();
-		    jaxbElement = new JAXBElement(
-		    		new QName(classType.getSimpleName()), classType, data);
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal URL %s", e));
 		}
 	}
 	
-	public JaxbUnmarshal(StringBuffer stringbuffer, Class<?> classType) {
+	public JaxbUnmarshal(StringBuffer stringbuffer, Class[] classType) {
 		logger.debug(String.format("read StringBuffer %s", stringbuffer));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 		    
 		    data = ((JAXBElement<Object>) u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())))).getValue();
-		    jaxbElement = u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())), classType);
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal StringBuffer %s", e));
 		}	
@@ -107,14 +97,13 @@ public class JaxbUnmarshal {
 		    Unmarshaller unmarshaller = JAXBContext.newInstance(classType).createUnmarshaller();
 		    
 		    data =  ((JAXBElement<Object>) unmarshaller.unmarshal(xmlSource, classType)).getValue();			
-		    jaxbElement = unmarshaller.unmarshal(xmlSource, classType);
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal Node %s", e));
 		}			
 	}
 	
 	@SuppressWarnings("deprecation")
-	public JaxbUnmarshal(SAXSource saxSource, Class<?> classType) {
+	public JaxbUnmarshal(SAXSource saxSource, Class[] classType) {
 		logger.debug(String.format("read SAXSource %s", saxSource));
 		try {			
 			// configure a validating SAX2.0 parser (Xerces2)
@@ -156,7 +145,6 @@ public class JaxbUnmarshal {
 
 			// unmarshal
 			data = ((JAXBElement<Object>) u.unmarshal(saxSource)).getValue();
-			jaxbElement = u.unmarshal(saxSource, classType);
 			
 			// check for events
 			if( vec.hasEvents() ) {
@@ -168,29 +156,25 @@ public class JaxbUnmarshal {
 	}
 	
 	
-	public JaxbUnmarshal(XMLStreamReader xmlStreamReader, Class<?> classType) {
+	public JaxbUnmarshal(XMLStreamReader xmlStreamReader, Class[] classType) {
 		logger.debug(String.format("read XMLStreamReader %s", xmlStreamReader));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 
 		    data = u.unmarshal( xmlStreamReader );
-		    jaxbElement = new JAXBElement(
-		    		new QName(classType.getSimpleName()), classType, data);
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLStreamReader %s", e));
 		}		
 	}
 
-	public JaxbUnmarshal(XMLEventReader xmlEventReader, Class<?> classType) {
+	public JaxbUnmarshal(XMLEventReader xmlEventReader, Class[] classType) {
 		logger.debug(String.format("read XMLEventReader %s", xmlEventReader));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 
 		    data = ((JAXBElement<Object>) u.unmarshal(xmlEventReader)).getValue();
-		    jaxbElement = new JAXBElement(
-		    		new QName(classType.getSimpleName()), classType, data);
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLEventReader %s", e));
 		}			
@@ -198,10 +182,6 @@ public class JaxbUnmarshal {
 	
 	public Object getObject() {
 		return data;
-	}
-	
-	public JAXBElement<?> getJaxbElement() {
-		return jaxbElement;
 	}
 	
 }

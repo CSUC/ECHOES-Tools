@@ -106,10 +106,14 @@
 					<xsl:if test="$a2a:SourceIndexDate != ''">
 						<xsl:variable name="fromTo"
 							select="distinct-values(($a2a:SourceIndexDate/a2a:From,$a2a:SourceIndexDate/a2a:To))" />
+
 						<xsl:for-each select="$fromTo">
-							<dc:date>
-								<xsl:value-of select="." />
-							</dc:date>
+							<xsl:if test="$fromTo castable as xs:date">
+								<xsl:variable name="dt" as="xs:date" select="xs:date($fromTo)" />
+								<dc:date>
+									<xsl:value-of select="$dt" />
+								</dc:date>
+							</xsl:if>
 						</xsl:for-each>
 					</xsl:if>
 
@@ -303,7 +307,7 @@
 								</xsl:attribute>
 							</edm:hasMet>
 						</xsl:if>
-						
+
 						<xsl:if test="$a2a:RelationEP != ''">
 							<xsl:for-each select="$a2a:RelationEP">
 								<xsl:variable name="PersonKeyRef" select="a2a:PersonKeyRef" />
@@ -317,7 +321,7 @@
 								</xsl:if>
 							</xsl:for-each>
 						</xsl:if>
-							
+
 						<xsl:if test="a2a:BirthDate != ''">
 							<xsl:variable name="a2a:Year" select="a2a:BirthDate/a2a:Year" />
 							<xsl:variable name="a2a:Month" select="a2a:BirthDate/a2a:Month" />
@@ -510,7 +514,7 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</edm:aggregatedCHO>
-							
+
 							<xsl:if test="$dataProvider != ''">
 								<edm:dataProvider>
 									<xsl:value-of select="$dataProvider" />
@@ -541,7 +545,83 @@
 									</xsl:if>
 								</xsl:for-each>
 							</xsl:if>
-							
+
+							<xsl:if test="$distinctPlace != ''">
+								<xsl:for-each select="$distinctPlace">
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+											select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />									
+										</xsl:attribute>
+									</edm:hasView>
+								</xsl:for-each>
+							</xsl:if>
+
+
+							<xsl:if test="$a2a:Person != ''">
+								<xsl:for-each select="$a2a:Person">
+									<xsl:variable name="pid" select="./@pid" />
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+											select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
+										</xsl:attribute>
+									</edm:hasView>
+								</xsl:for-each>
+							</xsl:if>
+
+							<!-- skos:Concept -->
+							<xsl:if test="$a2a:SourceType != ''">
+								<xsl:for-each select="$a2a:SourceType">
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">									
+											<xsl:value-of
+											select="iri-to-uri(concat('Concept:', replace(text(), '\s','_')))" />
+										</xsl:attribute>
+									</edm:hasView>
+								</xsl:for-each>
+							</xsl:if>
+
+							<!-- skos:Concept (Relation Type) -->
+							<xsl:if test="$a2a:RelationEP != ''">
+								<xsl:for-each select="$a2a:RelationEP">
+									<xsl:if test="a2a:RelationType != ''">
+										<edm:hasView>
+											<xsl:attribute name="rdf:resource">									
+												<xsl:value-of
+												select="iri-to-uri(concat('Concept:', replace(a2a:RelationType, '\s','_')))" />
+											</xsl:attribute>
+										</edm:hasView>
+									</xsl:if>
+								</xsl:for-each>
+							</xsl:if>
+
+							<!-- edm:TimeSpan -->
+							<xsl:if test="$a2a:Event != ''">
+								<xsl:if test="$a2a:Event/a2a:EventDate castable as xs:gYear">
+									<xsl:variable name="dt" as="xs:gYear"
+										select="xs:gYear($a2a:Event/a2a:EventDate)" />
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat('TimeSpan:', $dt)" />	
+										</xsl:attribute>
+									</edm:hasView>
+								</xsl:if>
+							</xsl:if>
+
+							<!-- Relation TimeSpan -->
+							<xsl:if test="$a2a:SourceIndexDate != ''">
+								<xsl:variable name="from" select="$a2a:SourceIndexDate/a2a:From" />
+								<xsl:if test="$from castable as xs:date">
+									<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
+										</xsl:attribute>
+									</edm:hasView>
+								</xsl:if>
+							</xsl:if>
+
 							<edm:isShownAt>
 								<xsl:choose>
 									<xsl:when test="starts-with(., 'http')">
@@ -556,7 +636,7 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</edm:isShownAt>
-							
+
 							<xsl:if test="$dataProvider  != ''">
 								<edm:provider>
 									<xsl:value-of select="$dataProvider" />
@@ -605,6 +685,84 @@
 								<xsl:value-of select="$dataProvider" />
 							</edm:dataProvider>
 						</xsl:if>
+
+						<xsl:if test="$distinctPlace != ''">
+							<xsl:for-each select="$distinctPlace">
+								<edm:hasView>
+									<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+										select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />									
+										</xsl:attribute>
+								</edm:hasView>
+							</xsl:for-each>
+						</xsl:if>
+
+
+						<xsl:if test="$a2a:Person != ''">
+							<xsl:for-each select="$a2a:Person">
+								<xsl:variable name="pid" select="./@pid" />
+								<edm:hasView>
+									<xsl:attribute name="rdf:resource">
+											<xsl:value-of
+										select="iri-to-uri(concat('Agent:', replace($pid, '\s','_')))" />									
+										</xsl:attribute>
+								</edm:hasView>
+							</xsl:for-each>
+						</xsl:if>
+
+						<!-- skos:Concept -->
+						<xsl:if test="$a2a:SourceType != ''">
+							<xsl:for-each select="$a2a:SourceType">
+								<edm:hasView>
+									<xsl:attribute name="rdf:resource">									
+											<xsl:value-of
+										select="iri-to-uri(concat('Concept:', replace(text(), '\s','_')))" />
+										</xsl:attribute>
+								</edm:hasView>
+							</xsl:for-each>
+						</xsl:if>
+
+						<!-- skos:Concept (Relation Type) -->
+						<xsl:if test="$a2a:RelationEP != ''">
+							<xsl:for-each select="$a2a:RelationEP">
+								<xsl:if test="a2a:RelationType != ''">
+									<edm:hasView>
+										<xsl:attribute name="rdf:resource">									
+												<xsl:value-of
+											select="iri-to-uri(concat('Concept:', replace(a2a:RelationType, '\s','_')))" />
+											</xsl:attribute>
+									</edm:hasView>
+								</xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+
+						<!-- edm:TimeSpan -->
+						<xsl:if test="$a2a:Event != ''">
+							<xsl:if test="$a2a:Event/a2a:EventDate castable as xs:gYear">
+								<xsl:variable name="dt" as="xs:gYear"
+									select="xs:gYear($a2a:Event/a2a:EventDate)" />
+								<edm:hasView>
+									<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat('TimeSpan:', $dt)" />	
+										</xsl:attribute>
+								</edm:hasView>
+							</xsl:if>
+						</xsl:if>
+
+						<!-- Relation TimeSpan -->
+						<xsl:if test="$a2a:SourceIndexDate != ''">
+							<xsl:variable name="from" select="$a2a:SourceIndexDate/a2a:From" />
+							<xsl:if test="$from castable as xs:date">
+								<xsl:variable name="dt" as="xs:date" select="xs:date($from)" />
+								<edm:hasView>
+									<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat('TimeSpan:', year-from-date($dt))" />	
+										</xsl:attribute>
+								</edm:hasView>
+							</xsl:if>
+						</xsl:if>
+
+
 						<xsl:if test="$dataProvider  != ''">
 							<edm:provider>
 								<xsl:value-of select="$dataProvider" />

@@ -4,8 +4,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,18 +14,25 @@ import java.util.Objects;
 
 import org.Recollect.Core.client.HttpOAIClient;
 import org.Recollect.Core.client.OAIClient;
+import org.Recollect.Core.download.DownloadJaxb;
+import org.Recollect.Core.download.DownloadNode;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
+import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.Granularity;
+import org.Recollect.Core.util.TimeUtils;
 import org.Recollect.Core.util.UTCDateProvider;
 import org.Recollect.Core.util.Verb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openarchives.oai._2.HeaderType;
 import org.openarchives.oai._2.IdentifyType;
-import org.openarchives.oai._2.RecordType;
+import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2.SetType;
+import org.openarchives.oai._2_0.oai_dc.OaiDcType;
+
+import nl.mindbus.a2a.A2AType;
 
 /**
  * 
@@ -40,31 +47,33 @@ public class Main {
 
 	private static Instant inici = Instant.now();
 
-	private static String host = null;
-	private static String verb = null;
-	private static String identifier = null;
-	private static String metadataPrefix = null;
-	private static String from = null;
-	private static String until = null;
-	private static String set = null;
-	private static String granularity = null;
-	private static String resumptionToken = null;
+	private static String host;
+	private static String verb;
+	private static String identifier;
+	private static String metadataPrefix;
+	private static String from;
+	private static String until;
+	private static String set;
+	private static String granularity;
+	private static String resumptionToken;
 
 	private static String out = null;
-	private static String edmType = null;
-	private static String provider = null;
+
+	private static String edmType;
+	private static String provider;
+	private static String rights;
+	private static String language = "und";
+	private static String dataProvider;
 
 	private static Path pathWithSetSpec;
-	private static String xslt = null;
-
-	private static String language = "und";
+	private static String xslt;
 
 	private static UTCDateProvider dateProvider = new UTCDateProvider();;
 
 	private static OAIClient oaiClient;
 	private static Recollect recollect;
 
-	private static Map<String, String> xsltProperties;
+	private static Map<String, String> properties;
 
 	/**
 	 * 
@@ -92,6 +101,10 @@ public class Main {
 					granularity = args[i + 1];
 				if (args[i].equals("--resumptionToken"))
 					resumptionToken = args[i + 1];
+				if (args[i].equals("--dataProvider"))
+					dataProvider = args[i + 1];
+				if (args[i].equals("--rights"))
+					rights = args[i + 1];
 
 				if (args[i].equals("--xslt"))
 					xslt = args[i + 1];
@@ -131,7 +144,7 @@ public class Main {
 				logger.error(String.format("select valid verb: %s",
 						"Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords"));
 			}
-			logger.info(String.format("End %s", duration(inici)));
+			logger.info(String.format("End %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
 		} else
 			logger.error(
 					"--host [host] --verb [Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords]");
@@ -148,13 +161,13 @@ public class Main {
 
 		oaiClient = new HttpOAIClient(host);
 		recollect = new Recollect(oaiClient);
-		
-		xsltProperties = new HashMap<String, String>();
-		xsltProperties.put("edmType", edmType);
-		xsltProperties.put("dataProvider", provider);
 
-		if (Objects.nonNull(language))
-			xsltProperties.put("language", language);
+		properties = new HashMap<String, String>();
+		properties.put("edmType", edmType);
+		properties.put("provider", provider);
+		properties.put("dataProvider", dataProvider);
+		properties.put("language", language);
+		properties.put("rights", rights);
 
 		if (Objects.isNull(set)) {
 			ListSets().forEachRemaining(setType -> {
@@ -169,8 +182,8 @@ public class Main {
 	 * 
 	 */
 	private static void Identify() {
-		OAIClient oaiClient = new HttpOAIClient(host);
-		Recollect recollect = new Recollect(oaiClient);
+		oaiClient = new HttpOAIClient(host);
+		recollect = new Recollect(oaiClient);
 
 		IdentifyType identify = recollect.identify();
 
@@ -186,8 +199,8 @@ public class Main {
 	 * 
 	 */
 	private static void ListMetadataFormats() {
-		OAIClient oaiClient = new HttpOAIClient(host);
-		Recollect recollect = new Recollect(oaiClient);
+		oaiClient = new HttpOAIClient(host);
+		recollect = new Recollect(oaiClient);
 
 		recollect.listMetadataFormats().forEachRemaining(metadataFormatType -> {
 			logger.info(String.format("metadataPrefix: %s\nschema: %s\nmetadataNamespace: %s\n",
@@ -227,9 +240,12 @@ public class Main {
 		if (!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
 			throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
 
-		xsltProperties = new HashMap<String, String>();
-		xsltProperties.put("edmType", edmType);
-		xsltProperties.put("dataProvider", provider);
+		properties = new HashMap<String, String>();
+		properties.put("edmType", edmType);
+		properties.put("provider", provider);
+		properties.put("dataProvider", dataProvider);
+		properties.put("language", language);
+		properties.put("rights", rights);
 
 		oaiClient = new HttpOAIClient(host);
 		recollect = new Recollect(oaiClient);
@@ -241,25 +257,34 @@ public class Main {
 		if (Objects.nonNull(out))
 			pathWithSetSpec = Files.createDirectories(Paths.get(out));
 
-		RecordType record = recollect.getRecord(getRecordParameters);
-
 		try {
-			DownloadListRecordData downloadData;
-			if (Objects.nonNull(pathWithSetSpec)) {
-				if (Objects.nonNull(xslt))
-					downloadData = new DownloadListRecordData(pathWithSetSpec, xslt, xsltProperties);
+			if (Objects.nonNull(xslt)) {
+				DownloadNode downloadData = null;
+				if (Objects.nonNull(out))
+					downloadData = new DownloadNode(pathWithSetSpec, xslt, properties);
 				else
-					downloadData = new DownloadListRecordData(pathWithSetSpec);
-			} else {
-				if (Objects.nonNull(xslt))
-					downloadData = new DownloadListRecordData(xslt, xsltProperties);
-				else
-					downloadData = new DownloadListRecordData();
-			}
-			downloadData.executeWithNode(record);
+					downloadData = new DownloadNode(xslt, properties);
 
-			logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s", oaiClient.getURL(),
-					getRecordParameters.getIdentifier(), downloadData.getStatus()));
+				downloadData.execute(
+						recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, OaiDcType.class }));
+
+				logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s", oaiClient.getURL(),
+						getRecordParameters.getIdentifier(), downloadData.getStatus()));
+			} else {
+				DownloadJaxb downloadData = null;
+
+				if (Objects.nonNull(out))
+					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class });
+				else
+					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class });
+
+				downloadData.execute(
+						recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, OaiDcType.class }),
+						properties);
+
+				logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s", oaiClient.getURL(),
+						getRecordParameters.getIdentifier(), downloadData.getStatus()));
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -270,8 +295,8 @@ public class Main {
 	 * @throws Exception
 	 */
 	private static void ListIdentifiers() throws Exception {
-		OAIClient oaiClient = new HttpOAIClient(host);
-		Recollect recollect = new Recollect(oaiClient);
+		oaiClient = new HttpOAIClient(host);
+		recollect = new Recollect(oaiClient);
 
 		// Check parameters
 		if (Objects.isNull(metadataPrefix))
@@ -299,6 +324,7 @@ public class Main {
 	 * @param s
 	 */
 	private static void downloadListRecords(String s) {
+		properties.put("set", s);
 		try {
 			ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
 			listRecordsParameters.withMetadataPrefix(metadataPrefix);
@@ -327,39 +353,38 @@ public class Main {
 			if (Objects.nonNull(out)) {
 				if (Objects.nonNull(s))
 					pathWithSetSpec = Files
-							.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));				
+							.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
 			}
 
-			DownloadListRecordData downloadData = null;
-			if (Objects.nonNull(pathWithSetSpec)) {
-				if (Objects.nonNull(xslt))
-					downloadData = new DownloadListRecordData(pathWithSetSpec, xslt, xsltProperties);
+			if (Objects.nonNull(xslt)) {
+				DownloadNode downloadData = null;
+				if (Objects.nonNull(out))
+					downloadData = new DownloadNode(pathWithSetSpec, xslt, properties);
 				else
-					downloadData = new DownloadListRecordData(pathWithSetSpec);
+					downloadData = new DownloadNode(xslt, properties);
+
+				downloadData.execute(recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class }));
+
+				logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s", oaiClient.getURL(),
+						listRecordsParameters.getSetSpec(), downloadData.getStatus()));
 			} else {
-				if (Objects.nonNull(xslt))
-					downloadData = new DownloadListRecordData(xslt, xsltProperties);
+				DownloadJaxb downloadData = null;
+
+				if (Objects.nonNull(out))
+					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class });
 				else
-					downloadData = new DownloadListRecordData();
+					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class });
+
+				downloadData.execute(
+						recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class, A2AType.class }),
+						properties);
+
+				logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s", oaiClient.getURL(),
+						listRecordsParameters.getSetSpec(), downloadData.getStatus()));
 			}
-
-			downloadData.executeWithNode(recollect.listRecords(listRecordsParameters));
-
-			logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s", oaiClient.getURL(),
-					listRecordsParameters.getSetSpec(), downloadData.getStatus()));
-
 		} catch (Exception e) {
 			logger.error(e);
 		}
-	}
-
-	/**
-	 * 
-	 * @param inici
-	 * @return
-	 */
-	public static String duration(Instant inici) {
-		long diff = Duration.between(inici, Instant.now()).getSeconds();
-		return String.format("%02d:%02d:%02d", diff / 3600, diff % 3600 / 60, diff % 60);
+		Garbage.gc();
 	}
 }

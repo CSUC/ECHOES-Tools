@@ -3,8 +3,6 @@
  */
 package org.Recollect.Core.handler;
 
-
-
 import static org.Recollect.Core.parameters.Parameters.parameters;
 
 import java.io.InputStream;
@@ -29,56 +27,58 @@ import org.openarchives.oai._2.RecordType;
 public class ListRecordHandler implements Source<RecordType> {
 
 	private static Logger logger = LogManager.getLogger(ListRecordHandler.class);
-	
+
 	private ListRecordsParameters parameters;
-    private OAIClient client;
-    private String resumptionToken;
+	private OAIClient client;
+	private String resumptionToken;
 	private boolean ended = false;
-	
-	
-	public ListRecordHandler(OAIClient client, ListRecordsParameters parameters) {
+
+	private Class<?>[] classType;
+
+	public ListRecordHandler(OAIClient client, ListRecordsParameters parameters, Class<?>[] classType) {
 		this.client = client;
 		this.parameters = parameters;
 		this.resumptionToken = parameters.getResumptionToken();
+
+		this.classType = classType;
 	}
-	
+
 	@Override
 	public List<RecordType> nextIteration() {
-		 InputStream stream = null;	
-		 try {			 
-			 if (resumptionToken == null) { // First call
-				 stream = client.execute(parameters()
-							 .withVerb(Type.ListRecords)
-							 .include(parameters));
-			 }else {
-				 stream = client.execute(parameters()
-	                        .withVerb(Type.ListRecords)
-	                        .include(parameters)
-	                        .withResumptionToken(resumptionToken));
-			 }
-			 
-			 OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, OAIPMHtype.class).getObject();
-			 
-			 if(!oai.getError().isEmpty()) {				
-				 oai.getError().stream().forEach(errorType->{
-					 logger.info(String.format("[HOST] %s [SET] %s [CODE] %s [VALUE] %s", client.getURL(), parameters.getSetSpec(), errorType.getCode(), errorType.getValue()));
-				 });
-			 }
-			
-			 if(Objects.nonNull(oai.getListRecords().getResumptionToken())){
-				 if(!oai.getListRecords().getResumptionToken().getValue().isEmpty()) {
-					 resumptionToken = oai.getListRecords().getResumptionToken().getValue();
-				 }else ended = true;
-				 
-			 }else ended = true;
-			 stream.close();
-			 return oai.getListRecords().getRecord();				
-		 }catch(Exception e) {			 
-			 ended = true;
-			 return null;
-		 }finally {
+		InputStream stream = null;
+		try {
+			if (resumptionToken == null) { // First call
+				stream = client.execute(parameters().withVerb(Type.ListRecords).include(parameters));
+			} else {
+				stream = client.execute(parameters().withVerb(Type.ListRecords).include(parameters)
+						.withResumptionToken(resumptionToken));
+			}
+
+			OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, classType).getObject();
+
+			if (!oai.getError().isEmpty()) {
+				oai.getError().stream().forEach(errorType -> {
+					logger.info(String.format("[HOST] %s [SET] %s [CODE] %s [VALUE] %s", client.getURL(),
+							parameters.getSetSpec(), errorType.getCode(), errorType.getValue()));
+				});
+			}
+
+			if (Objects.nonNull(oai.getListRecords().getResumptionToken())) {
+				if (!oai.getListRecords().getResumptionToken().getValue().isEmpty()) {
+					resumptionToken = oai.getListRecords().getResumptionToken().getValue();
+				} else
+					ended = true;
+
+			} else
+				ended = true;
+			stream.close();
+			return oai.getListRecords().getRecord();
+		} catch (Exception e) {
+			ended = true;
+			return null;
+		} finally {
 			IOUtils.closeQuietly(stream);
-		 }
+		}
 	}
 
 	@Override

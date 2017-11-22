@@ -34,13 +34,11 @@ public class Recollect {
 	private OAIClient client;
 	private IdentifyHandler identifyHandler;
 	private ListMetadataFormatsHandler listMetadataFormatsHandler;
-	private GetRecordHandler getRecordHandler;
 	
 	public Recollect(OAIClient oaiClient) {
 		this.client = oaiClient;
 		this.identifyHandler = new IdentifyHandler(oaiClient);
 		this.listMetadataFormatsHandler = new ListMetadataFormatsHandler(oaiClient);
-		getRecordHandler = new GetRecordHandler(oaiClient);
 	}
 	
 	
@@ -56,16 +54,16 @@ public class Recollect {
         return listMetadataFormatsHandler.handle(parameters).iterator();
     }
 
-    public RecordType getRecord (GetRecordParameters parameters) throws Exception {
+    public RecordType getRecord (GetRecordParameters parameters, Class<?>[] classType) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("GetRecord verb requires identifier and metadataPrefix parameters");
-        return getRecordHandler.handle(parameters);
+        return new GetRecordHandler(client, classType).handle(parameters);
     }
 
-    public Iterator<RecordType> listRecords (ListRecordsParameters parameters) throws Exception {
+    public Iterator<RecordType> listRecords (ListRecordsParameters parameters, Class<?>[] classType) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListRecords verb requires the metadataPrefix");
-        return new ItemIterator<RecordType>(new ListRecordHandler(client, parameters));
+        return new ItemIterator<RecordType>(new ListRecordHandler(client, parameters, classType));
     }
 
     public Iterator<HeaderType> listIdentifiers (ListIdentifiersParameters parameters) throws Exception {

@@ -17,7 +17,7 @@
       </Console>
    </Appenders>
    <Loggers>
-      <Logger name="org.Recollect.Core.DownloadListRecordData" level="debug" additivity="true">
+       <Logger name="org.Recollect.Core.download" level="debug" additivity="true">
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
@@ -65,7 +65,7 @@
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
-      <Root level="info" additivity="false">
+      <Root level="info" additivity="true">
          <appender-ref ref="Console" />
       </Root>
       

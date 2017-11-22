@@ -17,6 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openarchives.oai._2.MetadataFormatType;
 import org.openarchives.oai._2.OAIPMHtype;
+import org.openarchives.oai._2_0.oai_dc.OaiDcType;
+
+import nl.mindbus.a2a.A2AType;
 
 public class ListMetadataFormatsHandler {
    
@@ -36,7 +39,7 @@ public class ListMetadataFormatsHandler {
                     .withVerb(ListMetadataFormats)
                     .include(parameters));
             
-            OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, OAIPMHtype.class).getObject();
+            OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
             
             return oai.getListMetadataFormats().getMetadataFormat();
         } catch (Exception e) {        	
