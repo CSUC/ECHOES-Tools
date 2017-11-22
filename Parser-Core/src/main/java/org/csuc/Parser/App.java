@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import org.csuc.Parser.Core.parser.OAIParser;
 import org.csuc.Parser.Core.parser.ParserFactory;
 import org.csuc.Parser.Core.parser.Sax;
 import org.csuc.Parser.Core.parser.URLParser;
+import org.csuc.Parser.Core.util.TimeUtils;
 
 
 /**
@@ -102,7 +104,7 @@ public class App {
 					}					
 				}
 			}
-			logger.info(String.format("End %s", duration(inici)));
+			logger.info(String.format("End %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
 		}else logger.error("--type [oai, url, file]");		
 	}
 	
@@ -120,10 +122,5 @@ public class App {
 	private static void file() throws Exception {
 		if(Objects.isNull(file)) throw new Exception("file must not be null");
 		factoryELO = new OAIFactory(new Sax(new FileParser(file)));	
-	}
-		
-	public static String duration(Instant inici) {
-		long diff = Duration.between(inici, Instant.now()).getSeconds();
-	    return String.format("%02d:%02d:%02d", diff / 3600, diff % 3600 / 60, diff % 60);
 	}
 }
