@@ -135,11 +135,13 @@ public class DC2EDM extends RDF implements EDM {
 					c.setSource(source);
 					provided.getChoiceList().add(c);
 				} else if (localPart.equals("language")) {
-					Language language = new Language();
-					language.setString(LanguageCodes.convert(elementType.getValue().getValue()).xmlValue());
-					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-					c.setLanguage(language);
-					provided.getChoiceList().add(c);
+					if(Objects.nonNull(LanguageCodes.convert(elementType.getValue().getValue()))) {
+						Language language = new Language();
+						language.setString(LanguageCodes.convert(elementType.getValue().getValue()).xmlValue());
+						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+						c.setLanguage(language);
+						provided.getChoiceList().add(c);
+					}					
 				} else if (localPart.equals("format")) {
 					Format format = new Format();
 					format.setString(elementType.getValue().getValue());
@@ -197,11 +199,13 @@ public class DC2EDM extends RDF implements EDM {
 					System.err.println("UNKNOW metadataType");
 				}
 
-				Optional.of(properties).map(m -> m.get("edmType")).ifPresent(edmType -> {
-					Type2 t = new Type2();
-					t.setType(EdmType.convert(edmType));
+				Optional.ofNullable(properties).map(m -> m.get("edmType")).ifPresent(edmType -> {
+					if(Objects.nonNull(EdmType.convert(edmType))) {
+						Type2 t = new Type2();
+						t.setType(EdmType.convert(edmType));
 
-					provided.setType(t);
+						provided.setType(t);
+					}					
 				});
 			});
 		});
