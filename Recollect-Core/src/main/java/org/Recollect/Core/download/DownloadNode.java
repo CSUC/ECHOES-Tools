@@ -19,7 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.Recollect.Core.transformation.Transformations;
+import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.StatusCollection;
 import org.apache.commons.lang3.StringUtils;
@@ -139,12 +139,12 @@ public class DownloadNode extends StatusCollection {
 						else
 							out = IoBuilder.forLogger(DownloadNode.class).setLevel(Level.INFO).buildOutputStream();
 
-						Transformations tansformation;
+						XSLTTransformations tansformation;
 						if (Objects.nonNull(xsltProperties)) {
-							tansformation = new Transformations(xslt, out, xsltProperties);
+							tansformation = new XSLTTransformations(xslt, out, xsltProperties);
 							tansformation.addProperty("identifier", record.getHeader().getIdentifier());
 						} else
-							tansformation = new Transformations(xslt, out);
+							tansformation = new XSLTTransformations(xslt, out);
 						tansformation.transformationsFromString(result);
 
 						if (Objects.nonNull(path))

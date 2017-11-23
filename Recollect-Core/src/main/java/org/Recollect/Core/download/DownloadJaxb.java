@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -15,7 +16,8 @@ import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
 
-import org.Recollect.Core.formats.a2a.A2AtoEDM;
+import org.EDM.Transformations.formats.a2a.A2A2EDM;
+import org.EDM.Transformations.formats.dc.DC2EDM;
 import org.Recollect.Core.util.StatusCollection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -24,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2.StatusType;
+import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
 import nl.mindbus.a2a.A2AType;
 
@@ -101,31 +104,37 @@ public class DownloadJaxb extends StatusCollection {
 				totalDeletedRecord.incrementAndGet();
 				deletedRecord.add(record.getHeader().getIdentifier());
 			} else {
-				if (record.getMetadata().getAny() instanceof JAXBElement<?>) {
-					JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
-					try {
+				try {
+					if (record.getMetadata().getAny() instanceof JAXBElement<?>) {
+						JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
+						setOutputStream(record);
+
 						if (element.getDeclaredType().equals(A2AType.class)) {
-							Path file = Paths.get(path + File.separator
-									+ StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
-							if (Objects.nonNull(path))
-								out = new FileOutputStream(file.toFile());
-							else
-								out = IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream();
-
-							new A2AtoEDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties,
-									out).marshal();
-
+							new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties,
+									out).marshal(StandardCharsets.UTF_8, true);
 							totalDownloadRecord.incrementAndGet();
+						} else if (element.getDeclaredType().equals(OaiDcType.class)) {
+							new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties,
+									out).marshal(StandardCharsets.UTF_8, true);
 						} else
 							logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
-					} catch (FileNotFoundException exception) {
-						logger.error(String.format("Identifier %s Message %s", record.getHeader().getIdentifier(),
-								exception));
 					}
+				} catch (FileNotFoundException exception) {
+					logger.error(
+							String.format("Identifier %s Message %s", record.getHeader().getIdentifier(), exception));
 				}
 				totalReadRecord.incrementAndGet();
 			}
 		}
+	}
+
+	private void setOutputStream(RecordType record) throws FileNotFoundException {
+		Path file = Paths.get(
+				path + File.separator + StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
+		if (Objects.nonNull(path))
+			out = new FileOutputStream(file.toFile());
+		else
+			out = IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream();
 	}
 
 	public String getStatus() {

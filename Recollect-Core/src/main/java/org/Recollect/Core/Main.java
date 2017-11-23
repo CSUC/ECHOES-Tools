@@ -218,7 +218,10 @@ public class Main {
 		oaiClient = new HttpOAIClient(host);
 		recollect = new Recollect(oaiClient);
 
-		return recollect.listSets();
+		Iterator<SetType> sets = recollect.listSets();
+		sets.forEachRemaining(s->System.out.println(s.getSetSpec()));
+		
+		return sets;
 	}
 
 	/**
@@ -371,12 +374,12 @@ public class Main {
 				DownloadJaxb downloadData = null;
 
 				if (Objects.nonNull(out))
-					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class });
+					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class });
 				else
-					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class });
+					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class });
 
 				downloadData.execute(
-						recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class, A2AType.class }),
+						recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),
 						properties);
 
 				logger.info(String.format("[HOST] %s [SET] %s [MESSAGE] %s", oaiClient.getURL(),
