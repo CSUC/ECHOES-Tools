@@ -7,6 +7,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.EDM.Transformations.deserialize.JaxbUnmarshal;
 import org.junit.Test;
@@ -33,8 +34,11 @@ public class DC2EDMTest extends TestCase {
 		JaxbUnmarshal jxb = new JaxbUnmarshal(file, new Class[] { OaiDcType.class });
 		assertNotNull(jxb.getObject());
 
-		new DC2EDM("00000026-feb0-11e2-8fe8-3860770fff49:000207c4-26bd-11e3-a525-3cd92befe4f8",
-				(OaiDcType) jxb.getObject(), properties(), System.out).marshal(StandardCharsets.UTF_8, true);
+		DC2EDM dc =
+                new DC2EDM(UUID.randomUUID().toString(),
+				(OaiDcType) jxb.getObject(), properties(), System.out);
+        assertNotNull(dc);
+		dc.marshal(StandardCharsets.UTF_8, true);
 	}
 
 	public Map<String, String> properties() {

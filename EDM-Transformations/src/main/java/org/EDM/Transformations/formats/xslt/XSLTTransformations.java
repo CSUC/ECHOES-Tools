@@ -15,10 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -107,6 +105,32 @@ public class XSLTTransformations {
 
 		transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())),
 				new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));		 
+	}
+
+	/**
+	 *
+	 *  Ex: Source s = new DOMSource(null);
+	 *
+	 *
+	 * @param source
+	 * @throws UnsupportedEncodingException
+	 * @throws TransformerException
+	 * @throws IOException
+	 */
+	public void transformationsFromSource(Source source) throws UnsupportedEncodingException, TransformerException, IOException {
+		Transformer transformer = fact.newTransformer(xlsStreamSource);
+
+		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+		if (Objects.nonNull(xsltProperties)) {
+			xsltProperties.forEach((k, v) -> {
+				transformer.setParameter(k, v);
+			});
+		}
+
+		transformer.transform(source, new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
 	}
 	
 	/**
