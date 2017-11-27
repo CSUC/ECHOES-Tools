@@ -20,5 +20,6 @@
 		<module>metadata-schema-definitions-a2a</module>
 		<module>metadata-schema-definitions-oaipmh</module>
 		<module>metadata-schema-definitions-oaidc</module>
-  </modules>
+		<module>metadata-schema-definitions-ead</module>
+	</modules>
 </project>
