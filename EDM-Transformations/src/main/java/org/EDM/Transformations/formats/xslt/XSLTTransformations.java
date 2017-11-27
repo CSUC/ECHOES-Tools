@@ -32,9 +32,7 @@ public class XSLTTransformations {
 	
 	private OutputStream out;
 	private Map<String,String> xsltProperties = new HashMap<String,String>();
-	
-	
-	
+
 	public XSLTTransformations(String xslt, OutputStream out) throws Exception {
 		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
 		if(Objects.isNull(out)) throw new Exception("out must not be null");

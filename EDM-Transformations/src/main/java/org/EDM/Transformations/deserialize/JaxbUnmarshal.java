@@ -47,8 +47,14 @@ public class JaxbUnmarshal {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 			Unmarshaller u = jc.createUnmarshaller();
-			
-			data = ((JAXBElement<Object>) u.unmarshal(file)).getValue();			
+            u.setEventHandler(new ValidationHandler());
+
+			Object obj = u.unmarshal(file);
+
+			if(obj instanceof JAXBElement)
+				data = ((JAXBElement<Object>) u.unmarshal(file)).getValue();
+			else    data = obj;
+
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal file %s", e));
 		}	   
@@ -58,8 +64,14 @@ public class JaxbUnmarshal {
 		try {
 		    JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-		    
-		    data = ((JAXBElement<Object>) u.unmarshal(inputStream)).getValue();		    
+            u.setEventHandler(new ValidationHandler());
+
+            Object obj = u.unmarshal(inputStream);
+
+            if(obj instanceof JAXBElement)
+                data = ((JAXBElement<Object>) u.unmarshal(inputStream)).getValue();
+            else   data = obj;
+
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal InputStream %s", e));
 		}
@@ -71,8 +83,14 @@ public class JaxbUnmarshal {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-		    
-		    data = ((JAXBElement<Object>) u.unmarshal(url)).getValue();
+            u.setEventHandler(new ValidationHandler());
+
+            Object obj = u.unmarshal(url);
+
+            if(obj instanceof JAXBElement)
+                data = ((JAXBElement<Object>) u.unmarshal(url)).getValue();
+            else data = obj;
+
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal URL %s", e));
 		}
@@ -83,8 +101,14 @@ public class JaxbUnmarshal {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-		    
-		    data = ((JAXBElement<Object>) u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())))).getValue();
+            u.setEventHandler(new ValidationHandler());
+
+            Object obj = u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())));
+
+            if(obj instanceof JAXBElement)
+                data = ((JAXBElement<Object>) u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())))).getValue();
+            else data = obj;
+
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal StringBuffer %s", e));
 		}	
@@ -94,9 +118,15 @@ public class JaxbUnmarshal {
 		logger.debug(String.format("read Node %s", node));
 		try {			
 		    Source xmlSource = new DOMSource(node);
-		    Unmarshaller unmarshaller = JAXBContext.newInstance(classType).createUnmarshaller();
-		    
-		    data =  ((JAXBElement<Object>) unmarshaller.unmarshal(xmlSource, classType)).getValue();			
+		    Unmarshaller u = JAXBContext.newInstance(classType).createUnmarshaller();
+            u.setEventHandler(new ValidationHandler());
+
+            Object obj = u.unmarshal(xmlSource);
+
+            if(obj instanceof JAXBElement)
+                data =  ((JAXBElement<Object>) u.unmarshal(xmlSource, classType)).getValue();
+            else data = obj;
+
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal Node %s", e));
 		}			
@@ -144,8 +174,12 @@ public class JaxbUnmarshal {
 			u.setValidating( false );
 
 			// unmarshal
-			data = ((JAXBElement<Object>) u.unmarshal(saxSource)).getValue();
-			
+            Object obj = u.unmarshal(saxSource);
+
+            if(obj instanceof JAXBElement)
+                data = ((JAXBElement<Object>) u.unmarshal(saxSource)).getValue();
+			else data = obj;
+
 			// check for events
 			if( vec.hasEvents() ) {
 				// iterate over events
@@ -162,7 +196,12 @@ public class JaxbUnmarshal {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 
-		    data = u.unmarshal( xmlStreamReader );
+            Object obj = u.unmarshal(xmlStreamReader);
+
+            if(obj instanceof JAXBElement)
+                data = u.unmarshal( xmlStreamReader );
+            else data = obj;
+
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLStreamReader %s", e));
 		}		
@@ -174,7 +213,12 @@ public class JaxbUnmarshal {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 
-		    data = ((JAXBElement<Object>) u.unmarshal(xmlEventReader)).getValue();
+            Object obj = u.unmarshal(xmlEventReader);
+
+            if(obj instanceof JAXBElement)
+                data = ((JAXBElement<Object>) u.unmarshal(xmlEventReader)).getValue();
+            else data = obj;
+
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLEventReader %s", e));
 		}			
