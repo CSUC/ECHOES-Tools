@@ -107,8 +107,8 @@ public class DownloadJaxb extends StatusCollection {
 				try {
 					if (record.getMetadata().getAny() instanceof JAXBElement<?>) {
 						JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
+						
 						setOutputStream(record);
-
 						if (element.getDeclaredType().equals(A2AType.class)) {
 							new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties,
 									out).marshal(StandardCharsets.UTF_8, true);

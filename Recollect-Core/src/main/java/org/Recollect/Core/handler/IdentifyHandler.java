@@ -9,7 +9,7 @@ import static org.Recollect.Core.util.Verb.Type.Identify;
 import java.io.InputStream;
 
 import org.Recollect.Core.client.OAIClient;
-import org.Recollect.Core.deserialize.JaxbUnmarshal;
+import org.EDM.Transformations.deserialize.JaxbUnmarshal;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

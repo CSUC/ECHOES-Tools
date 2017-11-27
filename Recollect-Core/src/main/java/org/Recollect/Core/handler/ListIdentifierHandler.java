@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.Recollect.Core.client.OAIClient;
-import org.Recollect.Core.deserialize.JaxbUnmarshal;
+import org.EDM.Transformations.deserialize.JaxbUnmarshal;
 import org.Recollect.Core.util.Source;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.apache.commons.io.IOUtils;

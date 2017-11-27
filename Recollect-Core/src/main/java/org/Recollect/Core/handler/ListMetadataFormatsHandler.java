@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.Recollect.Core.client.OAIClient;
-import org.Recollect.Core.deserialize.JaxbUnmarshal;
+import org.EDM.Transformations.deserialize.JaxbUnmarshal;
 import org.Recollect.Core.parameters.ListMetadataParameters;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;

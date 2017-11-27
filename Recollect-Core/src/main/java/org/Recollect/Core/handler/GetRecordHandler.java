@@ -5,8 +5,8 @@ import static org.Recollect.Core.util.Verb.Type.GetRecord;
 
 import java.io.InputStream;
 
+import org.EDM.Transformations.deserialize.JaxbUnmarshal;
 import org.Recollect.Core.client.OAIClient;
-import org.Recollect.Core.deserialize.JaxbUnmarshal;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
