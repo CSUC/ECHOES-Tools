@@ -38,12 +38,12 @@
                         <configuration>
                             <schemaDirectory>src/main/resources</schemaDirectory>
                             <schemaIncludes>
-                                <include>ead.xsd</include>
+                                <include>apeEAD.xsd</include>
                             </schemaIncludes>
                             <bindingDirectory>src/main/resources</bindingDirectory>
-                            <bindingIncludes>
+                            <bindingExcludes>
                                 <include>ead-bindings.xjb</include>
-                            </bindingIncludes>
+                            </bindingExcludes>
 
                             <generateDirectory>target/generated-sources/xjc-ead</generateDirectory>
                             <extension>true</extension>

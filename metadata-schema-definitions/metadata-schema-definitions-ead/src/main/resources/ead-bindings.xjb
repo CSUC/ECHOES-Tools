@@ -4,7 +4,7 @@
         xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
         version="2.1">
 
-    <jxb:bindings schemaLocation="ead.xsd">
+    <jxb:bindings schemaLocation="apeEAD.xsd">
         <jxb:bindings node="//xs:schema/xs:complexType[@name='title']/xs:attribute[@name='type']">
             <jxb:property name="Type2"/>
         </jxb:bindings>
