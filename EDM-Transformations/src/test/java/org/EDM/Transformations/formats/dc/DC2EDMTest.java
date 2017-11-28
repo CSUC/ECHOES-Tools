@@ -33,6 +33,7 @@ public class DC2EDMTest extends TestCase {
 		assertTrue(file.exists());
 		JaxbUnmarshal jxb = new JaxbUnmarshal(file, new Class[] { OaiDcType.class });
 		assertNotNull(jxb.getObject());
+		assertTrue(jxb.isValidating());
 
 		DC2EDM dc =
                 new DC2EDM(UUID.randomUUID().toString(),

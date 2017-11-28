@@ -5,12 +5,10 @@ package org.EDM.Transformations.formats.a2a;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
+import nl.mindbus.a2a.*;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +53,6 @@ import eu.europeana.corelib.definitions.jibx.Type1;
 import eu.europeana.corelib.definitions.jibx.Type2;
 import eu.europeana.corelib.definitions.jibx.WebResourceType;
 import net.sf.saxon.functions.IriToUri;
-import nl.mindbus.a2a.A2AType;
 
 /**
  * @author amartinez
@@ -75,7 +72,6 @@ public class A2A2EDM extends RDF implements EDM {
 	/**
 	 * 
 	 * @param identifier
-	 * @param edmType
 	 * @param a2atype
 	 * @param properties
 	 * @param outs
@@ -98,27 +94,27 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmAgent() {
 		try {
-			Optional.ofNullable(a2a.getPerson()).map(m -> m.stream()).ifPresent(p -> {
-				p.forEach(person -> {
+			Optional.ofNullable(a2a.getPerson()).ifPresent((List<CtPerson> p) -> {
+				p.forEach((CtPerson person) -> {
 					Choice choice = new Choice();
 
 					AgentType a = new AgentType();
 
-					Optional.ofNullable(person.getPersonName()).map(m -> m.getPersonNameFirstName())
-							.ifPresent(present -> {
+					Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameFirstName)
+							.ifPresent((CtTransString present) -> {
 								PrefLabel preflabel = new PrefLabel();
 								preflabel.setString(present.getValue());
 								a.getPrefLabelList().add(preflabel);
 							});
 
-					Optional.ofNullable(person.getPersonName()).map(m -> m.getPersonNameLastName())
-							.ifPresent(present -> {
+					Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameLastName)
+							.ifPresent((CtTransString present) -> {
 								AltLabel altlabel = new AltLabel();
 								altlabel.setString(present.getValue());
 								a.getAltLabelList().add(altlabel);
 							});
 
-					Optional.ofNullable(person.getPid()).ifPresent(present -> {
+					Optional.ofNullable(person.getPid()).ifPresent((String present) -> {
 						identifiers.add(present);
 
 						a.setAbout(person.getPid());
@@ -131,7 +127,7 @@ public class A2A2EDM extends RDF implements EDM {
 						Resource resourceIsRelated = new Resource();
 						resourceIsRelated.setResource(IriToUri.iriToUri(String.format("Concept:%s",
 								StringUtils.deleteWhitespace(a2a.getRelationEP().stream()
-										.filter(f -> f.getPersonKeyRef().equals(person.getPid())).findFirst().get()
+										.filter((CtRelationEP f) -> f.getPersonKeyRef().equals(person.getPid())).findFirst().get()
 										.getRelationType())))
 								.toString());
 
@@ -140,7 +136,7 @@ public class A2A2EDM extends RDF implements EDM {
 						a.getIsRelatedToList().add(isRelated);
 					});
 
-					Optional.ofNullable(person.getResidence()).map(m -> m.getPlace()).ifPresent(present -> {
+					Optional.ofNullable(person.getResidence()).map(CtDetailPlace::getPlace).ifPresent(present -> {
 						HasMet residence = new HasMet();
 
 						residence.setResource(IriToUri
@@ -158,7 +154,7 @@ public class A2A2EDM extends RDF implements EDM {
 						a.setPlaceOfBirth(placeOfBirth);
 					});
 
-					Optional.ofNullable(person.getBirthDate()).filter(f -> Objects.nonNull(f.getYear())
+					Optional.ofNullable(person.getBirthDate()).filter((CtTransDate f) -> Objects.nonNull(f.getYear())
 							&& Objects.nonNull(f.getMonth()) && Objects.nonNull(f.getDay())).ifPresent(present -> {
 
 								DateOfBirth birth = new DateOfBirth();
@@ -167,14 +163,14 @@ public class A2A2EDM extends RDF implements EDM {
 								a.setDateOfBirth(birth);
 							});
 
-					Optional.ofNullable(person.getGender()).ifPresent(present -> {
+					Optional.ofNullable(person.getGender()).ifPresent((String present) -> {
 						Gender gender = new Gender();
 						gender.setString(present);
 						a.setGender(gender);
 					});
 
-					Optional.ofNullable(person.getProfession()).ifPresent(present -> {
-						present.stream().forEach(profession -> {
+					Optional.ofNullable(person.getProfession()).ifPresent((List<CtTransString> present) -> {
+						present.stream().forEach((CtTransString profession) -> {
 							ProfessionOrOccupation professionOrOccupation = new ProfessionOrOccupation();
 							professionOrOccupation.setString(profession.getValue());
 
@@ -194,13 +190,13 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmProvidedCHO() {
 		try {
-			Optional.ofNullable(a2a.getSource()).ifPresent(source -> {
+			Optional.ofNullable(a2a.getSource()).ifPresent((CtSource source) -> {
 
 				Choice choice = new Choice();
 
 				ProvidedCHOType provided = new ProvidedCHOType();
 
-				Optional.ofNullable(identifier).ifPresent(present -> {
+				Optional.ofNullable(identifier).ifPresent((String present) -> {
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 					String iriToUri = IriToUri
@@ -218,7 +214,7 @@ public class A2A2EDM extends RDF implements EDM {
 					provided.getChoiceList().add(c);
 				});
 
-				Optional.ofNullable(source.getSourcePlace()).map(m -> m.getPlace()).ifPresent(present -> {
+				Optional.ofNullable(source.getSourcePlace()).map(CtPlace::getPlace).ifPresent((CtTransString present) -> {
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 					Coverage coverage = new Coverage();
@@ -233,7 +229,7 @@ public class A2A2EDM extends RDF implements EDM {
 					provided.getChoiceList().add(c);
 				});
 
-				Optional.ofNullable(source.getSourceReference()).ifPresent(present -> {
+				Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 					Description description = new Description();
@@ -249,7 +245,7 @@ public class A2A2EDM extends RDF implements EDM {
 					provided.getChoiceList().add(c);
 				});
 
-				Optional.ofNullable(source.getSourceType()).ifPresent(present -> {
+				Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 					Type1 type = new Type1();
@@ -259,7 +255,7 @@ public class A2A2EDM extends RDF implements EDM {
 					provided.getChoiceList().add(c);
 				});
 
-				Optional.ofNullable(source.getSourceIndexDate()).ifPresent(present -> {
+				Optional.ofNullable(source.getSourceIndexDate()).ifPresent((CtIndexDate present) -> {
 					Set<String> setDate = new HashSet<String>();
 					setDate.add(present.getFrom().toString());
 					setDate.add(present.getTo().toString());
@@ -268,7 +264,7 @@ public class A2A2EDM extends RDF implements EDM {
 					setYear.add(present.getFrom().getYear());
 					setYear.add(present.getTo().getYear());
 
-					setDate.stream().filter(Objects::nonNull).forEach(d -> {
+					setDate.stream().filter(Objects::nonNull).forEach((String d) -> {
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 						Date date = new Date();
@@ -278,7 +274,7 @@ public class A2A2EDM extends RDF implements EDM {
 						provided.getChoiceList().add(c);
 					});
 
-					setYear.stream().filter(Objects::nonNull).forEach(y -> {
+					setYear.stream().filter(Objects::nonNull).forEach((Integer y) -> {
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 						Temporal temporal = new Temporal();
@@ -294,8 +290,8 @@ public class A2A2EDM extends RDF implements EDM {
 					});
 				});
 
-				Optional.ofNullable(a2a.getPerson()).map(m -> m.stream()).ifPresent(present -> {
-					present.map(m -> m.getPid()).forEach(person -> {
+				Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> {
+					present.map(CtPerson::getPid).forEach((String person) -> {
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
 						Contributor contributor = new Contributor();
@@ -310,7 +306,7 @@ public class A2A2EDM extends RDF implements EDM {
 					});
 				});
 
-				Optional.ofNullable(source.getSourceType()).ifPresent(present -> {
+				Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
 					IsRelatedTo isRelatedTo = new IsRelatedTo();
 					Resource resource = new Resource();
 					resource.setResource(IriToUri
@@ -321,7 +317,7 @@ public class A2A2EDM extends RDF implements EDM {
 					provided.getIsRelatedToList().add(isRelatedTo);
 				});
 
-				Optional.ofNullable(properties).map(m -> m.get("language")).ifPresent(present -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("language")).ifPresent((String present) -> {
 					if (Objects.nonNull(LanguageCodes.convert(present))) {
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
@@ -333,7 +329,7 @@ public class A2A2EDM extends RDF implements EDM {
 					}
 				});
 
-				Optional.ofNullable(properties).map(m -> m.get("edmType")).ifPresent(present -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String present) -> {
 					if (Objects.nonNull(EdmType.convert(present))) {
 						Type2 t = new Type2();
 						t.setType(EdmType.convert(present));
@@ -353,13 +349,13 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void skosConcept() {
 		try {
-			Optional.ofNullable(a2a.getRelationEP()).ifPresent(present -> {
-				present.forEach(relationType -> {
+			Optional.ofNullable(a2a.getRelationEP()).ifPresent((List<CtRelationEP> present) -> {
+				present.forEach((CtRelationEP relationType) -> {
 					eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
 
 					Concept concept = new Concept();
 
-					Optional.ofNullable(relationType.getRelationType()).ifPresent(type -> {
+					Optional.ofNullable(relationType.getRelationType()).ifPresent((String type) -> {
 						String iriToUri = IriToUri.iriToUri(String.format("Concept:%s",
 								StringUtils.deleteWhitespace(relationType.getRelationType()))).toString();
 
@@ -375,7 +371,7 @@ public class A2A2EDM extends RDF implements EDM {
 
 					});
 
-					Optional.ofNullable(relationType.getPersonKeyRef()).ifPresent(keyRef -> {
+					Optional.ofNullable(relationType.getPersonKeyRef()).ifPresent((String keyRef) -> {
 						eu.europeana.corelib.definitions.jibx.Concept.Choice c = new eu.europeana.corelib.definitions.jibx.Concept.Choice();
 						Related related = new Related();
 						related.setResource(IriToUri
@@ -397,58 +393,95 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmPlace() {
 		try {
-			Optional.ofNullable(a2a.getPerson()).map(m -> m.stream()).ifPresent(present -> {
-				present.forEach(person -> {
-					eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
-					Set<String> place = new HashSet<String>();
-					Optional.ofNullable(person.getResidence()).map(m -> m.getPlace()).ifPresent(p -> {
-						place.add(p.getValue());
+            Map<String, Set<String>> mapPlace = new HashMap<>();
+            eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
+
+			Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> {
+				present.forEach((CtPerson person) -> {
+					Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace p) ->{
+						Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
+                            mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+						});
+
+						Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
+                            mapPlace.computeIfAbsent("Province", (x -> new HashSet<String>())).add(province.getValue());
+						});
+
+						Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
+                            mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+						});
+
+						Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
+                            mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+						});
 					});
-					Optional.ofNullable(person.getBirthPlace()).map(m -> m.getPlace()).ifPresent(p -> {
-						place.add(p.getValue());
+
+                    Optional.ofNullable(person.getBirthPlace()).ifPresent((CtDetailPlace p) -> {
+                        Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
+                            mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+                        });
+
+                        Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
+                            mapPlace.computeIfAbsent("Province", ((String x) -> new HashSet<String>())).add(province.getValue());
+                        });
+
+                        Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
+                            mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+                        });
+
+                        Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
+                            mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+                        });
 					});
 
-					place.stream().filter(Objects::nonNull).forEach(p -> {
-						PlaceType placeType = new PlaceType();
-
-						String iriToUri = IriToUri.iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(p)))
-								.toString();
-
-						placeType.setAbout(iriToUri);
-
-						placeType.setAbout(iriToUri);
-						identifiers.add(iriToUri);
-
-						PrefLabel prefLabel = new PrefLabel();
-						prefLabel.setString(p);
-
-						placeType.getPrefLabelList().add(prefLabel);
-
-						choice.setPlace(placeType);
-						this.getChoiceList().add(choice);
-					});
 				});
 			});
 
-			Optional.ofNullable(a2a.getSource()).map(m -> m.getSourcePlace()).map(m -> m.getPlace()).ifPresent(present -> {
-				eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
+            Optional.ofNullable(a2a.getSource()).map(CtSource::getSourcePlace).ifPresent((CtPlace present) ->{
+                Optional.ofNullable(present.getCountry()).ifPresent((CtTransString country) ->{
+                    mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+                });
 
-				PlaceType placeType = new PlaceType();
+                Optional.ofNullable(present.getProvince()).ifPresent((CtTransString province) ->{
+                    mapPlace.computeIfAbsent("Province", ((String x) -> new HashSet<String>())).add(province.getValue());
+                });
 
-				String iriToUri = IriToUri
-						.iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue()))).toString();
+                Optional.ofNullable(present.getState()).ifPresent((CtTransString state) ->{
+                    mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+                });
 
-				placeType.setAbout(iriToUri);
-				identifiers.add(iriToUri);
+                Optional.ofNullable(present.getPlace()).ifPresent((CtTransString pl) ->{
+                    mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+                });
+            });
 
-				PrefLabel prefLabel = new PrefLabel();
-				prefLabel.setString(present.getValue());
+            mapPlace.entrySet().forEach((Map.Entry<String, Set<String>> entry) ->{
 
-				placeType.getPrefLabelList().add(prefLabel);
+                entry.getValue().forEach((String value) ->{
+                    PlaceType placeType = new PlaceType();
 
-				choice.setPlace(placeType);
-				this.getChoiceList().add(choice);
-			});
+                    String iriToUri = IriToUri.iriToUri(String.format("%s:%s", entry.getKey(), StringUtils.deleteWhitespace(value)))
+                            .toString();
+
+                    placeType.setAbout(iriToUri);
+
+                    placeType.setAbout(iriToUri);
+                    identifiers.add(iriToUri);
+
+                    PrefLabel prefLabel = new PrefLabel();
+                    prefLabel.setString(value);
+
+                    AltLabel altLabel = new AltLabel();
+                    altLabel.setString(entry.getKey());
+
+                    placeType.getAltLabelList().add(altLabel);
+
+                    placeType.getPrefLabelList().add(prefLabel);
+
+                    choice.setPlace(placeType);
+                    this.getChoiceList().add(choice);
+                });
+            });
 		}catch (Exception exception) {
 			logger.error(String.format("[%s] error generate edmPlace \n%s", identifier, exception));
 		}		
@@ -457,12 +490,12 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmTimeSpan() {
 		try {
-			Optional.ofNullable(a2a.getSource()).map(m -> m.getSourceIndexDate()).ifPresent(present -> {
+			Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceIndexDate).ifPresent((CtIndexDate present) -> {
 				Set<Integer> setYear = new HashSet<Integer>();
 				setYear.add(present.getFrom().getYear());
 				setYear.add(present.getTo().getYear());
 
-				setYear.stream().filter(Objects::nonNull).forEach(y -> {
+				setYear.stream().filter(Objects::nonNull).forEach((Integer y) -> {
 					eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
 					TimeSpanType timeSpan = new TimeSpanType();
 
@@ -491,9 +524,9 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmWebResource() {
 		try {
-			Optional.ofNullable(a2a.getSource()).map(m -> m.getSourceAvailableScans()).map(m -> m.getScan())
-			.ifPresent(present -> {
-				present.forEach(ctScan -> {
+			Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceAvailableScans).map(CtScans::getScan)
+			.ifPresent((List<CtScan> present) -> {
+				present.forEach((CtScan ctScan) -> {
 					eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
 					WebResourceType webResource = new WebResourceType();
 					String iriToUri = IriToUri.iriToUri(ctScan.getUri()).toString();
@@ -512,15 +545,15 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void oreAggregation() {
 		try {
-			Optional.ofNullable(a2a.getSource()).ifPresent(present -> {
+			Optional.ofNullable(a2a.getSource()).ifPresent((CtSource present) -> {
 				eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
 
 				Aggregation aggregation = new Aggregation();
 
 				if (Objects.nonNull(present.getSourceAvailableScans())) {
 					try {
-						Optional.ofNullable(present.getSourceAvailableScans().getScan()).ifPresent(p -> {
-							p.forEach(scan -> {
+						Optional.ofNullable(present.getSourceAvailableScans().getScan()).ifPresent((List<CtScan> p) -> {
+							p.forEach((CtScan scan) -> {
 								aggregation.setAbout(scan.getUriViewer());
 
 								AggregatedCHO aggregatedCHO = new AggregatedCHO();
@@ -558,34 +591,34 @@ public class A2A2EDM extends RDF implements EDM {
 					}
 				}
 
-				Optional.ofNullable(properties).map(m -> m.get("dataProvider")).ifPresent(data -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("dataProvider")).ifPresent((String data) -> {
 					DataProvider dataProvider = new DataProvider();
 					dataProvider.setString(data);
 
 					aggregation.setDataProvider(dataProvider);
 				});
 
-				Optional.ofNullable(properties).map(m -> m.get("provider")).ifPresent(data -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("provider")).ifPresent((String data) -> {
 					Provider provider = new Provider();
 					provider.setString(data);
 
 					aggregation.setProvider(provider);
 				});
 
-				Optional.ofNullable(properties).map(m -> m.get("rights")).ifPresent(data -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("rights")).ifPresent((String data) -> {
 					Rights1 rights = new Rights1();
 					rights.setResource(IriToUri.iriToUri(data).toString());
 					aggregation.setRights(rights);
 				});
 
-				Optional.ofNullable(properties).map(m -> m.get("set")).ifPresent(data -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("set")).ifPresent((String data) -> {
 					IntermediateProvider intermediate = new IntermediateProvider();
 					intermediate.setString(data);
 
 					aggregation.getIntermediateProviderList().add(intermediate);
 				});
 
-				identifiers.forEach(id -> {
+				identifiers.forEach((String id) -> {
 					HasView hasView = new HasView();
 					hasView.setResource(id);
 

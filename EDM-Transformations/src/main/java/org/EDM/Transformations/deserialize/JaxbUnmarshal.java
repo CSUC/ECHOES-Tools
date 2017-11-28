@@ -9,10 +9,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.bind.util.ValidationEventCollector;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -41,13 +38,14 @@ public class JaxbUnmarshal {
 	private static Logger logger = LogManager.getLogger(JaxbUnmarshal.class);
 	
 	private Object data;
-		
+    private ValidationHandler validationEvent = new ValidationHandler();
+
 	public JaxbUnmarshal(File file, Class[] classType) {
 		logger.debug(String.format("read file %s", file));
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 			Unmarshaller u = jc.createUnmarshaller();
-            u.setEventHandler(new ValidationHandler());
+            u.setEventHandler(validationEvent);
 
 			Object obj = u.unmarshal(file);
 
@@ -55,6 +53,7 @@ public class JaxbUnmarshal {
 				data = ((JAXBElement<Object>) u.unmarshal(file)).getValue();
 			else    data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal file %s", e));
 		}	   
@@ -64,7 +63,7 @@ public class JaxbUnmarshal {
 		try {
 		    JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-            u.setEventHandler(new ValidationHandler());
+            u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(inputStream);
 
@@ -72,6 +71,7 @@ public class JaxbUnmarshal {
                 data = ((JAXBElement<Object>) u.unmarshal(inputStream)).getValue();
             else   data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal InputStream %s", e));
 		}
@@ -83,7 +83,7 @@ public class JaxbUnmarshal {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-            u.setEventHandler(new ValidationHandler());
+            u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(url);
 
@@ -91,6 +91,7 @@ public class JaxbUnmarshal {
                 data = ((JAXBElement<Object>) u.unmarshal(url)).getValue();
             else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal URL %s", e));
 		}
@@ -101,7 +102,7 @@ public class JaxbUnmarshal {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
-            u.setEventHandler(new ValidationHandler());
+            u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())));
 
@@ -109,6 +110,7 @@ public class JaxbUnmarshal {
                 data = ((JAXBElement<Object>) u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())))).getValue();
             else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal StringBuffer %s", e));
 		}	
@@ -119,7 +121,7 @@ public class JaxbUnmarshal {
 		try {			
 		    Source xmlSource = new DOMSource(node);
 		    Unmarshaller u = JAXBContext.newInstance(classType).createUnmarshaller();
-            u.setEventHandler(new ValidationHandler());
+            u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(xmlSource);
 
@@ -127,6 +129,7 @@ public class JaxbUnmarshal {
                 data =  ((JAXBElement<Object>) u.unmarshal(xmlSource, classType)).getValue();
             else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal Node %s", e));
 		}			
@@ -180,6 +183,8 @@ public class JaxbUnmarshal {
                 data = ((JAXBElement<Object>) u.unmarshal(saxSource)).getValue();
 			else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
+
 			// check for events
 			if( vec.hasEvents() ) {
 				// iterate over events
@@ -202,6 +207,7 @@ public class JaxbUnmarshal {
                 data = u.unmarshal( xmlStreamReader );
             else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLStreamReader %s", e));
 		}		
@@ -219,6 +225,7 @@ public class JaxbUnmarshal {
                 data = ((JAXBElement<Object>) u.unmarshal(xmlEventReader)).getValue();
             else data = obj;
 
+            logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		}catch (JAXBException e) {
 			logger.error(String.format("JaxbUnmarshal XMLEventReader %s", e));
 		}			
@@ -227,5 +234,8 @@ public class JaxbUnmarshal {
 	public Object getObject() {
 		return data;
 	}
-	
+
+    public boolean isValidating() {
+        return validationEvent.isValidating();
+    }
 }

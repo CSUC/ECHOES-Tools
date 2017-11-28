@@ -5,13 +5,9 @@ package org.EDM.Transformations.formats.dc;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -47,6 +43,7 @@ import eu.europeana.corelib.definitions.jibx.Title;
 import eu.europeana.corelib.definitions.jibx.Type1;
 import eu.europeana.corelib.definitions.jibx.Type2;
 import net.sf.saxon.functions.IriToUri;
+import org.purl.dc.elements._1.ElementType;
 
 /**
  * @author amartinez
@@ -95,8 +92,8 @@ public class DC2EDM extends RDF implements EDM {
 			identifiers.add(iriToUri);
 		}
 
-		Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent(present -> {
-			present.forEach(elementType -> {
+		Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent((List<JAXBElement<ElementType>> present) -> {
+			present.forEach((JAXBElement<ElementType> elementType) -> {
 				String localPart = elementType.getName().getLocalPart();
 				if (localPart.equals("description")) {
 					Description description = new Description();
@@ -141,7 +138,7 @@ public class DC2EDM extends RDF implements EDM {
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 						c.setLanguage(language);
 						provided.getChoiceList().add(c);
-					}					
+					}
 				} else if (localPart.equals("format")) {
 					Format format = new Format();
 					format.setString(elementType.getValue().getValue());
@@ -199,13 +196,13 @@ public class DC2EDM extends RDF implements EDM {
 					System.err.println("UNKNOW metadataType");
 				}
 
-				Optional.ofNullable(properties).map(m -> m.get("edmType")).ifPresent(edmType -> {
+				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
 					if(Objects.nonNull(EdmType.convert(edmType))) {
 						Type2 t = new Type2();
 						t.setType(EdmType.convert(edmType));
 
 						provided.setType(t);
-					}					
+					}
 				});
 			});
 		});
@@ -227,7 +224,7 @@ public class DC2EDM extends RDF implements EDM {
 	@Override
 	public void edmTimeSpan() {
 		if (!dates.isEmpty()) {
-			dates.forEach(date -> {
+			dates.forEach((String date) -> {
 				try {
 					XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(date);
 
@@ -257,7 +254,7 @@ public class DC2EDM extends RDF implements EDM {
 	public void skosConcept() {
 		if (!subjects.isEmpty()) {
 			eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
-			subjects.forEach(subject -> {
+			subjects.forEach((String subject) -> {
 				Concept concept = new Concept();
 
 				String iriToUri = IriToUri.iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(subject)))

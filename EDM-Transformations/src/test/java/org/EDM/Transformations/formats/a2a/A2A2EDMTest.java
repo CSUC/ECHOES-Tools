@@ -33,6 +33,7 @@ public class A2A2EDMTest extends TestCase {
 		assertTrue(file.exists());
 		JaxbUnmarshal jxb = new JaxbUnmarshal(file, new Class[] { A2AType.class });
 		assertNotNull(jxb.getObject());
+		assertTrue(jxb.isValidating());
 
 		A2A2EDM a2a =
 				new A2A2EDM(UUID.randomUUID().toString(),
