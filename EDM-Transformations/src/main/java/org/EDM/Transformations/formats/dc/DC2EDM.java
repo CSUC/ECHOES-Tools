@@ -4,6 +4,7 @@
 package org.EDM.Transformations.formats.dc;
 
 import java.io.OutputStream;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -55,19 +56,17 @@ public class DC2EDM extends RDF implements EDM {
 
 	private OaiDcType oaiDcType;
 	private String identifier;
-	private OutputStream out;
 
-	private Map<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new HashMap<>();
 
-	private Set<String> identifiers = new HashSet<String>();
-	private Set<String> dates = new HashSet<String>();
-	private Set<String> subjects = new HashSet<String>();
+	private Set<String> identifiers = new HashSet<>();
+	private Set<String> dates = new HashSet<>();
+	private Set<String> subjects = new HashSet<>();
 
-	public DC2EDM(String identifier, OaiDcType dcType, Map<String, String> properties, OutputStream outs) {
+	public DC2EDM(String identifier, OaiDcType dcType, Map<String, String> properties) {
 		this.identifier = identifier;
 		this.oaiDcType = dcType;
 		this.properties = properties;
-		this.out = outs;
 
 		edmProvidedCHO();
 		edmAgent();
@@ -92,120 +91,150 @@ public class DC2EDM extends RDF implements EDM {
 			identifiers.add(iriToUri);
 		}
 
-		Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent((List<JAXBElement<ElementType>> present) -> {
-			present.forEach((JAXBElement<ElementType> elementType) -> {
-				String localPart = elementType.getName().getLocalPart();
-				if (localPart.equals("description")) {
+		Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent((List<JAXBElement<ElementType>> present) -> present.forEach((JAXBElement<ElementType> elementType) -> {
+            String localPart = elementType.getName().getLocalPart();
+
+			switch (localPart) {
+				case "description": {
 					Description description = new Description();
 					description.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setDescription(description);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("publisher")) {
+					break;
+				}
+				case "publisher": {
 					Publisher publisher = new Publisher();
 					publisher.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setPublisher(publisher);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("relation")) {
+					break;
+				}
+				case "relation": {
 					Relation relation = new Relation();
 					relation.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setRelation(relation);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("creator")) {
+					break;
+				}
+				case "creator": {
 					Creator creator = new Creator();
 					creator.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setCreator(creator);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("type")) {
+					break;
+				}
+				case "type": {
 					Type1 type = new Type1();
 					type.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setType(type);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("source")) {
+					break;
+				}
+				case "source": {
 					Source source = new Source();
 					source.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setSource(source);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("language")) {
-					if(Objects.nonNull(LanguageCodes.convert(elementType.getValue().getValue()))) {
+					break;
+				}
+				case "language":
+					if (Objects.nonNull(LanguageCodes.convert(elementType.getValue().getValue()))) {
 						Language language = new Language();
 						language.setString(LanguageCodes.convert(elementType.getValue().getValue()).xmlValue());
 						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 						c.setLanguage(language);
 						provided.getChoiceList().add(c);
 					}
-				} else if (localPart.equals("format")) {
+					break;
+				case "format": {
 					Format format = new Format();
 					format.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setFormat(format);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("coverage")) {
+					break;
+				}
+				case "coverage": {
 					Coverage coverage = new Coverage();
 					coverage.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setCoverage(coverage);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("identifier")) {
+					break;
+				}
+				case "identifier": {
 					Identifier id = new Identifier();
 					id.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setIdentifier(id);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("subject")) {
+					break;
+				}
+				case "subject": {
 					subjects.add(elementType.getValue().getValue());
 					Subject subject = new Subject();
 					subject.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setSubject(subject);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("date")) {
+					break;
+				}
+				case "date": {
 					dates.add(elementType.getValue().getValue());
 					Date date = new Date();
 					date.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setDate(date);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("rights")) {
+					break;
+				}
+				case "rights": {
 					Rights rights = new Rights();
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					Resource resource = new Resource();
 					resource.setResource(elementType.getValue().getValue());
 					rights.setResource(resource);
-					rights.setString(new String());
+					rights.setString("");
 					c.setRights(rights);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("title")) {
+					break;
+				}
+				case "title": {
 					Title title = new Title();
 					title.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setTitle(title);
 					provided.getChoiceList().add(c);
-				} else if (localPart.equals("contributor")) {
+					break;
+				}
+				case "contributor": {
 					Contributor contributor = new Contributor();
 					contributor.setString(elementType.getValue().getValue());
 					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 					c.setContributor(contributor);
 					provided.getChoiceList().add(c);
-				} else {
-					System.err.println("UNKNOW metadataType");
+					break;
 				}
+				default:
+					System.err.println("UNKNOW metadataType");
+					break;
+			}
 
-				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
-					if(Objects.nonNull(EdmType.convert(edmType))) {
-						Type2 t = new Type2();
-						t.setType(EdmType.convert(edmType));
+            Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
+                if(Objects.nonNull(EdmType.convert(edmType))) {
+                    Type2 t = new Type2();
+                    t.setType(EdmType.convert(edmType));
 
-						provided.setType(t);
-					}
-				});
-			});
-		});
+                    provided.setType(t);
+                }
+            });
+        }));
 
 		choice.setProvidedCHO(provided);
 		this.getChoiceList().add(choice);
@@ -287,9 +316,14 @@ public class DC2EDM extends RDF implements EDM {
 	}
 
 	@Override
-	public void marshal(Charset encoding, boolean alone) {
-		if (Objects.nonNull(this) && !Objects.equals(this, new RDF()))
-			JibxMarshall.marshall(this, encoding.displayName(), alone, out, RDF.class);
+	public void marshal(Charset encoding, boolean alone, OutputStream outs) {
+		if (!Objects.equals(this, new RDF()))
+			JibxMarshall.marshall(this, encoding.displayName(), alone, outs, RDF.class);
+	}
 
+	@Override
+	public void marshal(Charset encoding, boolean alone, Writer writer) {
+		if (!Objects.equals(this, new RDF()))
+			JibxMarshall.marshall(this, encoding.displayName(), alone, writer, RDF.class);
 	}
 }

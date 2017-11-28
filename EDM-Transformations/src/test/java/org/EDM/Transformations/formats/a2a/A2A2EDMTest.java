@@ -3,13 +3,15 @@
  */
 package org.EDM.Transformations.formats.a2a;
 
-import java.io.File;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import eu.europeana.corelib.definitions.jibx.RDF;
 import org.EDM.Transformations.deserialize.JaxbUnmarshal;
+import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -23,7 +25,7 @@ public class A2A2EDMTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link org.EDM.Transformations.formats.a2a.A2A2EDM#marshal(java.nio.charset.Charset, boolean)}.
+	 * {@link org.EDM.Transformations.formats.a2a.A2A2EDM#marshal(java.nio.charset.Charset, boolean, Writer writer)}.
 	 */
 	@Test
 	public void testMarshal() {
@@ -35,12 +37,21 @@ public class A2A2EDMTest extends TestCase {
 		assertNotNull(jxb.getObject());
 		assertTrue(jxb.isValidating());
 
-		A2A2EDM a2a =
-				new A2A2EDM(UUID.randomUUID().toString(),
-				(A2AType) jxb.getObject(), properties(), System.out);
-
+        StringWriter writer = new StringWriter();
+		A2A2EDM a2a = new A2A2EDM(UUID.randomUUID().toString(), (A2AType) jxb.getObject(), properties());
 		assertNotNull(a2a);
-		a2a.marshal(StandardCharsets.UTF_8, true);
+
+		a2a.marshal(StandardCharsets.UTF_8, true, writer);
+        a2a.marshal(StandardCharsets.UTF_8, true, System.out);
+
+        assertNotNull(writer);
+
+        Reader reader = new StringReader(writer.toString());
+        JibxUnMarshall jibx = new JibxUnMarshall(reader, RDF.class);
+
+        assertNotNull(jibx);
+        assertNotNull(jibx.getElement());
+        assertNull(jibx.getError());
 	}
 
 	public Map<String, String> properties() {

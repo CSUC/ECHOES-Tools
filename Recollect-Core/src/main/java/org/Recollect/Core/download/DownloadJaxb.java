@@ -110,12 +110,12 @@ public class DownloadJaxb extends StatusCollection {
 						
 						setOutputStream(record);
 						if (element.getDeclaredType().equals(A2AType.class)) {
-							new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties,
-									out).marshal(StandardCharsets.UTF_8, true);
+							new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties)
+									.marshal(StandardCharsets.UTF_8, true, out);
 							totalDownloadRecord.incrementAndGet();
 						} else if (element.getDeclaredType().equals(OaiDcType.class)) {
-							new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties,
-									out).marshal(StandardCharsets.UTF_8, true);
+							new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties)
+									.marshal(StandardCharsets.UTF_8, true, out);
 						} else
 							logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
 					}

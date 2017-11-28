@@ -4,6 +4,7 @@
 package org.EDM.Transformations.formats.a2a;
 
 import java.io.OutputStream;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Stream;
@@ -64,23 +65,20 @@ public class A2A2EDM extends RDF implements EDM {
 
 	private A2AType a2a;
 	private String identifier;
-	private OutputStream out;
 
-	private Set<String> identifiers = new HashSet<String>();
+	private Set<String> identifiers = new HashSet<>();
 	private Map<String, String> properties;
 
 	/**
-	 * 
+	 *
 	 * @param identifier
 	 * @param a2atype
 	 * @param properties
-	 * @param outs
 	 */
-	public A2A2EDM(String identifier, A2AType a2atype, Map<String, String> properties, OutputStream outs) {
+	public A2A2EDM(String identifier, A2AType a2atype, Map<String, String> properties) {
 		this.identifier = identifier;
 		this.a2a = a2atype;
 		this.properties = properties;
-		this.out = outs;
 
 		edmProvidedCHO();
 		edmAgent();
@@ -94,94 +92,90 @@ public class A2A2EDM extends RDF implements EDM {
 	@Override
 	public void edmAgent() {
 		try {
-			Optional.ofNullable(a2a.getPerson()).ifPresent((List<CtPerson> p) -> {
-				p.forEach((CtPerson person) -> {
-					Choice choice = new Choice();
+			Optional.ofNullable(a2a.getPerson()).ifPresent((List<CtPerson> p) -> p.forEach((CtPerson person) -> {
+                Choice choice = new Choice();
 
-					AgentType a = new AgentType();
+                AgentType a = new AgentType();
 
-					Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameFirstName)
-							.ifPresent((CtTransString present) -> {
-								PrefLabel preflabel = new PrefLabel();
-								preflabel.setString(present.getValue());
-								a.getPrefLabelList().add(preflabel);
-							});
+                Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameFirstName)
+                        .ifPresent((CtTransString present) -> {
+                            PrefLabel preflabel = new PrefLabel();
+                            preflabel.setString(present.getValue());
+                            a.getPrefLabelList().add(preflabel);
+                        });
 
-					Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameLastName)
-							.ifPresent((CtTransString present) -> {
-								AltLabel altlabel = new AltLabel();
-								altlabel.setString(present.getValue());
-								a.getAltLabelList().add(altlabel);
-							});
+                Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameLastName)
+                        .ifPresent((CtTransString present) -> {
+                            AltLabel altlabel = new AltLabel();
+                            altlabel.setString(present.getValue());
+                            a.getAltLabelList().add(altlabel);
+                        });
 
-					Optional.ofNullable(person.getPid()).ifPresent((String present) -> {
-						identifiers.add(present);
+                Optional.ofNullable(person.getPid()).ifPresent((String present) -> {
+                    identifiers.add(present);
 
-						a.setAbout(person.getPid());
+                    a.setAbout(person.getPid());
 
-						Identifier identifier = new Identifier();
-						identifier.setString(person.getPid());
-						a.getIdentifierList().add(identifier);
+                    Identifier identifier = new Identifier();
+                    identifier.setString(person.getPid());
+                    a.getIdentifierList().add(identifier);
 
-						IsRelatedTo isRelated = new IsRelatedTo();
-						Resource resourceIsRelated = new Resource();
-						resourceIsRelated.setResource(IriToUri.iriToUri(String.format("Concept:%s",
-								StringUtils.deleteWhitespace(a2a.getRelationEP().stream()
-										.filter((CtRelationEP f) -> f.getPersonKeyRef().equals(person.getPid())).findFirst().get()
-										.getRelationType())))
-								.toString());
+                    IsRelatedTo isRelated = new IsRelatedTo();
+                    Resource resourceIsRelated = new Resource();
+                    resourceIsRelated.setResource(IriToUri.iriToUri(String.format("Concept:%s",
+                            StringUtils.deleteWhitespace(a2a.getRelationEP().stream()
+                                    .filter((CtRelationEP f) -> f.getPersonKeyRef().equals(person.getPid())).findFirst().get()
+                                    .getRelationType())))
+                            .toString());
 
-						isRelated.setResource(resourceIsRelated);
-						isRelated.setString(new String());
-						a.getIsRelatedToList().add(isRelated);
-					});
+                    isRelated.setResource(resourceIsRelated);
+                    isRelated.setString("");
+                    a.getIsRelatedToList().add(isRelated);
+                });
 
-					Optional.ofNullable(person.getResidence()).map(CtDetailPlace::getPlace).ifPresent(present -> {
-						HasMet residence = new HasMet();
+                Optional.ofNullable(person.getResidence()).map(CtDetailPlace::getPlace).ifPresent(present -> {
+                    HasMet residence = new HasMet();
 
-						residence.setResource(IriToUri
-								.iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-								.toString());
-						a.getHasMetList().add(residence);
+                    residence.setResource(IriToUri
+                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
+                            .toString());
+                    a.getHasMetList().add(residence);
 
-						PlaceOfBirth placeOfBirth = new PlaceOfBirth();
-						Resource resourcePlaceOfBirth = new Resource();
-						resourcePlaceOfBirth.setResource(IriToUri
-								.iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-								.toString());
-						placeOfBirth.setResource(resourcePlaceOfBirth);
-						placeOfBirth.setString(new String());
-						a.setPlaceOfBirth(placeOfBirth);
-					});
+                    PlaceOfBirth placeOfBirth = new PlaceOfBirth();
+                    Resource resourcePlaceOfBirth = new Resource();
+                    resourcePlaceOfBirth.setResource(IriToUri
+                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
+                            .toString());
+                    placeOfBirth.setResource(resourcePlaceOfBirth);
+                    placeOfBirth.setString("");
+                    a.setPlaceOfBirth(placeOfBirth);
+                });
 
-					Optional.ofNullable(person.getBirthDate()).filter((CtTransDate f) -> Objects.nonNull(f.getYear())
-							&& Objects.nonNull(f.getMonth()) && Objects.nonNull(f.getDay())).ifPresent(present -> {
+                Optional.ofNullable(person.getBirthDate()).filter((CtTransDate f) -> Objects.nonNull(f.getYear())
+                        && Objects.nonNull(f.getMonth()) && Objects.nonNull(f.getDay())).ifPresent(present -> {
 
-								DateOfBirth birth = new DateOfBirth();
-								birth.setString(String.format("%s-%s-%s", present.getYear().getValue(),
-										present.getMonth().getValue(), present.getDay().getValue()));
-								a.setDateOfBirth(birth);
-							});
+                            DateOfBirth birth = new DateOfBirth();
+                            birth.setString(String.format("%s-%s-%s", present.getYear().getValue(),
+                                    present.getMonth().getValue(), present.getDay().getValue()));
+                            a.setDateOfBirth(birth);
+                        });
 
-					Optional.ofNullable(person.getGender()).ifPresent((String present) -> {
-						Gender gender = new Gender();
-						gender.setString(present);
-						a.setGender(gender);
-					});
+                Optional.ofNullable(person.getGender()).ifPresent((String present) -> {
+                    Gender gender = new Gender();
+                    gender.setString(present);
+                    a.setGender(gender);
+                });
 
-					Optional.ofNullable(person.getProfession()).ifPresent((List<CtTransString> present) -> {
-						present.stream().forEach((CtTransString profession) -> {
-							ProfessionOrOccupation professionOrOccupation = new ProfessionOrOccupation();
-							professionOrOccupation.setString(profession.getValue());
+                Optional.ofNullable(person.getProfession()).ifPresent((List<CtTransString> present) -> present.stream().forEach((CtTransString profession) -> {
+                    ProfessionOrOccupation professionOrOccupation = new ProfessionOrOccupation();
+                    professionOrOccupation.setString(profession.getValue());
 
-							a.getProfessionOrOccupationList().add(professionOrOccupation);
-						});
-					});
+                    a.getProfessionOrOccupationList().add(professionOrOccupation);
+                }));
 
-					choice.setAgent(a);
-					this.getChoiceList().add(choice);
-				});
-			});
+                choice.setAgent(a);
+                this.getChoiceList().add(choice);
+            }));
 		} catch (Exception exception) {
 			logger.error(String.format("[%s] error generate edmAgent \n%s", identifier, exception));
 		}
@@ -189,202 +183,198 @@ public class A2A2EDM extends RDF implements EDM {
 
 	@Override
 	public void edmProvidedCHO() {
-		try {
-			Optional.ofNullable(a2a.getSource()).ifPresent((CtSource source) -> {
+        try {
+            Optional.ofNullable(a2a.getSource()).ifPresent((CtSource source) -> {
 
-				Choice choice = new Choice();
+                Choice choice = new Choice();
 
-				ProvidedCHOType provided = new ProvidedCHOType();
+                ProvidedCHOType provided = new ProvidedCHOType();
 
-				Optional.ofNullable(identifier).ifPresent((String present) -> {
-					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(identifier).ifPresent((String present) -> {
+                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-					String iriToUri = IriToUri
-							.iriToUri(String.format("ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
-							.toString();
+                    String iriToUri = IriToUri
+                            .iriToUri(String.format("ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
+                            .toString();
 
-					provided.setAbout(iriToUri);
+                    provided.setAbout(iriToUri);
 
-					identifiers.add(iriToUri);
+                    identifiers.add(iriToUri);
 
-					Identifier id = new Identifier();
-					id.setString(identifier);
+                    Identifier id = new Identifier();
+                    id.setString(identifier);
 
-					c.setIdentifier(id);
-					provided.getChoiceList().add(c);
-				});
+                    c.setIdentifier(id);
+                    provided.getChoiceList().add(c);
+                });
 
-				Optional.ofNullable(source.getSourcePlace()).map(CtPlace::getPlace).ifPresent((CtTransString present) -> {
-					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(source.getSourcePlace()).map(CtPlace::getPlace).ifPresent((CtTransString present) -> {
+                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-					Coverage coverage = new Coverage();
-					Resource coverageResource = new Resource();
-					coverageResource.setResource(IriToUri
-							.iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-							.toString());
-					coverage.setResource(coverageResource);
-					coverage.setString(new String());
+                    Coverage coverage = new Coverage();
+                    Resource coverageResource = new Resource();
+                    coverageResource.setResource(IriToUri
+                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
+                            .toString());
+                    coverage.setResource(coverageResource);
+                    coverage.setString("");
 
-					c.setCoverage(coverage);
-					provided.getChoiceList().add(c);
-				});
+                    c.setCoverage(coverage);
+                    provided.getChoiceList().add(c);
+                });
 
-				Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
-					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
+                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-					Description description = new Description();
-					description.setString(present.getCollection());
+                    Description description = new Description();
+                    description.setString(present.getCollection());
 
-					c.setDescription(description);
-					c.clearChoiceListSelect();
+                    c.setDescription(description);
+                    c.clearChoiceListSelect();
 
-					Title title = new Title();
-					title.setString(present.getBook());
+                    Title title = new Title();
+                    title.setString(present.getBook());
 
-					c.setTitle(title);
-					provided.getChoiceList().add(c);
-				});
+                    c.setTitle(title);
+                    provided.getChoiceList().add(c);
+                });
 
-				Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
-					eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
+                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-					Type1 type = new Type1();
-					type.setString(present);
+                    Type1 type = new Type1();
+                    type.setString(present);
 
-					c.setType(type);
-					provided.getChoiceList().add(c);
-				});
+                    c.setType(type);
+                    provided.getChoiceList().add(c);
+                });
 
-				Optional.ofNullable(source.getSourceIndexDate()).ifPresent((CtIndexDate present) -> {
-					Set<String> setDate = new HashSet<String>();
-					setDate.add(present.getFrom().toString());
-					setDate.add(present.getTo().toString());
+                Optional.ofNullable(source.getSourceIndexDate()).ifPresent((CtIndexDate present) -> {
+                    Set<String> setDate = new HashSet<>();
+                    setDate.add(present.getFrom().toString());
+                    setDate.add(present.getTo().toString());
 
-					Set<Integer> setYear = new HashSet<Integer>();
-					setYear.add(present.getFrom().getYear());
-					setYear.add(present.getTo().getYear());
+                    Set<Integer> setYear = new HashSet<>();
+                    setYear.add(present.getFrom().getYear());
+                    setYear.add(present.getTo().getYear());
 
-					setDate.stream().filter(Objects::nonNull).forEach((String d) -> {
-						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                    setDate.stream().filter(Objects::nonNull).forEach((String d) -> {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-						Date date = new Date();
-						date.setString(d);
+                        Date date = new Date();
+                        date.setString(d);
 
-						c.setDate(date);
-						provided.getChoiceList().add(c);
-					});
+                        c.setDate(date);
+                        provided.getChoiceList().add(c);
+                    });
 
-					setYear.stream().filter(Objects::nonNull).forEach((Integer y) -> {
-						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                    setYear.stream().filter(Objects::nonNull).forEach((Integer y) -> {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-						Temporal temporal = new Temporal();
-						Resource resource = new Resource();
-						resource.setResource(IriToUri
-								.iriToUri(String.format("TimeSpan:%s", StringUtils.deleteWhitespace(y.toString())))
-								.toString());
+                        Temporal temporal = new Temporal();
+                        Resource resource = new Resource();
+                        resource.setResource(IriToUri
+                                .iriToUri(String.format("TimeSpan:%s", StringUtils.deleteWhitespace(y.toString())))
+                                .toString());
 
-						temporal.setResource(resource);
-						temporal.setString(new String());
-						c.setTemporal(temporal);
-						provided.getChoiceList().add(c);
-					});
-				});
+                        temporal.setResource(resource);
+                        temporal.setString("");
+                        c.setTemporal(temporal);
+                        provided.getChoiceList().add(c);
+                    });
+                });
 
-				Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> {
-					present.map(CtPerson::getPid).forEach((String person) -> {
-						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> present.map(CtPerson::getPid).forEach((String person) -> {
+                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-						Contributor contributor = new Contributor();
-						Resource resource = new Resource();
-						resource.setResource(IriToUri
-								.iriToUri(String.format("Agent:%s", StringUtils.deleteWhitespace(person))).toString());
-						contributor.setResource(resource);
-						contributor.setString(new String());
+                    Contributor contributor = new Contributor();
+                    Resource resource = new Resource();
+                    resource.setResource(IriToUri
+                            .iriToUri(String.format("Agent:%s", StringUtils.deleteWhitespace(person))).toString());
+                    contributor.setResource(resource);
+                    contributor.setString("");
 
-						c.setContributor(contributor);
-						provided.getChoiceList().add(c);
-					});
-				});
+                    c.setContributor(contributor);
+                    provided.getChoiceList().add(c);
+                }));
 
-				Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
-					IsRelatedTo isRelatedTo = new IsRelatedTo();
-					Resource resource = new Resource();
-					resource.setResource(IriToUri
-							.iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(present))).toString());
-					isRelatedTo.setResource(resource);
-					isRelatedTo.setString(new String());
+                Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
+                    IsRelatedTo isRelatedTo = new IsRelatedTo();
+                    Resource resource = new Resource();
+                    resource.setResource(IriToUri
+                            .iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(present))).toString());
+                    isRelatedTo.setResource(resource);
+                    isRelatedTo.setString("");
 
-					provided.getIsRelatedToList().add(isRelatedTo);
-				});
+                    provided.getIsRelatedToList().add(isRelatedTo);
+                });
 
-				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("language")).ifPresent((String present) -> {
-					if (Objects.nonNull(LanguageCodes.convert(present))) {
-						eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("language")).ifPresent((String present) -> {
+                    if (Objects.nonNull(LanguageCodes.convert(present))) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-						Language language = new Language();
-						language.setString(LanguageCodes.convert(present).xmlValue());
+                        Language language = new Language();
+                        language.setString(LanguageCodes.convert(present).xmlValue());
 
-						c.setLanguage(language);
-						provided.getChoiceList().add(c);
-					}
-				});
+                        c.setLanguage(language);
+                        provided.getChoiceList().add(c);
+                    }
+                });
 
-				Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String present) -> {
-					if (Objects.nonNull(EdmType.convert(present))) {
-						Type2 t = new Type2();
-						t.setType(EdmType.convert(present));
+                Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String present) -> {
+                    if (Objects.nonNull(EdmType.convert(present))) {
+                        Type2 t = new Type2();
+                        t.setType(EdmType.convert(present));
 
-						provided.setType(t);
-					}
-				});
+                        provided.setType(t);
+                    }
+                });
 
-				choice.setProvidedCHO(provided);
-				this.getChoiceList().add(choice);
-			});
-		} catch (Exception exception) {
-			logger.error(String.format("[%s] error generate edmProvidedCHO \n%s", identifier, exception));
-		}
+                choice.setProvidedCHO(provided);
+                this.getChoiceList().add(choice);
+            });
+        } catch (Exception exception) {
+            logger.error(String.format("[%s] error generate edmProvidedCHO \n%s", identifier, exception));
+        }
 	}
 
 	@Override
 	public void skosConcept() {
 		try {
-			Optional.ofNullable(a2a.getRelationEP()).ifPresent((List<CtRelationEP> present) -> {
-				present.forEach((CtRelationEP relationType) -> {
-					eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
+			Optional.ofNullable(a2a.getRelationEP()).ifPresent((List<CtRelationEP> present) -> present.forEach((CtRelationEP relationType) -> {
+                Choice choice = new Choice();
 
-					Concept concept = new Concept();
+                Concept concept = new Concept();
 
-					Optional.ofNullable(relationType.getRelationType()).ifPresent((String type) -> {
-						String iriToUri = IriToUri.iriToUri(String.format("Concept:%s",
-								StringUtils.deleteWhitespace(relationType.getRelationType()))).toString();
+                Optional.ofNullable(relationType.getRelationType()).ifPresent((String type) -> {
+                    String iriToUri = IriToUri.iriToUri(String.format("Concept:%s",
+                            StringUtils.deleteWhitespace(relationType.getRelationType()))).toString();
 
-						concept.setAbout(iriToUri);
-						identifiers.add(iriToUri);
+                    concept.setAbout(iriToUri);
+                    identifiers.add(iriToUri);
 
-						eu.europeana.corelib.definitions.jibx.Concept.Choice c = new eu.europeana.corelib.definitions.jibx.Concept.Choice();
-						PrefLabel prefLabel = new PrefLabel();
-						prefLabel.setString(type);
+                    Concept.Choice c = new Concept.Choice();
+                    PrefLabel prefLabel = new PrefLabel();
+                    prefLabel.setString(type);
 
-						c.setPrefLabel(prefLabel);
-						concept.getChoiceList().add(c);
+                    c.setPrefLabel(prefLabel);
+                    concept.getChoiceList().add(c);
 
-					});
+                });
 
-					Optional.ofNullable(relationType.getPersonKeyRef()).ifPresent((String keyRef) -> {
-						eu.europeana.corelib.definitions.jibx.Concept.Choice c = new eu.europeana.corelib.definitions.jibx.Concept.Choice();
-						Related related = new Related();
-						related.setResource(IriToUri
-								.iriToUri(String.format("Agent:%s", StringUtils.deleteWhitespace(keyRef))).toString());
+                Optional.ofNullable(relationType.getPersonKeyRef()).ifPresent((String keyRef) -> {
+                    Concept.Choice c = new Concept.Choice();
+                    Related related = new Related();
+                    related.setResource(IriToUri
+                            .iriToUri(String.format("Agent:%s", StringUtils.deleteWhitespace(keyRef))).toString());
 
-						c.setRelated(related);
-						concept.getChoiceList().add(c);
+                    c.setRelated(related);
+                    concept.getChoiceList().add(c);
 
-					});
-					choice.setConcept(concept);
-					this.getChoiceList().add(choice);
-				});
-			});
+                });
+                choice.setConcept(concept);
+                this.getChoiceList().add(choice);
+            }));
 		} catch (Exception exception) {
 			logger.error(String.format("[%s] error generate skosConcept \n%s", identifier, exception));
 		}
@@ -400,91 +390,99 @@ public class A2A2EDM extends RDF implements EDM {
 				present.forEach((CtPerson person) -> {
 					Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace p) ->{
 						Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
-                            mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                    ((String x) -> new HashSet<String>())).add(country.getValue());
 						});
 
 						Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
-                            mapPlace.computeIfAbsent("Province", (x -> new HashSet<String>())).add(province.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                    (x -> new HashSet<String>())).add(province.getValue());
 						});
 
 						Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
-                            mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                    ((String x) -> new HashSet<String>())).add(state.getValue());
 						});
 
 						Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
-                            mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                    ((String x) -> new HashSet<String>())).add(pl.getValue());
 						});
 					});
 
                     Optional.ofNullable(person.getBirthPlace()).ifPresent((CtDetailPlace p) -> {
                         Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
-                            mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                    ((String x) -> new HashSet<String>())).add(country.getValue());
                         });
 
                         Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
-                            mapPlace.computeIfAbsent("Province", ((String x) -> new HashSet<String>())).add(province.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                    ((String x) -> new HashSet<String>())).add(province.getValue());
                         });
 
                         Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
-                            mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                    ((String x) -> new HashSet<String>())).add(state.getValue());
                         });
 
                         Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
-                            mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                    ((String x) -> new HashSet<String>())).add(pl.getValue());
                         });
 					});
-
 				});
 			});
 
             Optional.ofNullable(a2a.getSource()).map(CtSource::getSourcePlace).ifPresent((CtPlace present) ->{
                 Optional.ofNullable(present.getCountry()).ifPresent((CtTransString country) ->{
-                    mapPlace.computeIfAbsent("Country", ((String x) -> new HashSet<String>())).add(country.getValue());
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                            ((String x) -> new HashSet<String>())).add(country.getValue());
                 });
 
                 Optional.ofNullable(present.getProvince()).ifPresent((CtTransString province) ->{
-                    mapPlace.computeIfAbsent("Province", ((String x) -> new HashSet<String>())).add(province.getValue());
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                            ((String x) -> new HashSet<String>())).add(province.getValue());
                 });
 
                 Optional.ofNullable(present.getState()).ifPresent((CtTransString state) ->{
-                    mapPlace.computeIfAbsent("State", ((String x) -> new HashSet<String>())).add(state.getValue());
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                            ((String x) -> new HashSet<String>())).add(state.getValue());
                 });
 
                 Optional.ofNullable(present.getPlace()).ifPresent((CtTransString pl) ->{
-                    mapPlace.computeIfAbsent("Place", ((String x) -> new HashSet<String>())).add(pl.getValue());
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                            ((String x) -> new HashSet<String>())).add(pl.getValue());
                 });
             });
 
-            mapPlace.entrySet().forEach((Map.Entry<String, Set<String>> entry) ->{
+            mapPlace.entrySet().forEach((Map.Entry<String, Set<String>> entry) -> entry.getValue().forEach((String value) ->{
+                PlaceType placeType = new PlaceType();
 
-                entry.getValue().forEach((String value) ->{
-                    PlaceType placeType = new PlaceType();
+                String iriToUri = IriToUri.iriToUri(String.format("%s:%s", entry.getKey(), StringUtils.deleteWhitespace(value)))
+                        .toString();
 
-                    String iriToUri = IriToUri.iriToUri(String.format("%s:%s", entry.getKey(), StringUtils.deleteWhitespace(value)))
-                            .toString();
+                placeType.setAbout(iriToUri);
 
-                    placeType.setAbout(iriToUri);
+                placeType.setAbout(iriToUri);
+                identifiers.add(iriToUri);
 
-                    placeType.setAbout(iriToUri);
-                    identifiers.add(iriToUri);
+                PrefLabel prefLabel = new PrefLabel();
+                prefLabel.setString(value);
 
-                    PrefLabel prefLabel = new PrefLabel();
-                    prefLabel.setString(value);
+                AltLabel altLabel = new AltLabel();
+                altLabel.setString(entry.getKey());
 
-                    AltLabel altLabel = new AltLabel();
-                    altLabel.setString(entry.getKey());
+                placeType.getAltLabelList().add(altLabel);
 
-                    placeType.getAltLabelList().add(altLabel);
+                placeType.getPrefLabelList().add(prefLabel);
 
-                    placeType.getPrefLabelList().add(prefLabel);
-
-                    choice.setPlace(placeType);
-                    this.getChoiceList().add(choice);
-                });
-            });
+                choice.setPlace(placeType);
+                this.getChoiceList().add(choice);
+            }));
 		}catch (Exception exception) {
 			logger.error(String.format("[%s] error generate edmPlace \n%s", identifier, exception));
-		}		
+		}
 	}
 
 	@Override
@@ -552,25 +550,23 @@ public class A2A2EDM extends RDF implements EDM {
 
 				if (Objects.nonNull(present.getSourceAvailableScans())) {
 					try {
-						Optional.ofNullable(present.getSourceAvailableScans().getScan()).ifPresent((List<CtScan> p) -> {
-							p.forEach((CtScan scan) -> {
-								aggregation.setAbout(scan.getUriViewer());
+						Optional.ofNullable(present.getSourceAvailableScans().getScan()).ifPresent((List<CtScan> p) -> p.forEach((CtScan scan) -> {
+                            aggregation.setAbout(scan.getUriViewer());
 
-								AggregatedCHO aggregatedCHO = new AggregatedCHO();
-								aggregatedCHO.setResource(IriToUri
-										.iriToUri(String.format("ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
-										.toString());
+                            AggregatedCHO aggregatedCHO = new AggregatedCHO();
+                            aggregatedCHO.setResource(IriToUri
+                                    .iriToUri(String.format("ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
+                                    .toString());
 
-								if (Objects.nonNull(scan.getUriViewer())) {
-									IsShownAt isShownAt = new IsShownAt();
-									isShownAt.setResource(scan.getUriViewer());
+                            if (Objects.nonNull(scan.getUriViewer())) {
+                                IsShownAt isShownAt = new IsShownAt();
+                                isShownAt.setResource(scan.getUriViewer());
 
-									aggregation.setIsShownAt(isShownAt);
-								}
+                                aggregation.setIsShownAt(isShownAt);
+                            }
 
-								aggregation.setAggregatedCHO(aggregatedCHO);
-							});
-						});
+                            aggregation.setAggregatedCHO(aggregatedCHO);
+                        }));
 					} catch (Exception e) {
 						System.err.println(String.format("getSourceAvailableScans %s", e));
 					}
@@ -632,10 +628,15 @@ public class A2A2EDM extends RDF implements EDM {
 		}
 	}
 
-	@Override
-	public void marshal(Charset encoding, boolean alone) {
-		if (Objects.nonNull(this) && !Objects.equals(this, new RDF()))
-			JibxMarshall.marshall(this, encoding.toString(), alone, out, RDF.class);
-	}
+    @Override
+    public void marshal(Charset encoding, boolean alone, OutputStream outs) {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class);
+    }
 
+    @Override
+    public void marshal(Charset encoding, boolean alone, Writer writer) {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, encoding.toString(), alone, writer, RDF.class);
+    }
 }

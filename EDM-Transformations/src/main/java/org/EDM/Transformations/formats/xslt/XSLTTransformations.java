@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -73,9 +72,7 @@ public class XSLTTransformations {
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach((k, v) -> {
-				transformer.setParameter(k, v);
-			});
+			xsltProperties.forEach(transformer::setParameter);
 		}
 
 		transformer.transform(new StreamSource(sourceID.openStream()),
@@ -96,9 +93,7 @@ public class XSLTTransformations {
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach((k, v) -> {
-				transformer.setParameter(k, v);
-			});
+			xsltProperties.forEach(transformer::setParameter);
 		}
 
 		transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())),
@@ -123,9 +118,7 @@ public class XSLTTransformations {
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach((k, v) -> {
-				transformer.setParameter(k, v);
-			});
+			xsltProperties.forEach(transformer::setParameter);
 		}
 
 		transformer.transform(source, new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
