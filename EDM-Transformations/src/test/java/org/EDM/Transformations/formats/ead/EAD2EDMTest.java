@@ -25,7 +25,7 @@ public class EAD2EDMTest extends TestCase {
 
     /**
      * Test method for
-     * {@link org.EDM.Transformations.formats.a2a.EAD2EDM#marshal(java.nio.charset.Charset, boolean)}.
+     * {@link org.EDM.Transformations.formats.ead.EAD2EDM#marshal(java.nio.charset.Charset, boolean)}.
      *
      * @throws java.io.FileNotFoundException
      */

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,7 @@ public class EAD2EDM {
 
     public EAD2EDM(String xslt, InputStream ins, Map<String, String> xsltProperties, OutputStream outs) throws IOException, Exception {
         this.out = outs;
-        File tempFile = File.createTempFile("Echoes-Tools", ".edm");
+        File tempFile = Files.createTempFile("Echoes-Tools", ".edm").toFile();
         tempFile.deleteOnExit();
 
         XSLTTransformations xsltTrans = new XSLTTransformations(xslt, new FileOutputStream(tempFile), xsltProperties);

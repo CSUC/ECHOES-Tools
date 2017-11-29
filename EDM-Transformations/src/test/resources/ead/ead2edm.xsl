@@ -89,9 +89,9 @@
 
     <xsl:template match="eadid">
         <ore:Aggregation>         
-            <xsl:attribute name="rdf:about" select="concat('aggregation_', .)"/>
+            <xsl:attribute name="rdf:about" select="iri-to-uri(concat('aggregation_', .))"/>
             <edm:aggregatedCHO>
-                <xsl:attribute name="rdf:resource" select="concat('providedCHO_', .)"/>
+                <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', .))"/>
             </edm:aggregatedCHO>
             <xsl:choose>
                 <xsl:when test="$useExistingRepository=&quot;true&quot;">
@@ -117,15 +117,15 @@
             <edm:isShownAt>
                 <xsl:choose>
                     <xsl:when test="@url">
-                        <xsl:attribute name="rdf:resource" select="@url"/>
+                        <xsl:attribute name="rdf:resource" select="iri-to-uri(@url)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="$landingPage = 'ape'">
-                                <xsl:attribute name="rdf:resource" select="concat($id_base, $eadidEncoded)"/>
+                                <xsl:attribute name="rdf:resource" select="iri-to-uri(concat($id_base, $eadidEncoded))"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:attribute name="rdf:resource" select="normalize-space($landingPage)"/>
+                                <xsl:attribute name="rdf:resource" select="iri-to-uri(normalize-space($landingPage))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -133,7 +133,7 @@
             </edm:isShownAt>
             <edm:object>
                 <xsl:attribute name="rdf:resource"
-                    select="concat('http://', $host, '/Portal-theme/images/ape/icons/dao_types/europeana/text.png')"
+                    select="iri-to-uri(concat('http://', $host, '/Portal-theme/images/ape/icons/dao_types/europeana/text.png'))"
                 />
             </edm:object>
             <edm:provider>
@@ -170,7 +170,7 @@
             </edm:rights>
         </ore:Aggregation>
         <edm:ProvidedCHO>            
-            <xsl:attribute name="rdf:about" select="concat('providedCHO_', .)"/>
+            <xsl:attribute name="rdf:about" select="iri-to-uri(concat('providedCHO_', .))"/>
             <xsl:if test="$minimalConversion = 'false' and (/ead/archdesc/did/origination[text() != ''] or count(/ead/archdesc/did/origination/*) > 0)">
                 <xsl:call-template name="creator">
                     <xsl:with-param name="originations" select="/ead/archdesc/did/origination"/>
@@ -351,19 +351,19 @@
                         <xsl:choose>
                             <xsl:when test="$idSource = 'unitid' and did/unitid[text() != '' and @type='call number'] and $isFirstUnitid = 'true'">
                                 <dcterms:hasPart>
-                                    <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(did/unitid[text() != '' and @type='call number'][1]))"/>
+                                    <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(did/unitid[text() != '' and @type='call number'][1])))"/>
                                 </dcterms:hasPart>
                             </xsl:when>
                             <xsl:when test="$idSource = 'cid' and @id">
                                 <dcterms:hasPart>
-                                    <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(@id))"/>
+                                    <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(@id)))"/>
                                 </dcterms:hasPart>
                             </xsl:when>
                             <xsl:otherwise>
                                 <dcterms:hasPart>
                                     <xsl:attribute name="rdf:resource">
                                         <xsl:call-template name="number">
-                                            <xsl:with-param name="prefix" select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_')"/>
+                                            <xsl:with-param name="prefix" select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_'))"/>
                                             <xsl:with-param name="node" select="."/>
                                         </xsl:call-template>
                                     </xsl:attribute>
@@ -386,15 +386,15 @@
             <xsl:attribute name="rdf:about">
                 <xsl:choose>
                     <xsl:when test="@url">
-                        <xsl:value-of select="@url"/>
+                        <xsl:value-of select="iri-to-uri(@url)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="$landingPage = 'ape'">
-                                <xsl:attribute name="rdf:resource" select="concat($id_base, $eadidEncoded)"/>
+                                <xsl:attribute name="rdf:resource" select="iri-to-uri(concat($id_base, $eadidEncoded))"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:attribute name="rdf:resource" select="normalize-space($landingPage)"/>
+                                <xsl:attribute name="rdf:resource" select="iri-to-uri(normalize-space($landingPage))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -774,9 +774,9 @@
 
         <!-- ACTUAL CONVERSION BEGINS HERE -->
         <ore:Aggregation>
-            <xsl:attribute name="rdf:about" select="concat('aggregation_', normalize-space(/ead/eadheader/eadid), '_', $identifier)"/>
+            <xsl:attribute name="rdf:about" select="iri-to-uri(concat('aggregation_', normalize-space(/ead/eadheader/eadid), '_', $identifier))"/>
             <edm:aggregatedCHO>
-                <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', $identifier)"/>
+                <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', $identifier))"/>
             </edm:aggregatedCHO>
             <xsl:choose>
                 <xsl:when test="$useExistingRepository=&quot;true&quot;">
@@ -819,7 +819,7 @@
                                     <edm:object>
                                         <xsl:attribute name="rdf:resource">
                                             <xsl:call-template name="generateThumbnailLink">
-                                                <xsl:with-param name="role" select="did/dao[not(@xlink:title='thumbnail')][1]/@xlink:role"/>
+                                                <xsl:with-param name="role" select="iri-to-uri(did/dao[not(@xlink:title='thumbnail')][1]/@xlink:role)"/>
                                             </xsl:call-template>
                                         </xsl:attribute>
                                     </edm:object>
@@ -829,7 +829,7 @@
                                         <edm:object>
                                             <xsl:attribute name="rdf:resource">
                                                 <xsl:call-template name="generateThumbnailLink">
-                                                    <xsl:with-param name="role" select="$europeana_type"/>
+                                                    <xsl:with-param name="role" select="iri-to-uri($europeana_type)"/>
                                                 </xsl:call-template>
                                             </xsl:attribute>
                                         </edm:object>
@@ -843,7 +843,7 @@
                                     <edm:object>
                                         <xsl:attribute name="rdf:resource">
                                             <xsl:call-template name="generateThumbnailLink">
-                                                <xsl:with-param name="role" select="$europeana_type"/>
+                                                <xsl:with-param name="role" select="iri-to-uri($europeana_type)"/>
                                             </xsl:call-template>
                                         </xsl:attribute>
                                     </edm:object>
@@ -853,7 +853,7 @@
                                         <edm:object>
                                             <xsl:attribute name="rdf:resource">
                                                 <xsl:call-template name="generateThumbnailLink">
-                                                    <xsl:with-param name="role" select="did/dao[not(@xlink:title='thumbnail')][1]/@xlink:role"/>
+                                                    <xsl:with-param name="role" select="iri-to-uri(did/dao[not(@xlink:title='thumbnail')][1]/@xlink:role)"/>
                                                 </xsl:call-template>
                                             </xsl:attribute>
                                         </edm:object>
@@ -879,7 +879,7 @@
                                 <xsl:otherwise>
                                     <edm:rights>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$europeana_rights"/>
+                                            <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                         </xsl:attribute>
                                     </edm:rights>
                                 </xsl:otherwise>
@@ -893,7 +893,7 @@
                                 <xsl:otherwise>
                                     <edm:rights>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$europeana_rights"/>
+                                            <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                         </xsl:attribute>
                                     </edm:rights>
                                 </xsl:otherwise>
@@ -905,7 +905,7 @@
                     <edm:isShownAt>
                         <xsl:choose>
                             <xsl:when test="@url">
-                                <xsl:attribute name="rdf:resource" select="@url"/>
+                                <xsl:attribute name="rdf:resource" select="iri-to-uri(@url)"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="rdf:resource">
@@ -915,7 +915,7 @@
                                                 <xsl:when test="$idSource = 'unitid' and $currentnode/did/unitid[text() != '' and @type='call number'][1] and $isFirstUnitid = 'true'">
                                                     <xsl:variable name="unitidEncoded">
                                                         <xsl:call-template name="simpleReplace">
-                                                            <xsl:with-param name="input" select="normalize-space($currentnode/did/unitid[text() != '' and @type='call number'][1])"></xsl:with-param>
+                                                            <xsl:with-param name="input" select="iri-to-uri(normalize-space($currentnode/did/unitid[text() != '' and @type='call number'][1]))"></xsl:with-param>
                                                         </xsl:call-template>
                                                     </xsl:variable>
                                                     <xsl:value-of select="concat($id_base, $eadidEncoded, '/unitid/', $unitidEncoded)"/>
@@ -947,7 +947,7 @@
                         </xsl:choose>
                     </edm:isShownAt>
                     <edm:object>
-                        <xsl:attribute name="rdf:resource" select="concat('http://', $host, '/Portal-theme/images/ape/icons/dao_types/europeana/text.png')" />
+                        <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('http://', $host, '/Portal-theme/images/ape/icons/dao_types/europeana/text.png'))" />
                     </edm:object>
                     <edm:provider>
                         <xsl:value-of select="$europeana_provider"/>
@@ -957,7 +957,7 @@
             </xsl:choose>
         </ore:Aggregation>
         <edm:ProvidedCHO>
-            <xsl:attribute name="rdf:about" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', $identifier)"/>
+            <xsl:attribute name="rdf:about" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', $identifier))"/>
             <xsl:if test="$idSource = 'unitid' and $currentnode/did/unitid[text() != '']">
                 <dc:identifier>
                     <xsl:for-each select="$currentnode/did/unitid[text() != '']">
@@ -1175,12 +1175,12 @@
                         <xsl:choose>
                             <xsl:when test="$idSource = 'unitid' and did/unitid[text() != '' and @type='call number'] and $isFirstUnitid = 'true'">
                                 <dcterms:hasPart>
-                                    <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(did/unitid[text() != '' and @type='call number']))"/>
+                                    <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(did/unitid[text() != '' and @type='call number'])))"/>
                                 </dcterms:hasPart>
                             </xsl:when>
                             <xsl:when test="$idSource = 'cid' and @id">
                                 <dcterms:hasPart>
-                                    <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(@id))"/>
+                                    <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space(@id)))"/>
                                 </dcterms:hasPart>
                             </xsl:when>
                             <xsl:otherwise>
@@ -1190,10 +1190,10 @@
                                             <xsl:with-param name="prefix">
                                                 <xsl:choose>
                                                     <xsl:when test="$mainIdentifier">
-                                                        <xsl:value-of select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $mainIdentifier, '-')"/>
+                                                        <xsl:value-of select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $mainIdentifier, '-'))"/>
                                                     </xsl:when>
                                                     <xsl:otherwise>
-                                                        <xsl:value-of select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionInDocument, '-')"/>
+                                                        <xsl:value-of select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionInDocument, '-'))"/>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
                                             </xsl:with-param>
@@ -1343,12 +1343,12 @@
                 </xsl:when>
                 <xsl:when test="$idSource = 'unitid' and $parentdidnode/unitid[text() != '' and @type='call number'] and $isParentFirstUnitid = 'true'">
                     <dcterms:isPartOf>
-                        <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($parentdidnode/unitid[text() != '' and @type='call number'][1]))"/>
+                        <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($parentdidnode/unitid[text() != '' and @type='call number'][1])))"/>
                     </dcterms:isPartOf>
                 </xsl:when>
                 <xsl:when test="$idSource = 'cid' and $parentcnode/@id">
                     <dcterms:isPartOf>
-                        <xsl:attribute name="rdf:resource" select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($parentcnode/@id))"/>
+                        <xsl:attribute name="rdf:resource" select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($parentcnode/@id)))"/>
                     </dcterms:isPartOf>
                 </xsl:when>
                 <xsl:otherwise>
@@ -1356,7 +1356,7 @@
                         <xsl:attribute name="rdf:resource">
                             <xsl:choose>
                                 <xsl:when test="$positionChain">
-                                    <xsl:value-of select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionChain)"/>
+                                    <xsl:value-of select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionChain))"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:call-template name="number">
@@ -1411,7 +1411,7 @@
                     <xsl:when test="$idSource = 'unitid' and $currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/did/unitid[text() != '' and @type='call number'] and not(key('unitids', $currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/did/unitid[text() != '' and @type='call number'])[2])">
                         <edm:isNextInSequence>
                             <xsl:attribute name="rdf:resource"
-                                select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/did/unitid[text() != '' and @type='call number'][1]))"
+                                select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/did/unitid[text() != '' and @type='call number'][1])))"
                             />
                         </edm:isNextInSequence>
                     </xsl:when>
@@ -1419,7 +1419,7 @@
                         test="$idSource = 'cid' and $currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/@id">
                         <edm:isNextInSequence>
                             <xsl:attribute name="rdf:resource"
-                                select="concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/@id))"
+                                select="iri-to-uri(concat('providedCHO_', normalize-space(/ead/eadheader/eadid), '_', normalize-space($currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]/@id)))"
                             />
                         </edm:isNextInSequence>
                     </xsl:when>
@@ -1431,16 +1431,16 @@
                                         <xsl:choose>
                                             <xsl:when test="$positionChain">
                                                 <xsl:value-of
-                                                    select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionChain, '-')"
+                                                    select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_', $positionChain, '-'))"
                                                 />
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <xsl:value-of select="concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_')"/>
+                                                <xsl:value-of select="iri-to-uri(concat('providedCHO_position_', normalize-space(/ead/eadheader/eadid), '_'))"/>
                                             </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:with-param>
                                     <xsl:with-param name="node"
-                                        select="$currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1]"
+                                        select="iri-to-uri($currentnode/preceding-sibling::*[descendant::did/dao[normalize-space(@xlink:href) != '']][1])"
                                     />
                                 </xsl:call-template>
                             </xsl:attribute>
@@ -1516,7 +1516,7 @@
                     <xsl:attribute name="rdf:about">
                         <xsl:choose>
                             <xsl:when test="@url">
-                                <xsl:value-of select="@url"/>
+                                <xsl:value-of select="iri-to-uri(@url)"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:choose>
@@ -1525,16 +1525,16 @@
                                             <xsl:when test="$idSource = 'unitid' and did/unitid[text() != '' and @type='call number'][1] and $isFirstUnitid = 'true'">
                                                 <xsl:variable name="unitidEncoded">
                                                     <xsl:call-template name="simpleReplace">
-                                                        <xsl:with-param name="input" select="normalize-space(did/unitid[text() != '' and @type='call number'][1])"></xsl:with-param>
+                                                        <xsl:with-param name="input" select="iri-to-uri(normalize-space(did/unitid[text() != '' and @type='call number'][1]))"></xsl:with-param>
                                                     </xsl:call-template>
                                                 </xsl:variable>
-                                                <xsl:value-of select="concat($id_base, $eadidEncoded, '/unitid/', $unitidEncoded)"/>
+                                                <xsl:value-of select="iri-to-uri(concat($id_base, $eadidEncoded, '/unitid/', $unitidEncoded))"/>
                                             </xsl:when>
                                             <xsl:when test="$idSource = 'cid' and @id">
-                                                <xsl:value-of select="concat($id_base, $eadidEncoded, '/cid/', @id)"/>
+                                                <xsl:value-of select="iri-to-uri(concat($id_base, $eadidEncoded, '/cid/', @id))"/>
                                             </xsl:when>
                                             <xsl:when test="$mainIdentifier">
-                                                <xsl:value-of select="concat($id_base, $eadidEncoded, '/position/', $mainIdentifier)"/>
+                                                <xsl:value-of select="iri-to-uri(concat($id_base, $eadidEncoded, '/position/', $mainIdentifier))"/>
                                                 <!--<xsl:call-template name="number">-->
                                                     <!--<xsl:with-param name="prefix" select="concat($id_base, normalize-space(/ead/eadheader/eadid), '/position/', $positionChain, '-')"/>-->
                                                     <!--<xsl:with-param name="node" select="."/>-->
@@ -1542,7 +1542,7 @@
                                             </xsl:when>
                                             <xsl:otherwise>
                                                 <xsl:call-template name="number">
-                                                    <xsl:with-param name="prefix" select="concat($id_base, normalize-space(/ead/eadheader/eadid), '/position/')"/>
+                                                    <xsl:with-param name="prefix" select="iri-to-uri(concat($id_base, normalize-space(/ead/eadheader/eadid), '/position/'))"/>
                                                     <xsl:with-param name="node" select="."/>
                                                 </xsl:call-template>
                                             </xsl:otherwise>
@@ -1643,10 +1643,10 @@
                                 <xsl:variable name="currentRightsInfo">
                                     <xsl:choose>
                                         <xsl:when test="not(ends-with($rights[1]/p[1]/extref/@xlink:href, '/'))">
-                                            <xsl:value-of select="concat($rights[1]/p[1]/extref/@xlink:href, '/')"/>
+                                            <xsl:value-of select="iri-to-uri(concat($rights[1]/p[1]/extref/@xlink:href, '/'))"/>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:value-of select="$rights[1]/p[1]/extref/@xlink:href"/>
+                                            <xsl:value-of select="iri-to-uri($rights[1]/p[1]/extref/@xlink:href)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:variable>
@@ -1708,10 +1708,10 @@
                     <xsl:attribute name="rdf:resource">
                         <xsl:choose>
                             <xsl:when test="/ead/eadheader/eadid/@url">
-                                <xsl:value-of select="/ead/eadheader/eadid/@url"/>
+                                <xsl:value-of select="iri-to-uri(/ead/eadheader/eadid/@url)"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="concat($id_base, normalize-space(/ead/eadheader/eadid))"/>
+                                <xsl:value-of select="iri-to-uri(concat($id_base, normalize-space(/ead/eadheader/eadid)))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -1814,7 +1814,7 @@
         <xsl:variable name="number">
             <xsl:number count="c" level="single" select="$node[1]"/>
         </xsl:variable>
-        <xsl:value-of select="concat($prefix, 'c', $number - 1)"/>
+        <xsl:value-of select="concat($prefix, 'c', number($number) - 1)"/>
     </xsl:template>
     <xsl:template name="repository">
         <xsl:param name="repository"/>
@@ -1864,14 +1864,14 @@
         <xsl:if test="$bibrefs/@xlink:href">
             <xsl:for-each select="$bibrefs">
                 <dcterms:isReferencedBy>
-                    <xsl:attribute name="rdf:resource" select="./@xlink:href"/>
+                    <xsl:attribute name="rdf:resource" select="iri-to-uri(./@xlink:href)"/>
                 </dcterms:isReferencedBy>
             </xsl:for-each>
         </xsl:if>
         <xsl:if test="$bibrefs/extref/@xlink:href">
             <xsl:for-each select="$bibrefs/extref">
                 <dcterms:isReferencedBy>
-                    <xsl:attribute name="rdf:resource" select="./@xlink:href"/>
+                    <xsl:attribute name="rdf:resource" select="iri-to-uri(./@xlink:href)"/>
                 </dcterms:isReferencedBy>
             </xsl:for-each>
         </xsl:if>
@@ -1880,12 +1880,12 @@
         <xsl:choose>
             <xsl:when test="@href">
                 <edm:isShownAt>
-                    <xsl:attribute name="rdf:resource" select="@href"/>
+                    <xsl:attribute name="rdf:resource" select="iri-to-uri(@href)"/>
                 </edm:isShownAt>
             </xsl:when>
             <xsl:when test="@xlink:href">
                 <edm:isShownAt>
-                    <xsl:attribute name="rdf:resource" select="@xlink:href"/>
+                    <xsl:attribute name="rdf:resource" select="iri-to-uri(@xlink:href)"/>
                 </edm:isShownAt>
             </xsl:when>
         </xsl:choose>
@@ -1894,7 +1894,7 @@
         <xsl:choose>
             <xsl:when test="@*:href != ''">
                     <edm:hasView>
-                        <xsl:attribute name="rdf:resource" select="@*:href"/>
+                        <xsl:attribute name="rdf:resource" select="iri-to-uri(@*:href)"/>
                     </edm:hasView>
             </xsl:when>
         </xsl:choose>
@@ -1905,7 +1905,7 @@
             <xsl:attribute name="rdf:about">
                 <xsl:choose>
                     <xsl:when test="@*:href">
-                        <xsl:value-of select="@*:href"/>
+                        <xsl:value-of select="iri-to-uri(@*:href)"/>
                     </xsl:when>
 <!--                    <xsl:when test="@xlink:href">
                         <xsl:value-of select="@xlink:href"/>
@@ -1941,7 +1941,7 @@
                                 <xsl:otherwise>
                                     <edm:rights>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$europeana_rights"/>
+                                            <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                         </xsl:attribute>
                                     </edm:rights>
                                 </xsl:otherwise>
@@ -1955,7 +1955,7 @@
                                 <xsl:otherwise>
                                     <edm:rights>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$europeana_rights"/>
+                                            <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                         </xsl:attribute>
                                     </edm:rights>
                                 </xsl:otherwise>
@@ -2002,7 +2002,7 @@
                                 <xsl:otherwise>
                                     <edm:rights>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$europeana_rights"/>
+                                            <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                         </xsl:attribute>
                                     </edm:rights>
                                 </xsl:otherwise>
@@ -2011,7 +2011,7 @@
                         <xsl:otherwise>
                             <edm:rights>
                                 <xsl:attribute name="rdf:resource">
-                                    <xsl:value-of select="$europeana_rights"/>
+                                    <xsl:value-of select="iri-to-uri($europeana_rights)"/>
                                 </xsl:attribute>
                             </edm:rights>
                         </xsl:otherwise>
@@ -2054,10 +2054,10 @@
         <xsl:choose>
             <xsl:when test="$link != ''">
             <edm:isShownBy>
-                <xsl:attribute name="rdf:resource" select="$link"/>
+                <xsl:attribute name="rdf:resource" select="iri-to-uri($link)"/>
             </edm:isShownBy>
             <edm:object>
-                <xsl:attribute name="rdf:resource" select="$link"/>
+                <xsl:attribute name="rdf:resource" select="iri-to-uri($link)"/>
             </edm:object>
             </xsl:when>
             <xsl:otherwise>
@@ -2066,13 +2066,13 @@
                         <xsl:choose>
                             <xsl:when test="fn:string-length($europeana_type) > 0">
                                 <xsl:call-template name="generateThumbnailLink">
-                                    <xsl:with-param name="role" select="$europeana_type"/>
+                                    <xsl:with-param name="role" select="iri-to-uri($europeana_type)"/>
                                 </xsl:call-template>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:if test="./@xlink:role">
                                     <xsl:call-template name="generateThumbnailLink">
-                                        <xsl:with-param name="role" select="./@xlink:role"/>
+                                        <xsl:with-param name="role" select="iri-to-uri(./@xlink:role)"/>
                                     </xsl:call-template>
                                 </xsl:if>
                             </xsl:otherwise>
@@ -2094,7 +2094,7 @@
     <xsl:template match="otherfindaid">
         <xsl:if test="p/extref/@xlink:href">
             <dcterms:isReferencedBy>
-                <xsl:attribute name="rdf:resource" select="p/extref/@xlink:href"/>
+                <xsl:attribute name="rdf:resource" select="iri-to-uri(p/extref/@xlink:href)"/>
             </dcterms:isReferencedBy>
         </xsl:if>
     </xsl:template>
