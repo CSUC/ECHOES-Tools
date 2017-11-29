@@ -37,9 +37,11 @@ public class EAD2EDM {
 
         XSLTTransformations xsltTrans = new XSLTTransformations(xslt, new FileOutputStream(tempFile), xsltProperties);
         xsltTrans.transformationsFromSource(new StreamSource(ins));
-        
-        JibxUnMarshall unmarshall = new JibxUnMarshall(new FileInputStream(tempFile), "UTF-8", RDF.class);  
-        rdf = (RDF) unmarshall.getElement();
+
+        if(Objects.isNull(xsltTrans.getErrorListener().getErrors())){
+            JibxUnMarshall unmarshall = new JibxUnMarshall(new FileInputStream(tempFile), "UTF-8", RDF.class);
+            rdf = (RDF) unmarshall.getElement();
+        }
     }
 
     public RDF getRDF(){

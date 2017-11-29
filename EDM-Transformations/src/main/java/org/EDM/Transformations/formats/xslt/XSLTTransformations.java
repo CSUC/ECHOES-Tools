@@ -28,7 +28,8 @@ public class XSLTTransformations {
 	
 	private TransformerFactory fact = new net.sf.saxon.TransformerFactoryImpl();
 	private StreamSource xlsStreamSource;
-	
+    private XSLTErrorListener errorListener = new XSLTErrorListener();
+
 	private OutputStream out;
 	private Map<String,String> xsltProperties = new HashMap<String,String>();
 
@@ -56,48 +57,57 @@ public class XSLTTransformations {
 		this.out = out;
 		this.xsltProperties = xsltProperties;
 	}
-	
-	/**
-	 * 
-	 * @param sourceID
-	 * @throws IOException 
-	 * @throws TransformerException 
-	 * @throws UnsupportedEncodingException 
-	 */
-	public void transformationsFromUrl(URL sourceID) throws UnsupportedEncodingException, TransformerException, IOException {		
-		Transformer transformer = fact.newTransformer(xlsStreamSource);
 
-		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    /**
+     *
+     * @param sourceID
+     * @throws IOException
+     *
+     */
+	public void transformationsFromUrl(URL sourceID) throws IOException {
+        Transformer transformer = null;
+        try{
+            transformer = fact.newTransformer(xlsStreamSource);
+            transformer.setErrorListener(errorListener);
 
-		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach(transformer::setParameter);
-		}
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		transformer.transform(new StreamSource(sourceID.openStream()),
-				new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));		
+            if (Objects.nonNull(xsltProperties)) {
+                xsltProperties.forEach(transformer::setParameter);
+            }
+
+            transformer.transform(new StreamSource(sourceID.openStream()),
+                    new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+        }catch(TransformerException exception){
+
+        }
 	}
-	
-	/**
-	 * 
-	 * @param content
-	 * @throws TransformerException 
-	 * @throws UnsupportedEncodingException 
-	 */
-	public void transformationsFromString(String content) throws UnsupportedEncodingException, TransformerException {		
-		Transformer transformer = fact.newTransformer(xlsStreamSource);
 
-		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    /**
+     *
+     * @param content
+     * @throws IOException
+     *
+     */
+	public void transformationsFromString(String content) throws IOException  {
+        Transformer transformer = null;
+        try{
+            transformer = fact.newTransformer(xlsStreamSource);
+            transformer.setErrorListener(errorListener);
 
-		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach(transformer::setParameter);
-		}
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())),
-				new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));		 
+            if (Objects.nonNull(xsltProperties)) {
+                xsltProperties.forEach(transformer::setParameter);
+            }
+
+            transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())),
+                    new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+        }catch(TransformerException exception){}
 	}
 
 	/**
@@ -107,21 +117,24 @@ public class XSLTTransformations {
 	 *
 	 * @param source
 	 * @throws UnsupportedEncodingException
-	 * @throws TransformerException
 	 * @throws IOException
 	 */
-	public void transformationsFromSource(Source source) throws UnsupportedEncodingException, TransformerException, IOException {
-		Transformer transformer = fact.newTransformer(xlsStreamSource);
+	public void transformationsFromSource(Source source) throws IOException {
+        Transformer transformer = null;
+	    try{
+            transformer = fact.newTransformer(xlsStreamSource);
+            transformer.setErrorListener(errorListener);
 
-		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		if (Objects.nonNull(xsltProperties)) {
-			xsltProperties.forEach(transformer::setParameter);
-		}
+            if (Objects.nonNull(xsltProperties)) {
+                xsltProperties.forEach(transformer::setParameter);
+            }
 
-		transformer.transform(source, new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+            transformer.transform(source, new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
+        }catch(TransformerException exception){}
 	}
 	
 	/**
@@ -132,5 +145,8 @@ public class XSLTTransformations {
 	public void addProperty(String key, String value) {
 		xsltProperties.put(key, value);
 	}
-	
+
+    public XSLTErrorListener getErrorListener() {
+        return errorListener;
+    }
 }
