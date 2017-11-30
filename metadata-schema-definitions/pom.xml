@@ -21,5 +21,6 @@
 		<module>metadata-schema-definitions-oaipmh</module>
 		<module>metadata-schema-definitions-oaidc</module>
 		<module>metadata-schema-definitions-ead</module>
+        <module>metadata-schema-definitions-memorix</module>
 	</modules>
 </project>

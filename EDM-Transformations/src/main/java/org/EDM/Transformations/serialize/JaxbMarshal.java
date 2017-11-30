@@ -25,48 +25,48 @@ public class JaxbMarshal {
 
 	
 	private static Logger logger = LogManager.getLogger(JaxbMarshal.class);
-	
+
 	private Marshaller marshaller;
-	private JAXBElement<?> jaxbElement;
-	
-	
-	public JaxbMarshal(JAXBElement<?> jaxbElement, Class<?> classType) {
-		try {			
+	private Object object;
+
+
+	public JaxbMarshal(Object object, Class<?> classType) {
+		try {
 			JAXBContext oaidcContext = JAXBContext.newInstance(classType);
 			this.marshaller = oaidcContext.createMarshaller();
-			this.jaxbElement = jaxbElement;
+			this.object = object;
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		
+
 	}
-	
-	
+
+
 	public void marshaller(OutputStream stream) throws JAXBException {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.toString());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, false);
-		marshaller.marshal(jaxbElement, stream);
+		marshaller.marshal(object, stream);
 	}
-	
+
 	public void marshaller(OutputStream stream, Charset charset, boolean formatted, boolean fragment) throws JAXBException {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, charset.toString());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formatted);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, fragment);
-		marshaller.marshal(jaxbElement, stream);
+		marshaller.marshal(object, stream);
 	}
-	
+
 	public void marshaller(Writer writer) throws JAXBException {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.toString());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, false);
-		marshaller.marshal(jaxbElement, writer);
+		marshaller.marshal(object, writer);
 	}
-	
+
 	public void marshaller(Node node) throws JAXBException {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.toString());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, false);
-		marshaller.marshal(jaxbElement, node);
+		marshaller.marshal(object, node);
 	}
 }
