@@ -55,6 +55,8 @@ import eu.europeana.corelib.definitions.jibx.Type2;
 import eu.europeana.corelib.definitions.jibx.WebResourceType;
 import net.sf.saxon.functions.IriToUri;
 
+import javax.swing.text.html.Option;
+
 /**
  * @author amartinez
  *
@@ -133,22 +135,58 @@ public class A2A2EDM extends RDF implements EDM {
                     a.getIsRelatedToList().add(isRelated);
                 });
 
-                Optional.ofNullable(person.getResidence()).map(CtDetailPlace::getPlace).ifPresent(present -> {
-                    HasMet residence = new HasMet();
+                Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace place) ->{
+                    Optional.ofNullable(place.getCountry()).ifPresent((CtTransString country) ->{
+                        HasMet residence = new HasMet();
 
-                    residence.setResource(IriToUri
-                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-                            .toString());
-                    a.getHasMetList().add(residence);
+                        residence.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                        StringUtils.deleteWhitespace(country.getValue())))
+                                .toString());
+                        a.getHasMetList().add(residence);
+                    });
 
+                    Optional.ofNullable(place.getProvince()).ifPresent((CtTransString province) ->{
+                        HasMet residence = new HasMet();
+
+                        residence.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                        StringUtils.deleteWhitespace(province.getValue())))
+                                .toString());
+                        a.getHasMetList().add(residence);
+                    });
+
+                    Optional.ofNullable(place.getState()).ifPresent((CtTransString state) ->{
+                        HasMet residence = new HasMet();
+
+                        residence.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                        StringUtils.deleteWhitespace(state.getValue())))
+                                .toString());
+                        a.getHasMetList().add(residence);
+                    });
+
+                    Optional.ofNullable(place.getPlace()).ifPresent((CtTransString pl) ->{
+                        HasMet residence = new HasMet();
+
+                        residence.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                        StringUtils.deleteWhitespace(pl.getValue())))
+                                .toString());
+                        a.getHasMetList().add(residence);
+                    });
+                });
+
+                Optional.ofNullable(person.getBirthPlace()).map(CtDetailPlace::getPlace).ifPresent((CtTransString birthPlace) ->{
                     PlaceOfBirth placeOfBirth = new PlaceOfBirth();
-                    Resource resourcePlaceOfBirth = new Resource();
-                    resourcePlaceOfBirth.setResource(IriToUri
-                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-                            .toString());
-                    placeOfBirth.setResource(resourcePlaceOfBirth);
-                    placeOfBirth.setString("");
-                    a.setPlaceOfBirth(placeOfBirth);
+                        Resource resourcePlaceOfBirth = new Resource();
+                        resourcePlaceOfBirth.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s",
+                                        org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),StringUtils.deleteWhitespace(birthPlace.getValue())))
+                                .toString());
+                        placeOfBirth.setResource(resourcePlaceOfBirth);
+                        placeOfBirth.setString("");
+                        a.setPlaceOfBirth(placeOfBirth);
                 });
 
                 Optional.ofNullable(person.getBirthDate()).filter((CtTransDate f) -> Objects.nonNull(f.getYear())
@@ -208,19 +246,70 @@ public class A2A2EDM extends RDF implements EDM {
                     provided.getChoiceList().add(c);
                 });
 
-                Optional.ofNullable(source.getSourcePlace()).map(CtPlace::getPlace).ifPresent((CtTransString present) -> {
-                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Optional.ofNullable(source.getSourcePlace()).ifPresent((CtPlace place) ->{
+                    Optional.ofNullable(place.getCountry()).ifPresent((CtTransString country) ->{
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-                    Coverage coverage = new Coverage();
-                    Resource coverageResource = new Resource();
-                    coverageResource.setResource(IriToUri
-                            .iriToUri(String.format("Place:%s", StringUtils.deleteWhitespace(present.getValue())))
-                            .toString());
-                    coverage.setResource(coverageResource);
-                    coverage.setString("");
+                        Coverage coverage = new Coverage();
+                        Resource coverageResource = new Resource();
+                        coverageResource.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                        StringUtils.deleteWhitespace(country.getValue())))
+                                .toString());
+                        coverage.setResource(coverageResource);
+                        coverage.setString("");
 
-                    c.setCoverage(coverage);
-                    provided.getChoiceList().add(c);
+                        c.setCoverage(coverage);
+                        provided.getChoiceList().add(c);
+                    });
+
+                    Optional.ofNullable(place.getProvince()).ifPresent((CtTransString province) ->{
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Coverage coverage = new Coverage();
+                        Resource coverageResource = new Resource();
+                        coverageResource.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                        StringUtils.deleteWhitespace(province.getValue())))
+                                .toString());
+                        coverage.setResource(coverageResource);
+                        coverage.setString("");
+
+                        c.setCoverage(coverage);
+                        provided.getChoiceList().add(c);
+                    });
+
+                    Optional.ofNullable(place.getState()).ifPresent((CtTransString state) ->{
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Coverage coverage = new Coverage();
+                        Resource coverageResource = new Resource();
+                        coverageResource.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                        StringUtils.deleteWhitespace(state.getValue())))
+                                .toString());
+                        coverage.setResource(coverageResource);
+                        coverage.setString("");
+
+                        c.setCoverage(coverage);
+                        provided.getChoiceList().add(c);
+                    });
+
+                    Optional.ofNullable(place.getPlace()).ifPresent((CtTransString pl) ->{
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Coverage coverage = new Coverage();
+                        Resource coverageResource = new Resource();
+                        coverageResource.setResource(IriToUri
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                        StringUtils.deleteWhitespace(pl.getValue())))
+                                .toString());
+                        coverage.setResource(coverageResource);
+                        coverage.setString("");
+
+                        c.setCoverage(coverage);
+                        provided.getChoiceList().add(c);
+                    });
                 });
 
                 Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
@@ -384,8 +473,6 @@ public class A2A2EDM extends RDF implements EDM {
 	public void edmPlace() {
 		try {
             Map<String, Set<String>> mapPlace = new HashMap<>();
-            eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
-
 			Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> {
 				present.forEach((CtPerson person) -> {
 					Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace p) ->{
@@ -457,6 +544,7 @@ public class A2A2EDM extends RDF implements EDM {
             });
 
             mapPlace.entrySet().forEach((Map.Entry<String, Set<String>> entry) -> entry.getValue().forEach((String value) ->{
+                RDF.Choice choice = new RDF.Choice();
                 PlaceType placeType = new PlaceType();
 
                 String iriToUri = IriToUri.iriToUri(String.format("%s:%s", entry.getKey(), StringUtils.deleteWhitespace(value)))

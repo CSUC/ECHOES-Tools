@@ -12,37 +12,9 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import eu.europeana.corelib.definitions.jibx.AggregatedCHO;
-import eu.europeana.corelib.definitions.jibx.Aggregation;
-import eu.europeana.corelib.definitions.jibx.Concept;
-import eu.europeana.corelib.definitions.jibx.Contributor;
-import eu.europeana.corelib.definitions.jibx.Coverage;
-import eu.europeana.corelib.definitions.jibx.DataProvider;
+import eu.europeana.corelib.definitions.jibx.*;
 import eu.europeana.corelib.definitions.jibx.Date;
-import eu.europeana.corelib.definitions.jibx.Description;
-import eu.europeana.corelib.definitions.jibx.EdmType;
-import eu.europeana.corelib.definitions.jibx.HasView;
-import eu.europeana.corelib.definitions.jibx.Identifier;
-import eu.europeana.corelib.definitions.jibx.IntermediateProvider;
-import eu.europeana.corelib.definitions.jibx.Language;
-import eu.europeana.corelib.definitions.jibx.LanguageCodes;
-import eu.europeana.corelib.definitions.jibx.PrefLabel;
-import eu.europeana.corelib.definitions.jibx.ProvidedCHOType;
-import eu.europeana.corelib.definitions.jibx.Provider;
-import eu.europeana.corelib.definitions.jibx.RDF;
-import eu.europeana.corelib.definitions.jibx.TimeSpanType;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
-import eu.europeana.corelib.definitions.jibx.Rights1;
-import eu.europeana.corelib.definitions.jibx.Title;
-import eu.europeana.corelib.definitions.jibx.Type1;
-import eu.europeana.corelib.definitions.jibx.Type2;
-import eu.europeana.corelib.definitions.jibx.Creator;
-import eu.europeana.corelib.definitions.jibx.Format;
-import eu.europeana.corelib.definitions.jibx.Publisher;
-import eu.europeana.corelib.definitions.jibx.Relation;
-import eu.europeana.corelib.definitions.jibx.Rights;
-import eu.europeana.corelib.definitions.jibx.Source;
-import eu.europeana.corelib.definitions.jibx.Subject;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
@@ -99,150 +71,180 @@ public class DC2EDM extends RDF implements EDM {
                 getIdentifiers().add(iriToUri);
             }
 
-            Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent((List<JAXBElement<ElementType>> present) -> present.forEach((JAXBElement<ElementType> elementType) -> {
-                String localPart = elementType.getName().getLocalPart();
+            Optional.ofNullable(oaiDcType.getTitleOrCreatorOrSubject()).ifPresent((List<JAXBElement<ElementType>> present) -> {
+                for (JAXBElement<ElementType> elementType : present) {
+                    String localPart = elementType.getName().getLocalPart();
 
-                switch (localPart) {
-                    case "description": {
-                        Description description = new Description();
-                        description.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setDescription(description);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "publisher": {
-                        Publisher publisher = new Publisher();
-                        publisher.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setPublisher(publisher);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "relation": {
-                        Relation relation = new Relation();
-                        relation.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setRelation(relation);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "creator": {
-                        Creator creator = new Creator();
-                        creator.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setCreator(creator);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "type": {
-                        Type1 type = new Type1();
-                        type.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setType(type);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "source": {
-                        Source source = new Source();
-                        source.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setSource(source);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "language":
-                        if (Objects.nonNull(LanguageCodes.convert(elementType.getValue().getValue()))) {
-                            Language language = new Language();
-                            language.setString(LanguageCodes.convert(elementType.getValue().getValue()).xmlValue());
-                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                            c.setLanguage(language);
+                    switch (localPart) {
+                        case "description": {
+                            Description description = new Description();
+                            description.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setDescription(description);
                             provided.getChoiceList().add(c);
+                            break;
                         }
-                        break;
-                    case "format": {
-                        Format format = new Format();
-                        format.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setFormat(format);
-                        provided.getChoiceList().add(c);
-                        break;
+                        case "publisher": {
+                            Publisher publisher = new Publisher();
+                            publisher.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setPublisher(publisher);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "relation": {
+                            Relation relation = new Relation();
+                            relation.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setRelation(relation);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "creator": {
+                            Creator creator = new Creator();
+                            creator.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setCreator(creator);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "type": {
+                            Type1 type = new Type1();
+                            type.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setType(type);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "source": {
+                            Source source = new Source();
+                            source.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setSource(source);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "language":
+                            if (Objects.nonNull(LanguageCodes.convert(elementType.getValue().getValue()))) {
+                                Language language = new Language();
+                                language.setString(LanguageCodes.convert(elementType.getValue().getValue()).xmlValue());
+                                EuropeanaType.Choice c = new EuropeanaType.Choice();
+                                c.setLanguage(language);
+                                provided.getChoiceList().add(c);
+                            }
+                            break;
+                        case "format": {
+                            Format format = new Format();
+                            format.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setFormat(format);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "coverage": {
+                            Coverage coverage = new Coverage();
+                            coverage.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setCoverage(coverage);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "identifier": {
+                            Identifier id = new Identifier();
+                            id.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setIdentifier(id);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "subject": {
+                            getSubjects().add(elementType.getValue().getValue());
+                            Subject subject = new Subject();
+                            Resource resource = new Resource();
+
+                            String iriToUri = IriToUri.iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(elementType.getValue().getValue())))
+                                    .toString();
+
+                            resource.setResource(iriToUri);
+                            subject.setResource(resource);
+                            subject.setString("");
+
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setSubject(subject);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "date": {
+                            getDates().add(elementType.getValue().getValue());
+                            Date date = new Date();
+                            date.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setDate(date);
+                            provided.getChoiceList().add(c);
+
+                            try {
+                                c = new EuropeanaType.Choice();
+                                XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(elementType.getValue().getValue());
+
+                                String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", result.getYear())).toString();
+
+                                Temporal temporal = new Temporal();
+                                Resource resource = new Resource();
+                                resource.setResource(iriToUri);
+                                temporal.setResource(resource);
+                                temporal.setString("");
+
+                                c.setTemporal(temporal);
+
+                                provided.getChoiceList().add(c);
+                            } catch (Exception e) {
+                                logger.error(String.format("date %s not cast to XMLGregorianCalendar", date));
+                            }
+
+                            break;
+                        }
+                        case "rights": {
+                            Rights rights = new Rights();
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            Resource resource = new Resource();
+                            resource.setResource(elementType.getValue().getValue());
+                            rights.setResource(resource);
+                            rights.setString("");
+                            c.setRights(rights);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "title": {
+                            Title title = new Title();
+                            title.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setTitle(title);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        case "contributor": {
+                            Contributor contributor = new Contributor();
+                            contributor.setString(elementType.getValue().getValue());
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+                            c.setContributor(contributor);
+                            provided.getChoiceList().add(c);
+                            break;
+                        }
+                        default:
+                            System.err.println("UNKNOW metadataType");
+                            break;
                     }
-                    case "coverage": {
-                        Coverage coverage = new Coverage();
-                        coverage.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setCoverage(coverage);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "identifier": {
-                        Identifier id = new Identifier();
-                        id.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setIdentifier(id);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "subject": {
-                        getSubjects().add(elementType.getValue().getValue());
-                        Subject subject = new Subject();
-                        subject.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setSubject(subject);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "date": {
-                        getDates().add(elementType.getValue().getValue());
-                        Date date = new Date();
-                        date.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setDate(date);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "rights": {
-                        Rights rights = new Rights();
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        Resource resource = new Resource();
-                        resource.setResource(elementType.getValue().getValue());
-                        rights.setResource(resource);
-                        rights.setString("");
-                        c.setRights(rights);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "title": {
-                        Title title = new Title();
-                        title.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setTitle(title);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    case "contributor": {
-                        Contributor contributor = new Contributor();
-                        contributor.setString(elementType.getValue().getValue());
-                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                        c.setContributor(contributor);
-                        provided.getChoiceList().add(c);
-                        break;
-                    }
-                    default:
-                        System.err.println("UNKNOW metadataType");
-                        break;
+
+                    Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
+                        if (Objects.nonNull(EdmType.convert(edmType))) {
+                            Type2 t = new Type2();
+                            t.setType(EdmType.convert(edmType));
+
+                            provided.setType(t);
+                        }
+                    });
                 }
-
-                Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
-                    if(Objects.nonNull(EdmType.convert(edmType))) {
-                        Type2 t = new Type2();
-                        t.setType(EdmType.convert(edmType));
-
-                        provided.setType(t);
-                    }
-                });
-            }));
+            });
 
             choice.setProvidedCHO(provided);
             this.getChoiceList().add(choice);
