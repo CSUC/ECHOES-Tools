@@ -3,11 +3,16 @@
  */
 package org.EDM.Transformations.formats;
 
-import org.w3c.dom.Node;
+import eu.europeana.corelib.definitions.jibx.RDF;
+import org.EDM.Transformations.deserialize.JibxUnMarshall;
+import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 
 /**
@@ -18,58 +23,57 @@ import java.nio.charset.Charset;
  *
  */
 public interface EDM {
-	
-	/**
-	 * 
-	 */
-	void edmProvidedCHO();
-	
-	/**
-	 * 
-	 */
-	void edmAgent();
-	
-	/**
-	 * 
-	 */
-	void edmPlace();
-	
-	/**
-	 * 
-	 */
-	void edmTimeSpan();
-	
-	/**
-	 * 
-	 */
-	void skosConcept();
-	
-	/**
-	 * 
-	 * 
-	 */
-	void edmWebResource();
-	
-	
-	/**
-	 * 
-	 */
-	void oreAggregation();
-
 
 	/**
 	 *
-	 * @param encoding
-	 * @param alone
-	 * @param outs
 	 */
-	void marshal(Charset encoding, boolean alone, OutputStream outs);
+    XSLTTransformations transformation(String xslt, OutputStream out, Map<String,String> xsltProperties) throws Exception;
+
+    /**
+     *
+     */
+    XSLTTransformations transformation(String xslt) throws Exception;
 
 	/**
 	 *
-	 * @param encoding
-	 * @param alone
-	 * @param writer
 	 */
-	void marshal(Charset encoding, boolean alone, Writer writer);
+	void creation();
+
+    /**
+     *
+     */
+    void creation(Charset encoding, boolean alone, OutputStream outs);
+
+    /**
+     *
+     */
+    void creation(Charset encoding, boolean alone, Writer writer);
+
+	/**
+	 *
+	 */
+    JibxUnMarshall validateSchema(InputStream ins, Charset enc, Class<?> classType);
+
+    /**
+     *
+     */
+    JibxUnMarshall validateSchema(InputStream ins, String name, Charset enc, Class<?> classType);
+
+
+    /**
+     *
+     */
+    JibxUnMarshall validateSchema(Reader rdr, Class<?> classType);
+
+
+    /**
+     *
+     */
+    JibxUnMarshall validateSchema(Reader rdr, String name, Class<?> classType);
+
+
+    /**
+     *
+     */
+    void modify(RDF rdf);
 }

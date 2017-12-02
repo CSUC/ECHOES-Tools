@@ -56,6 +56,24 @@
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>compile</scope>
+        </dependency>
+		<!-- https://mvnrepository.com/artifact/javax.xml.stream/stax-api -->
+		<dependency>
+			<groupId>javax.xml.stream</groupId>
+			<artifactId>stax-api</artifactId>
+			<version>1.0-2</version>
+		</dependency>
+
 
 	</dependencies>
 

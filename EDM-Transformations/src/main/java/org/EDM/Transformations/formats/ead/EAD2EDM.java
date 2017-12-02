@@ -1,55 +1,96 @@
 package org.EDM.Transformations.formats.ead;
 
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import eu.europeana.corelib.definitions.jibx.HasView;
 import eu.europeana.corelib.definitions.jibx.RDF;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.xml.transform.stream.StreamSource;
+import eu.europeana.corelib.definitions.jibx.ResourceType;
+import isbn._1_931666_22_9.Ead;
+import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.EDM.Transformations.deserialize.JibxUnMarshall;
-import org.EDM.Transformations.serialize.JibxMarshall;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.io.IoBuilder;
 
 /**
  * @author amartinez
  *
  */
-public class EAD2EDM {
+public class EAD2EDM implements EDM {
 
-    private RDF rdf = null;
-    private final OutputStream out;
+    private static Logger logger = LogManager.getLogger(EAD2EDM.class);
 
-    public EAD2EDM(String xslt, InputStream ins, Map<String, String> xsltProperties, OutputStream outs) throws IOException, Exception {
-        this.out = outs;
-        File tempFile = Files.createTempFile("Echoes-Tools", ".edm").toFile();
-        tempFile.deleteOnExit();
+    private Ead type;
+    private String identifier;
 
-        XSLTTransformations xsltTrans = new XSLTTransformations(xslt, new FileOutputStream(tempFile), xsltProperties);
-        xsltTrans.transformationsFromSource(new StreamSource(ins));
+    private Map<String, String> properties;
 
-        if(Objects.isNull(xsltTrans.getErrorListener().getErrors())){
-            JibxUnMarshall unmarshall = new JibxUnMarshall(new FileInputStream(tempFile), "UTF-8", RDF.class);
-            rdf = (RDF) unmarshall.getElement();
-        }
+    /**
+     *
+     * @param identifier
+     * @param type
+     * @param properties
+     */
+    public EAD2EDM(String identifier, Ead type, Map<String, String> properties) {
+        this.identifier = identifier;
+        this.type = type;
+        this.properties = properties;
     }
 
-    public RDF getRDF(){
-        return this.rdf;
+    @Override
+    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        return new XSLTTransformations(xslt, out, xsltProperties);
     }
-    
-    public void delAdditionalhasViewWebResources() {        
-        if (rdf != null) {
+
+    @Override
+    public XSLTTransformations transformation(String xslt) throws Exception {
+        return new XSLTTransformations(xslt, IoBuilder.forLogger(EAD2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties);
+    }
+
+    @Override
+    public void creation() {
+        throw new IllegalArgumentException("creation is not valid for EAD2EDM!");
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs) {
+        throw new IllegalArgumentException("creation is not valid for EAD2EDM!");
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, Writer writer) {
+        throw new IllegalArgumentException("creation is not valid for EAD2EDM!");
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, String name, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, name, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, Class<?> classType) {
+        return new JibxUnMarshall(rdr, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, String name, Class<?> classType) {
+        return new JibxUnMarshall(rdr, name, classType);
+    }
+
+    @Override
+    public void modify(RDF rdf) {
+        if(Objects.nonNull(rdf)){
             HashSet<String> urisToDelete = new HashSet<>();
             List<RDF.Choice> elements = rdf.getChoiceList();
             // We first collect the resources of edm:hasView to delete and delete them
@@ -58,22 +99,15 @@ public class EAD2EDM {
                     List<HasView> hasViewList = c.getAggregation().getHasViewList();
                     if (hasViewList != null && hasViewList.size() > 1) {
                         List<HasView> hasViewListToDel = hasViewList.subList(1, hasViewList.size());
-                        urisToDelete.addAll(hasViewListToDel.stream().map(
-                                h -> h.getResource())
-                                .collect(Collectors.toCollection(HashSet<String>::new)));
+                        urisToDelete.addAll(hasViewListToDel.stream().map(ResourceType::getResource)
+                                .collect(Collectors.toCollection(HashSet::new)));
                         hasViewList.removeAll(hasViewListToDel);
                     }
                 }
             });
             // We remove the WebResource(s) which about are in deleted edm:hasView
             rdf.setChoiceList(elements.parallelStream().filter(e -> !e.ifWebResource() || !urisToDelete.contains(e.getWebResource().getAbout()))
-                    .collect(Collectors.toCollection(ArrayList<RDF.Choice>::new)));
-        }
-    }
-
-    public void marshal(Charset encoding, boolean alone) {
-        if (Objects.nonNull(this) && !Objects.equals(this, new RDF())) {
-            JibxMarshall.marshall(rdf, encoding.toString(), alone, out, RDF.class);
+                    .collect(Collectors.toCollection(ArrayList::new)));
         }
     }
 

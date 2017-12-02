@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.csuc.Parser.Core.parser;
+package org.csuc.Parser.Core.util;
 
 /**
  * @author amartinez

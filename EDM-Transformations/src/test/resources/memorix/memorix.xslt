@@ -4,6 +4,10 @@
     <xsl:param name="identifier" />
     <xsl:param name="edmType" />
     <xsl:param name="dataProvider" />
+    <xsl:param name="set" />
+    <xsl:param name="language" />
+    <xsl:param name="provider" />
+    <xsl:param name="rights" />
     <xsl:template match="@*|node()">
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#">
 
@@ -11,18 +15,12 @@
                     <xsl:variable name="identifier_object" select="/mmm:memorix/mmm:adressen[1]/mmm:object/text()"/>
                     <xsl:variable name="concat_identifier" select="concat(replace($identifier_status,'\s','_'),':',replace($identifier_object,'\s','_'))"/>
 
-                    <!-- 				<xsl:variable name="dc:contributor" select=""/> -->
                     <xsl:variable name="dc:coverage" select="/mmm:memorix/contribution"/>
                     <xsl:variable name="dc:creator" select="/mmm:memorix/mmm:ontwerper"/>
                     <xsl:variable name="dc:date" select="/mmm:memorix/mmm:besluit_bw_datum"/>
                     <xsl:variable name="dc:description" select="/mmm:memorix/mmm:redengevende_omschrijving"/>
                     <xsl:variable name="dc:description_2" select="./mmm:metadata/oai_dc:dc/dc:description"/>
-                    <!-- 				<xsl:variable name="dc:format" select="/mmm:memorix/contribution"/> -->
                     <xsl:variable name="dc:identifier" select="/mmm:memorix/mmm:monumentnummer"/>
-                    <!-- 				<xsl:variable name="dc:publisher" select=""/> -->
-                    <!-- 				<xsl:variable name="dc:relation" select=""/> -->
-                    <!-- 				<xsl:variable name="dc:rights" select=""/> -->
-                    <!-- 				<xsl:variable name="dc:source" select=""/> -->
                     <xsl:variable name="dc:subject" select="$identifier_status"/>
                     <xsl:variable name="dc:title" select="$concat_identifier"/>
                     <xsl:variable name="dc:type" select="/mmm:memorix/mmm:bouwstijl"/>
@@ -34,17 +32,9 @@
 
                     <edm:ProvidedCHO>
                         <xsl:attribute name="rdf:about">
-                            <xsl:value-of select="$concat_identifier"/>
+                            <xsl:value-of
+                                    select="iri-to-uri(concat('ProvidedCHO:', replace($identifier, '\s','_')))" />
                         </xsl:attribute>
-
-                        <!-- dc:contributor -->
-                        <!-- 						<xsl:if test="$dc:contributor != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:contributor"> -->
-                        <!-- 								<dc:contributor> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:contributor> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
 
                         <!-- dc:coverage -->
                         <xsl:if test="$dc:coverage != '' ">
@@ -89,16 +79,6 @@
                             </xsl:for-each>
                         </xsl:if>
 
-
-                        <!-- dc:format -->
-                        <!-- 						<xsl:if test="$dc:format != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:format"> -->
-                        <!-- 								<dc:format> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:format> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
-
                         <!-- dc:identifier -->
                         <xsl:if test="$dc:identifier != ''">
                             <xsl:for-each select="$dc:identifier">
@@ -109,50 +89,11 @@
                         </xsl:if>
 
                         <!-- dc:language -->
-                        <!--<xsl:if test=" != ''">
-                            <xsl:for-each select="">-->
-                        <dc:language>
-                            <!--<xsl:value-of select="text()"/>-->
-                            <xsl:text>nl</xsl:text>
-                        </dc:language>
-                        <!--</xsl:for-each>
-                    </xsl:if>-->
-
-                        <!-- dc:publisher -->
-                        <!-- 						<xsl:if test="$dc:publisher != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:publisher"> -->
-                        <!-- 								<dc:publisher> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:publisher> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
-
-                        <!-- dc:relation -->
-                        <!-- 						<xsl:if test="$dc:relation != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:relation"> -->
-                        <!-- 								<dc:relation> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:relation> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
-
-                        <!-- dc:rights -->
-                        <!-- 						<xsl:if test="$dc:rights != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:rights"> -->
-                        <!-- 								<dc:rights> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:rights> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
-
-                        <!-- dc:source -->
-                        <!-- 						<xsl:if test="$dc:source != ''"> -->
-                        <!-- 							<xsl:for-each select="$dc:source"> -->
-                        <!-- 								<dc:source> -->
-                        <!-- 									<xsl:value-of select="text()"/> -->
-                        <!-- 								</dc:source> -->
-                        <!-- 							</xsl:for-each>							 -->
-                        <!-- 						</xsl:if> -->
+                        <xsl:if test="$language != ''">
+                            <dc:language>
+                                <xsl:value-of select="$language" />
+                            </dc:language>
+                        </xsl:if>
 
                         <!-- dc:subject -->
                         <xsl:if test="$dc:subject != ''">
@@ -183,7 +124,8 @@
                             <edm:isRelatedTo>
                                 <xsl:attribute name="rdf:resource">
                                     <xsl:variable name="TimeSpanAbout" select="/mmm:memorix/mmm:bouwperiode/text()"/>
-                                    <xsl:value-of select="replace($TimeSpanAbout,'\s','_')"/>
+                                    <xsl:value-of
+                                            select="iri-to-uri(concat('TimeSpan:', replace($TimeSpanAbout, '\s','_')))" />
                                 </xsl:attribute>
                             </edm:isRelatedTo>
                         </xsl:if>
@@ -192,7 +134,8 @@
                             <xsl:for-each select="$stadsdeel">
                                 <edm:isRelatedTo>
                                     <xsl:attribute name="rdf:resource">
-                                        <xsl:value-of select="replace(.,'\s','_')"/>
+                                        <xsl:value-of
+                                                select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                     </xsl:attribute>
                                 </edm:isRelatedTo>
                             </xsl:for-each>
@@ -202,7 +145,8 @@
                             <xsl:for-each select="$buurt">
                                 <edm:isRelatedTo>
                                     <xsl:attribute name="rdf:resource">
-                                        <xsl:value-of select="replace(.,'\s','_')"/>
+                                        <xsl:value-of
+                                                select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                     </xsl:attribute>
                                 </edm:isRelatedTo>
                             </xsl:for-each>
@@ -212,7 +156,8 @@
                             <xsl:for-each select="$plaats">
                                 <edm:isRelatedTo>
                                     <xsl:attribute name="rdf:resource">
-                                        <xsl:value-of select="replace(.,'\s','_')"/>
+                                        <xsl:value-of
+                                                select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                     </xsl:attribute>
                                 </edm:isRelatedTo>
                             </xsl:for-each>
@@ -224,14 +169,19 @@
                                     <edm:isRelatedTo>
                                         <xsl:attribute name="rdf:resource">
                                             <xsl:variable name="verblijfseenheid_id" select="./mmm:verblijfseenheid_id/text()"/>
-                                            <xsl:value-of select="replace($verblijfseenheid_id,'\s','_')"/>
+                                            <xsl:value-of
+                                                    select="iri-to-uri(concat('Place:', replace($verblijfseenheid_id, '\s','_')))" />
                                         </xsl:attribute>
                                     </edm:isRelatedTo>
                                 </xsl:if>
                             </xsl:if>
                         </xsl:for-each>
 
-                        <edm:type>IMAGE</edm:type>
+                        <xsl:if test="$edmType != ''">
+                            <edm:type>
+                                <xsl:value-of select="$edmType" />
+                            </edm:type>
+                        </xsl:if>
 
                     </edm:ProvidedCHO>
 
@@ -239,7 +189,8 @@
                         <edm:TimeSpan>
                             <xsl:attribute name="rdf:about">
                                 <xsl:variable name="TimeSpanAbout" select="/mmm:memorix/mmm:bouwperiode/text()"/>
-                                <xsl:value-of select="replace($TimeSpanAbout,'\s','_')"/>
+                                <xsl:value-of
+                                        select="iri-to-uri(concat('TimeSpan:', replace($TimeSpanAbout, '\s','_')))" />
                             </xsl:attribute>
                         </edm:TimeSpan>
                     </xsl:if>
@@ -248,7 +199,8 @@
                         <xsl:for-each select="$stadsdeel">
                             <edm:Place>
                                 <xsl:attribute name="rdf:about">
-                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                    <xsl:value-of
+                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                 </xsl:attribute>
 
                                 <skos:prefLabel>
@@ -259,7 +211,8 @@
                                     <xsl:for-each select="$buurt">
                                         <dcterms:hasPart>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:hasPart>
                                     </xsl:for-each>
@@ -269,16 +222,18 @@
                                     <xsl:for-each select="$plaats">
                                         <dcterms:hasPart>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:hasPart>
                                     </xsl:for-each>
                                 </xsl:if>
 
-                                <xsl:if test="$concat_identifier != ''">
+                                <xsl:if test="$identifier != ''">
                                     <dcterms:isPartOf>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$concat_identifier"/>
+                                            <xsl:value-of
+                                                    select="iri-to-uri(concat('ProvidedCHO:', replace($identifier, '\s','_')))" />
                                         </xsl:attribute>
                                     </dcterms:isPartOf>
                                 </xsl:if>
@@ -291,7 +246,8 @@
                         <xsl:for-each select="$buurt">
                             <edm:Place>
                                 <xsl:attribute name="rdf:about">
-                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                    <xsl:value-of
+                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                 </xsl:attribute>
 
                                 <skos:prefLabel>
@@ -302,7 +258,8 @@
                                     <xsl:for-each select="$plaats">
                                         <dcterms:hasPart>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:hasPart>
                                     </xsl:for-each>
@@ -312,16 +269,18 @@
                                     <xsl:for-each select="$stadsdeel">
                                         <dcterms:isPartOf>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:isPartOf>
                                     </xsl:for-each>
                                 </xsl:if>
 
-                                <xsl:if test="$concat_identifier != ''">
+                                <xsl:if test="$identifier != ''">
                                     <dcterms:isPartOf>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$concat_identifier"/>
+                                            <xsl:value-of
+                                                    select="iri-to-uri(concat('ProvidedCHO:', replace($identifier, '\s','_')))" />
                                         </xsl:attribute>
                                     </dcterms:isPartOf>
                                 </xsl:if>
@@ -334,7 +293,8 @@
                         <xsl:for-each select="$plaats">
                             <edm:Place>
                                 <xsl:attribute name="rdf:about">
-                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                    <xsl:value-of
+                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                 </xsl:attribute>
 
                                 <skos:prefLabel>
@@ -345,16 +305,18 @@
                                     <xsl:for-each select="$stadsdeel">
                                         <dcterms:isPartOf>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:isPartOf>
                                     </xsl:for-each>
                                 </xsl:if>
 
-                                <xsl:if test="$concat_identifier != ''">
+                                <xsl:if test="$identifier != ''">
                                     <dcterms:isPartOf>
                                         <xsl:attribute name="rdf:resource">
-                                            <xsl:value-of select="$concat_identifier"/>
+                                            <xsl:value-of
+                                                    select="iri-to-uri(concat('ProvidedCHO:', replace($identifier, '\s','_')))" />
                                         </xsl:attribute>
                                     </dcterms:isPartOf>
                                 </xsl:if>
@@ -363,7 +325,8 @@
                                     <xsl:for-each select="$buurt">
                                         <dcterms:isPartOf>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="replace(.,'\s','_')"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:isPartOf>
                                     </xsl:for-each>
@@ -379,7 +342,8 @@
                             <xsl:if test="$verblijfseenheid_id != ''">
                                 <edm:Place>
                                     <xsl:attribute name="rdf:about">
-                                        <xsl:value-of select="replace($verblijfseenheid_id,'\s','_')"/>
+                                        <xsl:value-of
+                                                select="iri-to-uri(concat('Place:', replace($verblijfseenheid_id, '\s','_')))" />
                                     </xsl:attribute>
 
                                     <xsl:variable name="postcode" select="./mmm:postcode"/>
@@ -438,10 +402,11 @@
                                         </xsl:for-each>
                                     </xsl:if>
 
-                                    <xsl:if test="$concat_identifier != ''">
+                                    <xsl:if test="$identifier != ''">
                                         <dcterms:isPartOf>
                                             <xsl:attribute name="rdf:resource">
-                                                <xsl:value-of select="$concat_identifier"/>
+                                                <xsl:value-of
+                                                        select="iri-to-uri(concat('ProvidedCHO:', replace($identifier, '\s','_')))" />
                                             </xsl:attribute>
                                         </dcterms:isPartOf>
                                     </xsl:if>
@@ -450,7 +415,8 @@
                                         <xsl:for-each select="$stadsdeel">
                                             <dcterms:isPartOf>
                                                 <xsl:attribute name="rdf:resource">
-                                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                                    <xsl:value-of
+                                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                                 </xsl:attribute>
                                             </dcterms:isPartOf>
                                         </xsl:for-each>
@@ -460,7 +426,8 @@
                                         <xsl:for-each select="$buurt">
                                             <dcterms:isPartOf>
                                                 <xsl:attribute name="rdf:resource">
-                                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                                    <xsl:value-of
+                                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                                 </xsl:attribute>
                                             </dcterms:isPartOf>
                                         </xsl:for-each>
@@ -470,7 +437,8 @@
                                         <xsl:for-each select="$plaats">
                                             <dcterms:isPartOf>
                                                 <xsl:attribute name="rdf:resource">
-                                                    <xsl:value-of select="replace(.,'\s','_')"/>
+                                                    <xsl:value-of
+                                                            select="iri-to-uri(concat('Place:', replace(., '\s','_')))" />
                                                 </xsl:attribute>
                                             </dcterms:isPartOf>
                                         </xsl:for-each>

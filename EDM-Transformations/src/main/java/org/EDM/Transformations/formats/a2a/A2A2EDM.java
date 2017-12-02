@@ -3,14 +3,19 @@
  */
 package org.EDM.Transformations.formats.a2a;
 
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Stream;
 
 import nl.mindbus.a2a.*;
+import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
+import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
@@ -54,8 +59,8 @@ import eu.europeana.corelib.definitions.jibx.Type1;
 import eu.europeana.corelib.definitions.jibx.Type2;
 import eu.europeana.corelib.definitions.jibx.WebResourceType;
 import net.sf.saxon.functions.IriToUri;
-
-import javax.swing.text.html.Option;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.io.IoBuilder;
 
 /**
  * @author amartinez
@@ -74,25 +79,25 @@ public class A2A2EDM extends RDF implements EDM {
 	/**
 	 *
 	 * @param identifier
-	 * @param a2atype
+	 * @param type
 	 * @param properties
 	 */
-	public A2A2EDM(String identifier, A2AType a2atype, Map<String, String> properties) {
+	public A2A2EDM(String identifier, A2AType type, Map<String, String> properties) {
 		this.identifier = identifier;
-		this.a2a = a2atype;
+		this.a2a = type;
 		this.properties = properties;
 
-		edmProvidedCHO();
-		edmAgent();
-		edmPlace();
-		skosConcept();
-		edmTimeSpan();
-		edmWebResource();
-		oreAggregation();
-	}
+        edmProvidedCHO();
+        edmAgent();
+        edmPlace();
+        skosConcept();
+        edmTimeSpan();
+        edmWebResource();
+        oreAggregation();
+    }
 
-	@Override
-	public void edmAgent() {
+
+    private void edmAgent() {
 		try {
 			Optional.ofNullable(a2a.getPerson()).ifPresent((List<CtPerson> p) -> p.forEach((CtPerson person) -> {
                 Choice choice = new Choice();
@@ -219,8 +224,7 @@ public class A2A2EDM extends RDF implements EDM {
 		}
 	}
 
-	@Override
-	public void edmProvidedCHO() {
+	private void edmProvidedCHO() {
         try {
             Optional.ofNullable(a2a.getSource()).ifPresent((CtSource source) -> {
 
@@ -427,8 +431,7 @@ public class A2A2EDM extends RDF implements EDM {
         }
 	}
 
-	@Override
-	public void skosConcept() {
+    private void skosConcept() {
 		try {
 			Optional.ofNullable(a2a.getRelationEP()).ifPresent((List<CtRelationEP> present) -> present.forEach((CtRelationEP relationType) -> {
                 Choice choice = new Choice();
@@ -469,8 +472,8 @@ public class A2A2EDM extends RDF implements EDM {
 		}
 	}
 
-	@Override
-	public void edmPlace() {
+
+    private void edmPlace() {
 		try {
             Map<String, Set<String>> mapPlace = new HashMap<>();
 			Optional.ofNullable(a2a.getPerson()).map(Collection::stream).ifPresent((Stream<CtPerson> present) -> {
@@ -573,8 +576,8 @@ public class A2A2EDM extends RDF implements EDM {
 		}
 	}
 
-	@Override
-	public void edmTimeSpan() {
+
+    private void edmTimeSpan() {
 		try {
 			Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceIndexDate).ifPresent((CtIndexDate present) -> {
 				Set<Integer> setYear = new HashSet<Integer>();
@@ -607,8 +610,8 @@ public class A2A2EDM extends RDF implements EDM {
 	/**
 	 * 
 	 */
-	@Override
-	public void edmWebResource() {
+
+    private void edmWebResource() {
 		try {
 			Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceAvailableScans).map(CtScans::getScan)
 			.ifPresent((List<CtScan> present) -> {
@@ -628,8 +631,8 @@ public class A2A2EDM extends RDF implements EDM {
 		}
 	}
 
-	@Override
-	public void oreAggregation() {
+
+    private void oreAggregation() {
 		try {
 			Optional.ofNullable(a2a.getSource()).ifPresent((CtSource present) -> {
 				eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
@@ -717,14 +720,56 @@ public class A2A2EDM extends RDF implements EDM {
 	}
 
     @Override
-    public void marshal(Charset encoding, boolean alone, OutputStream outs) {
+    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+    }
+
+    @Override
+    public XSLTTransformations transformation(String xslt) throws Exception {
+        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+    }
+
+    @Override
+    public void creation() {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
+                    false, IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(), RDF.class);
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs) {
         if (!Objects.equals(this, new RDF()))
             JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class);
     }
 
     @Override
-    public void marshal(Charset encoding, boolean alone, Writer writer) {
+    public void creation(Charset encoding, boolean alone, Writer writer) {
         if (!Objects.equals(this, new RDF()))
             JibxMarshall.marshall(this, encoding.toString(), alone, writer, RDF.class);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, String name, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, name, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, Class<?> classType) {
+        return new JibxUnMarshall(rdr, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, String name, Class<?> classType) {
+        return new JibxUnMarshall(rdr, name, classType);
+    }
+
+    @Override
+    public void modify(RDF rdf) {
+
     }
 }

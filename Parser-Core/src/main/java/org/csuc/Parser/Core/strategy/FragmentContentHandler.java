@@ -1,23 +1,20 @@
 /**
  * 
  */
-package org.csuc.Parser.Core.parser;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
+package org.csuc.Parser.Core.strategy;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /**
  * @author amartinez
@@ -27,24 +24,20 @@ public class FragmentContentHandler extends DefaultHandler{
 	
 	private static Logger logger = LogManager.getLogger(FragmentContentHandler.class.getName());
 			
-	private Map<String,String> mapValues = new HashMap<String,String>();
-	private Map<String,String> namespaces = new HashMap<String,String>();
-	private Map<String, AtomicInteger> elementNameCount = new HashMap<String, AtomicInteger>();
+	private Map<String,String> mapValues = new HashMap<>();
+	private Map<String,String> namespaces = new HashMap<>();
+    private Map<String, AtomicInteger> mapCount = new HashMap<>();
 	
 	private String resumptionTokenValue = null;
 	private String qName = null; 
 	
 	private AtomicInteger iterNamespaces = new AtomicInteger(0);
 
-	private String xPath = new String();
+	private String xPath = "";
 	private XMLReader xmlReader;
 	private FragmentContentHandler parent;
 	private StringBuilder characters = new StringBuilder();
-	
-	
-	
-	
-	
+
 	public FragmentContentHandler(XMLReader xmlReader) {
 		this.xmlReader = xmlReader;
 	}
@@ -107,19 +100,12 @@ public class FragmentContentHandler extends DefaultHandler{
 		
 		IntStream.range(0, attributes.getLength()).forEach(l->{
 			if(!attributes.getQName(l).equals("xsi:schemaLocation")){
-				if(l != attributes.getLength() -1)	attr.append("@"+attributes.getQName(l) + " and ");
-		    	else	attr.append("@"+attributes.getQName(l));
+				if(l != attributes.getLength() -1)	attr.append("@").append(attributes.getQName(l)).append(" and ");
+		    	else	attr.append("@").append(attributes.getQName(l));
 			}			
 	    }); 
 		
 		if(attr.length()>0)	qName = qName + "[" + attr.toString()  + "]";
-	    
-//		Integer count = elementNameCount.get(qName);		
-//	    if (null == count)	count = 1;
-//	    else	count++;	  
-//	    elementNameCount.put(qName, count);
-		elementNameCount.putIfAbsent(qName, new AtomicInteger(0));
-		elementNameCount.get(qName).incrementAndGet();	
 
 	    String childXPath = xPath + "/" + qName;
 	    	
@@ -128,7 +114,7 @@ public class FragmentContentHandler extends DefaultHandler{
 	    child.setMapValues(getMapValues());
 	    child.setNamespaces(getNamespaces());
 	    child.setResumptionTokenValue(getResumptionTokenValue());
-	    child.setElementNameCount(getElementNameCount());
+	    child.setMapCount(getMapCount());
 	    child.setIterNamespaces(getIterNamespaces());
 	    child.setqName(qName);
 	    
@@ -137,13 +123,11 @@ public class FragmentContentHandler extends DefaultHandler{
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {		
-		//if(!qName.contains(":"))	qName = namespaces.get(uri) + ":" + qName;		
-		String value = characters.toString().trim();		
+		String value = characters.toString().trim();
 	    if (value.length() > 0){
-//	    	if(qName.contains("resumptionToken"))	setResumptionTokenValue(value);	    	
-//	    	mapValues.put(xPath, qName);
-	    	if(getqName().contains("resumptionToken"))	setResumptionTokenValue(value);	    	
+	    	if(getqName().contains("resumptionToken"))	setResumptionTokenValue(value);
 	    	mapValues.put(xPath, getqName());
+            mapCount.computeIfAbsent(xPath, k -> new AtomicInteger()).incrementAndGet();
 	    }
 	    parent.setResumptionTokenValue(getResumptionTokenValue());
 	    parent.setIterNamespaces(getIterNamespaces());
@@ -184,8 +168,16 @@ public class FragmentContentHandler extends DefaultHandler{
 	public void fatalError(SAXParseException e) throws SAXException {		
 		logger.error(e);
 	}
-	
-	public Map<String, String> getMapValues() {
+
+    private Map<String, AtomicInteger> getMapCount() {
+        return mapCount;
+    }
+
+    private void setMapCount(Map<String, AtomicInteger> mapCount) {
+        this.mapCount = mapCount;
+    }
+
+	private Map<String, String> getMapValues() {
 		return mapValues;
 	}
 
@@ -193,45 +185,45 @@ public class FragmentContentHandler extends DefaultHandler{
 		return namespaces;
 	}
 
-	public void setMapValues(Map<String, String> mapValues) {
+	private void setMapValues(Map<String, String> mapValues) {
 		this.mapValues = mapValues;
 	}
 
-	public void setNamespaces(Map<String, String> namespaces) {
+    private void setNamespaces(Map<String, String> namespaces) {
 		this.namespaces = namespaces;
 	}
 
-	public String getResumptionTokenValue() {
+    private String getResumptionTokenValue() {
 		return resumptionTokenValue;
 	}
 
-	public void setResumptionTokenValue(String resumptionTokenValue) {
+    private void setResumptionTokenValue(String resumptionTokenValue) {
 		this.resumptionTokenValue = resumptionTokenValue;
 	}
-	
-	public String getqName() {
+
+    private String getqName() {
 		return qName;
 	}
 
-	public void setqName(String qName) {
+    private void setqName(String qName) {
 		this.qName = qName;
 	}
 
-	public Map<String, AtomicInteger> getElementNameCount() {
-		return elementNameCount;
-	}
-
-	public void setElementNameCount(Map<String, AtomicInteger> elementNameCount) {
-		this.elementNameCount = elementNameCount;
-	}
-
-	public AtomicInteger getIterNamespaces() {
+    private AtomicInteger getIterNamespaces() {
 		return iterNamespaces;
 	}
 
-	public void setIterNamespaces(AtomicInteger iterNamespaces) {
+	private void setIterNamespaces(AtomicInteger iterNamespaces) {
 		this.iterNamespaces = iterNamespaces;
-	}	
-	
-	
+	}
+
+	public List<XPATH> getXPATH(){
+        List<XPATH> list = new ArrayList<>();
+        getMapValues().forEach((xpath, value) -> {
+			Integer count = getMapCount().get(xpath).get();
+
+			list.add(new XPATH(xpath, value, count));
+		});
+        return list;
+    }
 }

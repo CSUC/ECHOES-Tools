@@ -50,7 +50,7 @@ public class JaxbUnmarshal {
 			Object obj = u.unmarshal(file);
 
 			if(obj instanceof JAXBElement)
-				data = ((JAXBElement<Object>) u.unmarshal(file)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
 			else    data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -66,9 +66,9 @@ public class JaxbUnmarshal {
             u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(inputStream);
-
+			System.out.println(obj.getClass());
             if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) u.unmarshal(inputStream)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
             else   data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -88,7 +88,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(url);
 
             if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) u.unmarshal(url)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -107,7 +107,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())));
 
             if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) u.unmarshal(new StreamSource(new StringReader(stringbuffer.toString())))).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -126,7 +126,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(xmlSource);
 
             if(obj instanceof JAXBElement)
-                data =  ((JAXBElement<Object>) u.unmarshal(xmlSource, classType)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -180,7 +180,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(saxSource);
 
             if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) u.unmarshal(saxSource)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
 			else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -204,7 +204,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(xmlStreamReader);
 
             if(obj instanceof JAXBElement)
-                data = u.unmarshal( xmlStreamReader );
+                data = ((JAXBElement<Object>) obj).getValue();
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
@@ -222,7 +222,7 @@ public class JaxbUnmarshal {
             Object obj = u.unmarshal(xmlEventReader);
 
             if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) u.unmarshal(xmlEventReader)).getValue();
+                data = ((JAXBElement<Object>) obj).getValue();
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));

@@ -3,9 +3,12 @@
  */
 package org.EDM.Transformations.formats.dc;
 
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import javax.xml.bind.JAXBElement;
@@ -15,11 +18,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import eu.europeana.corelib.definitions.jibx.*;
 import eu.europeana.corelib.definitions.jibx.Date;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
+import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
+import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.io.IoBuilder;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
 import net.sf.saxon.functions.IriToUri;
@@ -50,14 +57,13 @@ public class DC2EDM extends RDF implements EDM {
         edmProvidedCHO();
         edmAgent();
         edmPlace();
-        edmTimeSpan();
         skosConcept();
+        edmTimeSpan();
         edmWebResource();
         oreAggregation();
     }
 
-    @Override
-    public void edmProvidedCHO() {
+    private void edmProvidedCHO() {
         try{
             ProvidedCHOType provided = new ProvidedCHOType();
             Choice choice = new Choice();
@@ -253,18 +259,15 @@ public class DC2EDM extends RDF implements EDM {
         }
     }
 
-    @Override
-    public void edmAgent() {
+    private void edmAgent() {
 
     }
 
-    @Override
-    public void edmPlace() {
+    private void edmPlace() {
 
     }
 
-    @Override
-    public void edmTimeSpan() {
+    private void edmTimeSpan() {
         try{
             if (!getDates().isEmpty()) {
                 getDates().forEach((String date) -> {
@@ -296,8 +299,7 @@ public class DC2EDM extends RDF implements EDM {
         }
     }
 
-    @Override
-    public void skosConcept() {
+    private void skosConcept() {
         try {
             if (!getSubjects().isEmpty()) {
                 eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
@@ -326,13 +328,11 @@ public class DC2EDM extends RDF implements EDM {
         }
     }
 
-    @Override
-    public void edmWebResource() {
+    private void edmWebResource() {
 
     }
 
-    @Override
-    public void oreAggregation() {
+    private void oreAggregation() {
         try {
             Choice choice = new Choice();
             Aggregation aggregation = new Aggregation();
@@ -389,18 +389,6 @@ public class DC2EDM extends RDF implements EDM {
         }
     }
 
-    @Override
-    public void marshal(Charset encoding, boolean alone, OutputStream outs) {
-        if (!Objects.equals(this, new RDF()))
-            JibxMarshall.marshall(this, encoding.displayName(), alone, outs, RDF.class);
-    }
-
-    @Override
-    public void marshal(Charset encoding, boolean alone, Writer writer) {
-        if (!Objects.equals(this, new RDF()))
-            JibxMarshall.marshall(this, encoding.displayName(), alone, writer, RDF.class);
-    }
-
     private Set<String> getIdentifiers() {
         if(Objects.isNull(identifiers)) identifiers = new HashSet<>();
         return identifiers;
@@ -414,5 +402,59 @@ public class DC2EDM extends RDF implements EDM {
     private Set<String> getSubjects() {
         if(Objects.isNull(subjects)) subjects = new HashSet<>();
         return subjects;
+    }
+
+    @Override
+    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+    }
+
+    @Override
+    public XSLTTransformations transformation(String xslt) throws Exception {
+        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+    }
+
+    @Override
+    public void creation() {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
+                    false, IoBuilder.forLogger(DC2EDM.class).setLevel(Level.INFO).buildOutputStream(), RDF.class);
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs) {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class);
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, Writer writer) {
+        if (!Objects.equals(this, new RDF()))
+            JibxMarshall.marshall(this, encoding.toString(), alone, writer, RDF.class);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(InputStream ins, String name, Charset enc, Class<?> classType) {
+        return new JibxUnMarshall(ins, name, enc, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, Class<?> classType) {
+        return new JibxUnMarshall(rdr, classType);
+    }
+
+    @Override
+    public JibxUnMarshall validateSchema(Reader rdr, String name, Class<?> classType) {
+        return new JibxUnMarshall(rdr, name, classType);
+    }
+
+    @Override
+    public void modify(RDF rdf) {
+
     }
 }
