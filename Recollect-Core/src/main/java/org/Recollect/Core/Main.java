@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class Main {
 	private static Path pathWithSetSpec;
 	private static String xslt;
 
-	private static UTCDateProvider dateProvider = new UTCDateProvider();;
+	private static UTCDateProvider dateProvider = new UTCDateProvider();
 
 	private static OAIClient oaiClient;
 	private static Recollect recollect;
@@ -155,14 +154,10 @@ public class Main {
 	 * 
 	 */
 	private static void ListRecords() throws Exception {
-		// Check parameters
-		if (Objects.isNull(metadataPrefix))
-			throw new Exception("metadataPrefix must not be null");
-
 		oaiClient = new HttpOAIClient(host);
 		recollect = new Recollect(oaiClient);
 
-		properties = new HashMap<String, String>();
+		properties = new HashMap<>();
 		properties.put("edmType", edmType);
 		properties.put("provider", provider);
 		properties.put("dataProvider", dataProvider);
@@ -170,11 +165,9 @@ public class Main {
 		properties.put("rights", rights);
 
 		if (Objects.isNull(set)) {
-			ListSets().forEachRemaining(setType -> {
-				downloadListRecords(setType.getSetSpec());
-			});
+			ListSets().forEachRemaining((SetType setType) -> downloadRecords(setType.getSetSpec()));
 		} else {
-			downloadListRecords(set);
+			downloadRecords(set);
 		}
 	}
 
@@ -202,11 +195,10 @@ public class Main {
 		oaiClient = new HttpOAIClient(host);
 		recollect = new Recollect(oaiClient);
 
-		recollect.listMetadataFormats().forEachRemaining(metadataFormatType -> {
-			logger.info(String.format("metadataPrefix: %s\nschema: %s\nmetadataNamespace: %s\n",
-					metadataFormatType.getMetadataPrefix(), metadataFormatType.getSchema(),
-					metadataFormatType.getMetadataNamespace()));
-		});
+		recollect.listMetadataFormats().forEachRemaining(metadataFormatType ->
+				logger.info(String.format("metadataPrefix: %s\nschema: %s\nmetadataNamespace: %s\n",
+                metadataFormatType.getMetadataPrefix(), metadataFormatType.getSchema(),
+                metadataFormatType.getMetadataNamespace())));
 	}
 
 	/**
@@ -229,21 +221,10 @@ public class Main {
 	 * @throws Exception
 	 */
 	private static void GetRecord() throws Exception {
-		// Check parameters
-		if (Objects.isNull(identifier))
-			throw new Exception("identifier must not be null");
-		if (Objects.isNull(metadataPrefix))
-			throw new Exception("metadataPrefix must not be null");
-		if (Objects.isNull(edmType))
-			throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
+		oaiClient = new HttpOAIClient(host);
+		recollect = new Recollect(oaiClient);
 
-		if (Objects.isNull(provider))
-			throw new Exception("provider must not be null");
-
-		if (!Arrays.asList("TEXT", "VIDEO", "IMAGE", "SOUND", "3D").contains(edmType))
-			throw new Exception(String.format("select valid edmType: %s", "TEXT, VIDEO, IMAGE, SOUND, 3D"));
-
-		properties = new HashMap<String, String>();
+		properties = new HashMap<>();
 		properties.put("edmType", edmType);
 		properties.put("provider", provider);
 		properties.put("dataProvider", dataProvider);
@@ -262,31 +243,29 @@ public class Main {
 
 		try {
 			if (Objects.nonNull(xslt)) {
-				DownloadNode downloadData = null;
+				DownloadNode downloadData;
 				if (Objects.nonNull(out))
 					downloadData = new DownloadNode(pathWithSetSpec, xslt, properties);
 				else
 					downloadData = new DownloadNode(xslt, properties);
 
-				downloadData.execute(
-						recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, OaiDcType.class }));
+				downloadData.execute(recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class }));
 
-				logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s", oaiClient.getURL(),
-						getRecordParameters.getIdentifier(), downloadData.getStatus()));
+				logger.info(String.format("[HOST] %s [MESSAGE] %s", oaiClient.getURL(),
+						downloadData.getStatus()));
 			} else {
-				DownloadJaxb downloadData = null;
-
+				DownloadJaxb downloadData;
 				if (Objects.nonNull(out))
-					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class });
+					downloadData = new DownloadJaxb(pathWithSetSpec, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class });
 				else
-					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class });
+					downloadData = new DownloadJaxb(new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class });
 
 				downloadData.execute(
-						recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, OaiDcType.class }),
+						recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),
 						properties);
 
-				logger.info(String.format("[HOST] %s [Identifier] %s [MESSAGE] %s", oaiClient.getURL(),
-						getRecordParameters.getIdentifier(), downloadData.getStatus()));
+				logger.info(String.format("[HOST] %s [MESSAGE] %s", oaiClient.getURL(),
+						downloadData.getStatus()));
 			}
 		} catch (Exception e) {
 			logger.error(e);
@@ -311,11 +290,10 @@ public class Main {
 		Iterator<HeaderType> record = recollect.listIdentifiers(listIdentifiersParameters);
 
 		try {
-			record.forEachRemaining(headerType -> {
-				logger.info(String.format("Identifier: %s\ndatestamp: %s\nSetSpec: %s\nStatus: %s\n",
-						headerType.getIdentifier(), headerType.getDatestamp(), headerType.getSetSpec(),
-						headerType.getStatus()));
-			});
+			record.forEachRemaining((HeaderType headerType) ->
+                    logger.info(String.format("Identifier: %s\ndatestamp: %s\nSetSpec: %s\nStatus: %s\n",
+                        headerType.getIdentifier(), headerType.getDatestamp(), headerType.getSetSpec(),
+                        headerType.getStatus())));
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -326,7 +304,7 @@ public class Main {
 	 * 
 	 * @param s
 	 */
-	private static void downloadListRecords(String s) {
+	private static void downloadRecords(String s) {
 		properties.put("set", s);
 		try {
 			ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
@@ -360,7 +338,7 @@ public class Main {
 			}
 
 			if (Objects.nonNull(xslt)) {
-				DownloadNode downloadData = null;
+				DownloadNode downloadData;
 				if (Objects.nonNull(out))
 					downloadData = new DownloadNode(pathWithSetSpec, xslt, properties);
 				else

@@ -3,11 +3,9 @@ package org.csuc.Parser.Core.factory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Parser.Core.strategy.ParserMethod;
-import org.csuc.Parser.Core.strategy.XPATH;
 
+import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author amartinez
@@ -34,12 +32,13 @@ public class ParserURL implements Parser {
     }
 
     @Override
-    public List<XPATH> getXPATHResult() {
-        return method.createXPATHResult();
+    public void XML(OutputStream outs) {
+        method.createXML(outs);
     }
 
     @Override
-    public Map<String, String> getNamespaceResult() {
-        return method.createNamespaceResult();
+    public void JSON(OutputStream outs) {
+        method.createJSON(outs);
     }
+
 }

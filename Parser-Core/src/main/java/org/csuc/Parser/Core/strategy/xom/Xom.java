@@ -3,11 +3,9 @@ package org.csuc.Parser.Core.strategy.xom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Parser.Core.strategy.ParserMethod;
-import org.csuc.Parser.Core.strategy.XPATH;
 
+import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author amartinez
@@ -17,7 +15,7 @@ public class Xom implements ParserMethod {
     private Logger logger = LogManager.getLogger(Xom.class);
 
     public Xom(){
-
+        logger.info(String.format("Method: %s", getClass().getSimpleName()));
     }
 
     @Override
@@ -31,12 +29,14 @@ public class Xom implements ParserMethod {
     }
 
     @Override
-    public List<XPATH> createXPATHResult() {
-       return null;
+    public void createXML(OutputStream outs) {
+
     }
 
     @Override
-    public Map<String, String> createNamespaceResult() {
-        return null;
+    public void createJSON(OutputStream outs) {
+
     }
+
+
 }

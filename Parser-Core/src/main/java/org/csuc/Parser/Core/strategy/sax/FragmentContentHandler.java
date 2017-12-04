@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.csuc.Parser.Core.strategy;
+package org.csuc.Parser.Core.strategy.sax;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,9 +9,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -169,7 +167,7 @@ public class FragmentContentHandler extends DefaultHandler{
 		logger.error(e);
 	}
 
-    private Map<String, AtomicInteger> getMapCount() {
+    public Map<String, AtomicInteger> getMapCount() {
         return mapCount;
     }
 
@@ -177,7 +175,7 @@ public class FragmentContentHandler extends DefaultHandler{
         this.mapCount = mapCount;
     }
 
-	private Map<String, String> getMapValues() {
+	public Map<String, String> getMapValues() {
 		return mapValues;
 	}
 
@@ -217,13 +215,4 @@ public class FragmentContentHandler extends DefaultHandler{
 		this.iterNamespaces = iterNamespaces;
 	}
 
-	public List<XPATH> getXPATH(){
-        List<XPATH> list = new ArrayList<>();
-        getMapValues().forEach((xpath, value) -> {
-			Integer count = getMapCount().get(xpath).get();
-
-			list.add(new XPATH(xpath, value, count));
-		});
-        return list;
-    }
 }

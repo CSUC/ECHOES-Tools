@@ -1,20 +1,16 @@
 package org.csuc.Parser.Core.factory;
 
-import org.apache.commons.io.FileExistsException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Parser.Core.strategy.ParserMethod;
-import org.csuc.Parser.Core.strategy.XPATH;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -59,12 +55,13 @@ public class ParserFILE implements Parser {
     }
 
     @Override
-    public List<XPATH> getXPATHResult() {
-        return method.createXPATHResult();
+    public void XML(OutputStream outs) {
+        method.createXML(outs);
     }
 
     @Override
-    public Map<String, String> getNamespaceResult() {
-        return method.createNamespaceResult();
+    public void JSON(OutputStream outs) {
+        method.createJSON(outs);
     }
+
 }

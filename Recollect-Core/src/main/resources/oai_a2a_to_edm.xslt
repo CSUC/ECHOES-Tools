@@ -10,7 +10,8 @@
 	<xsl:param name="dataProvider" />
 	<xsl:param name="set" />
 	<xsl:param name="language" />
-
+	<xsl:param name="provider" />
+	<xsl:param name="rights" />
 	<xsl:template match="@*|node()">
 		<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 			xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/"

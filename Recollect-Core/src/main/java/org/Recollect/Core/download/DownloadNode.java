@@ -1,24 +1,5 @@
 package org.Recollect.Core.download;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.StatusCollection;
@@ -30,6 +11,17 @@ import org.apache.logging.log4j.io.IoBuilder;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2.StatusType;
 import org.w3c.dom.Node;
+
+import javax.xml.transform.dom.DOMSource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 
@@ -44,8 +36,7 @@ public class DownloadNode extends StatusCollection {
 	private String xslt;
 	private Map<String, String> xsltProperties;
 
-	private OutputStream out;
-	private int garbage = 500;
+    private int garbage = 500;
 
 	private AtomicInteger iter = new AtomicInteger(0);
 
@@ -130,53 +121,30 @@ public class DownloadNode extends StatusCollection {
 				deletedRecord.add(record.getHeader().getIdentifier());
 			} else {
 				try {
-					String result = nodeToString((Node) record.getMetadata().getAny());
-					if (Objects.nonNull(result)) {
-						Path file = Paths.get(path + File.separator
-								+ StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
-						if (Objects.nonNull(path))
-							out = new FileOutputStream(file.toFile());
-						else
-							out = IoBuilder.forLogger(DownloadNode.class).setLevel(Level.INFO).buildOutputStream();
+                    Path file = Paths.get(path + File.separator
+							+ StringUtils.replaceAll(record.getHeader().getIdentifier(), "/", "_") + ".xml");
+                    OutputStream out;
+                    if (Objects.nonNull(path))
+						out = new FileOutputStream(file.toFile());
+					else
+						out = IoBuilder.forLogger(DownloadNode.class).setLevel(Level.INFO).buildOutputStream();
 
-						XSLTTransformations tansformation;
-						if (Objects.nonNull(xsltProperties)) {
-							tansformation = new XSLTTransformations(xslt, out, xsltProperties);
-							tansformation.addProperty("identifier", record.getHeader().getIdentifier());
-						} else
-							tansformation = new XSLTTransformations(xslt, out);
-						tansformation.transformationsFromString(result);
+					XSLTTransformations transformation;
+					if (Objects.nonNull(xsltProperties)) {
+                           transformation = new XSLTTransformations(xslt, out, xsltProperties);
+                           transformation.addProperty("identifier", record.getHeader().getIdentifier());
+					} else
+                        transformation = new XSLTTransformations(xslt, out);
+                    transformation.transformationsFromSource(new DOMSource((Node) record.getMetadata().getAny()));
 
-						if (Objects.nonNull(path))
-							logger.debug(String.format("File save %s", file));
-						totalDownloadRecord.incrementAndGet();
-					}
-					result = null;
+					if (Objects.nonNull(path))
+						logger.debug(String.format("File save %s", file));
+					totalDownloadRecord.incrementAndGet();
 				} catch (Exception e) {
 					logger.error(String.format("Identifier %s Message %s", record.getHeader().getIdentifier(), e));
 				}
 			}
 			totalReadRecord.incrementAndGet();
-		}
-	}
-
-	/**
-	 * 
-	 * @param node
-	 * @return
-	 */
-	private String nodeToString(Node node) {
-		try {
-			StringWriter sw = new StringWriter();
-			Transformer t = TransformerFactory.newInstance().newTransformer();
-			t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-			t.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.toString());
-			t.setOutputProperty(OutputKeys.INDENT, "yes");
-			t.transform(new DOMSource(node), new StreamResult(sw));
-			return sw.toString();
-		} catch (TransformerException te) {
-			logger.error(te);
-			return null;
 		}
 	}
 

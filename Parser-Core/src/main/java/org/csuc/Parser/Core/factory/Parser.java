@@ -1,10 +1,7 @@
 package org.csuc.Parser.Core.factory;
 
-import org.csuc.Parser.Core.strategy.XPATH;
-
+import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -16,6 +13,6 @@ public interface Parser {
     void execute(String fileOrPath);
     void execute(URL url);
 
-    List<XPATH> getXPATHResult();
-    Map<String, String> getNamespaceResult();
+    void XML(OutputStream outs);
+    void JSON(OutputStream outs);
 }

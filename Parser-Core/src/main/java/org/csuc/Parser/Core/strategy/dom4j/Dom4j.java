@@ -1,14 +1,21 @@
 package org.csuc.Parser.Core.strategy.dom4j;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Parser.Core.strategy.ParserMethod;
-import org.csuc.Parser.Core.strategy.XPATH;
+import org.csuc.Parser.Core.util.xml.Result;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,6 +35,7 @@ public class Dom4j implements ParserMethod {
     private AtomicInteger iterNamespaces = new AtomicInteger(0);
 
     public Dom4j(){
+        logger.info(String.format("Method: %s", getClass().getSimpleName()));
         reader = new SAXReader();
     }
 
@@ -82,17 +90,48 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public List<XPATH> createXPATHResult() {
-        List<XPATH> list = new ArrayList<>();
-        values.forEach((String xpath, String value) -> {
-            Integer c = count.get(xpath).get();
-            list.add(new XPATH(xpath, value, c));
-        });
-        return list;
+    public void createXML(OutputStream outs) {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(Result.class);
+
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(createObject(), outs);
+        } catch (JAXBException e) {
+            logger.error(e);
+        }
     }
 
     @Override
-    public Map<String, String> createNamespaceResult() {
-        return namespace;
+    public void createJSON(OutputStream outs) {
+        try {
+            new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValue(outs, createObject());
+        } catch (IOException e) {
+            logger.error(e);
+        }
+    }
+
+    private Result createObject(){
+        Result result = new Result();
+        values.forEach((String xpath, String value) -> {
+            org.csuc.Parser.Core.util.xml.Node node = new org.csuc.Parser.Core.util.xml.Node();
+
+            Integer c = count.get(xpath).get();
+            node.setCount(c);
+            node.setName(value);
+            node.setPath(xpath);
+
+            result.getNodeResult().getNode().add(node);
+        });
+
+        namespace.forEach((String uri, String prefix)->{
+            org.csuc.Parser.Core.util.xml.Namespace namespace = new org.csuc.Parser.Core.util.xml.Namespace();
+
+            namespace.setUri(uri);
+            namespace.setPrefix(prefix);
+
+            result.getNamespaceResult().getNamespaces().add(namespace);
+        });
+        return result;
     }
 }

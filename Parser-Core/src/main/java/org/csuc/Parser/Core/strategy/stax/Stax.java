@@ -2,23 +2,13 @@ package org.csuc.Parser.Core.strategy.stax;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.Parser.Core.strategy.FragmentContentHandler;
 import org.csuc.Parser.Core.strategy.ParserMethod;
-import org.csuc.Parser.Core.strategy.XPATH;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 /**
  * @author amartinez
@@ -30,6 +20,7 @@ public class Stax implements ParserMethod {
     private XMLInputFactory factory;
 
     public Stax(){
+        logger.info(String.format("Method: %s", getClass().getSimpleName()));
         factory = XMLInputFactory.newInstance();
     }
 
@@ -65,13 +56,13 @@ public class Stax implements ParserMethod {
     }
 
     @Override
-    public List<XPATH> createXPATHResult() {
-       return null;
+    public void createXML(OutputStream outs) {
+
     }
 
     @Override
-    public Map<String, String> createNamespaceResult() {
-        return null;
+    public void createJSON(OutputStream outs) {
+
     }
 
     private static void printEvent(XMLStreamReader xmlr) {
