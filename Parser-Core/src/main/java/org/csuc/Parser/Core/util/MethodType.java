@@ -8,8 +8,6 @@ public enum MethodType {
     SAX("sax"),
     DOM4J("dom4j"),
     DOM("dom"),
-    STAX("stax"),
-    XOM("xom"),
     XSLT("xslt");
 
     private final String value;

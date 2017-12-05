@@ -32,7 +32,7 @@
 
     <xsl:template name="namespace">
       <xsl:for-each select="//namespace::*[not(. = ../../namespace::*)]">
-          <xsl:element name="namespace">
+          <xsl:element name="namespaces">
               <xsl:attribute name="uri" select="."/>
               <xsl:attribute name="prefix" select="local-name(.)"/>
           </xsl:element>

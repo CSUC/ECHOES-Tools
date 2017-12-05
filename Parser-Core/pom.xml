@@ -67,12 +67,6 @@
             <artifactId>junit</artifactId>
             <scope>compile</scope>
         </dependency>
-		<!-- https://mvnrepository.com/artifact/javax.xml.stream/stax-api -->
-		<dependency>
-			<groupId>javax.xml.stream</groupId>
-			<artifactId>stax-api</artifactId>
-			<version>1.0-2</version>
-		</dependency>
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
@@ -96,7 +90,7 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

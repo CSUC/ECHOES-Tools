@@ -11,21 +11,15 @@ import org.csuc.Parser.Core.factory.*;
 import org.csuc.Parser.Core.strategy.dom.Dom;
 import org.csuc.Parser.Core.strategy.dom4j.Dom4j;
 import org.csuc.Parser.Core.strategy.sax.Sax;
-import org.csuc.Parser.Core.strategy.stax.Stax;
-import org.csuc.Parser.Core.strategy.xom.Xom;
 import org.csuc.Parser.Core.strategy.xslt.Xslt;
 import org.csuc.Parser.Core.util.EnumTypes;
 import org.csuc.Parser.Core.util.MethodType;
 import org.csuc.Parser.Core.util.TimeUtils;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -133,14 +127,7 @@ public class App {
         if(MethodType.XSLT.equalsName(method)){
             factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
         }
-        if(MethodType.XOM.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserOAI(new Xom()));
-        }
-        if(MethodType.STAX.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserOAI(new Stax()));
-        }
         factory.execute(new URL(input));
-
 	}
 	
 	
@@ -157,13 +144,6 @@ public class App {
         if(MethodType.XSLT.equalsName(method)){
             factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
         }
-        if(MethodType.XOM.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserURL(new Xom()));
-        }
-        if(MethodType.STAX.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserURL(new Stax()));
-        }
-
         factory.execute(new URL(input));
 
 	}
@@ -181,13 +161,6 @@ public class App {
         if(MethodType.XSLT.equalsName(method)){
             factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));
         }
-        if(MethodType.XOM.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserFILE(new Xom()));
-        }
-        if(MethodType.STAX.equalsName(method)){
-            factory = FactoryParser.createFactory(new ParserFILE(new Stax()));
-        }
-
         factory.execute(input);
 
 	}

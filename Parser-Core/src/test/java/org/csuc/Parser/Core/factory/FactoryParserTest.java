@@ -2,12 +2,17 @@ package org.csuc.Parser.Core.factory;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.Parser.Core.strategy.dom.Dom;
 import org.csuc.Parser.Core.strategy.dom4j.Dom4j;
 import org.csuc.Parser.Core.strategy.sax.Sax;
+import org.csuc.Parser.Core.strategy.xslt.Xslt;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -56,11 +61,34 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserFILEStax() throws MalformedURLException {
-        //Parser parser = FactoryParser.createFactory(new ParserFILE(new Stax()));
-        //parser.execute(xml.getPath());
+    public void testParserURLDOM() throws MalformedURLException, ParserConfigurationException {
+        Parser parser = FactoryParser.createFactory(new ParserURL(new Dom()));
+        parser.execute(new URL(url));
+        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+    }
 
-        //assertTrue(parser.getXPATHResult().size() > 0);
-        //parser.getXPATHResult().forEach(logger::info);
+    @Test
+    public void testParserFILEDOM() throws MalformedURLException, ParserConfigurationException {
+        Parser parser = FactoryParser.createFactory(new ParserFILE(new Dom()));
+        parser.execute(xml.getPath());
+        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+    }
+
+    @Test
+    public void testParserURLXSLT() throws IOException, ParserConfigurationException, TransformerException {
+        Parser parser = FactoryParser.createFactory(new ParserURL(new Xslt()));
+        parser.execute(new URL(url));
+        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+    }
+
+    @Test
+    public void testParserFILEXSLT() throws IOException, ParserConfigurationException, TransformerException {
+        Parser parser = FactoryParser.createFactory(new ParserFILE(new Xslt()));
+        parser.execute(xml.getPath());
+        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
+        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
     }
 }
