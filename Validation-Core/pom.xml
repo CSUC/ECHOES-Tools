@@ -41,8 +41,13 @@
 			<artifactId>json</artifactId>
 			<version>20171018</version>
 		</dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>Binding-Core</artifactId>
+            <version>0.1</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 	<build>
 		<plugins>
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->

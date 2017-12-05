@@ -1,4 +1,4 @@
-package org.EDM.Transformations.deserialize;
+package org.csuc.deserialize;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

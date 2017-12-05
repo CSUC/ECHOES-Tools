@@ -2,13 +2,13 @@ package org.EDM.Transformations.formats.memorix;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
 import nl.memorix_maior.api.rest._3.Memorix;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
 import java.io.OutputStream;

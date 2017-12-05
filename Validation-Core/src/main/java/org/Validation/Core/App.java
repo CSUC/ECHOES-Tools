@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +12,6 @@ import java.util.Objects;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.Validation.Core.deserialize.Validate;
 import org.Validation.Core.schematron.SchematronUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class App {
 	private static Logger logger = LogManager.getLogger("Validation-Core");
 
 	private static String file;
-	private static String charset = StandardCharsets.UTF_8.toString();
+	private static Charset charset = StandardCharsets.UTF_8;
 	private static String sch;
 	private static int threads = 1;
 
@@ -49,8 +49,7 @@ public class App {
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equals("--file"))
 					file = args[i + 1];
-				if (args[i].equals("--charset"))
-					charset = args[i + 1];
+				if (args[i].equals("--charset"))    charset = !Charset.isSupported((String) args[i + 1]) ? StandardCharsets.UTF_8 : Charset.forName((String) args[i + 1]);
 				if (args[i].equals("--sch"))
 					sch = args[i + 1];
 				if (args[i].equals("--threads"))

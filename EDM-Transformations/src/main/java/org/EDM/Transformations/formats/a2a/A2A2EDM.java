@@ -13,10 +13,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import nl.mindbus.a2a.*;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
-import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -61,6 +59,8 @@ import eu.europeana.corelib.definitions.jibx.WebResourceType;
 import net.sf.saxon.functions.IriToUri;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.serialize.JibxMarshall;
 
 /**
  * @author amartinez

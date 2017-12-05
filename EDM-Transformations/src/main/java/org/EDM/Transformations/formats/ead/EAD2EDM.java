@@ -12,11 +12,11 @@ import eu.europeana.corelib.definitions.jibx.ResourceType;
 import isbn._1_931666_22_9.Ead;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.deserialize.JibxUnMarshall;
 
 /**
  * @author amartinez

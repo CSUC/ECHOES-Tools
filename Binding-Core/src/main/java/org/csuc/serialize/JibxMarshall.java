@@ -1,10 +1,7 @@
 /**
  * 
  */
-package org.EDM.Transformations.serialize;
-
-import java.io.OutputStream;
-import java.io.Writer;
+package org.csuc.serialize;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +9,9 @@ import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
+
+import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * @author amartinez

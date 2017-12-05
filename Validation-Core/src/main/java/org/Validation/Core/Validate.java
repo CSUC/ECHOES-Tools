@@ -1,13 +1,14 @@
 /**
  * 
  */
-package org.Validation.Core.deserialize;
+package org.Validation.Core;
+
+import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.Objects;
-
-import org.Validation.Core.deserialize.JibxUnMarshall;
 
 /**
  * @author amartinez
@@ -16,11 +17,11 @@ import org.Validation.Core.deserialize.JibxUnMarshall;
 public class Validate extends JibxUnMarshall {
 
 	
-	public Validate(InputStream ins, String enc, Class<?> classType) {
+	public Validate(InputStream ins, Charset enc, Class<?> classType) {
 		super(ins, enc, classType);
 	}
 
-	public Validate(InputStream ins, String name, String enc, Class<?> classType) {
+	public Validate(InputStream ins, String name, Charset enc, Class<?> classType) {
 		super(ins, name, enc, classType);
 	}
 

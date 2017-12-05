@@ -19,8 +19,9 @@
 		<module>Validation-Core</module>
 		<module>Morphia-Core</module>
 		<module>REST-API</module>
-    <module>EDM-Transformations</module>
-  </modules>
+    	<module>EDM-Transformations</module>
+        <module>Binding-Core</module>
+    </modules>
 
 	<build>
 		<pluginManagement>

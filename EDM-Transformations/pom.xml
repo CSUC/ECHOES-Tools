@@ -22,6 +22,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
+			<artifactId>Binding-Core</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -45,11 +50,6 @@
             <artifactId>metadata-schema-definitions-memorix</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-		<dependency>
-			<groupId>org.jibx</groupId>
-			<artifactId>jibx-schema</artifactId>
-			<version>1.2.6</version>
-		</dependency>
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
 			<artifactId>corelib-edm-definitions</artifactId>

@@ -18,15 +18,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import eu.europeana.corelib.definitions.jibx.*;
 import eu.europeana.corelib.definitions.jibx.Date;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
-import org.EDM.Transformations.serialize.JibxMarshall;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.serialize.JibxMarshall;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
 import net.sf.saxon.functions.IriToUri;

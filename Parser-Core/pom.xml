@@ -90,6 +90,11 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>Binding-Core</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
 	<build>

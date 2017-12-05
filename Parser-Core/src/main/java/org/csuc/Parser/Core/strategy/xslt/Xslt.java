@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.Parser.Core.jaxb.JaxbUnmarshal;
 import org.csuc.Parser.Core.strategy.ParserMethod;
 import org.csuc.Parser.Core.util.xml.Namespace;
 import org.csuc.Parser.Core.util.xml.Node;
 import org.csuc.Parser.Core.util.xml.Result;
+import org.csuc.deserialize.JaxbUnmarshal;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

@@ -4,8 +4,8 @@
 package org.EDM.Transformations.formats;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
+import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
 import java.io.OutputStream;

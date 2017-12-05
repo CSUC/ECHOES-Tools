@@ -1,11 +1,11 @@
 package org.EDM.Transformations.formats.dc;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
-import org.EDM.Transformations.deserialize.JaxbUnmarshal;
-import org.EDM.Transformations.deserialize.JibxUnMarshall;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.FactoryEDM;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
+import org.csuc.deserialize.JaxbUnmarshal;
+import org.csuc.deserialize.JibxUnMarshall;
 import org.junit.Before;
 import org.junit.Test;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
