@@ -55,12 +55,12 @@ public class Dom4j implements ParserMethod {
                 Element el = (Element) node;
                 for (int j = 0, total = el.attributeCount(); j < total; j++) {
                     Attribute attribute = el.attribute(j);
-                    values.putIfAbsent(attribute.getPath(), "@"+ attribute.getName());
+                    values.putIfAbsent(attribute.getPath(), "@"+ attribute.getQualifiedName());
                     count.computeIfAbsent(attribute.getPath(), (t) -> new AtomicInteger()).incrementAndGet();
                 }
 
-                values.putIfAbsent(el.getPath(), el.getName());
-                count.computeIfAbsent(el.getPath(), (t) -> new AtomicInteger()).incrementAndGet();
+                values.putIfAbsent(String.format("%s/text()", el.getPath()), el.getQualifiedName());
+                count.computeIfAbsent(String.format("%s/text()", el.getPath()), (t) -> new AtomicInteger()).incrementAndGet();
                 namespace.putIfAbsent(((Element) node).getNamespaceURI(),
                         ((Element) node).getNamespacePrefix().isEmpty() ? "ns" + iterNamespaces.incrementAndGet() : ((Element) node).getNamespacePrefix());
 

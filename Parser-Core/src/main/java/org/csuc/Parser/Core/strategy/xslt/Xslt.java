@@ -48,7 +48,8 @@ public class Xslt implements ParserMethod {
     public Xslt() throws TransformerException, IOException {
         logger.info(String.format("Method: %s", getClass().getSimpleName()));
         ClassLoader classLoader = getClass().getClassLoader();
-        File xsl = new File(classLoader.getResource("count.xsl").getFile());
+
+        String xsl = classLoader.getResource("count.xsl").toExternalForm();
         transformer =  new net.sf.saxon.TransformerFactoryImpl().newTransformer(new StreamSource(xsl));
     }
 

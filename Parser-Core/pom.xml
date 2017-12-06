@@ -141,6 +141,14 @@
 									<directory>src/main/resources</directory>
 									<filtering>true</filtering>
 								</resource>
+                                <resource>
+                                    <directory>src/test/resources</directory>
+                                    <includes>
+                                        <include>*.xsl</include>
+                                        <include>*.xml</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
 							</resources>
 						</configuration>
 					</execution>
@@ -152,7 +160,15 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-		</resources>
+            <resource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>*.xsl</include>
+                    <include>*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 	</build>
 
 </project>
