@@ -284,6 +284,7 @@ public class DC2EDM extends RDF implements EDM {
 
                         PrefLabel prefLabel = new PrefLabel();
                         prefLabel.setString(Integer.toString(result.getYear()));
+
                         timeSpan.getPrefLabelList().add(prefLabel);
 
                         choice.setTimeSpan(timeSpan);
@@ -302,8 +303,8 @@ public class DC2EDM extends RDF implements EDM {
     private void skosConcept() {
         try {
             if (!getSubjects().isEmpty()) {
-                eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
                 getSubjects().forEach((String subject) -> {
+                    eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
                     Concept concept = new Concept();
 
                     String iriToUri = IriToUri.iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(subject)))
