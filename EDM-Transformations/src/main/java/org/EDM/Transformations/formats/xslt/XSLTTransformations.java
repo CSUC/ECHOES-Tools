@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -31,7 +32,7 @@ public class XSLTTransformations {
     private XSLTErrorListener errorListener = new XSLTErrorListener();
 
 	private OutputStream out;
-	private Map<String,String> xsltProperties = new HashMap<String,String>();
+	private Map<String,String> xsltProperties = new HashMap<>();
 
 	public XSLTTransformations(String xslt, OutputStream out) throws Exception {
 		if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
@@ -40,7 +41,7 @@ public class XSLTTransformations {
 		xlsStreamSource = new StreamSource(Paths
 	            .get(xslt)
 	            .toAbsolutePath().toFile());
-		
+
 		this.out = out;		
 	}
 	
@@ -55,7 +56,8 @@ public class XSLTTransformations {
 	            .toAbsolutePath().toFile());
 		
 		this.out = out;
-		this.xsltProperties = xsltProperties;
+        xsltProperties.values().removeIf(Objects::isNull);
+        this.xsltProperties = xsltProperties;
 	}
 
     /**
@@ -74,9 +76,8 @@ public class XSLTTransformations {
             transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            if (Objects.nonNull(xsltProperties)) {
+            if (Objects.nonNull(xsltProperties))
                 xsltProperties.forEach(transformer::setParameter);
-            }
 
             transformer.transform(new StreamSource(sourceID.openStream()),
                     new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
@@ -101,9 +102,9 @@ public class XSLTTransformations {
             transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            if (Objects.nonNull(xsltProperties)) {
+            if (Objects.nonNull(xsltProperties))
                 xsltProperties.forEach(transformer::setParameter);
-            }
+
 
             transformer.transform(new StreamSource(new ByteArrayInputStream(content.getBytes())),
                     new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
@@ -129,21 +130,11 @@ public class XSLTTransformations {
             transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            if (Objects.nonNull(xsltProperties)) {
+            if (Objects.nonNull(xsltProperties))
                 xsltProperties.forEach(transformer::setParameter);
-            }
 
             transformer.transform(source, new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8.name())));
         }catch(TransformerException exception){}
-	}
-	
-	/**
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public void addProperty(String key, String value) {
-		xsltProperties.put(key, value);
 	}
 
     public XSLTErrorListener getErrorListener() {
