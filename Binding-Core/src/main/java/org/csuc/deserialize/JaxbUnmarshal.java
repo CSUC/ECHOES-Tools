@@ -68,7 +68,6 @@ public class JaxbUnmarshal {
             u.setEventHandler(validationEvent);
 
             Object obj = u.unmarshal(inputStream);
-			System.out.println(obj.getClass());
             if(obj instanceof JAXBElement)
                 data = ((JAXBElement<Object>) obj).getValue();
             else   data = obj;

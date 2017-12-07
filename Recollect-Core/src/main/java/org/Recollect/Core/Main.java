@@ -7,14 +7,17 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import org.Recollect.Core.client.HttpOAIClient;
 import org.Recollect.Core.client.OAIClient;
+import org.Recollect.Core.download.Download;
 import org.Recollect.Core.download.FactoryDownload;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
-import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.Granularity;
 import org.Recollect.Core.util.TimeUtils;
 import org.Recollect.Core.util.UTCDateProvider;
@@ -65,10 +68,10 @@ public class Main {
 
 	private static UTCDateProvider dateProvider = new UTCDateProvider();
 
-	private static OAIClient oaiClient;
-	private static Recollect recollect;
-
 	private static Map<String, String> properties;
+
+    private static AtomicInteger emittedTotal = new AtomicInteger(0);
+    private static AtomicInteger receivedTotal = new AtomicInteger(0);
 
 	/**
 	 * 
@@ -139,7 +142,7 @@ public class Main {
 				logger.error(String.format("select valid verb: %s",
 						"Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords"));
 			}
-			logger.info(String.format("End %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
+			logger.info(String.format("End Recollect %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
 		} else
 			logger.error(
 					"--host [host] --verb [Identify, ListMetadataFormats, ListSets, GetRecord, ListIdentifiers, ListRecords]");
@@ -150,9 +153,6 @@ public class Main {
 	 * 
 	 */
 	private static void ListRecords() throws Exception {
-		oaiClient = new HttpOAIClient(host);
-		recollect = new Recollect(oaiClient);
-
 		properties = new HashMap<>();
 		properties.put("edmType", edmType);
 		properties.put("provider", provider);
@@ -171,8 +171,8 @@ public class Main {
 	 * 
 	 */
 	private static void Identify() {
-		oaiClient = new HttpOAIClient(host);
-		recollect = new Recollect(oaiClient);
+        OAIClient oaiClient = new HttpOAIClient(host);
+        Recollect recollect = new Recollect(oaiClient);
 
 		IdentifyType identify = recollect.identify();
 
@@ -188,8 +188,8 @@ public class Main {
 	 * 
 	 */
 	private static void ListMetadataFormats() {
-		oaiClient = new HttpOAIClient(host);
-		recollect = new Recollect(oaiClient);
+		OAIClient oaiClient = new HttpOAIClient(host);
+		Recollect recollect = new Recollect(oaiClient);
 
 		recollect.listMetadataFormats().forEachRemaining(metadataFormatType ->
 				logger.info(String.format("metadataPrefix: %s\nschema: %s\nmetadataNamespace: %s\n",
@@ -203,11 +203,11 @@ public class Main {
 	 * 
 	 */
 	private static Iterator<SetType> ListSets() throws Exception {
-		oaiClient = new HttpOAIClient(host);
-		recollect = new Recollect(oaiClient);
+        OAIClient oaiClient = new HttpOAIClient(host);
+		Recollect recollect = new Recollect(oaiClient);
 
 		Iterator<SetType> sets = recollect.listSets();
-		sets.forEachRemaining(s->System.out.println(s.getSetSpec()));
+		//sets.forEachRemaining(s->System.out.println(s.getSetSpec()));
 		
 		return sets;
 	}
@@ -217,6 +217,8 @@ public class Main {
 	 * @throws Exception
 	 */
 	private static void GetRecord() throws Exception {
+	    Instant timeRecord = Instant.now();
+
 		properties = new HashMap<>();
 		properties.put("edmType", edmType);
 		properties.put("provider", provider);
@@ -225,8 +227,8 @@ public class Main {
 		properties.put("rights", rights);
 
 		try{
-            oaiClient = new HttpOAIClient(host);
-            recollect = new Recollect(oaiClient);
+            OAIClient oaiClient = new HttpOAIClient(host);
+            Recollect recollect = new Recollect(oaiClient);
 
             GetRecordParameters getRecordParameters = new GetRecordParameters();
             getRecordParameters.withIdentifier(identifier);
@@ -235,9 +237,26 @@ public class Main {
             if (Objects.nonNull(out))
                 pathWithSetSpec = Files.createDirectories(Paths.get(out));
 
-            FactoryDownload.createDownloadRecordType(
-                    recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),
-                    pathWithSetSpec, properties, xslt);
+            //FactoryDownload.createDownloadRecordType(recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),xslt);
+
+            Observable<Download> observable;
+
+            if(Objects.isNull(xslt)) {
+                observable = FactoryDownload.createDownloadRecordType(recollect.getRecord(getRecordParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}),xslt);
+
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(pathWithSetSpec, properties );
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", getRecordParameters.getIdentifier(), TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+            }
         }catch(Exception e) {
             logger.error(e);
         }
@@ -248,8 +267,8 @@ public class Main {
 	 * @throws Exception
 	 */
 	private static void ListIdentifiers() throws Exception {
-		oaiClient = new HttpOAIClient(host);
-		recollect = new Recollect(oaiClient);
+        OAIClient oaiClient = new HttpOAIClient(host);
+		Recollect recollect = new Recollect(oaiClient);
 
 		// Check parameters
 		if (Objects.isNull(metadataPrefix))
@@ -276,7 +295,13 @@ public class Main {
 	 * @param s
 	 */
 	private static void downloadRecords(String s) {
-		properties.put("set", s);
+		Instant timeSet = Instant.now();
+	    logger.info(String.format("set: %s", s));
+	    properties.put("set", s);
+
+        OAIClient oaiClient = new HttpOAIClient(host);
+        Recollect recollect = new Recollect(oaiClient);
+
 		try {
 			ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
 			listRecordsParameters.withMetadataPrefix(metadataPrefix);
@@ -305,19 +330,28 @@ public class Main {
 			if (Objects.nonNull(out))
                 pathWithSetSpec = Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
 
-			if(Objects.isNull(xslt))
-                FactoryDownload.createDownloadIterator(
-                        recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),
-                        pathWithSetSpec, properties, xslt);
-			else
-                FactoryDownload.createDownloadIterator(
-                        recollect.listRecords(listRecordsParameters, new Class[] { OAIPMHtype.class}),
-                        pathWithSetSpec, properties, xslt);
+            Observable<Download> observable;
 
+            if(Objects.isNull(xslt)) {
+				observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}),xslt);
+
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(pathWithSetSpec, properties );
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		Garbage.gc();
+		//Garbage.gc();
 	}
 
 }
