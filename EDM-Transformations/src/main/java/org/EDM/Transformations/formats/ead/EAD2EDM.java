@@ -44,6 +44,12 @@ public class EAD2EDM implements EDM {
     }
 
     @Override
+    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        String xsl = getClass().getClassLoader().getResource("ead/ead2edm.xsl").toExternalForm();
+        return new XSLTTransformations(xsl, out, xsltProperties);
+    }
+
+    @Override
     public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
         return new XSLTTransformations(xslt, out, xsltProperties);
     }

@@ -110,11 +110,26 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+                <includes>
+                    <include>**/*.xsl</include>
+                    <include>**/*.xslt</include>
+                    <include>**/log4j2.xm</include>
+                    <include>log4j2.xml</include>
+                </includes>
 				<excludes>
 					<exclude>**/*.json</exclude>
-					<exclude>**/*.xslt</exclude>
-					<!-- <exclude>log4j2.xml</exclude> -->
 				</excludes>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*.xsl</include>
+                    <include>**/*.xslt</include>
+				</includes>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 	</build>

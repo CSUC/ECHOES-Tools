@@ -327,13 +327,17 @@ public class Main {
 					listRecordsParameters.withFrom(dateProvider.parse(until));
 			}
 
-			if (Objects.nonNull(out))
-                pathWithSetSpec = Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
 
             Observable<Download> observable;
 
-            if(Objects.isNull(xslt)) {
-				observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}),xslt);
+            if(Objects.isNull(xslt))
+                observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}), xslt);
+            else observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class}), xslt);
+
+
+			if (Objects.nonNull(out)) {
+                pathWithSetSpec = Files.createDirectories(Paths.get(out + File.separator + listRecordsParameters.getSetSpec()));
+
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
@@ -347,7 +351,22 @@ public class Main {
                                 () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
                         );
                 Thread.sleep(3000);
-			}
+            }else{
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(properties );
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+            }
+
+
 		} catch (Exception e) {
 			logger.error(e);
 		}

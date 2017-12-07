@@ -24,6 +24,11 @@ import java.util.Map;
  */
 public interface EDM {
 
+    /**
+     *
+     */
+    XSLTTransformations transformation(OutputStream out, Map<String,String> xsltProperties) throws Exception;
+
 	/**
 	 *
 	 */

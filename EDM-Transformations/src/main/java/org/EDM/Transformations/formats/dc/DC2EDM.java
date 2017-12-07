@@ -406,13 +406,18 @@ public class DC2EDM extends RDF implements EDM {
     }
 
     @Override
+    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
+    }
+
+    @Override
     public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
-        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+        throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
     }
 
     @Override
     public XSLTTransformations transformation(String xslt) throws Exception {
-        throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
+        throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
     }
 
     @Override

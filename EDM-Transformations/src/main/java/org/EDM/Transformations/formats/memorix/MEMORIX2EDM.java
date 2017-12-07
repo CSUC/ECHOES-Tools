@@ -30,12 +30,18 @@ public class MEMORIX2EDM implements EDM {
 
     private Map<String, String> properties = new HashMap<>();
 
-    public MEMORIX2EDM(String identifier, Memorix type, Map<String, String> properties) throws Exception {
+    public MEMORIX2EDM(String identifier, Memorix type, Map<String, String> properties) {
         this.identifier = identifier;
         this.type = type;
         this.properties = properties;
     }
 
+
+    @Override
+    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        String xsl = getClass().getClassLoader().getResource("memorix/memorix.xslt").toExternalForm();
+        return new XSLTTransformations(xsl, out, xsltProperties);
+    }
 
     @Override
     public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {

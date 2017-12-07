@@ -27,8 +27,7 @@ public class JibxUnMarshall {
 	private Reader rdr;
 	private Charset enc;
 	private String name;
-	
-	
+
 	public JibxUnMarshall(InputStream ins, Charset enc, Class<?> classType) {
 		this.type = classType;
 		this.ins = ins;

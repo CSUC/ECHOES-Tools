@@ -16,8 +16,13 @@ import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
 
+import isbn._1_931666_22_9.Ead;
+import nl.memorix_maior.api.rest._3.Memorix;
+import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.a2a.A2A2EDM;
 import org.EDM.Transformations.formats.dc.DC2EDM;
+import org.EDM.Transformations.formats.ead.EAD2EDM;
+import org.EDM.Transformations.formats.memorix.MEMORIX2EDM;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -60,15 +65,25 @@ public class DownloadJaxb implements Download {
         logger.info(String.format("Donwload item (%s) identifier %s",
                 element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
 
-        if (element.getDeclaredType().equals(A2AType.class)) {
-            new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties)
-                    .creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
-
-        } else if (element.getDeclaredType().equals(OaiDcType.class)) {
-            new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties)
-                    .creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
-        } else
-            logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
+        EDM edm = null;
+        if (element.getDeclaredType().equals(A2AType.class)) edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
+        else if (element.getDeclaredType().equals(OaiDcType.class)) new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
+        else if (element.getDeclaredType().equals(Memorix.class)) {
+            try {
+                new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) element.getValue(), properties)
+                        .transformation(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
+            } catch (Exception e) {
+                logger.error(e);
+            }
+        }else if (element.getDeclaredType().equals(Ead.class)) {
+            try {
+                new EAD2EDM(record.getHeader().getIdentifier(), (Ead) element.getValue(), properties)
+                        .transformation(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
+            } catch (Exception e) {
+              logger.error(e);
+            }
+        } else  logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
+        if(Objects.nonNull(edm)) edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
     }
 
     @Override
@@ -83,15 +98,24 @@ public class DownloadJaxb implements Download {
                 logger.info(String.format("Donwload item (%s) identifier %s",
                         element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
 
-                if (element.getDeclaredType().equals(A2AType.class)) {
-                    new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties)
-                            .creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
-
-                } else if (element.getDeclaredType().equals(OaiDcType.class)) {
-                    new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties)
-                            .creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
-                } else
+                EDM edm = null;
+                if (element.getDeclaredType().equals(A2AType.class)) edm= new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
+                else if (element.getDeclaredType().equals(OaiDcType.class)) edm = new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
+                else if (element.getDeclaredType().equals(Memorix.class)) {
+                    try {
+                        new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
+                    } catch (Exception e) {
+                        logger.error(e);
+                    }
+                }else if (element.getDeclaredType().equals(Ead.class)) {
+                    try {
+                        new EAD2EDM(record.getHeader().getIdentifier(), (Ead) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
+                    } catch (Exception e) {
+                        logger.error(e);
+                    }
+                }else
                     logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
+                if(Objects.nonNull(edm)) edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
             } catch (FileNotFoundException e) {
                 logger.error(e);
             }

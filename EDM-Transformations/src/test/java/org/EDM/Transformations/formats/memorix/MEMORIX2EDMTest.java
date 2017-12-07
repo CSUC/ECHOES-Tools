@@ -66,6 +66,20 @@ public class MEMORIX2EDMTest {
 
     /**
      *
+     * {@link MEMORIX2EDM#transformation(OutputStream, Map)}.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void transformation2() throws Exception {
+        XSLTTransformations transformations = memorix.transformation(new FileOutputStream(tmp), properties());
+        assertNotNull(transformations);
+
+        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+    }
+
+    /**
+     *
      * {@link MEMORIX2EDM#transformation(String, OutputStream, Map)}.
      *
      * @throws Exception
@@ -202,6 +216,8 @@ public class MEMORIX2EDMTest {
         assertNotNull(jibx.getElement());
         assertNull(jibx.getError());
     }
+
+
 
     @Test
     public void modify() throws Exception {
