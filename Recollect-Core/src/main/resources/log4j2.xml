@@ -21,7 +21,7 @@
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
-      <Logger name="org.Recollect.Core.Main" level="debug" additivity="true">
+      <Logger name="org.Recollect.Core.cli.Main" level="debug" additivity="true">
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       

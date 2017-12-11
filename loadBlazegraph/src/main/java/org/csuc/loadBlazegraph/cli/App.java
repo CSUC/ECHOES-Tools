@@ -1,4 +1,4 @@
-package org.csuc.loadBlazegraph;
+package org.csuc.loadBlazegraph.cli;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +27,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.csuc.loadBlazegraph.BlazegraphResponse;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
 
 /**
  * 
@@ -54,8 +57,18 @@ public class App {
 	 * @throws IOException
 	 */
 	public static void main( String[] args ) throws ClientProtocolException, IOException {
-		Instant now = Instant.now();		
-		
+		Instant now = Instant.now();
+
+
+		ArgsBean bean = new ArgsBean(args);
+		CmdLineParser parser = new CmdLineParser(bean);
+		try {
+			// parse the arguments.
+			parser.parseArgument(args);
+		} catch( CmdLineException e ) {
+			System.exit(1);
+		}
+
 		logger.info(String.format("start %s %s", logger.getName(), now));
 		
 		for(int i = 0; i < args.length; i++){

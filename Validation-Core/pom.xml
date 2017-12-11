@@ -46,7 +46,11 @@
             <artifactId>Binding-Core</artifactId>
             <version>0.1</version>
         </dependency>
-
+		<!-- https://mvnrepository.com/artifact/args4j/args4j -->
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+		</dependency>
     </dependencies>
 	<build>
 		<plugins>
@@ -66,7 +70,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.Validation.Core.App</mainClass>
+							<mainClass>org.Validation.Core.cli.App</mainClass>
 						</manifest>
 					</archive>
 					<finalName>Validation-Core</finalName>
