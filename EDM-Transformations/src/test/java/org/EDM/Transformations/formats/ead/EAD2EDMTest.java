@@ -48,6 +48,8 @@ public class EAD2EDMTest {
 
         ead = FactoryEDM.createFactory(new EAD2EDM(UUID.randomUUID().toString(), (Ead) jxb.getObject(), properties()));
         assertNotNull(ead);
+
+        tmp.deleteOnExit();
     }
 
     /**

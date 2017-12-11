@@ -48,6 +48,8 @@ public class MEMORIX2EDMTest {
 
         memorix = FactoryEDM.createFactory(new MEMORIX2EDM(UUID.randomUUID().toString(), (Memorix) jxb.getObject(), properties()));
         assertNotNull(memorix);
+
+        tmp.deleteOnExit();
     }
 
     /**

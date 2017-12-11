@@ -39,6 +39,8 @@ public class A2A2EDMTest {
 
         a2a = FactoryEDM.createFactory(new A2A2EDM(UUID.randomUUID().toString(), (A2AType) jxb.getObject(), properties()));
         assertNotNull(a2a);
+
+        tmp.deleteOnExit();
     }
 
 

@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.xml.bind.JAXBElement;
@@ -181,30 +182,34 @@ public class DC2EDM extends RDF implements EDM {
                             break;
                         }
                         case "date": {
-                            getDates().add(elementType.getValue().getValue());
-                            Date date = new Date();
-                            date.setString(elementType.getValue().getValue());
-                            EuropeanaType.Choice c = new EuropeanaType.Choice();
-                            c.setDate(date);
-                            provided.getChoiceList().add(c);
-
                             try {
-                                c = new EuropeanaType.Choice();
                                 XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(elementType.getValue().getValue());
 
-                                String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", result.getYear())).toString();
-
-                                Temporal temporal = new Temporal();
-                                Resource resource = new Resource();
-                                resource.setResource(iriToUri);
-                                temporal.setResource(resource);
-                                temporal.setString("");
-
-                                c.setTemporal(temporal);
-
+                                Date date = new Date();
+                                date.setString(elementType.getValue().getValue());
+                                EuropeanaType.Choice c = new EuropeanaType.Choice();
+                                c.setDate(date);
                                 provided.getChoiceList().add(c);
-                            } catch (Exception e) {
-                                logger.error(String.format("date %s not cast to XMLGregorianCalendar", date));
+
+                                if(!getDates().contains(String.valueOf(result.getYear()))){
+                                    getDates().add(String.valueOf(result.getYear()));
+
+                                    c = new EuropeanaType.Choice();
+
+                                    String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", result.getYear())).toString();
+
+                                    Temporal temporal = new Temporal();
+                                    Resource resource = new Resource();
+                                    resource.setResource(iriToUri);
+                                    temporal.setResource(resource);
+                                    temporal.setString("");
+
+                                    c.setTemporal(temporal);
+
+                                    provided.getChoiceList().add(c);
+                                }
+                            }catch (Exception e) {
+                                logger.error(String.format("date %s not cast to XMLGregorianCalendar", elementType.getValue().getValue()));
                             }
 
                             break;

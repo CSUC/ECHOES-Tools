@@ -30,7 +30,7 @@ public class DC2EDMTest {
     @Before
     public void setUp() throws Exception {
         xml = new File(getClass().getClassLoader().getResource("dc/dc.xml").getFile());
-        tmp = Files.createTempFile("a2a_edm", ".xml").toFile();
+        tmp = Files.createTempFile("dc_edm", ".xml").toFile();
         assertTrue(xml.exists());
 
         JaxbUnmarshal jxb = new JaxbUnmarshal(xml, new Class[] { OaiDcType.class });
@@ -39,6 +39,8 @@ public class DC2EDMTest {
 
         dc = FactoryEDM.createFactory(new DC2EDM(UUID.randomUUID().toString(), (OaiDcType) jxb.getObject(), properties()));
         assertNotNull(dc);
+
+        tmp.deleteOnExit();
     }
 
     /**
