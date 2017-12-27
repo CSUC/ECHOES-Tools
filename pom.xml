@@ -18,7 +18,6 @@
 		<module>Recollect-Core</module>
 		<module>Validation-Core</module>
 		<module>Morphia-Core</module>
-		<module>REST-API</module>
     	<module>EDM-Transformations</module>
         <module>Binding-Core</module>
     </modules>
