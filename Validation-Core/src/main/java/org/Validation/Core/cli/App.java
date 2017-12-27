@@ -66,7 +66,7 @@ public class App {
                             if(Objects.nonNull(bean.getSchematron())){
                                 SchematronUtil schUtil = new SchematronUtil(bean.getSchematron().toFile(), f.toFile());
                                 try {
-                                    logger.info("[{}] {} isValid SCH {}", Thread.currentThread().getName(), f.getFileName(), schUtil.isValid());
+                                    logger.info("[{}] {} isValid SCH {}", Thread.currentThread().getName(), f, schUtil.isValid());
                                     if (!schUtil.isValid()){
                                         logger.info("[{}] {}", Thread.currentThread().getName(), schUtil.getFailedAssert());
                                         bean.moveTo(f, bean.getInvalid());
@@ -82,7 +82,7 @@ public class App {
                                 count(validate);
                             }
 						}else{
-                            logger.info("[{}] {} isValid XML false", Thread.currentThread().getName(), f);
+                            logger.info("[{}] {} isValid XML false\n{}", Thread.currentThread().getName(), f, validate.getError());
                             bean.moveTo(f, bean.getInvalid());
                         }
                     } catch (FileNotFoundException e) {

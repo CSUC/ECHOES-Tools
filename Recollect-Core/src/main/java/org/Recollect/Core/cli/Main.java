@@ -18,6 +18,7 @@ import org.Recollect.Core.download.FactoryDownload;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
+import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.Granularity;
 import org.Recollect.Core.util.TimeUtils;
 import org.Recollect.Core.util.UTCDateProvider;
@@ -89,7 +90,10 @@ public class Main {
             OAIClient oaiClient = new HttpOAIClient(bean.getHost());
             Recollect recollect = new Recollect(oaiClient);
 
-            recollect.listSets().forEachRemaining((SetType setType) -> downloadRecords(setType.getSetSpec()));
+            recollect.listSets().forEachRemaining((SetType setType) -> {
+                downloadRecords(setType.getSetSpec());
+                Garbage.gc();
+            });
         } else {
             downloadRecords(bean.getSet());
         }

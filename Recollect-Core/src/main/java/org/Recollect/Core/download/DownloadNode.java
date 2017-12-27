@@ -109,7 +109,7 @@ public class DownloadNode implements Download {
             Transformer t = TransformerFactory.newInstance().newTransformer();
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             t.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.toString());
-            t.setOutputProperty(OutputKeys.INDENT, "yes");
+            t.setOutputProperty(OutputKeys.INDENT, "no");
             t.transform(new DOMSource(node), new StreamResult(sw));
 
             return sw.toString();

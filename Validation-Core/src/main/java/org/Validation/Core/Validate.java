@@ -43,7 +43,8 @@ public class Validate extends JibxUnMarshall {
 		super(rdr, name, classType);
 	}
 
-	public boolean isValid() {		
+	public boolean isValid() {
+
 		//return Objects.nonNull(getElement()) ? true : false;
 
 		if(Objects.nonNull(getElement())){
