@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.io.File;
@@ -151,9 +152,9 @@ public class ArgsBean {
     }
 
     public void moveTo(Path source, Path target){
-        if(Objects.nonNull(source)){
+        if(Objects.nonNull(out)){
             try {
-                Files.move(source, Paths.get(target + File.separator + source.getFileName()));
+                Files.move(source, Paths.get(target + File.separator + source.getFileName()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 logger.error("[{}] {}", Thread.currentThread().getName(), e);
             }

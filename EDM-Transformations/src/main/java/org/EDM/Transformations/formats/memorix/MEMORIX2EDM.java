@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +27,7 @@ public class MEMORIX2EDM implements EDM {
     private Memorix type;
     private String identifier;
 
-    private Map<String, String> properties = new HashMap<>();
+    private Map<String, String> properties;
 
     public MEMORIX2EDM(String identifier, Memorix type, Map<String, String> properties) {
         this.identifier = identifier;

@@ -14,6 +14,11 @@
 	<packaging>war</packaging>
 	<name>REST-API Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -121,7 +126,6 @@
 				<version>2.2</version>
 				<configuration>
 					<update>true</update>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<path>/</path>
 				</configuration>
 			</plugin>

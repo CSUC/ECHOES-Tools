@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
-import java .io.File;
+import java.io.File;
 
 import org.Validation.Core.Validate;
 import org.Validation.Core.schematron.SchematronUtil;

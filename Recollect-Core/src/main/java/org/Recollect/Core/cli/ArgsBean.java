@@ -24,7 +24,7 @@ public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
-    @Option(name="-h", aliases = "--help", usage="print this message", help = true, required = false)
+    @Option(name="-h", aliases = "--help", help = true, required = false)
     private boolean help = false;
 
     private String host;

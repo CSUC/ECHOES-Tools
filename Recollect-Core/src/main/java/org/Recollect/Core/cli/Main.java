@@ -31,130 +31,129 @@ import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 import nl.mindbus.a2a.A2AType;
 
 /**
- * 
+ *
  * @author amartinez
  *
- * 
+ *
  *
  */
 public class Main {
 
-	private static Logger logger = LogManager.getLogger(Main.class);
+    private static Logger logger = LogManager.getLogger(Main.class);
 
-	private static Instant inici = Instant.now();
+    private static Instant inici = Instant.now();
 
-	private static Path pathWithSetSpec;
+    private static Path pathWithSetSpec;
 
-	private static UTCDateProvider dateProvider = new UTCDateProvider();
+    private static UTCDateProvider dateProvider = new UTCDateProvider();
 
-	private static ArgsBean bean;
+    private static ArgsBean bean;
 
-	/**
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		bean = new ArgsBean(args);
-		CmdLineParser parser = new CmdLineParser(bean);
-		try {
-			// parse the arguments.
-			parser.parseArgument(args);
-		} catch( CmdLineException e ) {
-			System.exit(1);
-		}
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+        bean = new ArgsBean(args);
+        CmdLineParser parser = new CmdLineParser(bean);
+        try {
+            // parse the arguments.
+            parser.parseArgument(args);
+        } catch( CmdLineException e ) {
+            System.exit(1);
+        }
 
-		if (bean.getVerb().equals(VerbType.LIST_RECORDS))
-			ListRecords();
-		else if (bean.getVerb().equals(VerbType.IDENTIFY))
-			Identify();
-		else if (bean.getVerb().equals(VerbType.LIST_METADATA_FORMATS))
-			ListMetadataFormats();
-		else if (bean.getVerb().equals(VerbType.LIST_SETS))
-			ListSets();
-		else if (bean.getVerb().equals(VerbType.GET_RECORD))
-			GetRecord();
-		else if (bean.getVerb().equals(VerbType.LIST_IDENTIFIERS))
-			ListIdentifiers();
+        if (bean.getVerb().equals(VerbType.LIST_RECORDS))
+            ListRecords();
+        else if (bean.getVerb().equals(VerbType.IDENTIFY))
+            Identify();
+        else if (bean.getVerb().equals(VerbType.LIST_METADATA_FORMATS))
+            ListMetadataFormats();
+        else if (bean.getVerb().equals(VerbType.LIST_SETS))
+            ListSets();
+        else if (bean.getVerb().equals(VerbType.GET_RECORD))
+            GetRecord();
+        else if (bean.getVerb().equals(VerbType.LIST_IDENTIFIERS))
+            ListIdentifiers();
 
-		logger.info(String.format("End Recollect %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
-	}
+        logger.info(String.format("End Recollect %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
+    }
 
-	/**
-	 * @throws Exception
-	 * 
-	 */
-	private static void ListRecords() throws Exception {
-		if (Objects.isNull(bean.getSet())) {
+    /**
+     * @throws Exception
+     *
+     */
+    private static void ListRecords() throws Exception {
+        if (Objects.isNull(bean.getSet())) {
             OAIClient oaiClient = new HttpOAIClient(bean.getHost());
             Recollect recollect = new Recollect(oaiClient);
 
             recollect.listSets().forEachRemaining((SetType setType) -> downloadRecords(setType.getSetSpec()));
-		} else {
-			downloadRecords(bean.getSet());
-		}
-	}
+        } else {
+            downloadRecords(bean.getSet());
+        }
+    }
 
-	/**
-	 * 
-	 */
-	private static void Identify() {
+    /**
+     *
+     */
+    private static void Identify() {
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
         Recollect recollect = new Recollect(oaiClient);
 
-		IdentifyType identify = recollect.identify();
+        IdentifyType identify = recollect.identify();
 
-		logger.info("RepositoryName: {}", identify.getRepositoryName());
-        logger.info("BaseURL: {}", identify.getBaseURL());
-        logger.info("ProtocolVersion: {}", identify.getProtocolVersion());
-        logger.info("AdminEmail: {}", identify.getAdminEmail());
-        logger.info("EarliestDatestamp: {}", identify.getEarliestDatestamp());
-        logger.info("DeletedRecord: {}", identify.getDeletedRecord());
-        logger.info("Granularity: {}", identify.getGranularity());
-        logger.info("getCompression: {}", identify.getCompression());
-        logger.info("Description: {}", identify.getDescription());
+        logger.info("RepositoryName		: {}", identify.getRepositoryName());
+        logger.info("BaseURL			: {}", identify.getBaseURL());
+        logger.info("ProtocolVersion	: {}", identify.getProtocolVersion());
+        logger.info("AdminEmail			: {}", identify.getAdminEmail());
+        logger.info("EarliestDatestamp	: {}", identify.getEarliestDatestamp());
+        logger.info("DeletedRecord		: {}", identify.getDeletedRecord());
+        logger.info("Granularity		: {}", identify.getGranularity());
+        logger.info("getCompression		: {}", identify.getCompression());
+        logger.info("Description		: {}\n", identify.getDescription());
+    }
 
-	}
+    /**
+     *
+     */
+    private static void ListMetadataFormats() {
+        OAIClient oaiClient = new HttpOAIClient(bean.getHost());
+        Recollect recollect = new Recollect(oaiClient);
 
-	/**
-	 * 
-	 */
-	private static void ListMetadataFormats() {
-		OAIClient oaiClient = new HttpOAIClient(bean.getHost());
-		Recollect recollect = new Recollect(oaiClient);
-
-		recollect.listMetadataFormats().forEachRemaining(metadataFormatType ->{
+        recollect.listMetadataFormats().forEachRemaining(metadataFormatType ->{
             logger.info("MetadataPrefix     : {}", metadataFormatType.getMetadataPrefix());
             logger.info("Schema             : {}", metadataFormatType.getSchema());
             logger.info("MetadataNamespace  : {}\n", metadataFormatType.getMetadataNamespace());
-		});
-	}
+        });
+    }
 
-	/**
-	 * @return
-	 * @throws Exception
-	 * 
-	 */
-	private static void ListSets() throws Exception {
+    /**
+     * @return
+     * @throws Exception
+     *
+     */
+    private static void ListSets() throws Exception {
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
-		Recollect recollect = new Recollect(oaiClient);
+        Recollect recollect = new Recollect(oaiClient);
 
-		Iterator<SetType> sets = recollect.listSets();
-		sets.forEachRemaining(s->{
-		    logger.info("name           : {}", s.getSetName());
+        Iterator<SetType> sets = recollect.listSets();
+        sets.forEachRemaining(s->{
+            logger.info("name           : {}", s.getSetName());
             logger.info("spec           : {}", s.getSetSpec());
             logger.info("description    : {}\n", s.getSetDescription());
         });
-	}
+    }
 
-	/**
-	 * 
-	 * @throws Exception
-	 */
-	private static void GetRecord() throws Exception {
-	    Instant timeRecord = Instant.now();
+    /**
+     *
+     * @throws Exception
+     */
+    private static void GetRecord() throws Exception {
+        Instant timeRecord = Instant.now();
 
-		try{
+        try{
             OAIClient oaiClient = new HttpOAIClient(bean.getHost());
             Recollect recollect = new Recollect(oaiClient);
 
@@ -188,72 +187,74 @@ public class Main {
         }catch(Exception e) {
             logger.error(e);
         }
-	}
+    }
 
-	/**
-	 * 
-	 * @throws Exception
-	 */
-	private static void ListIdentifiers() throws Exception {
+    /**
+     *
+     * @throws Exception
+     */
+    private static void ListIdentifiers() throws Exception {
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
-		Recollect recollect = new Recollect(oaiClient);
+        Recollect recollect = new Recollect(oaiClient);
 
-		ListIdentifiersParameters listIdentifiersParameters = new ListIdentifiersParameters();
-		listIdentifiersParameters.withMetadataPrefix(bean.getMetadataPrefix());
+        ListIdentifiersParameters listIdentifiersParameters = new ListIdentifiersParameters();
+        listIdentifiersParameters.withMetadataPrefix(bean.getMetadataPrefix());
 
-		Iterator<HeaderType> record = recollect.listIdentifiers(listIdentifiersParameters);
+        Iterator<HeaderType> record = recollect.listIdentifiers(listIdentifiersParameters);
 
-		try {
-			record.forEachRemaining((HeaderType headerType) ->
-                    logger.info(String.format("Identifier: %s\ndatestamp: %s\nSetSpec: %s\nStatus: %s\n",
-                        headerType.getIdentifier(), headerType.getDatestamp(), headerType.getSetSpec(),
-                        headerType.getStatus())));
-		} catch (Exception e) {
-			logger.error(e);
-		}
+        try {
+            record.forEachRemaining((HeaderType headerType) ->{
+                logger.info("Identifier : {}", headerType.getIdentifier());
+                logger.info("Datestamp  : {}", headerType.getDatestamp());
+                logger.info("SetSpec    : {}", headerType.getSetSpec());
+                logger.info("Status     : {}\n", headerType.getStatus());
+            });
+        } catch (Exception e) {
+            logger.error(e);
+        }
 
-	}
+    }
 
-	/**
-	 * 
-	 * @param s
-	 */
-	private static void downloadRecords(String s) {
-		Instant timeSet = Instant.now();
-	    bean.getArguments().put("set", s);
+    /**
+     *
+     * @param s
+     */
+    private static void downloadRecords(String s) {
+        Instant timeSet = Instant.now();
+        bean.getArguments().put("set", s);
 
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
         Recollect recollect = new Recollect(oaiClient);
 
-		try {
-			ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
-			listRecordsParameters.withMetadataPrefix(bean.getMetadataPrefix());
-			listRecordsParameters.withSetSpec(s);
+        try {
+            ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
+            listRecordsParameters.withMetadataPrefix(bean.getMetadataPrefix());
+            listRecordsParameters.withSetSpec(s);
 
-			if (Objects.nonNull(bean.getResumptionToken()))
-				listRecordsParameters.withgetResumptionToken(bean.getResumptionToken());
+            if (Objects.nonNull(bean.getResumptionToken()))
+                listRecordsParameters.withgetResumptionToken(bean.getResumptionToken());
 
-			if (Objects.nonNull(bean.getFrom())) {
-				if (Objects.nonNull(bean.getGranularity()))
-					listRecordsParameters
-							.withFrom(dateProvider.parse(bean.getFrom(), Granularity.fromRepresentation(bean.getGranularity())));
-				else
-					listRecordsParameters.withFrom(dateProvider.parse(bean.getFrom()));
-			}
-			if (Objects.nonNull(bean.getGranularity()))
-				listRecordsParameters.withGranularity(bean.getGranularity());
-			if (Objects.nonNull(bean.getUntil())) {
-				if (Objects.nonNull(bean.getGranularity()))
-					listRecordsParameters
-							.withUntil(dateProvider.parse(bean.getUntil(), Granularity.fromRepresentation(bean.getGranularity())));
-				else
-					listRecordsParameters.withFrom(dateProvider.parse(bean.getUntil()));
-			}
+            if (Objects.nonNull(bean.getFrom())) {
+                if (Objects.nonNull(bean.getGranularity()))
+                    listRecordsParameters
+                            .withFrom(dateProvider.parse(bean.getFrom(), Granularity.fromRepresentation(bean.getGranularity())));
+                else
+                    listRecordsParameters.withFrom(dateProvider.parse(bean.getFrom()));
+            }
+            if (Objects.nonNull(bean.getGranularity()))
+                listRecordsParameters.withGranularity(bean.getGranularity());
+            if (Objects.nonNull(bean.getUntil())) {
+                if (Objects.nonNull(bean.getGranularity()))
+                    listRecordsParameters
+                            .withUntil(dateProvider.parse(bean.getUntil(), Granularity.fromRepresentation(bean.getGranularity())));
+                else
+                    listRecordsParameters.withFrom(dateProvider.parse(bean.getUntil()));
+            }
 
             Observable<Download> observable;
 
             if(Objects.isNull(bean.getXslt()))
-                observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}), bean.getXslt());
+                observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class }), bean.getXslt());
             else observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class}), bean.getXslt());
 
             if (Objects.nonNull(bean.getOut())) {
@@ -287,10 +288,10 @@ public class Main {
             }
 
 
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		//Garbage.gc();
-	}
+        } catch (Exception e) {
+            logger.error(e);
+        }
+        //Garbage.gc();
+    }
 
 }

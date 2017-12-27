@@ -148,7 +148,6 @@ public class A2A2EDMTest {
 
     private Map<String, String> properties() {
         Map<String, String> properties = new HashMap<String, String>();
-        properties = new HashMap<String, String>();
         properties.put("edmType", "IMAGE");
         properties.put("provider", "provider");
         properties.put("dataProvider", "dataProvider");

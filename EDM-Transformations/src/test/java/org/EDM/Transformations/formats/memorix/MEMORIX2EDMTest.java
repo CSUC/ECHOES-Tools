@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.deserialize.JibxUnMarshall;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,7 +49,10 @@ public class MEMORIX2EDMTest {
 
         memorix = FactoryEDM.createFactory(new MEMORIX2EDM(UUID.randomUUID().toString(), (Memorix) jxb.getObject(), properties()));
         assertNotNull(memorix);
+    }
 
+    @After
+    public void tearDown() throws Exception {
         tmp.deleteOnExit();
     }
 
@@ -66,169 +70,10 @@ public class MEMORIX2EDMTest {
         transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
     }
 
-    /**
-     *
-     * {@link MEMORIX2EDM#transformation(OutputStream, Map)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void transformation2() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
 
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-    }
-
-    /**
-     *
-     * {@link MEMORIX2EDM#transformation(String, OutputStream, Map)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void transformation1() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-    }
-
-    /**
-     *
-     * {@link MEMORIX2EDM#creation()}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void creation() throws Exception {
-        try{
-            memorix.creation();
-        }catch(Exception e){
-            logger.error(e.getMessage());
-        }
-    }
-
-    /**
-     * {@link MEMORIX2EDM#creation(Charset, boolean, Writer)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void creation1() throws Exception {
-        StringWriter writer = new StringWriter();
-        try{
-            memorix.creation(UTF_8, true, writer);
-            assertTrue(writer.toString().isEmpty());
-        }catch(Exception e){
-            logger.error(e.getMessage());
-        }
-    }
-
-    /**
-     * {@link MEMORIX2EDM#creation(Charset, boolean, OutputStream)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void creation2() throws Exception {
-        FileOutputStream outs = new FileOutputStream(tmp);
-
-        try{
-            memorix.creation(UTF_8, true, outs);
-            int b  = new FileInputStream(tmp).read();
-            assertEquals(-1, b);
-        }catch(Exception e){
-            logger.error(e.getMessage());
-        }
-    }
-
-    /**
-     * {@link MEMORIX2EDM#validateSchema(Reader, Class)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void validateSchema() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-
-        JibxUnMarshall jibx = memorix.validateSchema(new FileReader(tmp), RDF.class);
-
-        assertNotNull(jibx);
-        assertNotNull(jibx.getElement());
-        assertNull(jibx.getError());
-    }
-
-    /**
-     * {@link MEMORIX2EDM#validateSchema(Reader, String, Class)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void validateSchema1() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-
-        JibxUnMarshall jibx = memorix.validateSchema(new FileReader(tmp), "name", RDF.class);
-
-        assertNotNull(jibx);
-        assertNotNull(jibx.getElement());
-        assertNull(jibx.getError());
-    }
-
-    /**
-     * {@link MEMORIX2EDM#validateSchema(InputStream, Charset, Class)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void validateSchema2() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-
-        JibxUnMarshall jibx = memorix.validateSchema(new FileInputStream(tmp), UTF_8, RDF.class);
-
-        assertNotNull(jibx);
-        assertNotNull(jibx.getElement());
-        assertNull(jibx.getError());
-    }
-
-    /**
-     * {@link MEMORIX2EDM#validateSchema(InputStream, String, Charset, Class)}.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void validateSchema3() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-
-        JibxUnMarshall jibx = memorix.validateSchema(new FileInputStream(tmp), "name", UTF_8, RDF.class);
-
-        assertNotNull(jibx);
-        assertNotNull(jibx.getElement());
-        assertNull(jibx.getError());
-    }
-
-
-
-    @Test
-    public void modify() throws Exception {
-
-    }
 
     private Map<String, String> properties() {
-        Map<String, String> properties = new HashMap<String, String>();
-        properties = new HashMap<String, String>();
+        Map<String, String> properties = new HashMap<>();
         properties.put("edmType", "IMAGE");
         properties.put("provider", "provider");
         properties.put("dataProvider", "dataProvider");

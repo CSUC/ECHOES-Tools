@@ -9,22 +9,21 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import eu.europeana.corelib.definitions.jibx.*;
 import eu.europeana.corelib.definitions.jibx.Date;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
 import org.EDM.Transformations.formats.EDM;
+import org.EDM.Transformations.formats.utils.TimeUtil;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.csuc.serialize.JibxMarshall;
@@ -183,20 +182,21 @@ public class DC2EDM extends RDF implements EDM {
                         }
                         case "date": {
                             try {
-                                XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(elementType.getValue().getValue());
+                                String resultDMY = TimeUtil.format(elementType.getValue().getValue(), TimeUtil.DAYMONTHYEAR);
+                                String resultY = TimeUtil.format(resultDMY, TimeUtil.YEAR);
 
                                 Date date = new Date();
-                                date.setString(elementType.getValue().getValue());
+                                date.setString(resultDMY);
                                 EuropeanaType.Choice c = new EuropeanaType.Choice();
                                 c.setDate(date);
                                 provided.getChoiceList().add(c);
 
-                                if(!getDates().contains(String.valueOf(result.getYear()))){
-                                    getDates().add(String.valueOf(result.getYear()));
+                                if(!getDates().contains(String.valueOf(resultY))){
+                                    getDates().add(String.valueOf(resultY));
 
                                     c = new EuropeanaType.Choice();
 
-                                    String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", result.getYear())).toString();
+                                    String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", resultY)).toString();
 
                                     Temporal temporal = new Temporal();
                                     Resource resource = new Resource();
@@ -209,7 +209,7 @@ public class DC2EDM extends RDF implements EDM {
                                     provided.getChoiceList().add(c);
                                 }
                             }catch (Exception e) {
-                                logger.error(String.format("date %s not cast to XMLGregorianCalendar", elementType.getValue().getValue()));
+                                logger.error("{}: {}", elementType.getValue().getValue(), e.getMessage());
                             }
 
                             break;
@@ -277,18 +277,18 @@ public class DC2EDM extends RDF implements EDM {
             if (!getDates().isEmpty()) {
                 getDates().forEach((String date) -> {
                     try {
-                        XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(date);
+                        String resultY = TimeUtil.format(date, TimeUtil.YEAR);
 
                         eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
                         TimeSpanType timeSpan = new TimeSpanType();
 
-                        String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", result.getYear())).toString();
+                        String iriToUri = IriToUri.iriToUri(String.format("TimeSpan:%s", resultY)).toString();
 
                         timeSpan.setAbout(iriToUri);
                         getIdentifiers().add(iriToUri);
 
                         PrefLabel prefLabel = new PrefLabel();
-                        prefLabel.setString(Integer.toString(result.getYear()));
+                        prefLabel.setString(resultY);
 
                         timeSpan.getPrefLabelList().add(prefLabel);
 
@@ -296,7 +296,7 @@ public class DC2EDM extends RDF implements EDM {
                         this.getChoiceList().add(choice);
 
                     } catch (Exception e) {
-                        logger.error(String.format("date %s not cast to XMLGregorianCalendar", date));
+                        logger.error(String.format("date %s not cast", date));
                     }
                 });
             }
