@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jxb:bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        version="2.1">
+
+    <jxb:bindings schemaLocation="apeEAD.xsd">
+        <jxb:bindings node="//xs:schema/xs:complexType[@name='title']/xs:attribute[@name='type']">
+            <jxb:property name="Type2"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
+</jxb:bindings>

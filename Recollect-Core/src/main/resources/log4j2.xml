@@ -2,7 +2,7 @@
 <Configuration>	
    <Appenders>
    <!-- All -->
-      <RollingFile name="RollingFile" fileName="${recollect.log.path}/Recollect-Core-${date:yyyy-MM-dd}.log" filePattern="${recollect.log.path}/Recollect-Core-%d{yyyy-MM-dd}-%i.log">
+      <RollingFile name="RollingFile" fileName="${echoes.log.path}/Recollect-Core-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/Recollect-Core-%d{yyyy-MM-dd}-%i.log">
          <PatternLayout>
             <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
          </PatternLayout>
@@ -17,11 +17,11 @@
       </Console>
    </Appenders>
    <Loggers>
-      <Logger name="org.Recollect.Core.DownloadListRecordData" level="debug" additivity="true">
+       <Logger name="org.Recollect.Core.download" level="debug" additivity="true">
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
-      <Logger name="org.Recollect.Core.Main" level="debug" additivity="true">
+      <Logger name="org.Recollect.Core.cli.Main" level="debug" additivity="true">
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
@@ -65,7 +65,7 @@
          <appender-ref ref="RollingFile" level="info" />
       </Logger>
       
-      <Root level="info" additivity="false">
+      <Root level="info" additivity="true">
          <appender-ref ref="Console" />
       </Root>
       

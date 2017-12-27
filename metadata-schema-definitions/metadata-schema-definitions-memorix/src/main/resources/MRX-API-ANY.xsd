@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://api.memorix-maior.nl/REST/3.0/" 
+  xmlns="http://www.w3.org/2001/XMLSchema" 
+  xmlns:mrx="http://api.memorix-maior.nl/REST/3.0/" 
+  elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <element name="memorix">
+    <complexType>
+      <sequence>
+		<any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+    </complexType>
+  </element>
+
+</schema>

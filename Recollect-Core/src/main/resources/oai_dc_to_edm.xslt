@@ -6,10 +6,11 @@
    <xsl:param name="dataProvider" />
    <xsl:template match="@*|node()">
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#">
-         <xsl:variable name="providedCHOAbout" select="replace($identifier,'\s','_')" />
+         <xsl:variable name="providedCHOAbout" select="iri-to-uri(concat('ProvidedCHO:', replace($identifier,'\s','_')))" />
+         <xsl:variable name="AggregationAbout" select="iri-to-uri(concat('Aggregation:', replace($identifier,'\s','_')))" />
          <edm:ProvidedCHO>
             <xsl:attribute name="rdf:about">
-               <xsl:value-of select="concat('#ProvidedCHO:',$providedCHOAbout)" />
+               <xsl:value-of select="$providedCHOAbout" />
             </xsl:attribute>
             <xsl:if test="/oai_dc:dc/dc:contributor != ''">
                <xsl:for-each select="/oai_dc:dc/dc:contributor">
@@ -122,23 +123,18 @@
          </edm:ProvidedCHO>
          <ore:Aggregation>
             <xsl:attribute name="rdf:about">
-               <xsl:value-of select="replace(text(),'\s','_')" />
+               <xsl:value-of select="$AggregationAbout" />
             </xsl:attribute>
             <edm:aggregatedCHO>
                <xsl:attribute name="rdf:resource">
-                  <xsl:value-of select="concat('#Aggregation:',$providedCHOAbout)" />
+                  <xsl:value-of select="$providedCHOAbout" />
                </xsl:attribute>
             </edm:aggregatedCHO>
             <xsl:if test="$dataProvider != ''">
                <edm:dataProvider>
                   <xsl:value-of select="$dataProvider" />
                </edm:dataProvider>
-            </xsl:if>
-            <edm:isShownAt>
-               <xsl:attribute name="rdf:resource">
-                  <xsl:value-of select="concat('#ProvidedCHO:',$providedCHOAbout)" />
-               </xsl:attribute>
-            </edm:isShownAt>
+            </xsl:if>            
             <xsl:if test="$dataProvider != ''">
                <edm:provider>
                   <xsl:value-of select="$dataProvider" />

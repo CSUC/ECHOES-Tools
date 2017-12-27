@@ -31,11 +31,12 @@
 	    <artifactId>httpcore</artifactId>
 	    <version>4.4.6</version>
 	</dependency>
-	<dependency>
-	    <groupId>com.fasterxml.jackson.dataformat</groupId>
-	    <artifactId>jackson-dataformat-xml</artifactId>
-	    <version>2.7.4</version>
-	</dependency>
+	  <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+	  <dependency>
+		  <groupId>com.fasterxml.jackson.dataformat</groupId>
+		  <artifactId>jackson-dataformat-xml</artifactId>
+		  <version>2.9.2</version>
+	  </dependency>
 	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
@@ -77,7 +78,17 @@
 	    <artifactId>log4j-api</artifactId>
 	    <version>2.8.2</version>
 	</dependency>
-		
+	  <dependency>
+		  <groupId>args4j</groupId>
+		  <artifactId>args4j</artifactId>
+	  </dependency>
+	  <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
+	  <dependency>
+		  <groupId>org.apache.jena</groupId>
+		  <artifactId>jena-arq</artifactId>
+		  <version>3.5.0</version>
+	  </dependency>
+
   </dependencies>
   
   <build>
@@ -95,7 +106,7 @@
 			    <configuration>
 			    	<archive>
 			        	<manifest>
-			            	<mainClass>org.csuc.loadBlazegraph.App</mainClass>
+			            	<mainClass>org.csuc.loadBlazegraph.cli.App</mainClass>
 			          	</manifest>
 			        </archive>
 			    	<finalName>${project.name}-${project.version}</finalName>
@@ -107,6 +118,13 @@
 		  </executions>
 		 </plugin>  	
   	</plugins>
+
+	<resources>
+		<resource>
+			<directory>src/main/resources</directory>
+			<filtering>true</filtering>
+		</resource>
+	</resources>
+
   </build>
-  
 </project>
