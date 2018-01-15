@@ -4,7 +4,7 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
-import org.Validation.Core.classes.ProvidedCHO;
+import org.Validation.Core.edm.ProvidedCHO;
 import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
@@ -57,6 +57,7 @@ public class Validate extends JibxUnMarshall {
     public void walk(){
         getRDF().getChoiceList().forEach(c -> {
             if (c.ifProvidedCHO()) {
+                FactoryCoreClasses.createFactory(new ProvidedCHO()).validate(c.getProvidedCHO());
                 providedCHO.getAndIncrement();
             }if (c.ifAggregation())
                 aggregation.getAndIncrement();

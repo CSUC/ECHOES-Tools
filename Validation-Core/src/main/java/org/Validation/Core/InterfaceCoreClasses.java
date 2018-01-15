@@ -1,5 +1,7 @@
 package org.Validation.Core;
 
+import eu.europeana.corelib.definitions.jibx.*;
+
 /**
  *
  *

@@ -61,7 +61,6 @@ public class App {
                     try {
                         Validate validate = new Validate(new FileInputStream(f.toFile()), bean.getCharset(), RDF.class);
                         if(validate.isValid()){
-                            logger.info("[{}] {} isValid XML true", Thread.currentThread().getName(), f);
                             if(Objects.nonNull(bean.getSchematron())){
                                 SchematronUtil schUtil = new SchematronUtil(bean.getSchematron().toFile(), f.toFile());
                                 try {
@@ -73,6 +72,8 @@ public class App {
                                         bean.moveTo(f, bean.getValid());
                                         validate.walk();
                                         count(validate);
+
+                                        logger.info("[{}] {} isValid XML true", Thread.currentThread().getName(), f);
                                     }
                                 } catch (Exception e) {
                                     logger.error("[{}] {}", Thread.currentThread().getName(), e);
@@ -81,6 +82,8 @@ public class App {
                                 bean.moveTo(f, bean.getValid());
                                 validate.walk();
                                 count(validate);
+
+                                logger.info("[{}] {} isValid XML true", Thread.currentThread().getName(), f);
                             }
 						}else{
                             logger.info("[{}] {} isValid XML false\n{}", Thread.currentThread().getName(), f, validate.getError());

@@ -5,7 +5,7 @@ package org.Validation.Core;
  */
 public class FactoryCoreClasses {
 
-    public static InterfaceCoreClasses createFactory(InterfaceCoreClasses clas){
+    public static <T> InterfaceCoreClasses<T> createFactory(InterfaceCoreClasses<T> clas){
         return clas;
     }
 }
