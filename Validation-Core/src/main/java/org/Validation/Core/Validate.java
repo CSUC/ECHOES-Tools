@@ -4,6 +4,7 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
+import org.Validation.Core.classes.ProvidedCHO;
 import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
@@ -44,30 +45,32 @@ public class Validate extends JibxUnMarshall {
 	}
 
 	public boolean isValid() {
+		return Objects.nonNull(getRDF()) ? true : false;
+    }
 
-		//return Objects.nonNull(getElement()) ? true : false;
+    public RDF getRDF(){
+        if(Objects.nonNull(getElement()))
+            return (RDF) getElement();
+        return null;
+    }
 
-		if(Objects.nonNull(getElement())){
-            RDF rdf = (RDF) getElement();
-            rdf.getChoiceList().forEach(c -> {
-                if (c.ifProvidedCHO())
-                    providedCHO.getAndIncrement();
-                if (c.ifAggregation())
-                    aggregation.getAndIncrement();
-                if (c.ifWebResource())
-                    webResource.getAndIncrement();
-                if (c.ifAgent())
-                    agent.getAndIncrement();
-                if (c.ifPlace())
-                    place.getAndIncrement();
-                if (c.ifTimeSpan())
-                    timeSpan.getAndIncrement();
-                if (c.ifConcept())
-                    Concept.getAndIncrement();
-            });
-		    return true;
-        }
-		return false;
+    public void walk(){
+        getRDF().getChoiceList().forEach(c -> {
+            if (c.ifProvidedCHO()) {
+                providedCHO.getAndIncrement();
+            }if (c.ifAggregation())
+                aggregation.getAndIncrement();
+            if (c.ifWebResource())
+                webResource.getAndIncrement();
+            if (c.ifAgent())
+                agent.getAndIncrement();
+            if (c.ifPlace())
+                place.getAndIncrement();
+            if (c.ifTimeSpan())
+                timeSpan.getAndIncrement();
+            if (c.ifConcept())
+                Concept.getAndIncrement();
+        });
     }
 
     public AtomicInteger getProvidedCHO() {

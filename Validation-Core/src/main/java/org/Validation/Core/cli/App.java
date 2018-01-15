@@ -60,7 +60,6 @@ public class App {
                         .parallel().forEach(f->{
                     try {
                         Validate validate = new Validate(new FileInputStream(f.toFile()), bean.getCharset(), RDF.class);
-
                         if(validate.isValid()){
                             logger.info("[{}] {} isValid XML true", Thread.currentThread().getName(), f);
                             if(Objects.nonNull(bean.getSchematron())){
@@ -72,6 +71,7 @@ public class App {
                                         bean.moveTo(f, bean.getInvalid());
                                     }else {
                                         bean.moveTo(f, bean.getValid());
+                                        validate.walk();
                                         count(validate);
                                     }
                                 } catch (Exception e) {
@@ -79,6 +79,7 @@ public class App {
                                 }
                             }else{
                                 bean.moveTo(f, bean.getValid());
+                                validate.walk();
                                 count(validate);
                             }
 						}else{
