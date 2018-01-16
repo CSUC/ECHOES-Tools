@@ -57,7 +57,7 @@ public class Validate extends JibxUnMarshall {
     public void walk(){
         getRDF().getChoiceList().forEach(c -> {
             if (c.ifProvidedCHO()) {
-                FactoryCoreClasses.createFactory(new ProvidedCHO()).validate(c.getProvidedCHO());
+                FactoryCoreClasses.createFactory(new ProvidedCHO(getRDF().getChoiceList())).validate(c.getProvidedCHO());
                 providedCHO.getAndIncrement();
             }if (c.ifAggregation())
                 aggregation.getAndIncrement();

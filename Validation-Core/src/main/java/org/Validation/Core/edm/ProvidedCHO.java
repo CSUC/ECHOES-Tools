@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,13 +18,18 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
     private static Logger logger = LogManager.getLogger(ProvidedCHO.class);
     private Instant inici = Instant.now();
 
-    public ProvidedCHO() {
-        super();
+
+    public ProvidedCHO(List<RDF.Choice> listChoice) {
+        super(listChoice);
         logger.info("VALIDATION     {}", this.getClass().getSimpleName());
     }
 
     @Override
     public ProvidedCHOType validate(ProvidedCHOType data) {
+        data.getAbout();
+
+        aboutType(data.getAbout());
+
         data.getChoiceList().forEach((EuropeanaType.Choice c) -> {
             if (c.ifContributor()) {
                 resourceOrLiteralType(c.getContributor());
@@ -102,9 +108,9 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
             }
         });
 
-        edmType(data.getType().getType());
+        edmType(data.getType().getType().xmlValue());
 
-        Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> resourceType(isNextInSequence)));
+        Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> resourceType(isNextInSequence.getResource())));
         Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> resourceOrLiteralType(isRelatedTo)));
 
         return null;
