@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,12 +28,29 @@ public class DataType {
      * @return
      */
     protected boolean resourceOrLiteralType(ResourceOrLiteralType choice) {
-        logger.info("[{}]", choice.getClass().getSimpleName());
-
-        Optional.ofNullable(choice.getLang()).ifPresent(p -> languageCode(p.getLang()));
-        Optional.ofNullable(choice.getResource()).ifPresent(p -> resourceType(p.getResource()));
-        Optional.ofNullable(choice.getString()).filter(f -> !f.isEmpty()).ifPresent(p -> stringType(p));
-
+        if (Objects.nonNull(choice.getLang())) {
+            if (!languageCode(choice.getLang().getLang())) {
+                logger.debug("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                return false;
+            }
+        }
+        if (Objects.nonNull(choice.getResource())) {
+            if (!resourceType(choice.getResource().getResource())) {
+                logger.debug("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+                return false;
+            }
+            if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
+                return false;
+            }
+        }
+        if (Objects.nonNull(choice.getString())){
+            if(Objects.nonNull(choice.getResource()))   return false;
+            else if(!stringType(choice.getString())){
+                logger.debug("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
+                return false;
+            }
+        }
+        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), choice.toString(),true);
         return true;
     }
 
@@ -41,11 +59,17 @@ public class DataType {
      * @return
      */
     protected boolean literalType(LiteralType choice) {
-        logger.info("[{}]", choice.getClass().getSimpleName());
-
-        Optional.ofNullable(choice.getLang()).ifPresent(p -> languageCode(p.getLang()));
-        Optional.ofNullable(choice.getString()).ifPresent(p -> stringType(p));
-
+        if(Objects.nonNull(choice.getLang()))
+            if(!languageCode(choice.getLang().getLang())){
+                logger.debug("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                return false;
+            }
+        if(Objects.nonNull(choice.getString()))
+            if(!stringType(choice.getString())){
+                logger.debug("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
+                return false;
+            }
+        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), choice.toString(),true);
         return true;
     }
 
@@ -54,7 +78,7 @@ public class DataType {
      * @return
      */
     protected boolean resourceType(String value) {
-        logger.info("resource      \"{}\"", value);
+        //logger.debug("resource");
         if (stringType(value) && !StringUtils.containsWhitespace(value)) {
             Predicate<RDF.Choice> predicate = e -> {
                 if (e.ifProvidedCHO())
@@ -77,10 +101,12 @@ public class DataType {
                     return Objects.equals(value, e.getWebResource().getAbout());
                 return false;
             };
-            return listChoice.stream().anyMatch(predicate);
+            boolean match =  listChoice.stream().anyMatch(predicate);
+            logger.debug("[resourceType]        \"{}\"      validation      {}", value, match);
+            return match;
         }
+        logger.debug("[resourceType]        \"{}\"      validation      {}", value, false);
         return false;
-
     }
 
     /**
@@ -88,7 +114,7 @@ public class DataType {
      * @return
      */
     protected boolean dateType(String input) {
-        logger.info("date     {}", input);
+        logger.debug("[dateType]     \"{}\"", input);
 
         return true;
     }
@@ -98,20 +124,25 @@ public class DataType {
      * @return
      */
     protected boolean aboutType(String value) {
-        logger.info("about      \"{}\"", value);
-
-        return stringType(value) ? !StringUtils.containsWhitespace(value) : false;
+        if(stringType(value) && !StringUtils.containsWhitespace(value)){
+            logger.debug("[aboutType]       \"{}\"      validation      {}", value,  true);
+            return true;
+        }
+        logger.debug("[aboutType]       \"{}\"      validation      {}", value,  false);
+        return false;
     }
 
     /**
-     * @param value
+     *
+     *
+     * @param type
      * @return
      */
-    protected boolean edmType(String value) {
-        EdmType type = EdmType.convert(value);
-        logger.info("{}       {}", type.getClass().getSimpleName(), type.xmlValue());
+    protected boolean edmType(EdmType type) {
+        boolean match = Objects.nonNull(type);
+        logger.debug("[edmType]       \"{}\"        validate:    {}", match ? type.xmlValue() : null, match);
 
-        return true;
+        return match;
     }
 
     /**
@@ -119,8 +150,7 @@ public class DataType {
      * @return
      */
     protected boolean countryCode(String country) {
-        logger.info("countryCode      {}", CountryCodes.convert(country));
-
+        logger.debug("[countryCodeType]      \"{}\"", CountryCodes.convert(country));
         return true;
     }
 
@@ -129,9 +159,10 @@ public class DataType {
      * @return
      */
     protected boolean languageCode(String language) {
-        logger.info("language     {}", LanguageCodes.convert(language));
-
-        return true;
+        LanguageCodes lang = Objects.nonNull(language) ? LanguageCodes.convert(language) : null;
+        boolean match = Objects.nonNull(lang);
+        logger.debug("[languageCodeType]     \"{}\"        validate:    {}",  match ? lang.xmlValue() : null, match);
+        return match;
     }
 
     /**
@@ -139,7 +170,9 @@ public class DataType {
      * @return
      */
     protected boolean stringType(String value) {
-        return Optional.ofNullable(value).filter(f -> !StringUtils.isBlank(value)).isPresent();
+        boolean match = Optional.ofNullable(value).filter(f -> !StringUtils.isBlank(value)).isPresent();
+        logger.debug("[stringType]     \"{}\"      validate        {}", value, match);
+        return match;
     }
 
     /**
@@ -147,9 +180,14 @@ public class DataType {
      * @return
      */
     protected boolean longType(String value) {
-        logger.info("long     {}", value);
-
-        return true;
+        try{
+            Long.parseLong(value);
+            logger.debug("[longType]     \"{}\"        validation      {}", value, true);
+            return true;
+        }catch (NumberFormatException e){
+            logger.debug("[longType]     \"{}\"        validation      {}", value, false);
+            return false;
+        }
     }
 
     /**
@@ -157,9 +195,14 @@ public class DataType {
      * @return
      */
     protected boolean integerType(String value) {
-        logger.info("integer     {}", value);
-
-        return true;
+        try{
+            Integer.parseInt(value);
+            logger.debug("[integerType]     \"{}\"     validation      {}", value, true);
+            return true;
+        }catch (NumberFormatException e){
+            logger.debug("[integerType]     \"{}\"     validation      {}", value, false);
+            return false;
+        }
     }
 
     /**
@@ -167,9 +210,14 @@ public class DataType {
      * @return
      */
     protected boolean nonNegativeIntegerType(String value) {
-        logger.info("nonNegativeInteger     {}", value);
-
-        return true;
+        if(integerType(value)){
+            if(BigInteger.valueOf(Integer.parseInt(value)).compareTo(BigInteger.ZERO) > 0){
+                logger.debug("[nonNegativeIntegerType]     \"{}\"      validation      {}", value, true);
+                return true;
+            }
+        }
+        logger.debug("[nonNegativeIntegerType]     \"{}\"      validation      {}", value, false);
+        return false;
     }
 
     /**
@@ -177,9 +225,14 @@ public class DataType {
      * @return
      */
     protected boolean doubleType(String value) {
-        logger.info("double       {}", value);
-
-        return true;
+        try{
+            Double.parseDouble(value);
+            logger.debug("[doubleType]     \"{}\"      validation      {}", value, true);
+            return true;
+        }catch (NumberFormatException e){
+            logger.debug("[doubleType]     \"{}\"      validation      {}", value, true);
+            return false;
+        }
     }
 
     /**
@@ -187,9 +240,19 @@ public class DataType {
      * @return
      */
     protected boolean hexBinaryString(String value) {
-        logger.info("hexBinary     {}", value);
+        if(integerType(value)){
+            try{
+                Integer.toBinaryString(Integer.parseInt(value));
+                logger.debug("[hexBinaryString]     \"{}\"      validation      {}", value, true);
 
-        return true;
+                return true;
+            }catch (NumberFormatException e){
+                logger.debug("[hexBinaryString]     \"{}\"      validation      {}", value, true);
+                return true;
+            }
+        }
+        logger.debug("[hexBinaryString]     \"{}\"      validation      {}", value, false);
+        return false;
     }
 
     /**
@@ -197,7 +260,7 @@ public class DataType {
      * @return
      */
     protected boolean UGCType(String value) {
-        logger.info("UGC     {}", value);
+        logger.debug("[UGCType]     \"{}\"", value);
 
         return true;
     }
@@ -207,7 +270,7 @@ public class DataType {
      * @return
      */
     protected boolean colorSpaceType(String value) {
-        logger.info("colorSpace     {}", value);
+        logger.debug("[colorSpaceType]     \"{}\"", value);
 
         return true;
     }
@@ -217,7 +280,7 @@ public class DataType {
      * @return
      */
     protected boolean floatType(String value) {
-        logger.info("float        {}", value);
+        logger.debug("[floatType]        \"{}\"", value);
 
         return true;
     }
@@ -227,7 +290,7 @@ public class DataType {
      * @return
      */
     protected boolean placeType(String value) {
-        logger.info("place     {}", value);
+        logger.debug("[placeType]     \"{}\"", value);
 
         return true;
     }

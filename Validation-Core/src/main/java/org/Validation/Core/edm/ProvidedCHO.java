@@ -108,7 +108,7 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
             }
         });
 
-        edmType(data.getType().getType().xmlValue());
+        edmType(data.getType().getType());
 
         Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> resourceType(isNextInSequence.getResource())));
         Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> resourceOrLiteralType(isRelatedTo)));
