@@ -4,6 +4,7 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
+import org.Validation.Core.edm.Aggregation;
 import org.Validation.Core.edm.ProvidedCHO;
 import org.Validation.Core.edm.WebResource;
 import org.csuc.deserialize.JibxUnMarshall;
@@ -60,19 +61,21 @@ public class Validate extends JibxUnMarshall {
             if (c.ifProvidedCHO()) {
                 FactoryCoreClasses.createFactory(new ProvidedCHO(getRDF().getChoiceList())).validate(c.getProvidedCHO());
                 providedCHO.getAndIncrement();
-            }if (c.ifAggregation())
+            }if (c.ifAggregation()){
+                FactoryCoreClasses.createFactory(new Aggregation(getRDF().getChoiceList())).validate(c.getAggregation());
                 aggregation.getAndIncrement();
-            if (c.ifWebResource())
+            }if (c.ifWebResource()) {
                 FactoryCoreClasses.createFactory(new WebResource(getRDF().getChoiceList())).validate(c.getWebResource());
                 webResource.getAndIncrement();
-            if (c.ifAgent())
+            }if (c.ifAgent()){
                 agent.getAndIncrement();
-            if (c.ifPlace())
+            }if (c.ifPlace()){
                 place.getAndIncrement();
-            if (c.ifTimeSpan())
+            }if (c.ifTimeSpan()){
                 timeSpan.getAndIncrement();
-            if (c.ifConcept())
+            }if (c.ifConcept()){
                 Concept.getAndIncrement();
+            }
         });
     }
 

@@ -31,7 +31,7 @@ public class WebResource extends DataType implements InterfaceCoreClasses<WebRes
         Optional.ofNullable(data.getFormatList()).ifPresent(present-> present.forEach(format -> resourceOrLiteralType(format)));
         Optional.ofNullable(data.getCreatedList()).ifPresent(present-> present.forEach(created -> resourceOrLiteralType(created)));
 
-        Optional.ofNullable(data.getRights()).ifPresent(present-> resourceType(present.getResource()));
+        Optional.ofNullable(data.getRights()).ifPresent(present-> resourceType(present));
 
         return null;
     }

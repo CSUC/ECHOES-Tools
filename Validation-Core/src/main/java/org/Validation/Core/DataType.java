@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -80,38 +79,27 @@ public class DataType {
     }
 
     /**
-     * @param value
+     *
+     * @param obj
      * @return
      */
-    protected boolean resourceType(String value) {
-        //logger.debug("resource");
-        if (stringType(value) && !StringUtils.containsWhitespace(value)) {
-            Predicate<RDF.Choice> predicate = e -> {
-                if (e.ifProvidedCHO())
-                    return Objects.equals(value, e.getProvidedCHO().getAbout());
-                else if (e.ifAgent())
-                    return Objects.equals(value, e.getAgent().getAbout());
-                else if (e.ifAggregation())
-                    return Objects.equals(value, e.getAggregation().getAbout());
-                else if (e.ifConcept())
-                    return Objects.equals(value, e.getConcept().getAbout());
-                else if (e.ifLicense())
-                    return Objects.equals(value, e.getLicense().getAbout());
-                else if (e.ifPlace())
-                    return Objects.equals(value, e.getPlace().getAbout());
-                else if (e.ifService())
-                    return Objects.equals(value, e.getService().getAbout());
-                else if (e.ifTimeSpan())
-                    return Objects.equals(value, e.getTimeSpan().getAbout());
-                else if (e.ifWebResource())
-                    return Objects.equals(value, e.getWebResource().getAbout());
-                return false;
-            };
-            boolean match =  listChoice.stream().anyMatch(predicate);
-            logger.debug("[resourceType]        \"{}\"      validation      {}", value, match);
-            return match;
+    protected boolean resourceType(Object obj) {
+        String resource = null;
+        if(obj instanceof ResourceOrLiteralType.Resource){
+            resource = ((ResourceOrLiteralType.Resource) obj).getResource();
+            if (stringType(resource) && !StringUtils.containsWhitespace(resource)) {
+                boolean match =  listChoice.stream().anyMatch(predicate(resource));
+                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), match);
+                return match;
+            }
         }
-        logger.debug("[resourceType]        \"{}\"      validation      {}", value, false);
+        if(obj instanceof ResourceType){
+            resource = ((ResourceType) obj).getResource();
+            if (stringType(resource) && !StringUtils.containsWhitespace(resource)) {
+                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -369,7 +357,42 @@ public class DataType {
                     Objects.nonNull(literalType.getLang()) ? literalType.getLang().getLang() : null,
                     null,
                     Objects.nonNull(literalType.getString()) ? (literalType.getString().isEmpty() ? null : literalType.getString() ) : null );
+        }else if (obj instanceof ResourceType){
+            ResourceType resourceType = (ResourceType) obj;
+            return MessageFormat.format("Resource:       {0}", resourceType.getResource().isEmpty() ? null : resourceType.getResource().toString());
         }
+
         return null;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    private Predicate<RDF.Choice> predicate(String value){
+        Predicate<RDF.Choice> predicate = e -> {
+            if (e.ifProvidedCHO())
+                return Objects.equals(value, e.getProvidedCHO().getAbout());
+            else if (e.ifAgent())
+                return Objects.equals(value, e.getAgent().getAbout());
+            else if (e.ifAggregation())
+                return Objects.equals(value, e.getAggregation().getAbout());
+            else if (e.ifConcept())
+                return Objects.equals(value, e.getConcept().getAbout());
+            else if (e.ifLicense())
+                return Objects.equals(value, e.getLicense().getAbout());
+            else if (e.ifPlace())
+                return Objects.equals(value, e.getPlace().getAbout());
+            else if (e.ifService())
+                return Objects.equals(value, e.getService().getAbout());
+            else if (e.ifTimeSpan())
+                return Objects.equals(value, e.getTimeSpan().getAbout());
+            else if (e.ifWebResource())
+                return Objects.equals(value, e.getWebResource().getAbout());
+            return false;
+        };
+
+        return predicate;
     }
 }

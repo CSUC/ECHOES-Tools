@@ -64,8 +64,10 @@ public class DataTypeTest {
 
     @Test
     public void resourceType() {
-        assertTrue(dataType.resourceType("Place:Leiden"));
-        assertFalse(dataType.resourceType("ProvidedCHO:"));
+        ResourceOrLiteralType.Resource resource = new ResourceOrLiteralType.Resource();
+        resource.setResource("Place:Leiden");
+        assertTrue(dataType.resourceType(resource));
+
     }
 
     @Test(expected = Exception.class)
