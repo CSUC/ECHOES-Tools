@@ -1,8 +1,11 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
+import org.EDM.Transformations.formats.utils.TimeUtil;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,8 +68,15 @@ public class DataTypeTest {
         assertFalse(dataType.resourceType("ProvidedCHO:"));
     }
 
-    @Test
-    public void dateType() {
+    @Test(expected = Exception.class)
+    public void dateType(){
+        TimeUtil.format("1760-12-100");
+        assertNotNull("01/11/1989");
+        assertNotNull("1987");
+        assertNotNull("09-1984");
+        assertNotNull("30-10-1988");
+        assertNotNull("30-10-1988");
+        assertNotNull("[1973]");
     }
 
     @Test

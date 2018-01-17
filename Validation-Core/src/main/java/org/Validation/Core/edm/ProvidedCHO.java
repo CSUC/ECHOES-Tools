@@ -41,7 +41,8 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
                 resourceOrLiteralType(c.getCreator());
             }
             if (c.ifDate()) {
-                resourceOrLiteralType(c.getDate());
+                if(resourceOrLiteralType(c.getDate()) && dateType(c.getDate()));
+
             }
             if (c.ifDescription()) {
                 resourceOrLiteralType(c.getDescription());

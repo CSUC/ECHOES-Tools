@@ -1,11 +1,14 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
+import org.EDM.Transformations.formats.utils.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigInteger;
+import java.text.MessageFormat;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,27 +33,27 @@ public class DataType {
     protected boolean resourceOrLiteralType(ResourceOrLiteralType choice) {
         if (Objects.nonNull(choice.getLang())) {
             if (!languageCode(choice.getLang().getLang())) {
-                logger.debug("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                logger.info("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
                 return false;
             }
         }
         if (Objects.nonNull(choice.getResource())) {
             if (!resourceType(choice.getResource().getResource())) {
-                logger.debug("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+                return false;
+            }else if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
+                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
                 return false;
             }
-            if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
-                return false;
+        }else{
+            if (Objects.nonNull(choice.getString())){
+                if(!stringType(choice.getString())){
+                    logger.info("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                    return false;
+                }
             }
         }
-        if (Objects.nonNull(choice.getString())){
-            if(Objects.nonNull(choice.getResource()))   return false;
-            else if(!stringType(choice.getString())){
-                logger.debug("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
-                return false;
-            }
-        }
-        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), choice.toString(),true);
+        logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
         return true;
     }
 
@@ -61,15 +64,15 @@ public class DataType {
     protected boolean literalType(LiteralType choice) {
         if(Objects.nonNull(choice.getLang()))
             if(!languageCode(choice.getLang().getLang())){
-                logger.debug("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                logger.info("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
                 return false;
             }
         if(Objects.nonNull(choice.getString()))
             if(!stringType(choice.getString())){
-                logger.debug("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
+                logger.info("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
                 return false;
             }
-        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), choice.toString(),true);
+        logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
         return true;
     }
 
@@ -110,26 +113,49 @@ public class DataType {
     }
 
     /**
-     * @param input
-     * @return
-     */
-    protected boolean dateType(String input) {
-        logger.debug("[dateType]     \"{}\"", input);
-
-        return true;
-    }
-
-    /**
      * @param value
      * @return
      */
     protected boolean aboutType(String value) {
         if(stringType(value) && !StringUtils.containsWhitespace(value)){
-            logger.debug("[aboutType]       \"{}\"      validation      {}", value,  true);
+            logger.info("[aboutType]       \"{}\"      validation      {}", value,  true);
             return true;
         }
-        logger.debug("[aboutType]       \"{}\"      validation      {}", value,  false);
+        logger.info("[aboutType]       \"{}\"      validation      {}", value,  false);
         return false;
+    }
+
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    protected boolean dateType(Object obj) {
+        if(obj instanceof ResourceOrLiteralType){
+            ResourceOrLiteralType resourceOrLiteralType = (ResourceOrLiteralType) obj;
+
+            if(Objects.nonNull(resourceOrLiteralType.getString())){
+               try{
+                   TimeUtil.format(resourceOrLiteralType.getString());
+               }catch(Exception e){
+                   logger.debug("[dateType]       {}      validation      {}", prettyPrint(resourceOrLiteralType),  false);
+                   return false;
+               }
+            }
+        }else if (obj instanceof LiteralType){
+            LiteralType literalType = (LiteralType) obj;
+
+            if(Objects.nonNull(literalType.getString())){
+                try{
+                    TimeUtil.format(literalType.getString());
+                }catch(Exception e){
+                    logger.debug("[dateType]       {}      validation      {}", prettyPrint(literalType),  false);
+                    return false;
+                }
+            }
+        }
+        logger.debug("[dateType]       \"{}\"      validation      {}", prettyPrint(obj),  true);
+        return true;
     }
 
     /**
@@ -150,8 +176,10 @@ public class DataType {
      * @return
      */
     protected boolean countryCode(String country) {
-        logger.debug("[countryCodeType]      \"{}\"", CountryCodes.convert(country));
-        return true;
+        CountryCodes countryCodes = Objects.nonNull(country) ? CountryCodes.convert(country) : null;
+        boolean match = Objects.nonNull(countryCodes);
+        logger.debug("[countryCodeType]      \"{}\"     validation", match ? countryCodes.xmlValue() : null, match);
+        return match;
     }
 
     /**
@@ -293,5 +321,28 @@ public class DataType {
         logger.debug("[placeType]     \"{}\"", value);
 
         return true;
+    }
+
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    private String prettyPrint(Object obj){
+        if(obj instanceof ResourceOrLiteralType){
+            ResourceOrLiteralType resourceOrLiteralType = (ResourceOrLiteralType) obj;
+            return MessageFormat.format("Lang:      {0}     Resource:       {1}     String:     {2}",
+                    Objects.nonNull(resourceOrLiteralType.getLang()) ? resourceOrLiteralType.getLang().getLang() : null,
+                    Objects.nonNull(resourceOrLiteralType.getResource()) ? resourceOrLiteralType.getResource().getResource() : null ,
+                    Objects.nonNull(resourceOrLiteralType.getString()) ? (resourceOrLiteralType.getString().isEmpty() ? null : resourceOrLiteralType.getString() ) : null );
+        }
+        else if( obj instanceof  LiteralType){
+            LiteralType literalType = (LiteralType) obj;
+            return MessageFormat.format("Lang:      {0}     Resource:       {1}     String:     {2}",
+                    Objects.nonNull(literalType.getLang()) ? literalType.getLang().getLang() : null,
+                    null,
+                    Objects.nonNull(literalType.getString()) ? (literalType.getString().isEmpty() ? null : literalType.getString() ) : null );
+        }
+        return null;
     }
 }
