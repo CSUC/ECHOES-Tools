@@ -113,11 +113,12 @@
                 <includes>
                     <include>**/*.xsl</include>
                     <include>**/*.xslt</include>
-                    <include>**/log4j2.xm</include>
-                    <include>log4j2.xml</include>
+                    <!--<include>**/log4j2.xm</include>-->
+                    <!--<include>log4j2.xml</include>-->
                 </includes>
 				<excludes>
 					<exclude>**/*.json</exclude>
+					<exclude>**/log4j2.xml</exclude>
 				</excludes>
 			</resource>
 			<resource>
