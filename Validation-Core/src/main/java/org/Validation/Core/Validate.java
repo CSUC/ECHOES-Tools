@@ -5,6 +5,7 @@ package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
 import org.Validation.Core.edm.ProvidedCHO;
+import org.Validation.Core.edm.WebResource;
 import org.csuc.deserialize.JibxUnMarshall;
 
 import java.io.InputStream;
@@ -62,6 +63,7 @@ public class Validate extends JibxUnMarshall {
             }if (c.ifAggregation())
                 aggregation.getAndIncrement();
             if (c.ifWebResource())
+                FactoryCoreClasses.createFactory(new WebResource(getRDF().getChoiceList())).validate(c.getWebResource());
                 webResource.getAndIncrement();
             if (c.ifAgent())
                 agent.getAndIncrement();
