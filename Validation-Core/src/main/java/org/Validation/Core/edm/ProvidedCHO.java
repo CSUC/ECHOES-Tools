@@ -75,7 +75,7 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
                 resourceOrLiteralType(c.getSource());
             }
             if (c.ifTemporal()) {
-                resourceOrLiteralType(c.getTemporal());
+                if(resourceOrLiteralType(c.getTemporal()) && dateType(c.getTemporal()));
             }
             if (c.ifSubject()) {
                 resourceOrLiteralType(c.getSubject());
@@ -90,7 +90,7 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
                 literalType(c.getAlternative());
             }
             if (c.ifCreated()) {
-                resourceOrLiteralType(c.getCreated());
+                if(resourceOrLiteralType(c.getCreated()) && dateType(c.getCreated()));
             }
             if (c.ifExtent()) {
                 resourceOrLiteralType(c.getExtent());
