@@ -166,4 +166,13 @@ public class DataTypeTest {
     @Test
     public void placeType() {
     }
+
+    @Test
+    public void uriType(){
+        assertTrue(dataType.uriType("http://allefriezen.nl/zoeken/deeds/f740898c-3a00-4f72-97a5-a112eac590ed"));
+        assertFalse(dataType.uriType(null));
+        assertFalse(dataType.uriType(""));
+        assertFalse(dataType.uriType("      "));
+        assertFalse(dataType.uriType("http://allefriezen.nl/zoeken/d eeds/f740898c -3a00-4 f72-97a5-a112eac590ed"));
+    }
 }

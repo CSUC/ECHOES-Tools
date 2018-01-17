@@ -7,6 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -320,6 +323,30 @@ public class DataType {
     protected boolean placeType(String value) {
         logger.debug("[placeType]     \"{}\"", value);
 
+        return true;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    protected boolean uriType(String value){
+        URL url;
+        try {
+            url = new URL(value);
+        } catch (MalformedURLException e) {
+            logger.debug("[uriType]     \"{}\"      validation      {}", value, false);
+            return false;
+        }
+        try {
+            url.toURI();
+        } catch (URISyntaxException e) {
+            logger.debug("[uriType]     \"{}\"      validation      {}", value, false);
+            return false;
+        }
+
+        logger.debug("[uriType]     \"{}\"      validation      {}", value, true);
         return true;
     }
 
