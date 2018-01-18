@@ -72,6 +72,7 @@ public class Validate extends JibxUnMarshall {
                 FactoryCoreClasses.createFactory(new Place(getRDF().getChoiceList())).validate(c.getPlace());
                 place.getAndIncrement();
             }if (c.ifTimeSpan()){
+                FactoryCoreClasses.createFactory(new TimeSpan(getRDF().getChoiceList())).validate(c.getTimeSpan());
                 timeSpan.getAndIncrement();
             }if (c.ifConcept()){
                 FactoryCoreClasses.createFactory(new Concept(getRDF().getChoiceList())).validate(c.getConcept());

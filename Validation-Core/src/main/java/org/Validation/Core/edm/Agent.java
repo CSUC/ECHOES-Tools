@@ -33,8 +33,12 @@ public class Agent extends DataType implements InterfaceCoreClasses<AgentType> {
         Optional.ofNullable(data.getHasMetList()).ifPresent(p -> p.forEach(hasMetList -> resourceType(hasMetList)));
         Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> resourceOrLiteralType(isRelatedTo)));
 
-        if(Objects.nonNull(data.getDateOfBirth())) dateType(data.getDateOfBirth());
-        if(Objects.nonNull(data.getDateOfDeath())) dateType(data.getDateOfDeath());
+        if(Objects.nonNull(data.getDateOfBirth())){
+            if(literalType(data.getDateOfBirth()) && dateType(data.getDateOfBirth()));
+        }
+        if(Objects.nonNull(data.getDateOfDeath())){
+            if(literalType(data.getDateOfDeath()) && dateType(data.getDateOfDeath()));
+        }
 
         Optional.ofNullable(data.getGender()).ifPresent(p -> literalType(p));
 

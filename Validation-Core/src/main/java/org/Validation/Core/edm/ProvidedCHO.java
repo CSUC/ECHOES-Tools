@@ -57,7 +57,7 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
                 literalType(c.getIdentifier());
             }
             if (c.ifLanguage()) {
-                literalType(c.getLanguage());
+                if(literalType(c.getLanguage()) && languageCode(c.getLanguage().getString()));
             }
             if (c.ifPublisher()) {
                 resourceOrLiteralType(c.getPublisher());
