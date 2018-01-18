@@ -1,6 +1,7 @@
 package org.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
+import org.EDM.Transformations.formats.a2a.PlaceType;
 import org.EDM.Transformations.formats.utils.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -35,22 +36,22 @@ public class DataType {
     protected boolean resourceOrLiteralType(ResourceOrLiteralType choice) {
         if (Objects.nonNull(choice.getLang())) {
             if (!languageCode(choice.getLang().getLang())) {
-                logger.info("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }
         if (Objects.nonNull(choice.getResource())) {
-            if (!resourceType(choice.getResource().getResource())) {
-                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+            if (!resourceType(choice.getResource())) {
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }else if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
-                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }else{
             if (Objects.nonNull(choice.getString())){
                 if(!stringType(choice.getString())){
-                    logger.info("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                    logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                     return false;
                 }
             }
@@ -299,9 +300,14 @@ public class DataType {
      * @return
      */
     protected boolean floatType(String value) {
-        logger.debug("[floatType]        \"{}\"", value);
-
-        return true;
+        try{
+            Float.parseFloat(value);
+            logger.debug("[floatType]     \"{}\"      validation      {}", value, true);
+            return true;
+        }catch (NumberFormatException e){
+            logger.debug("[floatType]     \"{}\"      validation      {}", value, true);
+            return false;
+        }
     }
 
     /**
@@ -309,9 +315,10 @@ public class DataType {
      * @return
      */
     protected boolean placeType(String value) {
-        logger.debug("[placeType]     \"{}\"", value);
-
-        return true;
+        PlaceType placeTypes = Objects.nonNull(value) ? PlaceType.convert(value) : null;
+        boolean match = Objects.nonNull(placeTypes);
+        logger.debug("[placeType]      \"{}\"     validation", match ? placeTypes.value() : null, match);
+        return match;
     }
 
     /**
