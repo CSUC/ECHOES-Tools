@@ -35,22 +35,22 @@ public class DataType {
     protected boolean resourceOrLiteralType(ResourceOrLiteralType choice) {
         if (Objects.nonNull(choice.getLang())) {
             if (!languageCode(choice.getLang().getLang())) {
-                logger.info("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }
         if (Objects.nonNull(choice.getResource())) {
-            if (!resourceType(choice.getResource().getResource())) {
-                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+            if (!resourceType(choice.getResource())) {
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }else if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
-                logger.info("[{}]      Resource    \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getResource().getResource(), false);
+                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }else{
             if (Objects.nonNull(choice.getString())){
                 if(!stringType(choice.getString())){
-                    logger.info("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                    logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                     return false;
                 }
             }
