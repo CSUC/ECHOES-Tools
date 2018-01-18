@@ -51,6 +51,16 @@
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>EDM-Transformations</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 	<build>
 		<plugins>
