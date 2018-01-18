@@ -74,6 +74,7 @@ public class Validate extends JibxUnMarshall {
             }if (c.ifTimeSpan()){
                 timeSpan.getAndIncrement();
             }if (c.ifConcept()){
+                FactoryCoreClasses.createFactory(new Concept(getRDF().getChoiceList())).validate(c.getConcept());
                 Concept.getAndIncrement();
             }
         });

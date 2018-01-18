@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author dfernandez
@@ -23,13 +24,11 @@ public class Concept extends DataType implements InterfaceCoreClasses<eu.europea
     @Override
     public eu.europeana.corelib.definitions.jibx.Concept validate(eu.europeana.corelib.definitions.jibx.Concept data) {
         aboutType(data.getAbout());
-        data.getChoiceList().forEach((eu.europeana.corelib.definitions.jibx.Concept.Choice c) -> {
-            if (c.ifPrefLabel()){
-                literalType(c.getPrefLabel());
-            }
-            if (c.ifRelated()){
-                resourceType(c.getRelated());
-            }
+        Optional.ofNullable(data.getChoiceList()).ifPresent(present->{
+            present.forEach(choice -> {
+                if(choice.ifPrefLabel())    literalType(choice.getPrefLabel());
+                if(choice.ifRelated())  resourceType(choice.getRelated());
+            });
         });
         return null;
     }
