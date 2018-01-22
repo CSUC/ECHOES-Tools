@@ -30,6 +30,6 @@ public class Concept extends DataType implements InterfaceCoreClasses<eu.europea
                 if(choice.ifRelated())  resourceType(choice.getRelated());
             });
         });
-        return null;
+        return data;
     }
 }

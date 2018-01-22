@@ -35,6 +35,6 @@ public class WebResource extends DataType implements InterfaceCoreClasses<WebRes
 
         Optional.ofNullable(data.getRights()).ifPresent(present-> resourceType(present));
 
-        return null;
+        return data;
     }
 }

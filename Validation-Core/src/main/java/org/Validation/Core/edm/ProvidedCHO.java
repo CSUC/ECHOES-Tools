@@ -114,7 +114,7 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
         Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> resourceType(isNextInSequence)));
         Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> resourceOrLiteralType(isRelatedTo)));
 
-        return null;
+        return data;
     }
 
 }

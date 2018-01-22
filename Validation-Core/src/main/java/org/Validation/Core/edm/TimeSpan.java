@@ -36,7 +36,7 @@ public class TimeSpan extends DataType implements InterfaceCoreClasses<TimeSpanT
             if(literalType(data.getEnd()) && dateType(data.getEnd()));
         }
 
-        return null;
+        return data;
     }
 }
 

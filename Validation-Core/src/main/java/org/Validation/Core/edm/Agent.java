@@ -46,7 +46,7 @@ public class Agent extends DataType implements InterfaceCoreClasses<AgentType> {
 
         Optional.ofNullable(data.getProfessionOrOccupationList()).ifPresent(p -> p.forEach(professionOrOccupation -> resourceOrLiteralType(professionOrOccupation)));
         
-        return null;
+        return data;
     }
 
 }

@@ -42,6 +42,6 @@ public class Aggregation extends DataType implements InterfaceCoreClasses<eu.eur
 
         Optional.ofNullable(data.getIntermediateProviderList()).ifPresent(present-> present.forEach(intermediateProvider -> resourceOrLiteralType(intermediateProvider)));
 
-        return null;
+        return data;
     }
 }

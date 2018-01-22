@@ -31,6 +31,6 @@ public class Place extends DataType implements InterfaceCoreClasses<PlaceType> {
         Optional.ofNullable(data.getNoteList()).ifPresent(present-> present.forEach(note -> literalType(note)));
         Optional.ofNullable(data.getPrefLabelList()).ifPresent(present-> present.forEach(prefLabel -> literalType(prefLabel)));
         Optional.ofNullable(data.getAltLabelList()).ifPresent(present-> present.forEach(altLabel -> placeType(altLabel.getString())));
-        return null;
+        return data;
     }
 }
