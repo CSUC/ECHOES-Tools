@@ -8,13 +8,13 @@
         <dc:type xmlns:dc="http://purl.org/dc/elements/1.1/">BS Geboorte</dc:type>
         <dc:date xmlns:dc="http://purl.org/dc/elements/1.1/">1911-12-27</dc:date>
         <dcterms:temporal xmlns:dcterms="http://purl.org/dc/terms/" rdf:resource="TimeSpan:1911"></dcterms:temporal>
-        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="Agent:Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3"></dc:contributor>
-        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="Agent:Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8"></dc:contributor>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource=":Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3"></dc:contributor>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource=":Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8"></dc:contributor>
         <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="Agent:Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db"></dc:contributor>
         <edm:isRelatedTo rdf:resource="Concept:BSGeboorte"></edm:isRelatedTo>
         <edm:type>IMAGE</edm:type>
     </edm:ProvidedCHO>
-    <edm:Agent rdf:about="Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3">
+    <edm:Agent rdf:about="Agent:Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3">
         <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Johan Hubert</skos:prefLabel>
         <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Christiaans</skos:altLabel>
         <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3</dc:identifier>
@@ -22,7 +22,7 @@
         <rdaGr2:gender xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">Onbekend</rdaGr2:gender>
         <rdaGr2:professionOrOccupation xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">schoonmaker</rdaGr2:professionOrOccupation>
     </edm:Agent>
-    <edm:Agent rdf:about="Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8">
+    <edm:Agent rdf:about="Agent:Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8">
         <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Petronella Johanna Francisca</skos:prefLabel>
         <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Christiaans</skos:altLabel>
         <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8</dc:identifier>
@@ -32,7 +32,7 @@
         <rdaGr2:gender xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">Onbekend</rdaGr2:gender>
         <rdaGr2:placeOfBirth xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" rdf:resource="Place:Leiden"></rdaGr2:placeOfBirth>
     </edm:Agent>
-    <edm:Agent rdf:about="Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db">
+    <edm:Agent rdf:about="Agent:Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db">
         <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Anna Hubertina</skos:prefLabel>
         <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Dautzenberg</skos:altLabel>
         <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db</dc:identifier>

@@ -26,93 +26,198 @@ public class ProvidedCHO extends DataType implements InterfaceCoreClasses<Provid
 
     @Override
     public ProvidedCHOType validate(ProvidedCHOType data) {
-        data.getAbout();
+        ProvidedCHOType providedCHOType = new ProvidedCHOType();
 
-        aboutType(data.getAbout());
+        if(aboutType(data.getAbout()))  providedCHOType.setAbout(data.getAbout());
+        else return null;
 
         data.getChoiceList().forEach((EuropeanaType.Choice c) -> {
             if (c.ifContributor()) {
-                resourceOrLiteralType(c.getContributor());
+                if(resourceOrLiteralType(c.getContributor())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setContributor(c.getContributor());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifCoverage()) {
-                resourceOrLiteralType(c.getCoverage());
+                if(resourceOrLiteralType(c.getCoverage())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setCoverage(c.getCoverage());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifCreator()) {
-                resourceOrLiteralType(c.getCreator());
+                if(resourceOrLiteralType(c.getCreator())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setCreator(c.getCreator());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifDate()) {
-                if(resourceOrLiteralType(c.getDate()) && dateType(c.getDate()));
-
+                if(resourceOrLiteralType(c.getDate()) && dateType(c.getDate())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setDate(c.getDate());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifDescription()) {
-                resourceOrLiteralType(c.getDescription());
+                if(resourceOrLiteralType(c.getDescription())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setDescription(c.getDescription());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifFormat()) {
-                resourceOrLiteralType(c.getFormat());
+                if(resourceOrLiteralType(c.getFormat())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setFormat(c.getFormat());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifProvenance()) {
-                resourceOrLiteralType(c.getProvenance());
+                if(resourceOrLiteralType(c.getProvenance())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setProvenance(c.getProvenance());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifIdentifier()) {
-                literalType(c.getIdentifier());
+                if(literalType(c.getIdentifier())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setIdentifier(c.getIdentifier());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifLanguage()) {
-                if(literalType(c.getLanguage()) && languageCode(c.getLanguage().getString()));
+                if(literalType(c.getLanguage()) && languageCode(c.getLanguage().getString())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setLanguage(c.getLanguage());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifPublisher()) {
-                resourceOrLiteralType(c.getPublisher());
+                if(resourceOrLiteralType(c.getPublisher())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setPublisher(c.getPublisher());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifSpatial()) {
-                resourceOrLiteralType(c.getSpatial());
+                if(resourceOrLiteralType(c.getSpatial())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setSpatial(c.getSpatial());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifRelation()) {
-                resourceOrLiteralType(c.getRelation());
+                if(resourceOrLiteralType(c.getRelation())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setRelation(c.getRelation());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifRights()) {
-                resourceOrLiteralType(c.getRights());
+                if(resourceOrLiteralType(c.getRights())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setRights(c.getRights());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifSource()) {
-                resourceOrLiteralType(c.getSource());
+                if(resourceOrLiteralType(c.getSource())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setSource(c.getSource());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifTemporal()) {
-                if(resourceOrLiteralType(c.getTemporal()) && dateType(c.getTemporal()));
+                if(resourceOrLiteralType(c.getTemporal()) && dateType(c.getTemporal())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setTemporal(c.getTemporal());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifSubject()) {
-                resourceOrLiteralType(c.getSubject());
+                if(resourceOrLiteralType(c.getSubject())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setSubject(c.getSubject());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifTitle()) {
-                literalType(c.getTitle());
+                if(literalType(c.getTitle())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setTitle(c.getTitle());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifType()) {
-                resourceOrLiteralType(c.getType());
+                if(resourceOrLiteralType(c.getType())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setType(c.getType());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifAlternative()) {
-                literalType(c.getAlternative());
+                if(literalType(c.getAlternative())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setAlternative(c.getAlternative());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifCreated()) {
-                if(resourceOrLiteralType(c.getCreated()) && dateType(c.getCreated()));
+                if(resourceOrLiteralType(c.getCreated()) && dateType(c.getCreated())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setCreated(c.getCreated());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifExtent()) {
-                resourceOrLiteralType(c.getExtent());
+                if(resourceOrLiteralType(c.getExtent())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setExtent(c.getExtent());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifHasFormat()) {
-                resourceOrLiteralType(c.getHasFormat());
+                if(resourceOrLiteralType(c.getHasFormat())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setHasFormat(c.getHasFormat());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifHasPart()) {
-                resourceOrLiteralType(c.getHasPart());
+                if(resourceOrLiteralType(c.getHasPart())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setHasPart(c.getHasPart());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifIsPartOf()) {
-                resourceOrLiteralType(c.getIsPartOf());
+                if(resourceOrLiteralType(c.getIsPartOf())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setIsPartOf(c.getIsPartOf());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
             if (c.ifIsReferencedBy()) {
-                resourceOrLiteralType(c.getIsReferencedBy());
+                if(resourceOrLiteralType(c.getIsReferencedBy())){
+                    EuropeanaType.Choice choice = new EuropeanaType.Choice();
+                    choice.setIsReferencedBy(c.getIsReferencedBy());
+                    providedCHOType.getChoiceList().add(choice);
+                }
             }
         });
 
-        edmType(data.getType().getType());
+        if(edmType(data.getType().getType()))   providedCHOType.setType(data.getType());
+        else return null;
 
-        Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> resourceType(isNextInSequence)));
-        Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> resourceOrLiteralType(isRelatedTo)));
+        Optional.ofNullable(data.getIsNextInSequenceList()).ifPresent(p -> p.forEach(isNextInSequence -> {
+            if(resourceType(isNextInSequence)) providedCHOType.getIsNextInSequenceList().add(isNextInSequence);
+        }));
+        Optional.ofNullable(data.getIsRelatedToList()).ifPresent(p -> p.forEach(isRelatedTo -> {
+            if(resourceOrLiteralType(isRelatedTo))  providedCHOType.getIsRelatedToList().add(isRelatedTo);
+        }));
 
         return data;
     }

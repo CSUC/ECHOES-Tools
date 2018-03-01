@@ -89,9 +89,11 @@ public class DataType {
         if(obj instanceof ResourceOrLiteralType.Resource){
             resource = ((ResourceOrLiteralType.Resource) obj).getResource();
             if (stringType(resource) && !StringUtils.containsWhitespace(resource)) {
-                boolean match =  listChoice.stream().anyMatch(predicate(resource));
-                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), match);
-                return match;
+//                boolean match =  listChoice.stream().anyMatch(predicate(resource));
+//                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), match);
+//                return match;
+                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
+                return true;
             }
         }
         if(obj instanceof ResourceType){

@@ -74,64 +74,69 @@ public class Validate extends JibxUnMarshall {
                 }
 
                 providedCHO.getAndIncrement();
-            }if (c.ifAggregation()){
-                eu.europeana.corelib.definitions.jibx.Aggregation aggregationType = FactoryCoreClasses.createFactory(new Aggregation(getRDF().getChoiceList())).validate(c.getAggregation());
-                if(Objects.nonNull(aggregationType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setAggregation(aggregationType);
-                    rdf.getChoiceList().add(choice);
-                }
-
-                aggregation.getAndIncrement();
-            }if (c.ifWebResource()) {
-                WebResourceType webResourceType = FactoryCoreClasses.createFactory(new WebResource(getRDF().getChoiceList())).validate(c.getWebResource());
-                if(Objects.nonNull(webResourceType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setWebResource(webResourceType);
-                    rdf.getChoiceList().add(choice);
-                }
-
-                webResource.getAndIncrement();
-            }if (c.ifAgent()){
-                AgentType agentType = FactoryCoreClasses.createFactory(new Agent(getRDF().getChoiceList())).validate(c.getAgent());
-                if(Objects.nonNull(agentType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setAgent(agentType);
-                    rdf.getChoiceList().add(choice);
-                }
-
-                agent.getAndIncrement();
-            }if (c.ifPlace()){
-                PlaceType placeType = FactoryCoreClasses.createFactory(new Place(getRDF().getChoiceList())).validate(c.getPlace());
-                if(Objects.nonNull(placeType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setPlace(placeType);
-                    rdf.getChoiceList().add(choice);
-                }
-
-                place.getAndIncrement();
-            }if (c.ifTimeSpan()){
-                TimeSpanType timeSpanType = FactoryCoreClasses.createFactory(new TimeSpan(getRDF().getChoiceList())).validate(c.getTimeSpan());
-                if(Objects.nonNull(timeSpanType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setTimeSpan(timeSpanType);
-                    rdf.getChoiceList().add(choice);
-                }
-
-                timeSpan.getAndIncrement();
-            }if (c.ifConcept()){
-                eu.europeana.corelib.definitions.jibx.Concept conceptType = FactoryCoreClasses.createFactory(new Concept(getRDF().getChoiceList())).validate(c.getConcept());
-                if(Objects.nonNull(conceptType)){
-                    RDF.Choice choice = new RDF.Choice();
-                    choice.setConcept(conceptType);
-                    rdf.getChoiceList().add(choice);
-                }
-                Concept.getAndIncrement();
             }
+//            if (c.ifAggregation()){
+//                eu.europeana.corelib.definitions.jibx.Aggregation aggregationType = FactoryCoreClasses.createFactory(new Aggregation(getRDF().getChoiceList())).validate(c.getAggregation());
+//                if(Objects.nonNull(aggregationType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setAggregation(aggregationType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//
+//                aggregation.getAndIncrement();
+//            }if (c.ifWebResource()) {
+//                WebResourceType webResourceType = FactoryCoreClasses.createFactory(new WebResource(getRDF().getChoiceList())).validate(c.getWebResource());
+//                if(Objects.nonNull(webResourceType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setWebResource(webResourceType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//
+//                webResource.getAndIncrement();
+//            }if (c.ifAgent()){
+//                AgentType agentType = FactoryCoreClasses.createFactory(new Agent(getRDF().getChoiceList())).validate(c.getAgent());
+//                if(Objects.nonNull(agentType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setAgent(agentType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//
+//                agent.getAndIncrement();
+//            }if (c.ifPlace()){
+//                PlaceType placeType = FactoryCoreClasses.createFactory(new Place(getRDF().getChoiceList())).validate(c.getPlace());
+//                if(Objects.nonNull(placeType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setPlace(placeType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//
+//                place.getAndIncrement();
+//            }if (c.ifTimeSpan()){
+//                TimeSpanType timeSpanType = FactoryCoreClasses.createFactory(new TimeSpan(getRDF().getChoiceList())).validate(c.getTimeSpan());
+//                if(Objects.nonNull(timeSpanType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setTimeSpan(timeSpanType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//
+//                timeSpan.getAndIncrement();
+//            }if (c.ifConcept()){
+//                eu.europeana.corelib.definitions.jibx.Concept conceptType = FactoryCoreClasses.createFactory(new Concept(getRDF().getChoiceList())).validate(c.getConcept());
+//                if(Objects.nonNull(conceptType)){
+//                    RDF.Choice choice = new RDF.Choice();
+//                    choice.setConcept(conceptType);
+//                    rdf.getChoiceList().add(choice);
+//                }
+//                Concept.getAndIncrement();
+//            }
         });
 
-//        JibxMarshall.marshall(rdf, StandardCharsets.UTF_8.toString(),
-//                false, IoBuilder.forLogger(Validate.class).setLevel(Level.DEBUG).buildOutputStream(), RDF.class, -1);
+        JibxMarshall.marshall(rdf, RDF.class);
+
+
+        //JibxMarshall.marshall(rdf, StandardCharsets.UTF_8.toString(),
+        //        false, IoBuilder.forLogger(Validate.class).setLevel(Level.DEBUG).buildOutputStream(), RDF.class, -1);
+
 
         return rdf;
     }
