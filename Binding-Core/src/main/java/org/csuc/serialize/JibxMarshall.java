@@ -28,17 +28,15 @@ public class JibxMarshall {
 	 * @param root
 	 * @param classType
 	 */
-	public static void marshall(Object root, Class<?> classType, Integer ident) {
+	public static void marshall(Object root, Class<?> classType) {
 		try {
 			IBindingFactory jc = BindingDirectory.getFactory(classType);
 			IMarshallingContext marshaller = jc.createMarshallingContext();
 
-			marshaller.setIndent(ident);
 			marshaller.marshalDocument(root);
 		}catch (JiBXException exception) {
 			logger.error(exception);
 		}
-		
 	}
 	
 	/**
