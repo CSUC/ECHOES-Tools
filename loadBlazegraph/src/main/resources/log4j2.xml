@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>	
    <Appenders>
-   	  <!-- All -->
-      <RollingFile name="RollingFile" fileName="${echoes.log.path}/loadBlazegraph-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/loadBlazegraph-%d{yyyy-MM-dd}-%i.log">
+      <!-- All -->
+      <RollingFile name="RollingFile"
+                   fileName="${echoes.path}/logs/${project.name}-${date:yyyy-MM-dd}.log"
+                   filePattern="${echoes.path}/logs/rotate/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+                   ignoreExceptions="false">
          <PatternLayout>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %m%n</Pattern>
+            <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
+               DEBUG=blue} - %msg%n
+            </Pattern>
          </PatternLayout>
          <Policies>
-            <TimeBasedTriggeringPolicy />
+            <OnStartupTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="10 MB"/>
+            <TimeBasedTriggeringPolicy/>
          </Policies>
-         <DefaultRolloverStrategy max="99"/>
-      </RollingFile>      
+      </RollingFile>
       <!-- Console -->
       <Console name="Console">
-         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n" />
+         <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} - %msg%n" />
       </Console>
    </Appenders>
    <Loggers>

@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.csuc</groupId>
     <artifactId>metadata.schema.definitions</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
   </parent>
   <artifactId>metadata-schema-definitions-oaipmh</artifactId>
   <name>metadata-schema-definitions-oaipmh</name>
