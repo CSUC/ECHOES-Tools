@@ -28,27 +28,27 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaidc</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-a2a</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-ead</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>metadata-schema-definitions-memorix</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
@@ -58,19 +58,12 @@
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
-			<version>9.8.0-6</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.6</version>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-iostreams</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-iostreams</artifactId>
