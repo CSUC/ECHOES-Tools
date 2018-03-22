@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.csuc</groupId>
 		<artifactId>ECHOES-Tools</artifactId>
-		<version>0.1</version>
+		<version>1.1</version>
 	</parent>
 	<artifactId>EDM-Transformations</artifactId>
 	<name>EDM-Transformations</name>
@@ -23,32 +23,32 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>Binding-Core</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaidc</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-a2a</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-ead</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>metadata-schema-definitions-memorix</artifactId>
-            <version>0.1</version>
+            <version>1.1</version>
         </dependency>
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.csuc</groupId>
         <artifactId>ECHOES-Tools</artifactId>
-        <version>0.1</version>
+        <version>1.1</version>
     </parent>
 
     <artifactId>Validation-Core</artifactId>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>Binding-Core</artifactId>
-            <version>0.1</version>
+            <version>1.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/args4j/args4j -->
         <dependency>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>EDM-Transformations</artifactId>
-            <version>0.1</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
