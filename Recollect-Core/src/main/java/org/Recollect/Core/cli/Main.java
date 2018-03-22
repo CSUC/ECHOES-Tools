@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -155,6 +156,7 @@ public class Main {
      * @throws Exception
      */
     private static void GetRecord() throws Exception {
+        AtomicInteger batch = new AtomicInteger(0);
         Instant timeRecord = Instant.now();
 
         try{
@@ -177,6 +179,8 @@ public class Main {
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
+                        .flatMap(g -> g.observeOn(Schedulers.io()))
                         .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) ->{
@@ -224,6 +228,7 @@ public class Main {
      * @param s
      */
     private static void downloadRecords(String s) {
+        AtomicInteger batch = new AtomicInteger(0);
         Instant timeSet = Instant.now();
         bean.getArguments().put("set", s);
 
@@ -266,6 +271,8 @@ public class Main {
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
+                        .flatMap(g -> g.observeOn(Schedulers.io()))
                         .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) ->{

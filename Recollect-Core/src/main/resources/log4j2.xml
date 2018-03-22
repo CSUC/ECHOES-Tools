@@ -72,6 +72,11 @@
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
+        <Logger name="org.EDM.Transformations" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+
         <Root level="info" additivity="true">
             <appender-ref ref="Console"/>
         </Root>

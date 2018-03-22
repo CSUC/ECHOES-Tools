@@ -66,24 +66,23 @@ public class DownloadJaxb implements Download {
                 element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
 
         EDM edm = null;
-        if (element.getDeclaredType().equals(A2AType.class)) edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
-        else if (element.getDeclaredType().equals(OaiDcType.class)) new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
-        else if (element.getDeclaredType().equals(Memorix.class)) {
-            try {
+        try {
+            if (element.getDeclaredType().equals(A2AType.class))
+                edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
+            else if (element.getDeclaredType().equals(OaiDcType.class))
+                new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
+            else if (element.getDeclaredType().equals(Memorix.class)) {
                 new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) element.getValue(), properties)
                         .transformation(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
-            } catch (Exception e) {
-                logger.error(e);
-            }
-        }else if (element.getDeclaredType().equals(Ead.class)) {
-            try {
+            } else if (element.getDeclaredType().equals(Ead.class)) {
                 new EAD2EDM(record.getHeader().getIdentifier(), (Ead) element.getValue(), properties)
                         .transformation(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
-            } catch (Exception e) {
-              logger.error(e);
-            }
-        } else  logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
-        if(Objects.nonNull(edm)) edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
+            } else logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
+            if (Objects.nonNull(edm))
+                edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
+        } catch (Exception e) {
+            logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
+        }
     }
 
     @Override
@@ -91,33 +90,28 @@ public class DownloadJaxb implements Download {
         Path filename = Paths.get(outs + File.separator
                 + StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + ".xml");
 
-	      if(Files.exists(outs, LinkOption.NOFOLLOW_LINKS)){
+        if (Files.exists(outs, LinkOption.NOFOLLOW_LINKS)) {
+            JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
+
+            logger.info(String.format("Donwload item (%s) identifier %s",
+                    element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
+
+            EDM edm = null;
             try {
-                JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
-
-                logger.info(String.format("Donwload item (%s) identifier %s",
-                        element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
-
-                EDM edm = null;
-                if (element.getDeclaredType().equals(A2AType.class)) edm= new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
-                else if (element.getDeclaredType().equals(OaiDcType.class)) edm = new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
+                if (element.getDeclaredType().equals(A2AType.class))
+                    edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
+                else if (element.getDeclaredType().equals(OaiDcType.class))
+                    edm = new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) element.getValue(), properties);
                 else if (element.getDeclaredType().equals(Memorix.class)) {
-                    try {
-                        new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
-                    } catch (Exception e) {
-                        logger.error(e);
-                    }
-                }else if (element.getDeclaredType().equals(Ead.class)) {
-                    try {
-                        new EAD2EDM(record.getHeader().getIdentifier(), (Ead) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
-                    } catch (Exception e) {
-                        logger.error(e);
-                    }
-                }else
+                    new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
+                } else if (element.getDeclaredType().equals(Ead.class)) {
+                    new EAD2EDM(record.getHeader().getIdentifier(), (Ead) element.getValue(), properties).transformation(new FileOutputStream(filename.toFile()), properties);
+                } else
                     logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
-                if(Objects.nonNull(edm)) edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
-            } catch (FileNotFoundException e) {
-                logger.error(e);
+                if (Objects.nonNull(edm))
+                    edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
+            } catch (Exception e) {
+                logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
             }
         }
     }
