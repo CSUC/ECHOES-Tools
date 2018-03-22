@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.Validation.Core.schematron;
+package org.csuc.Validation.Core.schematron;
 
 import java.util.List;
 import java.util.Objects;

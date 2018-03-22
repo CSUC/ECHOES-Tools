@@ -1,4 +1,4 @@
-package org.Validation.Core;
+package org.csuc.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
 
