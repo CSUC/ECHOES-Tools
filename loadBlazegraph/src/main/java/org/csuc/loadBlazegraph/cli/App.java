@@ -1,15 +1,9 @@
 package org.csuc.loadBlazegraph.cli;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Objects;
-import java.util.concurrent.ForkJoinPool;
-
-import org.apache.commons.codec.Charsets;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -22,14 +16,19 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.csuc.loadBlazegraph.BlazegraphResponse;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Objects;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * 
@@ -39,15 +38,17 @@ import org.kohsuke.args4j.CmdLineParser;
 public class App {
 	
     private static Logger logger = LogManager.getLogger(App.class);
-	
-	private static String host = "localhost"; //default
-	private static int port = 9999; //default	
-	private static String contentType = "application/rdf+xml"; //default
-	private static String context = "blazegraph"; //default
-	private static String charset = Charsets.UTF_8.name(); //default
-	private static int threads = 4; // default;
-	private static String folderOrFile = null;
-	private static String namespace = "kb"; //default
+
+    private static ArgsBean bean;
+
+//	private static String host = "localhost"; //default
+//	private static int port = 9999; //default
+//	private static String contentType = "application/rdf+xml"; //default
+//	private static String context = "blazegraph"; //default
+//	private static String charset = Charsets.UTF_8.name(); //default
+//	private static int threads = 4; // default;
+//	private static String folderOrFile = null;
+//	private static String namespace = "kb"; //default
 	
 	
 	/**
@@ -59,8 +60,7 @@ public class App {
 	public static void main( String[] args ) throws ClientProtocolException, IOException {
 		Instant now = Instant.now();
 
-
-		ArgsBean bean = new ArgsBean(args);
+		bean = new ArgsBean(args);
 		CmdLineParser parser = new CmdLineParser(bean);
 		try {
 			// parse the arguments.
@@ -70,34 +70,16 @@ public class App {
 		}
 
 		logger.info(String.format("start %s %s", logger.getName(), now));
-		
-		for(int i = 0; i < args.length; i++){
-			if(args[i].equals("--host"))	host = args[i+1];
-			if(args[i].equals("--port"))	port = Integer.parseInt(args[i+1]);
-			if(args[i].equals("--folderOrFile"))	folderOrFile = args[i+1];
-			if(args[i].equals("--contentType"))	contentType = args[i+1];			
-			if(args[i].equals("--context"))	context = args[i+1];
-			if(args[i].equals("--charset"))	charset = args[i+1];
-			if(args[i].equals("--threads"))	threads = Integer.parseInt(args[i+1]);
-			if(args[i].equals("--namespace"))	namespace = args[i+1];
-		}
-		
-		logger.info(
-			String.format(
-				"Properties: [host: %s, port: %s, contentType: %s, context: %s, charset: %s, threads: %s, folderOrFile: %s]",
-				host, port, contentType, context, charset, threads, folderOrFile));
-		
+
 		try {
-			if(Objects.nonNull(folderOrFile)) {
-				new ForkJoinPool(threads).submit(()->{
+			if(Objects.nonNull(bean.getInput())) {
+				new ForkJoinPool(bean.getThreads()).submit(()->{
 					try{
-						Files.walk(Paths.get(folderOrFile))
+						Files.walk(bean.getInput())
 						.filter(Files::isRegularFile)
 				        .filter(f -> f.toString().endsWith(".xml"))
 				        .parallel()
-				        .forEach(f->{
-			        		httpPost(contentType, f.toFile());
-				        });
+				        .forEach((Path f) -> httpPost(bean.getContentType(), f.toFile()));
 					} catch (IOException e) {
 						logger.error(e);
 					}					
@@ -120,16 +102,16 @@ public class App {
 	 */
 	private static void httpPost(String type, File data) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-	    HttpPost httppost = new HttpPost(String.format("http://%s:%s/%s/namespace/%s/sparql", host, port, context, namespace));
+	    HttpPost httppost = new HttpPost(String.format("http://%s:%s/namespace/%s/sparql", bean.getHost(), bean.getPort(), bean.getNamespace()));
 
 	    RequestConfig requestConfig = 
 	    		RequestConfig.copy(RequestConfig.DEFAULT)
-	    			.setProxy(new HttpHost(host, port))
+	    			.setProxy(new HttpHost(bean.getHost(), bean.getPort()))
 	    			.build();
 	    
 	    httppost.setConfig(requestConfig);
 
-	    httppost.addHeader("content-type", type + ";charset=" + charset);
+	    httppost.addHeader("content-type", type + ";charset=" + bean.getCharset());
 
 	    FileEntity entity = new FileEntity(data);
 

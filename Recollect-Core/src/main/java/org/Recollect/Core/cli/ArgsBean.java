@@ -2,10 +2,8 @@ package org.Recollect.Core.cli;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kohsuke.args4j.Argument;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.*;
+import org.kohsuke.args4j.spi.IntOptionHandler;
 import org.kohsuke.args4j.spi.MapOptionHandler;
 import org.openarchives.oai._2.VerbType;
 
@@ -17,44 +15,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-    /**
+/**
  * @author amartinez
  */
 public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
-    @Option(name="-h", aliases = "--help", help = true, required = false)
+    @Option(name = "-h", aliases = "--help", help = true, required = false)
     private boolean help = false;
 
     private String host;
 
-    @Option(name="-v", aliases = "--verb", usage="verb ", required = true)
+    @Option(name = "-v", aliases = "--verb", usage = "verb ", required = true)
     private VerbType verb;
 
-    @Option(name="-i", aliases = "--identifier", usage="identifier ", required = false)
+    @Option(name = "-i", aliases = "--identifier", usage = "identifier ", required = false)
     private String identifier;
 
-    @Option(name="-m", aliases = "--metadataPrefix", usage="metadataPrefix ", required = false)
+    @Option(name = "-m", aliases = "--metadataPrefix", usage = "metadataPrefix ", required = false)
     private String metadataPrefix;
 
-    @Option(name="-f", aliases = "--from", usage="from ", required = false)
+    @Option(name = "-f", aliases = "--from", usage = "from ", required = false)
     private String from;
 
-    @Option(name="-u", aliases = "--until", usage="until ", required = false)
+    @Option(name = "-u", aliases = "--until", usage = "until ", required = false)
     private String until;
 
-    @Option(name="-s", aliases = "--set", usage="set ", required = false)
+    @Option(name = "-s", aliases = "--set", usage = "set ", required = false)
     private String set;
 
-    @Option(name="-g", aliases = "--granularity", usage="granularity", required = false)
+    @Option(name = "-g", aliases = "--granularity", usage = "granularity", required = false)
     private String granularity;
 
-    @Option(name="-r", aliases = "--resumptionToken", usage="resumptionToken", required = false)
+    @Option(name = "-r", aliases = "--resumptionToken", usage = "resumptionToken", required = false)
     private String resumptionToken;
 
     @Argument(index = 0, multiValued = true, required = false, handler = MapOptionHandler.class,
-    metaVar = "{edmType | provider | rights | language | dataProvider ... }")
+            metaVar = "{edmType | provider | rights | language | dataProvider ... }")
     private Map<String, String> arguments = new HashMap<>();
 
     @Option(name = "-o", aliases = "--out", required = false, usage = "out")
@@ -62,7 +60,9 @@ public class ArgsBean {
 
     private Path xslt;
 
-    public ArgsBean(String[] args){
+    private Integer threads = 1;
+
+    public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
 
         try {
@@ -70,8 +70,7 @@ public class ArgsBean {
             // parse the arguments.
             parser.parseArgument(args);
 
-           // parser.pa
-            if(this.help){
+            if (this.help) {
                 System.err.println("Usage: ");
                 parser.printUsage(System.err);
                 System.err.println();
@@ -79,13 +78,13 @@ public class ArgsBean {
             }
 
             this.run();
-        } catch( CmdLineException e ) {
-            if(this.help){
+        } catch (CmdLineException e) {
+            if (this.help) {
                 System.err.println("Usage: ");
                 parser.printUsage(System.err);
                 System.err.println();
                 return;
-            }else{
+            } else {
                 System.err.println(e.getMessage());
                 parser.printUsage(System.err);
                 System.err.println();
@@ -95,10 +94,10 @@ public class ArgsBean {
     }
 
     public String getHost() {
-            return host;
-        }
+        return host;
+    }
 
-    @Option(name="--host", usage="host", required = true)
+    @Option(name = "--host", usage = "host", required = true)
     public void setHost(String host) throws MalformedURLException, URISyntaxException {
         URL url = new URL(host);
         url.toURI();
@@ -106,76 +105,76 @@ public class ArgsBean {
     }
 
     public VerbType getVerb() {
-            return verb;
-        }
+        return verb;
+    }
 
     public void setVerb(VerbType verb) {
-            this.verb = verb;
-        }
+        this.verb = verb;
+    }
 
     public String getIdentifier() {
-            return identifier;
-        }
+        return identifier;
+    }
 
     public void setIdentifier(String identifier) {
-            this.identifier = identifier;
-        }
+        this.identifier = identifier;
+    }
 
     public String getMetadataPrefix() {
-            return metadataPrefix;
-        }
+        return metadataPrefix;
+    }
 
     public void setMetadataPrefix(String metadataPrefix) {
-            this.metadataPrefix = metadataPrefix;
-        }
+        this.metadataPrefix = metadataPrefix;
+    }
 
     public String getFrom() {
-            return from;
-        }
+        return from;
+    }
 
     public void setFrom(String from) {
-            this.from = from;
-        }
+        this.from = from;
+    }
 
     public String getUntil() {
-            return until;
-        }
+        return until;
+    }
 
     public void setUntil(String until) {
-            this.until = until;
-        }
+        this.until = until;
+    }
 
     public String getSet() {
-            return set;
-        }
+        return set;
+    }
 
     public void setSet(String set) {
-            this.set = set;
-        }
+        this.set = set;
+    }
 
     public String getGranularity() {
-            return granularity;
-        }
+        return granularity;
+    }
 
     public void setGranularity(String granularity) {
-            this.granularity = granularity;
-        }
+        this.granularity = granularity;
+    }
 
     public String getResumptionToken() {
-            return resumptionToken;
-        }
+        return resumptionToken;
+    }
 
     public void setResumptionToken(String resumptionToken) {
-            this.resumptionToken = resumptionToken;
-        }
+        this.resumptionToken = resumptionToken;
+    }
 
     public Path getOut() {
-            return out;
-        }
+        return out;
+    }
 
     public void setOut(Path out) {
-            this.out = out;
-        }
+        this.out = out;
+    }
 
     public String getXslt() {
         return Objects.isNull(xslt) ? null : xslt.toString();
@@ -183,17 +182,29 @@ public class ArgsBean {
 
     @Option(name = "-x", aliases = "--xslt", required = false, usage = "xslt")
     public void setXslt(Path xslt) throws FileNotFoundException {
-        if(Files.notExists(xslt))   throw new FileNotFoundException("File not exist!");
+        if (Files.notExists(xslt)) throw new FileNotFoundException("File not exist!");
         this.xslt = xslt;
     }
 
     public Map<String, String> getArguments() {
-            return arguments;
-        }
+        return arguments;
+    }
 
     public void setArguments(Map<String, String> arguments) {
-            this.arguments = arguments;
-        }
+        this.arguments = arguments;
+    }
+
+
+    public Integer getThreads() {
+        return threads;
+    }
+
+    @Option(name = "-t", aliases = "--threads", usage = "threads", required = false, handler = IntOptionHandler.class, metaVar = "<int>")
+    public void setThreads(Integer threads) {
+        if(threads == 0)    throw new IllegalThreadStateException("Threads > 0");
+        this.threads = threads;
+    }
+
 
     public boolean isHelp() {
         return help;
@@ -203,7 +214,7 @@ public class ArgsBean {
         this.help = help;
     }
 
-    public void run(){
+    public void run() {
         logger.info("   Host                :   {}", host);
         logger.info("   Verb                :   {}", verb.value());
         logger.info("   Identifier          :   {}", identifier);
@@ -215,6 +226,7 @@ public class ArgsBean {
         logger.info("   resumptionToken     :   {}", resumptionToken);
         logger.info("   XSLT                :   {}", xslt);
         logger.info("   out                 :   {}", out);
+        logger.info("   Threads             :   {}", threads);
         logger.info("   Edm properties      :   {}", arguments);
     }
 }

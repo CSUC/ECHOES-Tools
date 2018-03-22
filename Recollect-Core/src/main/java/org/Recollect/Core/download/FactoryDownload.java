@@ -3,6 +3,7 @@ package org.Recollect.Core.download;
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 import io.reactivex.Observable;
 import nl.mindbus.a2a.A2AType;
+import org.Recollect.Core.util.StreamUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openarchives.oai._2.*;
@@ -22,6 +23,7 @@ public class FactoryDownload {
         Observable<Download> observable = Observable.create(emitter -> {
             try {
                 if (Objects.nonNull(iteratorTypes)) {
+                    //StreamUtils.asStream(iteratorTypes).parallel().forEach(record-> {
                     iteratorTypes.forEachRemaining(record -> {
                         if (Objects.nonNull(record)) {
                             if(record instanceof RecordType){

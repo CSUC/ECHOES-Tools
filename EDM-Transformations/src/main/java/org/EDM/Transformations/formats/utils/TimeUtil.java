@@ -1,6 +1,8 @@
 package org.EDM.Transformations.formats.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.time.temporal.ChronoField;
  *
  */
 public class TimeUtil {
+
+    private static Logger logger = LogManager.getLogger(TimeUtil.class);
 
     /**
      *
@@ -124,14 +128,17 @@ public class TimeUtil {
         for(DateTimeFormatter formatter : formatters) {
             if(input.length() <= 4 || input.matches("^[{'\"#\\[]")){
                 try {
+                    logger.debug("old: {}   new:   {}", input, LocalDate.parse(input, formatter).format(YEAR));
                     return LocalDate.parse(input, formatter).format(YEAR);
                 } catch (DateTimeParseException e) {}
             }else{
                 try {
+                    logger.debug("old: {}   new:   {}", input, LocalDate.parse(input, formatter).format(DAYMONTHYEAR));
                     return LocalDate.parse(input, formatter).format(DAYMONTHYEAR);
                 } catch (DateTimeParseException e) {}
 
                 try {
+                    logger.debug("old: {}   new:   {}", input, LocalDate.parse(input, formatter).format(MONTHYEAR));
                     return LocalDate.parse(input, formatter).format(MONTHYEAR);
                 } catch (DateTimeParseException e) {}
             }
@@ -149,6 +156,7 @@ public class TimeUtil {
         for(DateTimeFormatter formatter : formatters) {
             try {
                 LocalDate ld = LocalDate.parse(input, formatter);
+                logger.debug("old: {}   new:   {}", input, ld.format(format));
                 return ld.format(format);
             } catch (DateTimeParseException e) {}
         }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:edm="http://www.europeana.eu/schemas/edm/">
+    <edm:ProvidedCHO rdf:about="ProvidedCHO:e30943cd-d2b6-443d-b177-0479d5acaf52">
+        <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">e30943cd-d2b6-443d-b177-0479d5acaf52</dc:identifier>
+        <dc:coverage xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="Place:Leiden"></dc:coverage>
+        <dc:description xmlns:dc="http://purl.org/dc/elements/1.1/">Archiefnaam: Archief van de ambtenaar van de burgerlijke stand, 1816-1928, Deel: 4777, Periode: 1911</dc:description>
+        <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Geboorten 1911. Gesplitst.</dc:title>
+        <dc:type xmlns:dc="http://purl.org/dc/elements/1.1/">BS Geboorte</dc:type>
+        <dc:date xmlns:dc="http://purl.org/dc/elements/1.1/">1911-12-27</dc:date>
+        <dcterms:temporal xmlns:dcterms="http://purl.org/dc/terms/" rdf:resource="TimeSpan:1911"></dcterms:temporal>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource=":Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3"></dc:contributor>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource=":Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8"></dc:contributor>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="Agent:Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db"></dc:contributor>
+        <edm:isRelatedTo rdf:resource="Concept:BSGeboorte"></edm:isRelatedTo>
+        <edm:type>IMAGE</edm:type>
+    </edm:ProvidedCHO>
+    <edm:Agent rdf:about="Agent:Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3">
+        <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Johan Hubert</skos:prefLabel>
+        <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Christiaans</skos:altLabel>
+        <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3</dc:identifier>
+        <edm:isRelatedTo rdf:resource="Concept:Vader"></edm:isRelatedTo>
+        <rdaGr2:gender xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">Onbekend</rdaGr2:gender>
+        <rdaGr2:professionOrOccupation xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">schoonmaker</rdaGr2:professionOrOccupation>
+    </edm:Agent>
+    <edm:Agent rdf:about="Agent:Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8">
+        <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Petronella Johanna Francisca</skos:prefLabel>
+        <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Christiaans</skos:altLabel>
+        <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8</dc:identifier>
+        <edm:hasMet rdf:resource="Place:Leiden"/>
+        <edm:isRelatedTo rdf:resource="Concept:Kind"></edm:isRelatedTo>
+        <rdaGr2:dateOfBirth xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">1911-12-27</rdaGr2:dateOfBirth>
+        <rdaGr2:gender xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">Onbekend</rdaGr2:gender>
+        <rdaGr2:placeOfBirth xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" rdf:resource="Place:Leiden"></rdaGr2:placeOfBirth>
+    </edm:Agent>
+    <edm:Agent rdf:about="Agent:Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db">
+        <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Anna Hubertina</skos:prefLabel>
+        <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Dautzenberg</skos:altLabel>
+        <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db</dc:identifier>
+        <edm:isRelatedTo rdf:resource="Concept:Moeder"></edm:isRelatedTo>
+        <rdaGr2:gender xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/">Onbekend</rdaGr2:gender>
+    </edm:Agent>
+    <edm:Place rdf:about="Place:Leiden">
+        <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Leiden</skos:prefLabel>
+        <skos:altLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">Place</skos:altLabel>
+    </edm:Place>
+    <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="Concept:Vader">
+        <skos:prefLabel>Vader</skos:prefLabel>
+        <skos:related rdf:resource="Agent:Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3"/>
+    </skos:Concept>
+    <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="Concept:Kind">
+        <skos:prefLabel>Kind</skos:prefLabel>
+        <skos:related rdf:resource="Agent:Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8"/>
+    </skos:Concept>
+    <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="Concept:Moeder">
+        <skos:prefLabel>Moeder</skos:prefLabel>
+        <skos:related rdf:resource="Agent:Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db"/>
+    </skos:Concept>
+    <edm:TimeSpan rdf:about="TimeSpan:1911">
+        <skos:prefLabel xmlns:skos="http://www.w3.org/2004/02/skos/core#">1911</skos:prefLabel>
+    </edm:TimeSpan>
+    <edm:WebResource rdf:about="https://images.memorix.nl/lei/thumb/640x480/68793e17-c24b-4460-7c9f-956abf84d80e.jpg"/>
+    <ore:Aggregation xmlns:ore="http://www.openarchives.org/ore/terms/" rdf:about="https://www.erfgoedleiden.nl/collecties/personen/zoek-op-personen/deeds/dbef35b6-78d0-5d79-9220-fe7bc63fbab5">
+        <edm:aggregatedCHO rdf:resource="ProvidedCHO:e30943cd-d2b6-443d-b177-0479d5acaf52"/>
+        <edm:dataProvider>dataProvider</edm:dataProvider>
+        <edm:hasView rdf:resource="Person:7d151435-3ecb-9be3-ce0b-c1f14abbebe3"/>
+        <edm:hasView rdf:resource="Concept:Vader"/>
+        <edm:hasView rdf:resource="ProvidedCHO:e30943cd-d2b6-443d-b177-0479d5acaf52"/>
+        <edm:hasView rdf:resource="Person:7db96118-9cb6-3d1f-d2fb-c0ff21c8c2e8"/>
+        <edm:hasView rdf:resource="Concept:Kind"/>
+        <edm:hasView rdf:resource="Person:8db3ba13-2b04-61f9-0cf3-e78d853f49db"/>
+        <edm:hasView rdf:resource="TimeSpan:1911"/>
+        <edm:hasView rdf:resource="Place:Leiden"/>
+        <edm:hasView rdf:resource="Concept:Moeder"/>
+        <edm:hasView rdf:resource="https://images.memorix.nl/lei/thumb/640x480/68793e17-c24b-4460-7c9f-956abf84d80e.jpg"/>
+        <edm:isShownAt rdf:resource="https://www.erfgoedleiden.nl/collecties/personen/zoek-op-personen/deeds/dbef35b6-78d0-5d79-9220-fe7bc63fbab5"/>
+        <edm:provider>provider</edm:provider>
+        <edm:rights rdf:resource="rights"/>
+        <edm:intermediateProvider>set</edm:intermediateProvider>
+    </ore:Aggregation>
+</rdf:RDF>

@@ -21,7 +21,7 @@ public class JibxMarshall {
 
 	private static Logger logger = LogManager.getLogger(JibxMarshall.class);
 	
-	private static int ident = 4;
+//	private static int ident = 4;
 	
 	/**
 	 * 
@@ -32,13 +32,11 @@ public class JibxMarshall {
 		try {
 			IBindingFactory jc = BindingDirectory.getFactory(classType);
 			IMarshallingContext marshaller = jc.createMarshallingContext();
-			
-			marshaller.setIndent(ident);
+
 			marshaller.marshalDocument(root);
 		}catch (JiBXException exception) {
 			logger.error(exception);
 		}
-		
 	}
 	
 	/**
@@ -48,7 +46,7 @@ public class JibxMarshall {
 	 * @param alone
 	 * @param classType
 	 */
-	public  static void marshall(Object root, String enc, Boolean alone, Class<?> classType) {
+	public  static void marshall(Object root, String enc, Boolean alone, Class<?> classType, Integer ident) {
 		try {
 			IBindingFactory jc = BindingDirectory.getFactory(classType);
 			IMarshallingContext marshaller = jc.createMarshallingContext();
@@ -68,7 +66,7 @@ public class JibxMarshall {
 	 * @param outs
 	 * @param classType
 	 */
-	public  static void marshall(Object root, String enc, Boolean alone, OutputStream outs, Class<?> classType) {
+	public  static void marshall(Object root, String enc, Boolean alone, OutputStream outs, Class<?> classType, Integer ident) {
 		try {
 			IBindingFactory jc = BindingDirectory.getFactory(classType);
 			IMarshallingContext marshaller = jc.createMarshallingContext();
@@ -88,7 +86,7 @@ public class JibxMarshall {
 	 * @param outw
 	 * @param classType
 	 */
-	public  static void marshall(Object root, String enc, Boolean alone, Writer outw, Class<?> classType) {
+	public  static void marshall(Object root, String enc, Boolean alone, Writer outw, Class<?> classType, Integer ident) {
 		try {
 			IBindingFactory jc = BindingDirectory.getFactory(classType);
 			IMarshallingContext marshaller = jc.createMarshallingContext();

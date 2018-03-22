@@ -54,7 +54,7 @@ public class HttpOAIClient implements OAIClient {
 	@Override
 	public InputStream execute(Parameters parameters) {
 		try {
-			logger.info(String.format("%s GET %s", baseUrl, parameters.toUrl("")));
+			logger.debug(String.format("%s GET %s", baseUrl, parameters.toUrl("")));
 			HttpResponse response = httpclient.execute(createGetRequest(parameters));
 
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK )			
@@ -120,7 +120,7 @@ public class HttpOAIClient implements OAIClient {
 		    List<URI> redirectURIs = context.getRedirectLocations();
 		    if (redirectURIs != null && !redirectURIs.isEmpty()) {
 		        for (URI redirectURI : redirectURIs) {
-		        	logger.info(String.format("%s redirect to %s", url , redirectURI));
+		        	logger.debug(String.format("%s redirect to %s", url , redirectURI));
 		        }
 		        return redirectURIs.get(redirectURIs.size() - 1).toString();
 		    }

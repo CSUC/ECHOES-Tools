@@ -119,9 +119,12 @@ public class A2A2EDM extends RDF implements EDM {
                         });
 
                 Optional.ofNullable(person.getPid()).ifPresent((String present) -> {
-                    identifiers.add(present);
+                    String iriToUri = IriToUri
+                            .iriToUri(String.format("Agent:%s", StringUtils.deleteWhitespace(present))).toString();
 
-                    a.setAbout(person.getPid());
+                    identifiers.add(iriToUri);
+
+                    a.setAbout(iriToUri);
 
                     Identifier identifier = new Identifier();
                     identifier.setString(person.getPid());
@@ -319,16 +322,21 @@ public class A2A2EDM extends RDF implements EDM {
                 Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
                     eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-                    Description description = new Description();
-                    description.setString(present.getCollection());
+                    if(Objects.nonNull(present.getCollection())){
+                        Description description = new Description();
+                        description.setString(present.getCollection());
 
-                    c.setDescription(description);
-                    c.clearChoiceListSelect();
+                        c.setDescription(description);
+                        c.clearChoiceListSelect();
+                    }
 
-                    Title title = new Title();
-                    title.setString(present.getBook());
+                    if(Objects.nonNull(present.getBook())){
+                        Title title = new Title();
+                        title.setString(present.getBook());
 
-                    c.setTitle(title);
+                        c.setTitle(title);
+                    }
+
                     provided.getChoiceList().add(c);
                 });
 
@@ -467,6 +475,27 @@ public class A2A2EDM extends RDF implements EDM {
                 choice.setConcept(concept);
                 this.getChoiceList().add(choice);
             }));
+
+			Optional.ofNullable(a2a.getSource()).map(m-> m.getSourceType()).ifPresent(present->{
+                Choice choice = new Choice();
+                Concept concept = new Concept();
+
+                String iriToUri = IriToUri
+                        .iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(present))).toString();
+
+                concept.setAbout(iriToUri);
+                identifiers.add(iriToUri);
+
+                Concept.Choice c = new Concept.Choice();
+                PrefLabel prefLabel = new PrefLabel();
+                prefLabel.setString(present);
+
+                c.setPrefLabel(prefLabel);
+                concept.getChoiceList().add(c);
+
+                choice.setConcept(concept);
+                this.getChoiceList().add(choice);
+            });
 		} catch (Exception exception) {
 			logger.error(String.format("[%s] error generate skosConcept \n%s", identifier, exception));
 		}
@@ -626,6 +655,16 @@ public class A2A2EDM extends RDF implements EDM {
 					this.getChoiceList().add(choice);
 				});
 			});
+//            Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceDigitalOriginal).ifPresent(present->{
+//                eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
+//                WebResourceType webResource = new WebResourceType();
+//                String iriToUri = IriToUri.iriToUri(present).toString();
+//                identifiers.add(iriToUri);
+//
+//                webResource.setAbout(iriToUri);
+//                choice.setWebResource(webResource);
+//                this.getChoiceList().add(choice);
+//            });
 		}catch (Exception exception) {
 			logger.error(String.format("[%s] error generate edmWebResource \n%s", identifier, exception));
 		}
@@ -641,7 +680,7 @@ public class A2A2EDM extends RDF implements EDM {
 
 				if (Objects.nonNull(present.getSourceAvailableScans())) {
 					try {
-						Optional.ofNullable(present.getSourceAvailableScans().getScan()).ifPresent((List<CtScan> p) -> p.forEach((CtScan scan) -> {
+						Optional.ofNullable(present.getSourceAvailableScans()).map(CtScans::getScan).ifPresent((List<CtScan> p) -> p.forEach((CtScan scan) -> {
                             aggregation.setAbout(scan.getUriViewer());
 
                             AggregatedCHO aggregatedCHO = new AggregatedCHO();
@@ -661,7 +700,27 @@ public class A2A2EDM extends RDF implements EDM {
 					} catch (Exception e) {
 						System.err.println(String.format("getSourceAvailableScans %s", e));
 					}
-				} else {
+				}if (Objects.nonNull(present.getSourceDigitalOriginal())) {
+                    try {
+                        Optional.ofNullable(present.getSourceDigitalOriginal()).ifPresent(p->{
+                            aggregation.setAbout(p);
+
+                            AggregatedCHO aggregatedCHO = new AggregatedCHO();
+                            aggregatedCHO.setResource(IriToUri
+                                    .iriToUri(String.format("ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
+                                    .toString());
+
+                            IsShownAt isShownAt = new IsShownAt();
+                            isShownAt.setResource(p);
+
+                            aggregation.setIsShownAt(isShownAt);
+
+                            aggregation.setAggregatedCHO(aggregatedCHO);
+                        });
+                    } catch (Exception e) {
+                        System.err.println(String.format("getSourceAvailableScans %s", e));
+                    }
+                }else {
 					try {
 						aggregation.setAbout(IriToUri.iriToUri(
 								String.format("Aggregation:ProvidedCHO:%s", StringUtils.deleteWhitespace(identifier)))
@@ -738,19 +797,19 @@ public class A2A2EDM extends RDF implements EDM {
     public void creation() {
         if (!Objects.equals(this, new RDF()))
             JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
-                    false, IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(), RDF.class);
+                    false, IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(), RDF.class, -1);
     }
 
     @Override
     public void creation(Charset encoding, boolean alone, OutputStream outs) {
         if (!Objects.equals(this, new RDF()))
-            JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class);
+            JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class, -1);
     }
 
     @Override
     public void creation(Charset encoding, boolean alone, Writer writer) {
         if (!Objects.equals(this, new RDF()))
-            JibxMarshall.marshall(this, encoding.toString(), alone, writer, RDF.class);
+            JibxMarshall.marshall(this, encoding.toString(), alone, writer, RDF.class, -1);
     }
 
     @Override

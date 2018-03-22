@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -18,6 +19,7 @@ import org.Recollect.Core.download.FactoryDownload;
 import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
+import org.Recollect.Core.util.Garbage;
 import org.Recollect.Core.util.Granularity;
 import org.Recollect.Core.util.TimeUtils;
 import org.Recollect.Core.util.UTCDateProvider;
@@ -89,7 +91,10 @@ public class Main {
             OAIClient oaiClient = new HttpOAIClient(bean.getHost());
             Recollect recollect = new Recollect(oaiClient);
 
-            recollect.listSets().forEachRemaining((SetType setType) -> downloadRecords(setType.getSetSpec()));
+            recollect.listSets().forEachRemaining((SetType setType) -> {
+                downloadRecords(setType.getSetSpec());
+                Garbage.gc();
+            });
         } else {
             downloadRecords(bean.getSet());
         }
@@ -151,6 +156,7 @@ public class Main {
      * @throws Exception
      */
     private static void GetRecord() throws Exception {
+        AtomicInteger batch = new AtomicInteger(0);
         Instant timeRecord = Instant.now();
 
         try{
@@ -173,6 +179,8 @@ public class Main {
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
+                        .flatMap(g -> g.observeOn(Schedulers.io()))
                         .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) ->{
@@ -220,6 +228,7 @@ public class Main {
      * @param s
      */
     private static void downloadRecords(String s) {
+        AtomicInteger batch = new AtomicInteger(0);
         Instant timeSet = Instant.now();
         bean.getArguments().put("set", s);
 
@@ -262,6 +271,8 @@ public class Main {
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
+                        .flatMap(g -> g.observeOn(Schedulers.io()))
                         .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) ->{

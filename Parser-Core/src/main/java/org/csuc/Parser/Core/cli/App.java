@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 public class App {
 
-    private static Logger logger = LogManager.getLogger("Parser-Core");
+    private static Logger logger = LogManager.getLogger(App.class);
 
     private Instant inici = Instant.now();
 
