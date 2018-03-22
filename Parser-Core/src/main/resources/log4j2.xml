@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration>	
-   <Appenders>
-   <!-- All -->
-      <RollingFile name="RollingFile" fileName="${echoes.log.path}/Parser-Core-${date:yyyy-MM-dd}.log" filePattern="${echoes.log.path}/Parser-Core-%d{yyyy-MM-dd}-%i.log">
-         <PatternLayout>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
-         </PatternLayout>
-         <Policies>
-            <TimeBasedTriggeringPolicy />
-         </Policies>
-         <DefaultRolloverStrategy max="99"/>
-      </RollingFile>      
-      <!-- Console -->
-      <Console name="Console">
-         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n" />
-      </Console>
-   </Appenders>
-   <Loggers>
-      <Logger name="org.apache.commons.httpclient" level="WARN" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Logger name="org.apache.http.headers" level="WARN" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Logger name="org.apache.http.wire" level="WARN" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Logger name="org.csuc.core" level="info" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Logger name="org.csuc.jaxb" level="info" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Logger name="org.csuc.parser" level="info" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
-      </Logger>
-      
-      <Root level="info" additivity="false">
-         <appender-ref ref="Console" />
-      </Root>
-      
-   </Loggers>
+<Configuration>
+    <Appenders>
+        <!-- All -->
+        <RollingFile name="RollingFile"
+                     fileName="${echoes.path}/logs/${project.name}-${date:yyyy-MM-dd}.log"
+                     filePattern="${echoes.path}/logs/rotate/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
+                    DEBUG=blue} - %msg%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <!-- Console -->
+        <Console name="Console">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache.commons.httpclient" level="WARN" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.apache.http.headers" level="WARN" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.apache.http.wire" level="WARN" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.csuc.core" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.csuc.jaxb" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.csuc.parser" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Root level="info" additivity="false">
+            <appender-ref ref="Console"/>
+        </Root>
+
+    </Loggers>
 </Configuration>
