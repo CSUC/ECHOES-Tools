@@ -172,6 +172,6 @@
 		<jibx.schema.version>1.2.6</jibx.schema.version>
 
 
-		<echoes.path>/tmp/echoes/logs</echoes.path>
+		<echoes.path>/tmp/echoes</echoes.path>
 	</properties>
 </project>
