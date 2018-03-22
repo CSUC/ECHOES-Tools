@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>org.csuc</groupId>
 		<artifactId>ECHOES-Tools</artifactId>
-		<version>0.1</version>
+		<version>1.1</version>
 	</parent>
 
 	<artifactId>Recollect-Core</artifactId>
-	<version>0.1</version>
+	<version>1.1</version>
 
 	<name>Recollect-Core</name>
 	<url>http://maven.apache.org</url>
@@ -79,27 +79,27 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaidc</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-a2a</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-ead</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-memorix</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jibx</groupId>
@@ -112,12 +112,12 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>EDM-Transformations</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>Binding-Core</artifactId>
-			<version>0.1</version>
+			<version>1.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
 		<dependency>
