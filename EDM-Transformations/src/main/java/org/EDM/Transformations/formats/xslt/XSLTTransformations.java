@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;

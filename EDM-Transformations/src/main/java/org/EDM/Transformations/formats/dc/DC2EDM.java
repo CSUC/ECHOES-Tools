@@ -209,7 +209,7 @@ public class DC2EDM extends RDF implements EDM {
                                     provided.getChoiceList().add(c);
                                 }
                             }catch (Exception e) {
-                                logger.error("{}: {}", elementType.getValue().getValue(), e.getMessage());
+                                logger.error("date: {}", e.getMessage());
                             }
 
                             break;

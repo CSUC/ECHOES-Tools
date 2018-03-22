@@ -322,16 +322,21 @@ public class A2A2EDM extends RDF implements EDM {
                 Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
                     eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-                    Description description = new Description();
-                    description.setString(present.getCollection());
+                    if(Objects.nonNull(present.getCollection())){
+                        Description description = new Description();
+                        description.setString(present.getCollection());
 
-                    c.setDescription(description);
-                    c.clearChoiceListSelect();
+                        c.setDescription(description);
+                        c.clearChoiceListSelect();
+                    }
 
-                    Title title = new Title();
-                    title.setString(present.getBook());
+                    if(Objects.nonNull(present.getBook())){
+                        Title title = new Title();
+                        title.setString(present.getBook());
 
-                    c.setTitle(title);
+                        c.setTitle(title);
+                    }
+
                     provided.getChoiceList().add(c);
                 });
 
@@ -650,16 +655,16 @@ public class A2A2EDM extends RDF implements EDM {
 					this.getChoiceList().add(choice);
 				});
 			});
-            Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceDigitalOriginal).ifPresent(present->{
-                eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
-                WebResourceType webResource = new WebResourceType();
-                String iriToUri = IriToUri.iriToUri(present).toString();
-                identifiers.add(iriToUri);
-
-                webResource.setAbout(iriToUri);
-                choice.setWebResource(webResource);
-                this.getChoiceList().add(choice);
-            });
+//            Optional.ofNullable(a2a.getSource()).map(CtSource::getSourceDigitalOriginal).ifPresent(present->{
+//                eu.europeana.corelib.definitions.jibx.RDF.Choice choice = new eu.europeana.corelib.definitions.jibx.RDF.Choice();
+//                WebResourceType webResource = new WebResourceType();
+//                String iriToUri = IriToUri.iriToUri(present).toString();
+//                identifiers.add(iriToUri);
+//
+//                webResource.setAbout(iriToUri);
+//                choice.setWebResource(webResource);
+//                this.getChoiceList().add(choice);
+//            });
 		}catch (Exception exception) {
 			logger.error(String.format("[%s] error generate edmWebResource \n%s", identifier, exception));
 		}

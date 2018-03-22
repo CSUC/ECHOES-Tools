@@ -64,7 +64,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-        <dependency>
+		<dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-iostreams</artifactId>
         </dependency>
