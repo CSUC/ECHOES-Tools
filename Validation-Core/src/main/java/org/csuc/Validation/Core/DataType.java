@@ -1,4 +1,4 @@
-package org.Validation.Core;
+package org.csuc.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
 import org.EDM.Transformations.formats.a2a.PlaceType;
@@ -12,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -23,11 +22,8 @@ import java.util.function.Predicate;
 public class DataType {
 
     private static Logger logger = LogManager.getLogger(DataType.class);
-    private List<RDF.Choice> listChoice;
 
-    public DataType(List<RDF.Choice> listChoice) {
-        this.listChoice = listChoice;
-    }
+    public DataType() {}
 
     /**
      * @param choice
@@ -36,27 +32,27 @@ public class DataType {
     protected boolean resourceOrLiteralType(ResourceOrLiteralType choice) {
         if (Objects.nonNull(choice.getLang())) {
             if (!languageCode(choice.getLang().getLang())) {
-                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                logger.error("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }
         if (Objects.nonNull(choice.getResource())) {
             if (!resourceType(choice.getResource())) {
-                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                logger.error("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }else if(Objects.nonNull(choice.getString()) && !choice.getString().isEmpty()){
-                logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                logger.error("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                 return false;
             }
         }else{
             if (Objects.nonNull(choice.getString())){
                 if(!stringType(choice.getString())){
-                    logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
+                    logger.error("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice), false);
                     return false;
                 }
             }
         }
-        logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
+        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
         return true;
     }
 
@@ -67,15 +63,15 @@ public class DataType {
     protected boolean literalType(LiteralType choice) {
         if(Objects.nonNull(choice.getLang()))
             if(!languageCode(choice.getLang().getLang())){
-                logger.info("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
+                logger.error("[{}]      Lang        \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getLang().getLang(), false);
                 return false;
             }
         if(Objects.nonNull(choice.getString()))
             if(!stringType(choice.getString())){
-                logger.info("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
+                logger.error("[{}]      String  \"{}\"      validation      {}", choice.getClass().getSimpleName(), choice.getString(), false);
                 return false;
             }
-        logger.info("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
+        logger.debug("[{}]      {}      validation      {}", choice.getClass().getSimpleName(), prettyPrint(choice),true);
         return true;
     }
 
@@ -90,16 +86,16 @@ public class DataType {
             resource = ((ResourceOrLiteralType.Resource) obj).getResource();
             if (stringType(resource) && !StringUtils.containsWhitespace(resource)) {
 //                boolean match =  listChoice.stream().anyMatch(predicate(resource));
-//                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), match);
+//                logger.debug("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), match);
 //                return match;
-                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
+                logger.debug("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
                 return true;
             }
         }
         if(obj instanceof ResourceType){
             resource = ((ResourceType) obj).getResource();
             if (stringType(resource) && !StringUtils.containsWhitespace(resource)) {
-                logger.info("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
+                logger.debug("[{}]       [resourceType]        \"{}\"      validation      {}", obj.getClass().getSimpleName(), prettyPrint(obj), true);
                 return true;
             }
         }
@@ -112,10 +108,10 @@ public class DataType {
      */
     protected boolean aboutType(String value) {
         if(stringType(value) && !StringUtils.containsWhitespace(value)){
-            logger.info("[aboutType]       \"{}\"      validation      {}", value,  true);
+            logger.debug("[aboutType]       \"{}\"      validation      {}", value,  true);
             return true;
         }
-        logger.info("[aboutType]       \"{}\"      validation      {}", value,  false);
+        logger.error("[aboutType]       \"{}\"      validation      {}", value,  false);
         return false;
     }
 
@@ -125,30 +121,36 @@ public class DataType {
      * @return
      */
     protected boolean dateType(Object obj) {
-        if(obj instanceof ResourceOrLiteralType){
+        if (obj instanceof ResourceOrLiteralType) {
             ResourceOrLiteralType resourceOrLiteralType = (ResourceOrLiteralType) obj;
 
-            if(Objects.nonNull(resourceOrLiteralType.getString())){
-               try{
-                   TimeUtil.format(resourceOrLiteralType.getString());
-               }catch(Exception e){
-                   logger.debug("[dateType]       {}      validation      {}", prettyPrint(resourceOrLiteralType),  false);
-                   return false;
-               }
+            try {
+                TimeUtil.format(resourceOrLiteralType.getString());
+            } catch (Exception e) {
+                logger.error("[dateType]       {}      validation      {}", prettyPrint(resourceOrLiteralType), false);
+                return false;
             }
-        }else if (obj instanceof LiteralType){
+
+        } else if (obj instanceof LiteralType) {
             LiteralType literalType = (LiteralType) obj;
 
-            if(Objects.nonNull(literalType.getString())){
-                try{
-                    TimeUtil.format(literalType.getString());
-                }catch(Exception e){
-                    logger.debug("[dateType]       {}      validation      {}", prettyPrint(literalType),  false);
-                    return false;
-                }
+            try {
+                TimeUtil.format(literalType.getString());
+            } catch (Exception e) {
+                logger.error("[dateType]       {}      validation      {}", prettyPrint(literalType), false);
+                return false;
             }
+
+        } else if (obj instanceof String) {
+            try {
+                TimeUtil.format(obj.toString());
+            } catch (Exception e) {
+                logger.error("[dateType]       {}      validation      {}", prettyPrint(obj.toString()), false);
+                return false;
+            }
+
         }
-        logger.debug("[dateType]       \"{}\"      validation      {}", prettyPrint(obj),  true);
+        logger.debug("[dateType]       \"{}\"      validation      {}", prettyPrint(obj), true);
         return true;
     }
 
@@ -207,7 +209,7 @@ public class DataType {
             logger.debug("[longType]     \"{}\"        validation      {}", value, true);
             return true;
         }catch (NumberFormatException e){
-            logger.debug("[longType]     \"{}\"        validation      {}", value, false);
+            logger.error("[longType]     \"{}\"        validation      {}", value, false);
             return false;
         }
     }
@@ -222,7 +224,7 @@ public class DataType {
             logger.debug("[integerType]     \"{}\"     validation      {}", value, true);
             return true;
         }catch (NumberFormatException e){
-            logger.debug("[integerType]     \"{}\"     validation      {}", value, false);
+            logger.error("[integerType]     \"{}\"     validation      {}", value, false);
             return false;
         }
     }
@@ -238,7 +240,7 @@ public class DataType {
                 return true;
             }
         }
-        logger.debug("[nonNegativeIntegerType]     \"{}\"      validation      {}", value, false);
+        logger.error("[nonNegativeIntegerType]     \"{}\"      validation      {}", value, false);
         return false;
     }
 
@@ -252,7 +254,7 @@ public class DataType {
             logger.debug("[doubleType]     \"{}\"      validation      {}", value, true);
             return true;
         }catch (NumberFormatException e){
-            logger.debug("[doubleType]     \"{}\"      validation      {}", value, true);
+            logger.debug("[doubleType]     \"{}\"      validation      {}", value, false);
             return false;
         }
     }
@@ -269,11 +271,11 @@ public class DataType {
 
                 return true;
             }catch (NumberFormatException e){
-                logger.debug("[hexBinaryString]     \"{}\"      validation      {}", value, true);
-                return true;
+                logger.error("[hexBinaryString]     \"{}\"      validation      {}", value, false);
+                return false;
             }
         }
-        logger.debug("[hexBinaryString]     \"{}\"      validation      {}", value, false);
+        logger.error("[hexBinaryString]     \"{}\"      validation      {}", value, false);
         return false;
     }
 
@@ -307,7 +309,7 @@ public class DataType {
             logger.debug("[floatType]     \"{}\"      validation      {}", value, true);
             return true;
         }catch (NumberFormatException e){
-            logger.debug("[floatType]     \"{}\"      validation      {}", value, true);
+            logger.error("[floatType]     \"{}\"      validation      {}", value, false);
             return false;
         }
     }
@@ -333,13 +335,13 @@ public class DataType {
         try {
             url = new URL(value);
         } catch (MalformedURLException e) {
-            logger.debug("[uriType]     \"{}\"      validation      {}", value, false);
+            logger.error("[uriType]     \"{}\"      validation      {}", value, false);
             return false;
         }
         try {
             url.toURI();
         } catch (URISyntaxException e) {
-            logger.debug("[uriType]     \"{}\"      validation      {}", value, false);
+            logger.error("[uriType]     \"{}\"      validation      {}", value, false);
             return false;
         }
 
@@ -369,6 +371,9 @@ public class DataType {
         }else if (obj instanceof ResourceType){
             ResourceType resourceType = (ResourceType) obj;
             return MessageFormat.format("Resource:       {0}", resourceType.getResource().isEmpty() ? null : resourceType.getResource().toString());
+        }
+        else if (obj instanceof String){
+            return MessageFormat.format("{0}", obj.toString());
         }
 
         return null;

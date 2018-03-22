@@ -63,6 +63,10 @@
             <artifactId>EDM-Transformations</artifactId>
             <version>0.1</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -83,7 +87,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.Validation.Core.cli.App</mainClass>
+                            <mainClass>org.csuc.Validation.Core.cli.App</mainClass>
                         </manifest>
                     </archive>
                     <finalName>${project.name}-${project.version}</finalName>

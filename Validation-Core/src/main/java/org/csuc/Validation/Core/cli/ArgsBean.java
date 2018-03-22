@@ -1,4 +1,4 @@
-package org.Validation.Core.cli;
+package org.csuc.Validation.Core.cli;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,10 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.Objects;
-import java.io.File;
 
 /**
  * @author amartinez
@@ -34,7 +31,7 @@ public class ArgsBean {
 
     private String charset = StandardCharsets.UTF_8.name();
 
-    private Path schematron;
+    //private Path schematron;
 
     private Integer threads = 1;
 
@@ -61,7 +58,6 @@ public class ArgsBean {
             this.run();
         } catch( CmdLineException e ) {
             if(this.help){
-                System.err.println("Usage: ");
                 parser.printUsage(System.err);
                 System.err.println();
                 return;
@@ -87,8 +83,15 @@ public class ArgsBean {
     }
 
     @Option(name = "-i", aliases = "--input", usage= "file or folder input", required = true, metaVar = "<Path>")
-    public void setInput(Path input) throws FileNotFoundException {
+    public void setInput(Path input) throws IOException {
         if(Files.notExists(input)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", input));
+
+        if(Files.isDirectory(input))    this.out = input;
+        else   this.out = input.getParent();
+
+        setValid(Files.createDirectories(Paths.get(out + File.separator + "valid")));
+        setInvalid(Files.createDirectories(Paths.get(out + File.separator + "invalid")));
+
         this.input = input;
     }
 
@@ -102,15 +105,15 @@ public class ArgsBean {
         this.charset = Charset.forName(charset).toString();
     }
 
-    public Path getSchematron() {
-        return schematron;
-    }
+//    public Path getSchematron() {
+//        return schematron;
+//    }
 
-    @Option(name = "-s", aliases = "--schematron", usage = "schmematron", required = false, metaVar = "<Path>")
-    public void setSchematron(Path schematron) throws FileNotFoundException {
-        if(Files.notExists(schematron)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", schematron));
-        this.schematron = schematron;
-    }
+//    @Option(name = "-s", aliases = "--schematron", usage = "schmematron", required = false, metaVar = "<Path>")
+//    public void setSchematron(Path schematron) throws FileNotFoundException {
+//        if(Files.notExists(schematron)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", schematron));
+//        this.schematron = schematron;
+//    }
 
     public Integer getThreads() {
         return threads;
@@ -125,15 +128,6 @@ public class ArgsBean {
     public Path getOut() {
         return out;
     }
-
-    @Option(name = "-o", aliases = "--output", usage = "output", required = false, metaVar = "<Path>")
-    public void setOut(Path out) throws IOException {
-        setValid(Files.createDirectories(Paths.get(out + File.separator + "valid")));
-        setInvalid(Paths.get(out + File.separator + "invalid"));
-
-        this.out = out;
-    }
-
 
     public Path getValid() {
         return valid;
@@ -151,22 +145,10 @@ public class ArgsBean {
         this.invalid = invalid;
     }
 
-    public void moveTo(Path source, Path target){
-        if(Objects.nonNull(out)){
-            try {
-                Files.move(source, Paths.get(target + File.separator + source.getFileName()), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                logger.error("[{}] {}", Thread.currentThread().getName(), e);
-            }
-        }
-    }
-
-
     public void run(){
         logger.info("   Input       :   {}", input);
         logger.info("   Charset     :   {}", charset);
-        logger.info("   Schematron  :   {}", schematron);
+//        logger.info("   Schematron  :   {}", schematron);
         logger.info("   Threads     :   {}", threads);
-        logger.info("   Out         :   {}", out);
     }
 }

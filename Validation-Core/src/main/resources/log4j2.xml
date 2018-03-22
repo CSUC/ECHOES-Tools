@@ -23,11 +23,11 @@
       </Console>
    </Appenders>
    <Loggers>
-      <Logger name="org.Validation.Core" level="debug" additivity="true">
-         <appender-ref ref="RollingFile" level="info" />
+      <Logger name="org.csuc" level="INFO" additivity="true">
+         <appender-ref ref="RollingFile" />
       </Logger>
 
-      <Root level="info" additivity="false">
+      <Root level="INFO" additivity="true">
          <appender-ref ref="Console" />
       </Root>
       
