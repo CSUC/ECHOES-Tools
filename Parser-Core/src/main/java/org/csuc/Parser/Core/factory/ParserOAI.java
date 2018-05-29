@@ -29,25 +29,21 @@ public class ParserOAI implements Parser {
     }
 
     @Override
-    public void execute(String fileOrPath) {
+    public void execute(String fileOrPath) throws Exception {
         throw new IllegalArgumentException("execute fileOrPath is not valid for ParserFile!");
     }
 
     @Override
-    public void execute(URL url) {
-        try {
-            OAIPMHtype OAIPMHtype =
-                    (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+    public void execute(URL url)  throws Exception {
+        OAIPMHtype OAIPMHtype =
+                (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
 
-            method.parser(url);
-            if (OAIPMHtype.getListRecords().getResumptionToken() != null){
-                if(!OAIPMHtype.getListRecords().getResumptionToken().getValue().isEmpty()){
-                    logger.info(iter.incrementAndGet() + "\t" + OAIPMHtype.getListRecords().getResumptionToken().getValue());
-                    execute(next(url, OAIPMHtype.getListRecords().getResumptionToken().getValue()));
-                }
+        method.parser(url);
+        if (OAIPMHtype.getListRecords().getResumptionToken() != null) {
+            if (!OAIPMHtype.getListRecords().getResumptionToken().getValue().isEmpty()) {
+                logger.info(iter.incrementAndGet() + "\t" + OAIPMHtype.getListRecords().getResumptionToken().getValue());
+                execute(next(url, OAIPMHtype.getListRecords().getResumptionToken().getValue()));
             }
-        } catch(IOException e) {
-            logger.error(e);
         }
     }
 

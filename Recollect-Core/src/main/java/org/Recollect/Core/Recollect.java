@@ -3,7 +3,11 @@
  */
 package org.Recollect.Core;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 import org.Recollect.Core.client.OAIClient;
 import org.Recollect.Core.util.ItemIterator;
@@ -17,11 +21,10 @@ import org.Recollect.Core.parameters.GetRecordParameters;
 import org.Recollect.Core.parameters.ListIdentifiersParameters;
 import org.Recollect.Core.parameters.ListMetadataParameters;
 import org.Recollect.Core.parameters.ListRecordsParameters;
-import org.openarchives.oai._2.HeaderType;
-import org.openarchives.oai._2.IdentifyType;
-import org.openarchives.oai._2.MetadataFormatType;
-import org.openarchives.oai._2.RecordType;
-import org.openarchives.oai._2.SetType;
+import org.csuc.deserialize.JaxbUnmarshal;
+import org.openarchives.oai._2.*;
+
+import javax.xml.bind.JAXBException;
 
 /**
  * @author amartinez
@@ -29,8 +32,9 @@ import org.openarchives.oai._2.SetType;
  */
 public class Recollect {
 
-	//private Logger logger = LogManager.getLogger(Recollect.class);
-	
+
+    private JaxbUnmarshal jaxbUnmarshal;
+
 	private OAIClient client;
 	private IdentifyHandler identifyHandler;
 	private ListMetadataFormatsHandler listMetadataFormatsHandler;
@@ -42,15 +46,15 @@ public class Recollect {
 	}
 	
 	
-	public IdentifyType identify () {
+	public IdentifyType identify () throws Exception {
         return identifyHandler.handle();
     }
 
-    public Iterator<MetadataFormatType> listMetadataFormats (){
+    public Iterator<MetadataFormatType> listMetadataFormats () throws Exception {
         return listMetadataFormatsHandler.handle(ListMetadataParameters.request()).iterator();
     }
 
-    public Iterator<MetadataFormatType> listMetadataFormats (ListMetadataParameters parameters) {
+    public Iterator<MetadataFormatType> listMetadataFormats (ListMetadataParameters parameters) throws Exception {
         return listMetadataFormatsHandler.handle(parameters).iterator();
     }
 
@@ -63,20 +67,26 @@ public class Recollect {
     public Iterator<RecordType> listRecords (ListRecordsParameters parameters, Class<?>[] classType) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListRecords verb requires the metadataPrefix");
-        return new ItemIterator<RecordType>(new ListRecordHandler(client, parameters, classType));
+
+        return new ItemIterator(new ListRecordHandler(client, parameters, classType));
     }
 
     public Iterator<HeaderType> listIdentifiers (ListIdentifiersParameters parameters) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListIdentifiers verb requires the metadataPrefix");
-        return new ItemIterator<HeaderType>(new ListIdentifierHandler(client, parameters));
+        return new ItemIterator(new ListIdentifierHandler(client, parameters));
     }
 
     public Iterator<SetType> listSets () throws Exception {
-        try {
-            return new ItemIterator<SetType>(new ListSetsHandler(client));
-        } catch (Exception ex) {
-        	throw new Exception(ex);
-        }
+        return new ItemIterator(new ListSetsHandler(client));
+    }
+
+    public boolean isOAI() throws MalformedURLException {
+        jaxbUnmarshal = new JaxbUnmarshal(new URL(client.getURL()), new Class[]{OAIPMHtype.class});
+        return jaxbUnmarshal.isValidating();
+    }
+
+    public List<String> gethandleEventErrors(){
+        return (Objects.isNull(jaxbUnmarshal.getValidationEvent().getEventError())) ? null : jaxbUnmarshal.getValidationEvent().getEventError();
     }
 }

@@ -54,38 +54,20 @@ public class Xslt implements ParserMethod {
     }
 
     @Override
-    public void parser(String fileOrPath) {
-        try {
-            File tmp = Files.createTempFile("Parser-Core-tmp-xsl-", ".xml").toFile();
+    public void parser(String fileOrPath) throws Exception{
+        File tmp = Files.createTempFile("Parser-Core-tmp-xsl-", ".xml").toFile();
 
-            transformer.transform(new StreamSource(new FileInputStream(fileOrPath)),
-                    new StreamResult(new FileOutputStream(tmp)));
-            files.add(tmp);
-        } catch (TransformerConfigurationException e) {
-           logger.error(e);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e);
-        } catch (FileNotFoundException e) {
-            logger.error(e);
-        } catch (TransformerException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+        transformer.transform(new StreamSource(new FileInputStream(fileOrPath)),
+                new StreamResult(new FileOutputStream(tmp)));
+        files.add(tmp);
     }
 
     @Override
-    public void parser(URL url) {
-        try {
-            File tmp = Files.createTempFile("Parser-Core-tmp-xsl-", ".xml").toFile();
-            transformer.transform(new StreamSource(url.openStream()),
-                    new StreamResult(new FileOutputStream(tmp)));
-            files.add(tmp);
-        } catch (TransformerException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+    public void parser(URL url) throws Exception{
+        File tmp = Files.createTempFile("Parser-Core-tmp-xsl-", ".xml").toFile();
+        transformer.transform(new StreamSource(url.openStream()),
+                new StreamResult(new FileOutputStream(tmp)));
+        files.add(tmp);
     }
 
     @Override

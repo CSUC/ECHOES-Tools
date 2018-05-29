@@ -1,9 +1,13 @@
 package org.Recollect.Core.cli;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -92,7 +96,19 @@ public class Main {
             Recollect recollect = new Recollect(oaiClient);
 
             recollect.listSets().forEachRemaining((SetType setType) -> {
-                downloadRecords(setType.getSetSpec());
+                try {
+                    downloadRecords(setType.getSetSpec());
+                } catch (IOException e) {
+                    logger.error(e);
+                } catch (NoSuchAlgorithmException e) {
+                    logger.error(e);
+                } catch (KeyStoreException e) {
+                    logger.error(e);
+                } catch (KeyManagementException e) {
+                    logger.error(e);
+                } catch (Exception e) {
+                    logger.error(e);
+                }
                 Garbage.gc();
             });
         } else {
@@ -103,7 +119,7 @@ public class Main {
     /**
      *
      */
-    private static void Identify() {
+    private static void Identify() throws Exception {
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
         Recollect recollect = new Recollect(oaiClient);
 
@@ -123,7 +139,7 @@ public class Main {
     /**
      *
      */
-    private static void ListMetadataFormats() {
+    private static void ListMetadataFormats() throws Exception {
         OAIClient oaiClient = new HttpOAIClient(bean.getHost());
         Recollect recollect = new Recollect(oaiClient);
 
@@ -227,7 +243,7 @@ public class Main {
      *
      * @param s
      */
-    private static void downloadRecords(String s) {
+    private static void downloadRecords(String s) throws Exception {
         AtomicInteger batch = new AtomicInteger(0);
         Instant timeSet = Instant.now();
         bean.getArguments().put("set", s);

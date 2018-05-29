@@ -30,14 +30,18 @@ public class ItemIterator <T> implements Iterator<T> {
         else {
             if (source.endReached()) return false;
             else {
-            	List<T> result = source.nextIteration();
-            	if(result != null) {
+                List<T> result = null;
+                try {
+                    result = source.nextIteration();
+                } catch (Exception e) {
+                    return false;
+                }
+                if(result != null) {
             		items.addAll(result);
             		return hasNext();
             	}
             	return false;       			
-//				items.addAll(source.nextIteration());				
-//              return hasNext();
+
             }
         }
     }

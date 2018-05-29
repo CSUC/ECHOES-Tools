@@ -4,6 +4,7 @@ import static org.Recollect.Core.parameters.Parameters.parameters;
 import static org.Recollect.Core.util.Verb.Type.GetRecord;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 import org.Recollect.Core.client.OAIClient;
 import org.Recollect.Core.parameters.GetRecordParameters;
@@ -28,20 +29,15 @@ public class GetRecordHandler {
 		this.classType = classType;
 	}
 
-	public RecordType handle(GetRecordParameters parameters) {
-		InputStream stream = null;
-		try {
-			stream = client.execute(parameters().withVerb(GetRecord).include(parameters));
+	public RecordType handle(GetRecordParameters parameters) throws Exception {
+		InputStream stream = client.execute(parameters().withVerb(GetRecord).include(parameters));
 
-			OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, classType).getObject();
+		JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(stream, classType);
 
-			stream.close();
-			return oai.getGetRecord().getRecord();
-		} catch (Exception e) {
-			logger.error(e);
-			return null;
-		} finally {
-			IOUtils.closeQuietly(stream);
-		}
+		if(!jaxbUnmarshal.getValidationEvent().getEventError().isEmpty())	throw new Exception(jaxbUnmarshal.getValidationEvent().getEventError().toString());
+
+		OAIPMHtype oai = (OAIPMHtype) jaxbUnmarshal.getObject();
+
+		return oai.getGetRecord().getRecord();
 	}
 }

@@ -36,36 +36,29 @@ public class ListIdentifierHandler implements Source<HeaderType> {
     }
 
     @Override
-    public List<HeaderType> nextIteration() {
+    public List<HeaderType> nextIteration() throws Exception {
     	InputStream stream = null;
-		 try {
-			 if (resumptionToken == null) { // First call
-				 stream = client.execute(parameters()
-							 .withVerb(ListIdentifiers)
-							 .include(parameters));
-			 }else {
-				 stream = client.execute(parameters()
-	                        .withVerb(ListIdentifiers)
-	                        .include(parameters)
-	                        .withResumptionToken(resumptionToken));
-			 }
+		if (resumptionToken == null) { // First call
+			stream = client.execute(parameters()
+					.withVerb(ListIdentifiers)
+					.include(parameters));
+		} else {
+			stream = client.execute(parameters()
+					.withVerb(ListIdentifiers)
+					.include(parameters)
+					.withResumptionToken(resumptionToken));
+		}
 
-			 OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
-			 
-			 if(Objects.nonNull(oai.getListIdentifiers().getResumptionToken())){
-				 if(!oai.getListIdentifiers().getResumptionToken().getValue().isEmpty()) {
-					 resumptionToken = oai.getListIdentifiers().getResumptionToken().getValue();
-				 }else ended = true;				 
-			 }else ended = true;
-			 
-			 stream.close();
-			 return oai.getListIdentifiers().getHeader();
-		 }catch(Exception e) {
-			 logger.error(e);
-			 return null;
-		 }finally {
-			IOUtils.closeQuietly(stream);
-		 }	
+		OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
+
+		if (Objects.nonNull(oai.getListIdentifiers().getResumptionToken())) {
+			if (!oai.getListIdentifiers().getResumptionToken().getValue().isEmpty()) {
+				resumptionToken = oai.getListIdentifiers().getResumptionToken().getValue();
+			} else ended = true;
+		} else ended = true;
+
+		return oai.getListIdentifiers().getHeader();
+
     }
 
     @Override

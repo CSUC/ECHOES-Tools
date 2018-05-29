@@ -19,9 +19,9 @@ public class FactoryDownload {
 
     private static Logger logger = LogManager.getLogger(FactoryDownload.class);
 
-    public static Observable<Download> createDownloadIterator(Iterator<?> iteratorTypes, String xslt){
+    public static Observable<Download> createDownloadIterator(Iterator<?> iteratorTypes, String xslt) {
         Observable<Download> observable = Observable.create(emitter -> {
-            try {
+            //try {
                 if (Objects.nonNull(iteratorTypes)) {
                     //StreamUtils.asStream(iteratorTypes).parallel().forEach(record-> {
                     iteratorTypes.forEachRemaining(record -> {
@@ -44,9 +44,9 @@ public class FactoryDownload {
                     });
                 }
                 emitter.onComplete();
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
+//            } catch (Exception e) {
+//                emitter.onError(e);
+//            }
         });
        return observable;
     }
@@ -55,7 +55,7 @@ public class FactoryDownload {
      *
      * @param record
      */
-    public static Observable<Download> createDownloadRecordType(RecordType record, String xslt){
+    public static Observable<Download> createDownloadRecordType(RecordType record, String xslt) {
         Observable<Download> observable = Observable.create(emitter -> {
             if (Objects.nonNull(record)) {
                 if (record instanceof RecordType) {

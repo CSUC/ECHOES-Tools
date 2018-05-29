@@ -3,6 +3,7 @@
  */
 package org.Recollect.Core.client;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.Recollect.Core.parameters.Parameters;
@@ -13,6 +14,6 @@ import org.Recollect.Core.parameters.Parameters;
  *
  */
 public interface OAIClient {
-    InputStream execute (Parameters parameters);
+    InputStream execute (Parameters parameters) throws Exception;
     String getURL();
 }

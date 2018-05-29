@@ -22,12 +22,12 @@ public class ParserURL implements Parser {
     }
 
     @Override
-    public void execute(String fileOrPath) {
+    public void execute(String fileOrPath) throws Exception {
         throw new IllegalArgumentException("execute fileOrPath is not valid for ParserURL!");
     }
 
     @Override
-    public void execute(URL url) {
+    public void execute(URL url) throws Exception {
         method.parser(url);
     }
 

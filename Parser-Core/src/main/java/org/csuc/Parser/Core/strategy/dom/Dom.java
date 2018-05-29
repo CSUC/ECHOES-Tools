@@ -46,30 +46,15 @@ public class Dom implements ParserMethod {
     }
 
     @Override
-    public void parser(String fileOrPath) {
-        try {
-            Document document = documentBuilder.parse(new FileInputStream(fileOrPath));
-
-
-        } catch (SAXException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+    public void parser(String fileOrPath) throws Exception {
+        Document document = documentBuilder.parse(new FileInputStream(fileOrPath));
     }
 
     @Override
-    public void parser(URL url) {
-        try {
-            Document document = documentBuilder.parse(url.toString());
+    public void parser(URL url) throws Exception {
+        Document document = documentBuilder.parse(url.toString());
 
-            traversal(document);
-//            parseXML(document,null);
-        } catch (SAXException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+        traversal(document);
     }
 
     @Override

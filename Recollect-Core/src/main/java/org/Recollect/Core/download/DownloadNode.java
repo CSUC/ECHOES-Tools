@@ -46,44 +46,44 @@ public class DownloadNode implements Download {
 
 
     @Override
-    public void execute(Map<String,String> properties) {
+    public void execute(Map<String,String> properties) throws Exception {
 	    if(Objects.nonNull(xslt)){
-            try {
+//            try {
                 XSLTTransformations transformation =
                         new XSLTTransformations(xslt, IoBuilder.forLogger(DownloadNode.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
                 transformation.transformationsFromSource(new DOMSource((Node) record.getMetadata().getAny()));
 
                 if(!transformation.getErrorListener().getErrors().isEmpty()) transformation.getErrorListener().getErrors().forEach(logger::error);
-            } catch (Exception e) {
-                logger.error(e);
-            }
+//            } catch (Exception e) {
+//                logger.error(e);
+//            }
         }else{
-	        try {
+//	        try {
                 logger.info(NodeToString((Node) record.getMetadata().getAny()));
-            }catch(Exception e){
-	            logger.error(e);
-            }
+//            }catch(Exception e){
+//	            logger.error(e);
+//            }
         }
     }
 
     @Override
-    public void execute(Path outs, Map<String, String> properties) {
+    public void execute(Path outs, Map<String, String> properties) throws Exception {
         if(Files.exists(outs, LinkOption.NOFOLLOW_LINKS)){
             Path filename = Paths.get(
                     outs + File.separator + StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + ".xml");
 
             if(Objects.nonNull(xslt)){
-                try {
+//                try {
                     XSLTTransformations transformation = new XSLTTransformations(xslt, new FileOutputStream(filename.toFile()), properties);
                     transformation.transformationsFromSource(new DOMSource((Node) record.getMetadata().getAny()));
 
                     if(!transformation.getErrorListener().getErrors().isEmpty()) transformation.getErrorListener().getErrors().forEach(logger::error);
-                } catch (Exception e) {
-                    logger.error(e);
-                }
+//                } catch (Exception e) {
+//                    logger.error(e);
+//                }
             }else{
-                try {
+//                try {
                     String result = NodeToString((Node) record.getMetadata().getAny());
 
                     try (PrintWriter p = new PrintWriter(new FileOutputStream(filename.toFile()))) {
@@ -91,9 +91,9 @@ public class DownloadNode implements Download {
                     } catch (FileNotFoundException e) {
                         logger.error(e);
                     }
-                }catch(Exception e){
-                    logger.error(e);
-                }
+//                }catch(Exception e){
+//                    logger.error(e);
+//                }
             }
         }
     }

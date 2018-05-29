@@ -22,6 +22,6 @@ public class TimeUtils {
 	 * @return
 	 */
 	public static String duration(Instant inici, DateTimeFormatter formatter) {
-		return LocalTime.MIDNIGHT.plus(Duration.between(inici, Instant.now())).format(formatter);		
+		return LocalTime.MIDNIGHT.plus(Duration.between(inici, Instant.now())).format(formatter);
 	}
 }

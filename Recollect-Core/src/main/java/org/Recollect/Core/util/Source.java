@@ -11,6 +11,6 @@ import java.util.List;
  *
  */
 public interface Source<T> {
-    List<T> nextIteration ();
+    List<T> nextIteration () throws Exception;
     boolean endReached ();
 }

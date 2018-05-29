@@ -32,21 +32,13 @@ public class ListMetadataFormatsHandler {
     }
 
 
-    public List<MetadataFormatType> handle(ListMetadataParameters parameters) {
-        InputStream stream = null;
-        try {
-            stream = client.execute(parameters()
+    public List<MetadataFormatType> handle(ListMetadataParameters parameters) throws Exception {
+        InputStream stream = client.execute(parameters()
                     .withVerb(ListMetadataFormats)
                     .include(parameters));
-            
-            OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
-            
-            return oai.getListMetadataFormats().getMetadataFormat();
-        } catch (Exception e) {        	
-        	logger.error(e);
-            return null;           
-        }finally {
-            IOUtils.closeQuietly(stream);
-        }
+
+        OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
+
+        return oai.getListMetadataFormats().getMetadataFormat();
     }
 }

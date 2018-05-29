@@ -45,7 +45,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserURLDom4j() throws MalformedURLException {
+    public void testParserURLDom4j() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserURL(new Dom4j()));
         parser.execute(new URL(url));
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
@@ -53,7 +53,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserFILEDom4j() throws MalformedURLException {
+    public void testParserFILEDom4j() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
         parser.execute(xml.getPath());
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
@@ -61,7 +61,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserURLDOM() throws MalformedURLException, ParserConfigurationException {
+    public void testParserURLDOM() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserURL(new Dom()));
         parser.execute(new URL(url));
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
@@ -69,7 +69,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserFILEDOM() throws MalformedURLException, ParserConfigurationException {
+    public void testParserFILEDOM() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserFILE(new Dom()));
         parser.execute(xml.getPath());
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
@@ -77,7 +77,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserURLXSLT() throws IOException, ParserConfigurationException, TransformerException {
+    public void testParserURLXSLT() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserURL(new Xslt()));
         parser.execute(new URL(url));
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
@@ -85,7 +85,7 @@ public class FactoryParserTest {
     }
 
     @Test
-    public void testParserFILEXSLT() throws IOException, ParserConfigurationException, TransformerException {
+    public void testParserFILEXSLT() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserFILE(new Xslt()));
         parser.execute(xml.getPath());
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
