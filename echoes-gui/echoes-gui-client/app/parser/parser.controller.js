@@ -25,7 +25,7 @@
 
         if (authService.getCachedProfile()) {
             vm.profile = authService.getCachedProfile();
-            run(vm.page, vm.count)
+            run(vm.page, vm.count);
         } else {
             authService.getProfile(function (err, profile) {
                 vm.profile = profile;
@@ -51,7 +51,8 @@
                 $log.info(_data);
 
                 vm.data = _data.data;
-                vm.tableParams = ngTableParams(vm.data, _count)
+                if(_data.data._size > 0)
+                    vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
                 $window.location.href = "/404.html";
@@ -73,7 +74,7 @@
                 count: count
             }, {
                 total: data._size,
-                getData: function (params) {
+                getData: function ($defer, params) {
                     vm.page = params.page();
                     vm.count = params.count();
 
@@ -82,7 +83,7 @@
                         pagesize: vm.count,
                         page: vm.page
                     }).then(function (d) {
-                        return d.data._embedded
+                        $defer.resolve(d.data._embedded);
                     }).catch(function (_data) {
                         $log.info(_data);
                         $window.location.href = "/404.html";

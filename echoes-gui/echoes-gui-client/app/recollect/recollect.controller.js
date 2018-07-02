@@ -54,31 +54,8 @@
                 $log.info(_data);
 
                 vm.data = _data.data;
-                //vm.tableParams = ngTableParams(vm.data, vm.count)
-                vm.tableParams = new NgTableParams({
-                    page: vm.page,
-                    count: vm.count
-                }, {
-                    total: vm.data._size,
-                    getData: function ($defer, params) {
-                        vm.page = params.page();
-                        vm.count = params.count();
-
-                        return restApi.getRecollect({
-                            user: vm.profile.sub,
-                            pagesize: vm.count,
-                            page: vm.page
-                        }).then(function (d) {
-                            //return d.data._embedded;
-                            $defer.resolve(d.data._embedded)
-                        }).catch(function (_data) {
-                            $log.info(_data);
-                            $defer.reject();
-                            $window.location.href = "/404.html";
-                        });
-                    }
-                });
-
+                if(_data.data._size > 0)
+                    vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
                 $window.location.href = "/404.html";
@@ -86,7 +63,29 @@
         }
 
         function ngTableParams(data, count) {
-            return
+            return new NgTableParams({
+                page: vm.page,
+                count: count
+            }, {
+                total: data._size,
+                getData: function ($defer, params) {
+                    vm.page = params.page();
+                    vm.count = params.count();
+
+                    return restApi.getRecollect({
+                        user: vm.profile.sub,
+                        pagesize: vm.count,
+                        page: vm.page
+                    }).then(function (d) {
+                        //return d.data._embedded;
+                        $defer.resolve(d.data._embedded)
+                    }).catch(function (_data) {
+                        $log.info(_data);
+                        $defer.reject();
+                        $window.location.href = "/404.html";
+                    });
+                }
+            });
         }
 
         $interval(function () {
