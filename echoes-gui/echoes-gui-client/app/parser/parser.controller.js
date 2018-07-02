@@ -7,7 +7,7 @@
         .controller('ParserController', parserController);
 
     parserController.$inject = ['$scope', 'authService', 'uuid', 'NgTableParams', '$http', '$log', '$stateParams', '$interval',
-    'echoesChart', 'restApi', 'ngDialog', '$state'];
+        'echoesChart', 'restApi', 'ngDialog', '$state'];
 
     function parserController($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                               echoesChart, restApi, ngDialog, $state) {
@@ -20,18 +20,21 @@
 
         vm.profile;
 
+        vm.page = $stateParams.page;
+        vm.count = $stateParams.count;
+
         if (authService.getCachedProfile()) {
             vm.profile = authService.getCachedProfile();
-            run()
+            run(vm.page, vm.count)
         } else {
             authService.getProfile(function (err, profile) {
                 vm.profile = profile;
                 $scope.$apply();
-                run()
+                run(vm.page, vm.count)
             });
         }
 
-        function run(){
+        function run(_page, _count) {
             $log.info(vm.profile);
 
             vm.selectedClass = function (status) {
@@ -42,22 +45,17 @@
 
             restApi.getParser({
                 user: vm.profile.sub,
-                pagesize: 1000,
-                page: 1
+                pagesize: _count,
+                page: _page
             }).then(function (_data) {
                 $log.info(_data);
 
                 vm.data = _data.data;
-                vm.tableParams = new NgTableParams({
-
-                }, {
-                    dataset: vm.data._embedded,
-                });
+                vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
                 $window.location.href = "/404.html";
             });
-
 
             restApi.getParserStatusAggregation({
                 user: vm.profile.sub
@@ -69,8 +67,33 @@
             })
         }
 
+        function ngTableParams(data, count) {
+            return new NgTableParams({
+                page: vm.page,
+                count: count
+            }, {
+                total: data._size,
+                getData: function (params) {
+                    vm.page = params.page();
+                    vm.count = params.count();
+
+                    return restApi.getParser({
+                        user: vm.profile.sub,
+                        pagesize: vm.count,
+                        page: vm.page
+                    }).then(function (d) {
+                        return d.data._embedded
+                    }).catch(function (_data) {
+                        $log.info(_data);
+                        $window.location.href = "/404.html";
+                    });
+                }
+            });
+        }
+
         $interval(function () {
-            run();
+            //$state.go($state.current, {page: vm.page, count: vm.count}, {reload: true});
+            run(vm.page, vm.count)
         }, 10000);
 
         $scope.remove = function (id) {
@@ -80,7 +103,7 @@
             }).then(function (_data) {
                 $log.info(_data);
 
-                $state.go($state.current, {}, {reload : true});
+                $state.go($state.current, {}, {reload: true});
             }).catch(function (_data) {
                 $log.info(_data);
                 $window.location.href = "/404.html";
@@ -93,13 +116,13 @@
                     template: 'parser.tpl.html',
                     width: '60%',
                     data: vm,
-                    controller: ['$scope' , '$state', '$log', function ($scope, $state, $log) {
+                    controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
                         $log.info(vm.profile.sub)
 
                         $scope.options = {
-                            methods : ["sax", "dom4j", "dom", "xslt"],
-                            formats : ["xml", "json"],
-                            types : ["oai", "url", "file"]
+                            methods: ["sax", "dom4j", "dom", "xslt"],
+                            formats: ["xml", "json"],
+                            types: ["oai", "url", "file"]
                         }
 
                         $scope.model = {};
@@ -126,7 +149,7 @@
 
                                     ngDialog.close();
 
-                                    $state.go($state.current, {}, {reload : true});
+                                    $state.go($state.current, {}, {reload: true});
                                 }).catch(function (_data) {
                                     $log.info(_data);
                                     $window.location.href = "/404.html";

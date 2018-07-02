@@ -20,18 +20,21 @@
 
         vm.profile;
 
+        vm.page = $stateParams.page;
+        vm.count = $stateParams.count;
+
         if (authService.getCachedProfile()) {
             vm.profile = authService.getCachedProfile();
-            run()
+            run(vm.page, vm.count)
         } else {
             authService.getProfile(function (err, profile) {
                 vm.profile = profile;
                 $scope.$apply();
-                run()
+                run(vm.page, vm.count)
             });
         }
 
-        function run() {
+        function run(_page, _count) {
             $log.info(vm.profile);
 
             restApi.getRecollectStatusAggregation({
@@ -45,25 +48,50 @@
 
             restApi.getRecollect({
                 user: vm.profile.sub,
-                pagesize: 1000,
-                page: 1
+                pagesize: _count,
+                page: _page
             }).then(function (_data) {
                 $log.info(_data);
 
                 vm.data = _data.data;
+                //vm.tableParams = ngTableParams(vm.data, vm.count)
                 vm.tableParams = new NgTableParams({
-
+                    page: vm.page,
+                    count: vm.count
                 }, {
-                    dataset: vm.data._embedded,
+                    total: vm.data._size,
+                    getData: function ($defer, params) {
+                        vm.page = params.page();
+                        vm.count = params.count();
+
+                        return restApi.getRecollect({
+                            user: vm.profile.sub,
+                            pagesize: vm.count,
+                            page: vm.page
+                        }).then(function (d) {
+                            //return d.data._embedded;
+                            $defer.resolve(d.data._embedded)
+                        }).catch(function (_data) {
+                            $log.info(_data);
+                            $defer.reject();
+                            $window.location.href = "/404.html";
+                        });
+                    }
                 });
+
             }).catch(function (_data) {
                 $log.info(_data);
                 $window.location.href = "/404.html";
             });
         }
 
+        function ngTableParams(data, count) {
+            return
+        }
+
         $interval(function () {
-            run();
+            //$state.go($state.current, {page: vm.page, count: vm.count}, {reload: true});
+            run(vm.page, vm.count)
         }, 10000);
 
         $scope.remove = function (id) {

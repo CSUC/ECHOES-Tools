@@ -1,5 +1,5 @@
 <div class="container">
-    <a ui-sref="recollect"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back </a>
+    <a ui-sref="recollect" ui-sref-opts="{reload:true}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back </a>
     <h2>{{vm.title}}</h2>
 
     <table class="table">
@@ -58,7 +58,7 @@
                 </ul>
             </td>
         </tr>
-        <tr>
+        <tr ng-show="vm.data.link && !vm.data.error">
             <td>link</td>
             <td>
                 <a ng-if="!vm.data.link">create link</a>
@@ -70,4 +70,10 @@
         </tr>
         </tbody>
     </table>
+    <uib-accordion ng-show="vm.data.error">
+        <div uib-accordion-group class="panel-default" heading="Exception">
+            <pre>{{vm.data.error | json : spacing}}</pre>
+        </div>
+
+    </uib-accordion>
 </div>

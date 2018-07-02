@@ -60,7 +60,9 @@
                 templateUrl: 'app/parser/parser.html',
                 controllerAs: 'vm',
                 params: {
-                    profile: null
+                    profile: null,
+                    page: 1,
+                    count: 10
                 },
                 onEnter: checkAuthentication
             })
@@ -79,8 +81,10 @@
                 controller: 'RecollectController',
                 templateUrl: 'app/recollect/recollect.html',
                 controllerAs: 'vm',
-                arams: {
-                    profile: null
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
                 },
                 onEnter: checkAuthentication
             })
