@@ -58,6 +58,8 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
     private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
 
+    private org.Morphia.Core.entities.Recollect recollect = null;
+
 
     /**
      * @param endpointName
@@ -96,7 +98,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
-        org.Morphia.Core.entities.Recollect recollect = null;
+
         try {
             Instant inici = Instant.now();
 
@@ -164,20 +166,22 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     appendError(finalRecollect1, e.toString());
                                     logger.error("Error: " + e);
                                 },
-                                () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)))
+                                () -> {
+                                    recollect = recollectDAO.getById(map.get("_id").toString());
+                                    recollect.setStatus(Status.END);
+                                    recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+
+                                    RecollectLink recollectLink = new RecollectLink();
+                                    recollectLink.setStatusLink(StatusLink.NULL);
+                                    recollect.setLink(recollectLink);
+
+                                    recollectDAO.getDatastore().save(recollectLink);
+                                    recollectDAO.insert(recollect);
+
+                                    logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
+                                }
                         );
                 Thread.sleep(3000);
-
-                recollect = recollectDAO.getById(map.get("_id").toString());
-                recollect.setStatus(Status.END);
-                recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
-
-                RecollectLink recollectLink = new RecollectLink();
-                recollectLink.setStatusLink(StatusLink.NULL);
-                recollect.setLink(recollectLink);
-
-                recollectDAO.getDatastore().save(recollectLink);
-                recollectDAO.insert(recollect);
             } else {
                 logger.error(recollectOAI.gethandleEventErrors());
                 appendError(recollect, recollectOAI.gethandleEventErrors().toString());
@@ -188,9 +192,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
             channel.basicAck(envelope.getDeliveryTag(), false);
         } catch (Exception e) {
             logger.error(e);
-
             appendError(recollect, e.toString());
-
             try {
                 channel.basicAck(envelope.getDeliveryTag(), false);
             } catch (IOException e1) {

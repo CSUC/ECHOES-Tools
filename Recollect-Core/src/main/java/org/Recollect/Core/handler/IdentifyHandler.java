@@ -36,6 +36,5 @@ public class IdentifyHandler {
         OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
 
         return oai.getIdentify();
-
     }
 }
