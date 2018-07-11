@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:gene="http://www.gencat.cat/"
+           attributeFormDefault="qualified" elementFormDefault="qualified"
+           targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import schemaLocation="schema1.xsd" namespace="http://www.gencat.cat/"/>
+    <xs:element name="RDF">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="gene:identificacio"/>
+                <xs:element maxOccurs="unbounded" ref="gene:localitzacio"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:territori"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:tipologia"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:us"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:datacio"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:estil"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:autor"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="gene:descripcio"/>
+                <xs:element minOccurs="0" ref="gene:noticiaHistorica" maxOccurs="unbounded"/>
+                <xs:element minOccurs="0" ref="gene:conservacio" maxOccurs="unbounded"/>
+                <xs:element minOccurs="0" ref="gene:proteccio" maxOccurs="unbounded"/>
+                <xs:element minOccurs="0" ref="gene:propietari" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:attribute name="about" type="xs:string" />
+    <xs:attribute name="resource" type="xs:string" />
+</xs:schema>

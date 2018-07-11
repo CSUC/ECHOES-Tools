@@ -18,6 +18,7 @@
 		<module>Recollect-Core</module>
 		<module>Validation-Core</module>
 		<module>Morphia-Core</module>
+	<module>Custom-Transformations</module>
     	<module>EDM-Transformations</module>
         <module>Binding-Core</module>
     </modules>

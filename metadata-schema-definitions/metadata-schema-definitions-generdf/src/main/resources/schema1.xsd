@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:gene="http://www.gencat.cat/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.gencat.cat/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import schemaLocation="schema0.xsd" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <xs:simpleType name="tipusPatrimoniTipus" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="arquitectònic"/>
+            <xs:enumeration value="arqueològic"/>
+            <xs:enumeration value="etnològic"/>
+            <xs:enumeration value="paleontològic"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="identificacio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipusPatrimoni" type="gene:tipusPatrimoniTipus" minOccurs="0"/>
+                <xs:element name="codiIntern" type="xs:string"/>
+                <xs:element name="codiInventari" type="xs:string" minOccurs="0"/>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="altresNoms" type="xs:string" minOccurs="0"/>
+                <xs:element name="proveidor" type="xs:string" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="territori">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="municipi" type="xs:string"/>
+                <xs:element name="comarca" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="localitzacio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="adreca" type="xs:string" minOccurs="0"/>
+                <!--<xs:element maxOccurs="unbounded" name="municipi" type="xs:string" minOccurs="0"/>
+                <xs:element maxOccurs="unbounded" name="comarca" type="xs:string" minOccurs="0"/>-->
+                <xs:element name="territori" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:resource"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="agregat" type="xs:string" minOccurs="0"/>
+                <xs:element name="serveiTerritorial" type="xs:string" minOccurs="0"/>
+                <xs:element name="X" type="xs:float" minOccurs="0"/>
+                <xs:element name="Y" type="xs:float" minOccurs="0"/>
+                <xs:element name="locDescripcio" type="xs:string" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="tipologia">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipologia" type="xs:string"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="us">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="originalActual" type="xs:string"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="datacio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cronologiaInicial" type="xs:string" minOccurs="0"/>
+                <xs:element name="cronologiaFinal" type="xs:string" minOccurs="0"/>
+                <xs:element name="anyInici" type="xs:int" minOccurs="0"/>
+                <xs:element name="anyFi" type="xs:int" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="estil">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipusEstil" type="xs:string"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="autor">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="cognoms" type="xs:string" minOccurs="0"/>
+                <xs:element name="noms" type="xs:string"/>
+                <xs:element name="professio" type="xs:string" minOccurs="0"/>
+                <xs:element name="anyInici" type="xs:int" minOccurs="0"/>
+                <xs:element name="anyFi" type="xs:int" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="descripcio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="descDescripcio" type="xs:string"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="noticiaHistorica">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipusNoticiaHistorica" type="xs:string" minOccurs="0"/>
+                <xs:element name="dataNoticiaHistorica" type="xs:date" minOccurs="0"/>
+                <xs:element name="nomNoticiaHistorica" type="xs:string" minOccurs="0"/>
+                <xs:element name="comentariNoticiaHistorica" type="xs:string" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="conservacio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="conservacioGlobal" type="xs:string" minOccurs="0"/>
+                <xs:element name="conservacioEstat" type="xs:string" minOccurs="0"/>
+                <xs:element name="conservacioComentari" type="xs:string" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="proteccio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="proteccio" type="xs:string" minOccurs="0"/>
+                <xs:element name="categoria" type="xs:string" minOccurs="0"/>
+                <xs:element maxOccurs="unbounded" name="classificacio" type="xs:string" minOccurs="0"/>
+                <xs:element name="entornProteccio" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="BCIN" type="xs:string" minOccurs="0"/>
+                <xs:element name="BIC" type="xs:string" minOccurs="0"/>
+                <xs:element name="PCC" type="xs:string" minOccurs="0"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="propietari">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipusRegim" type="xs:string"/>
+                <xs:element ref="gene:identificador"/>
+            </xs:sequence>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="identificador">
+        <xs:complexType>
+            <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:resource"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
