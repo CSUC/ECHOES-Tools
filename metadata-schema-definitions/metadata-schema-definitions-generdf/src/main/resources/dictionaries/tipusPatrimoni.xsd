@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.gencat.cat/diccionaris/tipusPatrimoni">
+    <xs:simpleType name="tipusPatrimoni" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="arquitectònic"/>
+            <xs:enumeration value="arqueològic"/>
+            <xs:enumeration value="etnològic"/>
+            <xs:enumeration value="paleontològic"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

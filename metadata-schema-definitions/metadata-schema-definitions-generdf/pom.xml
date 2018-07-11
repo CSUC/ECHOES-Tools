@@ -38,8 +38,13 @@
 						<configuration>
 							<schemaDirectory>src/main/resources</schemaDirectory>
 							<schemaIncludes>
-								<include>schema0.xsd</include>
-								<include>schema1.xsd</include>
+								<include>base.xsd</include>
+								<include>detail.xsd</include>
+								<include>rdfs.xsd</include>
+								<include>dictionaries/comarca.xsd</include>
+								<include>dictionaries/municipi.xsd</include>
+								<include>dictionaries/serveiTerritorial.xsd</include>
+								<include>dictionaries/tipusPatrimoni.xsd</include>
 							</schemaIncludes>
 							<bindingDirectory>src/main/resources</bindingDirectory>
 

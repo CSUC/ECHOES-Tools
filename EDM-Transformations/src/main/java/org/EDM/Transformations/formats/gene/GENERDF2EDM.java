@@ -284,14 +284,12 @@ public class GENERDF2EDM extends RDF implements EDM {
                     cCodiInventari.setIdentifier(codiInventari);
                     provided.getChoiceList().add(cCodiInventari);
                 }
-                // Identificacio -> proveidor
-                identificacio.getProveidor().forEach((String proveidor) -> {
-                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice cProveidor = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
-                    Publisher publisher = new Publisher();
-                    publisher.setString(proveidor);
-                    cProveidor.setPublisher(publisher);
-                    provided.getChoiceList().add(cProveidor);
-                });
+                // Identificacio -> type
+                eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice cProveidor = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                Publisher publisher = new Publisher();
+                publisher.setString(identificacio.getType());
+                cProveidor.setPublisher(publisher);
+                provided.getChoiceList().add(cProveidor);
                 // propietari -> tipusRegim
                 GENERDF.getPropietari().stream().filter(p -> p.getIdentificador().getResource().equals(identificacio.getAbout())).forEach((Propietari propietari) -> {
                     eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice cPropietari = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();

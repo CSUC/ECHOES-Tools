@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.gencat.cat/diccionaris/comarca">
+    <xs:simpleType name="comarca" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Alt Camp" />
+            <xs:enumeration value="Alt Empordà" />
+            <xs:enumeration value="Alt Penedès" />
+            <xs:enumeration value="Alt Urgell" />
+            <xs:enumeration value="Alta Ribagorça" />
+            <xs:enumeration value="Anoia" />
+            <xs:enumeration value="Bages" />
+            <xs:enumeration value="Baix Camp" />
+            <xs:enumeration value="Baix Ebre" />
+            <xs:enumeration value="Baix Empordà" />
+            <xs:enumeration value="Baix Llobregat" />
+            <xs:enumeration value="Baix Penedès" />
+            <xs:enumeration value="Barcelonès" />
+            <xs:enumeration value="Berguedà" />
+            <xs:enumeration value="Cerdanya" />
+            <xs:enumeration value="Conca de Barberà" />
+            <xs:enumeration value="Garraf" />
+            <xs:enumeration value="Garrigues" />
+            <xs:enumeration value="Garrotxa" />
+            <xs:enumeration value="Gironès" />
+            <xs:enumeration value="Maresme" />
+            <xs:enumeration value="Montsià" />
+            <xs:enumeration value="Noguera" />
+            <xs:enumeration value="Osona" />
+            <xs:enumeration value="Pallars Jussà" />
+            <xs:enumeration value="Pallars Sobirà" />
+            <xs:enumeration value="Pla d'Urgell" />
+            <xs:enumeration value="Pla de l'Estany" />
+            <xs:enumeration value="Priorat" />
+            <xs:enumeration value="Ribera d'Ebre" />
+            <xs:enumeration value="Ripollès" />
+            <xs:enumeration value="Segarra" />
+            <xs:enumeration value="Segrià" />
+            <xs:enumeration value="Selva" />
+            <xs:enumeration value="Solsonès" />
+            <xs:enumeration value="Tarragonès" />
+            <xs:enumeration value="Terra Alta" />
+            <xs:enumeration value="Urgell" />
+            <xs:enumeration value="Vallès Occidental" />
+            <xs:enumeration value="Vallès Oriental" />
+            <xs:enumeration value="Moianès" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:gene="http://www.gencat.cat/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
            attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.gencat.cat/"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:import schemaLocation="schema0.xsd" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
-    <xs:simpleType name="tipusPatrimoniTipus" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="arquitectònic"/>
-            <xs:enumeration value="arqueològic"/>
-            <xs:enumeration value="etnològic"/>
-            <xs:enumeration value="paleontològic"/>
-        </xs:restriction>
-    </xs:simpleType>
+           xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import schemaLocation="base.xsd" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <xs:import schemaLocation="rdfs.xsd" namespace="http://www.w3.org/2000/01/rdf-schema#"/>
+    <!-- Dictionaries -->
+    <xs:import schemaLocation="dictionaries/tipusPatrimoni.xsd" namespace="http://www.gencat.cat/diccionaris/tipusPatrimoni"/>
+    <xs:import schemaLocation="dictionaries/municipi.xsd" namespace="http://www.gencat.cat/diccionaris/municipi"/>
+    <xs:import schemaLocation="dictionaries/comarca.xsd" namespace="http://www.gencat.cat/diccionaris/comarca"/>
+    <xs:import schemaLocation="dictionaries/serveiTerritorial.xsd" namespace="http://www.gencat.cat/diccionaris/serveiTerritorial"/>
+
+    <xs:element xmlns:tipusPatrimoni="http://www.gencat.cat/diccionaris/tipusPatrimoni" name="tipusPatrimoni" type="tipusPatrimoni:tipusPatrimoni"/>
+    <xs:element xmlns:municipi="http://www.gencat.cat/diccionaris/municipi" name="municipi" type="municipi:municipi"/>
+    <xs:element xmlns:comarca="http://www.gencat.cat/diccionaris/comarca" name="comarca" type="comarca:comarca"/>
+    <xs:element xmlns:serveiTerritorial="http://www.gencat.cat/diccionaris/serveiTerritorial" name="serveiTerritorial" type="serveiTerritorial:serveiTerritorial"/>
+
     <xs:element name="identificacio">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="tipusPatrimoni" type="gene:tipusPatrimoniTipus" minOccurs="0"/>
+                <xs:element ref="gene:tipusPatrimoni"/>
                 <xs:element name="codiIntern" type="xs:string"/>
                 <xs:element name="codiInventari" type="xs:string" minOccurs="0"/>
                 <xs:element name="nom" type="xs:string"/>
                 <xs:element name="altresNoms" type="xs:string" minOccurs="0"/>
-                <xs:element name="proveidor" type="xs:string" maxOccurs="unbounded"/>
+                <xs:element xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:type"/>
+                <xs:element ref="rdfs:subClassOf" minOccurs="0"/>
             </xs:sequence>
             <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
         </xs:complexType>
@@ -27,8 +33,8 @@
     <xs:element name="territori">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="municipi" type="xs:string"/>
-                <xs:element name="comarca" type="xs:string"/>
+                <xs:element ref="gene:municipi"/>
+                <xs:element ref="gene:comarca" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:about"/>
         </xs:complexType>
@@ -37,15 +43,13 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="adreca" type="xs:string" minOccurs="0"/>
-                <!--<xs:element maxOccurs="unbounded" name="municipi" type="xs:string" minOccurs="0"/>
-                <xs:element maxOccurs="unbounded" name="comarca" type="xs:string" minOccurs="0"/>-->
                 <xs:element name="territori" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:attribute xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ref="rdf:resource"/>
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="agregat" type="xs:string" minOccurs="0"/>
-                <xs:element name="serveiTerritorial" type="xs:string" minOccurs="0"/>
+                <xs:element ref="gene:serveiTerritorial" minOccurs="0"/>
                 <xs:element name="X" type="xs:float" minOccurs="0"/>
                 <xs:element name="Y" type="xs:float" minOccurs="0"/>
                 <xs:element name="locDescripcio" type="xs:string" minOccurs="0"/>
@@ -58,6 +62,7 @@
     <xs:element name="tipologia">
         <xs:complexType>
             <xs:sequence>
+                <!-- TODO: GENE uses a dict (different for archeology and architecture) -->
                 <xs:element name="tipologia" type="xs:string"/>
                 <xs:element ref="gene:identificador"/>
             </xs:sequence>
@@ -79,7 +84,9 @@
     <xs:element name="datacio">
         <xs:complexType>
             <xs:sequence>
+                <!-- TODO: GENE uses a dict (different for archeology and architecture) -->
                 <xs:element name="cronologiaInicial" type="xs:string" minOccurs="0"/>
+                <!-- TODO: GENE uses a dict (different for archeology and architecture) -->
                 <xs:element name="cronologiaFinal" type="xs:string" minOccurs="0"/>
                 <xs:element name="anyInici" type="xs:int" minOccurs="0"/>
                 <xs:element name="anyFi" type="xs:int" minOccurs="0"/>
@@ -93,6 +100,7 @@
     <xs:element name="estil">
         <xs:complexType>
             <xs:sequence>
+                <!-- TODO: GENE uses a dict for architecture -->
                 <xs:element name="tipusEstil" type="xs:string"/>
                 <xs:element ref="gene:identificador"/>
             </xs:sequence>
@@ -141,7 +149,9 @@
     <xs:element name="conservacio">
         <xs:complexType>
             <xs:sequence>
+                <!-- TODO: GENE uses a dict for architecture -->
                 <xs:element name="conservacioGlobal" type="xs:string" minOccurs="0"/>
+                <!-- TODO: GENE uses a dict for archeology -->
                 <xs:element name="conservacioEstat" type="xs:string" minOccurs="0"/>
                 <xs:element name="conservacioComentari" type="xs:string" minOccurs="0"/>
                 <xs:element ref="gene:identificador"/>
@@ -153,9 +163,12 @@
     <xs:element name="proteccio">
         <xs:complexType>
             <xs:sequence>
+                <!-- TODO: GENE uses a dict for architecture -->
                 <xs:element name="proteccio" type="xs:string" minOccurs="0"/>
+                <!-- TODO: GENE uses a dict (different for archeology and architecture) -->
                 <xs:element name="categoria" type="xs:string" minOccurs="0"/>
                 <xs:element maxOccurs="unbounded" name="classificacio" type="xs:string" minOccurs="0"/>
+                <!-- FIXME: Mapping states it's a boolean however the data says it is a dictionary -->
                 <xs:element name="entornProteccio" type="xs:boolean" minOccurs="0"/>
                 <xs:element name="BCIN" type="xs:string" minOccurs="0"/>
                 <xs:element name="BIC" type="xs:string" minOccurs="0"/>
@@ -169,6 +182,7 @@
     <xs:element name="propietari">
         <xs:complexType>
             <xs:sequence>
+                <!-- GENE uses a dict (different for archeology and architecture) -->
                 <xs:element name="tipusRegim" type="xs:string"/>
                 <xs:element ref="gene:identificador"/>
             </xs:sequence>

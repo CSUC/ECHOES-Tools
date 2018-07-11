@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import schemaLocation="base.xsd" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <xs:element name="subClassOf">
+        <xs:complexType>
+            <xs:attribute ref="rdf:resource" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
