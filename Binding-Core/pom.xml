@@ -30,11 +30,40 @@
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jibx</groupId>
             <artifactId>jibx-schema</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>metadata-schema-definitions-a2a</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>metadata-schema-definitions-oaidc</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>metadata-schema-definitions-ead</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>metadata-schema-definitions-memorix</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>metadata-schema-definitions-oaipmh</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 
@@ -42,6 +71,10 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
