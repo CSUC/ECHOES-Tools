@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+	<Appenders>
+		<!-- All -->
+		<RollingFile name="RollingFile"
+					 fileName="${echoes.path}/logs/${project.name}-${date:yyyy-MM-dd}.log"
+					 filePattern="${echoes.path}/logs/rotate/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+					 ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
+					DEBUG=blue} - %msg%n
+				</Pattern>
+			</PatternLayout>
+			<Policies>
+				<OnStartupTriggeringPolicy/>
+				<SizeBasedTriggeringPolicy size="10 MB"/>
+				<TimeBasedTriggeringPolicy/>
+			</Policies>
+		</RollingFile>
+		<!-- Console -->
+		<Console name="Console">
+			<PatternLayout
+				pattern="%%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} - %msg%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.EDM.Transformations.deserialize" level="debug"
+			additivity="true">
+			<appender-ref ref="RollingFile" level="info" />
+		</Logger>
+
+		<Logger name="org.EDM.Transformations.formats" level="debug"
+			additivity="true">
+			<appender-ref ref="RollingFile" level="info" />
+		</Logger>
+
+		<Logger name="org.EDM.Transformations.serialize" level="debug"
+			additivity="true">
+			<appender-ref ref="RollingFile" level="info" />
+		</Logger>
+
+		<Root level="info" additivity="true">
+			<appender-ref ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>

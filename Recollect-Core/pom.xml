@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.csuc</groupId>
 		<artifactId>ECHOES-Tools</artifactId>
-		<version>1.1</version>
+		<version>1.1.2</version>
 	</parent>
 
 	<artifactId>Recollect-Core</artifactId>
@@ -112,12 +112,12 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>EDM-Transformations</artifactId>
-			<version>1.1</version>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>Binding-Core</artifactId>
-			<version>1.1</version>
+			<version>1.1.2</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
 		<dependency>
