@@ -264,11 +264,11 @@ public class JaxbUnmarshal {
 		List<Source> list = new ArrayList<>();
 
 		Stream.of(classType).forEach(type ->{
-			if(Objects.equals(type, A2AType.class))	list.add(new StreamSource(A2AType.class.getClassLoader().getResourceAsStream("A2AAllInOne_v.1.7.xsd")));
-			if(Objects.equals(type, OaiDcType.class)) list.add(new StreamSource(OaiDcType.class.getClassLoader().getResourceAsStream("oai_dc.xsd")));
-			if(Objects.equals(type, Ead.class)) list.add(new StreamSource(Ead.class.getClassLoader().getResourceAsStream("apeEAD.xsd")));
-			if(Objects.equals(type, Memorix.class)) list.add(new StreamSource(Memorix.class.getClassLoader().getResourceAsStream("MRX-API-ANY.xsd")));
-			if(Objects.equals(type, OAIPMHtype.class)) list.add(new StreamSource(OAIPMHtype.class.getClassLoader().getResourceAsStream("OAI-PMH.xsd")));
+			if(Objects.equals(type, A2AType.class))	list.add(new StreamSource(A2AType.class.getClassLoader().getResource("A2AAllInOne_v.1.7.xsd").toExternalForm()));
+			if(Objects.equals(type, OaiDcType.class)) list.add(new StreamSource(OaiDcType.class.getClassLoader().getResource("oai_dc.xsd").toExternalForm()));
+			if(Objects.equals(type, Ead.class)) list.add(new StreamSource(Ead.class.getClassLoader().getResource("apeEAD.xsd").toExternalForm()));
+			if(Objects.equals(type, Memorix.class)) list.add(new StreamSource(Memorix.class.getClassLoader().getResource("MRX-API-ANY.xsd").toExternalForm()));
+			if(Objects.equals(type, OAIPMHtype.class)) list.add(new StreamSource(OAIPMHtype.class.getClassLoader().getResource("OAI-PMH.xsd").toExternalForm()));
 		});
 
 		Source[] schemaFiles = list.toArray(new Source[list.size()]);
