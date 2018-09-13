@@ -4,7 +4,7 @@ ECHOES project aims at dissolving the current barriers to access to diverse coll
 
 ECHOES tries to provide a modular IT architecture, based on open source, to heritage collection holders, that functions as a digital ecosystem for a broad range of user communities, allowing them to take an active role and be able to enrich digital collections.
 
-The partners of this project are Erfgoed Leiden en Omstreken (ELO, Project Leader), Tresoar (TRES), the Diputació de Barcelona (DIBA) and the Generalitat de Catalunya (GENCAT) and Consorci de Serveis Universitaris de Catalunya (CSUC) as technological partner.
+The partners of this project are Erfgoed Leiden en Omstreken (ELO), Tresoar (TRES), the Diputació de Barcelona (DIBA), the Generalitat de Catalunya (GENCAT); and as a technological partner the Consorci de Serveis Universitaris de Catalunya (CSUC).
 
 ## Tools [![Build Status](https://travis-ci.org/CSUC/ECHOES-Tools.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Tools) [![codecov](https://codecov.io/gh/CSUC/ECHOES-Tools/branch/develop/graph/badge.svg)](https://codecov.io/gh/CSUC/ECHOES-Tools)
 Java Tools to generate EDM compliant items from diferent metadata schema sources (standars as Dublin Core, A2A, etc. or custom schemas).
