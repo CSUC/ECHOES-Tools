@@ -3,15 +3,15 @@
 We would love for you to contribute to ECHOES-Tools and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
- - [Code of Conduct](#coc)
- - [Issues and Bugs](#issue)
- - [Feature Requests](#feature)
+ - [Code of Conduct](#code-of-conduct)
+ - [Issues and Bugs](#issues-and-bugs)
+ - [Feature Requests](#missing-a-feature)
  
 
-## <a name="coc"></a> Code of Conduct
-Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct](https://github.com/CSUC/ECHOES-Tools/blob/master/CODE_OF_CONDUCT)
+## Code of Conduct
+Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct](https://github.com/CSUC/ECHOES-Tools/blob/master/CODE_OF_CONDUCT.md)
 
-## <a name="issue"></a> Issues and Bugs?
+## Issues and Bugs?
 **Did you find a bug?**
 
 * Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/CSUC/ECHOES-Tools/issues).
@@ -23,7 +23,7 @@ Help us keep Angular open and inclusive. Please read and follow our [Code of Con
 * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 
 
-## <a name="feature"></a> Missing a Feature?
+## Missing a Feature?
 You can *request* a new feature by [submitting an issue](https://github.com/CSUC/ECHOES-Tools/issues). to our GitHub
 Repository. If you would like to *implement* a new feature, please submit an issue with
 a proposal for your work first, to be sure that we can use it.
