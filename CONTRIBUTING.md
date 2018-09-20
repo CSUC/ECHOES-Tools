@@ -9,7 +9,7 @@ today! As a contributor, here are the guidelines we would like you to follow:
  
 
 ## Code of Conduct
-Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct](https://github.com/CSUC/ECHOES-Tools/blob/master/CODE_OF_CONDUCT.md)
+Help us keep ECHOES Tools open and inclusive. Please read and follow our [Code of Conduct](https://github.com/CSUC/ECHOES-Tools/blob/master/CODE_OF_CONDUCT.md)
 
 ## Issues and Bugs?
 **Did you find a bug?**
