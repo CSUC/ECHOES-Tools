@@ -5,7 +5,7 @@ jdk:
 - oraclejdk8
 before_install:
 - git submodule update --init --recursive
-script: mvn clean install
+script: ./mvnw clean install -Pexternal
 notifications:
   email:
     recipients:
