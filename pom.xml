@@ -9,18 +9,6 @@
 
 	<name>Echoes-Tools</name>
 
-	<modules>
-		<module>europeana-parent-pom</module>
-		<module>corelib/corelib-edm-definitions</module>
-		<module>Parser-Core</module>
-		<module>sparql-Loader</module>
-		<module>metadata-schema-definitions</module>
-		<module>Recollect-Core</module>
-		<module>Validation-Core</module>
-    	<module>EDM-Transformations</module>
-	    <module>Binding-Core</module>
-    </modules>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -173,4 +161,48 @@
 
 		<echoes.path>/tmp/echoes</echoes.path>
 	</properties>
+	<profiles>
+		<profile>
+			<id>tools</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>europeana-parent-pom</module>
+				<module>corelib/corelib-edm-definitions</module>
+				<module>Parser-Core</module>
+				<module>sparql-Loader</module>
+				<module>metadata-schema-definitions</module>
+				<module>Recollect-Core</module>
+				<module>Validation-Core</module>
+				<module>EDM-Transformations</module>
+				<module>Binding-Core</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>database</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<execution>
+								<id>database</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<executable>database/scripts/mavenInstall.sh</executable>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
