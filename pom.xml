@@ -13,12 +13,12 @@
 		<module>europeana-parent-pom</module>
 		<module>corelib/corelib-edm-definitions</module>
 		<module>Parser-Core</module>
-		<module>loadBlazegraph</module>
+		<module>sparql-Loader</module>
 		<module>metadata-schema-definitions</module>
 		<module>Recollect-Core</module>
 		<module>Validation-Core</module>
-    		<module>EDM-Transformations</module>
-	        <module>Binding-Core</module>
+    	<module>EDM-Transformations</module>
+	    <module>Binding-Core</module>
     </modules>
 
 	<build>

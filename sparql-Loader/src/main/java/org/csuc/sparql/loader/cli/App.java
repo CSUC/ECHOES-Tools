@@ -1,4 +1,4 @@
-package org.csuc.loadBlazegraph.cli;
+package org.csuc.sparql.loader.cli;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -16,7 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.loadBlazegraph.BlazegraphResponse;
+import org.csuc.sparql.loader.BlazegraphResponse;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 

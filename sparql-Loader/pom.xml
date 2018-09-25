@@ -16,7 +16,7 @@
     <version>0.1</version>
     <packaging>jar</packaging>
 
-    <name>loadBlazegraph</name>
+    <name>Sparql-Loader</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -103,7 +103,7 @@
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
-                                    <mainClass>org.csuc.loadBlazegraph.cli.App</mainClass>
+                                    <mainClass>org.csuc.sparql.loader.cli.App</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>${project.name}-${project.version}</finalName>

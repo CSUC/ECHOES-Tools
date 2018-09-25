@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.csuc.loadBlazegraph;
+package org.csuc.sparql.loader;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;

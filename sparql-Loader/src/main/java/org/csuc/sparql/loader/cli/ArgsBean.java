@@ -1,13 +1,11 @@
-    package org.csuc.loadBlazegraph.cli;
+    package org.csuc.sparql.loader.cli;
 
 import org.apache.jena.riot.RDFFormat;
-import org.apache.jena.vocabulary.RDF;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.OptionHandlerFilter;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 
 import java.io.FileNotFoundException;
