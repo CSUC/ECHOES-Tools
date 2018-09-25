@@ -3,9 +3,11 @@ services: mongodb
 sudo: false
 jdk:
 - oraclejdk8
+env:
+  - EDM=external
 before_install:
 - git submodule update --init --recursive
-script: mvn clean install
+script: mvn install -D$EDM -B -V
 notifications:
   email:
     recipients:
