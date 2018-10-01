@@ -144,7 +144,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<jersey.version>2.25.1</jersey.version>
-		<maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
+		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<cobertura.maven.plugin>2.7</cobertura.maven.plugin>
 		<junit.version>4.12</junit.version>
 		<log4j2.version>2.10.0</log4j2.version>
