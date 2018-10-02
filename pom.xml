@@ -147,7 +147,7 @@
 		<maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
 		<cobertura.maven.plugin>2.7</cobertura.maven.plugin>
 		<junit.version>4.12</junit.version>
-		<log4j2.version>2.10.0</log4j2.version>
+		<log4j2.version>2.11.1</log4j2.version>
 		<args4j.version>2.33</args4j.version>
 		<commons.lang3.version>3.7</commons.lang3.version>
 		<commons.io.version>2.5</commons.io.version>
