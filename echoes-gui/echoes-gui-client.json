@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "server",
+      "cwd": "./echoes-gui-client",
+      "script": "./server.js"
+    },
+    {
+      "name": "api",
+      "cwd": "./echoes-gui-client",
+      "script": "./api.js"
+    }
+  ]
+}

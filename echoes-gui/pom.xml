@@ -14,30 +14,74 @@
     <artifactId>echoes-gui</artifactId>
     <version>0.0.1</version>
 
+    <properties>
+        <echoes.gui.client.version>0.0.1</echoes.gui.client.version>
+        <echoes.gui.config.version>0.0.1</echoes.gui.config.version>
+        <echoes.gui.consumer.version>0.0.1</echoes.gui.consumer.version>
+        <echoes.gui.producer.version>0.0.1</echoes.gui.producer.version>
+        <echoes.gui.database.version>0.0.1</echoes.gui.database.version>
+        <echoes.gui.server.version>0.0.1</echoes.gui.server.version>
+
+        <recollect.core.version>1.1</recollect.core.version>
+        <parser.core.version>1.1.2</parser.core.version>
+
+        <typesafe.config.version>1.3.3</typesafe.config.version>
+        <moshi.version>1.6.0</moshi.version>
+        <amqp.client.version>5.2.0</amqp.client.version>
+        <commons.lang3.version>3.7</commons.lang3.version>
+    </properties>
+
     <modules>
         <module>echoes-gui-server</module>
         <module>echoes-gui-client</module>
         <module>echoes-gui-consumer</module>
         <module>echoes-gui-producer</module>
         <module>echoes-gui-database</module>
+        <module>echoes-gui-config</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.csuc</groupId>
-                <artifactId>echoes-gui-database</artifactId>
-                <version>0.0.1</version>
+                <artifactId>echoes-gui-client</artifactId>
+                <version>${echoes.gui.client.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-config</artifactId>
+                <version>${echoes.gui.config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-consumer</artifactId>
+                <version>${echoes.gui.consumer.version.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-database</artifactId>
+                <version>${echoes.gui.database.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-producer</artifactId>
+                <version>${echoes.gui.producer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-server</artifactId>
+                <version>${echoes.gui.server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.csuc</groupId>
                 <artifactId>Recollect-Core</artifactId>
-                <version>1.1</version>
+                <version>${recollect.core.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>Parser-Core</artifactId>
-                <version>1.1.2</version>
+                <version>${parser.core.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -63,7 +107,7 @@
             <dependency>
                 <groupId>com.typesafe</groupId>
                 <artifactId>config</artifactId>
-                <version>1.3.3</version>
+                <version>${typesafe.config.version}</version>
             </dependency>
             <dependency>
                 <groupId>args4j</groupId>
@@ -73,7 +117,19 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.7</version>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.squareup.moshi/moshi -->
+            <dependency>
+                <groupId>com.squareup.moshi</groupId>
+                <artifactId>moshi</artifactId>
+                <version>${moshi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${amqp.client.version}</version>
             </dependency>
 
         </dependencies>

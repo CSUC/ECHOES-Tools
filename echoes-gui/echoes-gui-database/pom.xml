@@ -20,7 +20,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <mongodb.morphia.version>1.3.2</mongodb.morphia.version>
-        <moshi.version>1.6.0</moshi.version>
         <mongo.java.driver.version>3.8.2</mongo.java.driver.version>
     </properties>
 
@@ -54,7 +53,6 @@
         <dependency>
             <groupId>com.squareup.moshi</groupId>
             <artifactId>moshi</artifactId>
-            <version>${moshi.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->

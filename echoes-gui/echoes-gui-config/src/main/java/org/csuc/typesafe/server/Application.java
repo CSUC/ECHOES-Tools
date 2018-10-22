@@ -1,5 +1,8 @@
 package org.csuc.typesafe.server;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,5 +49,11 @@ public class Application {
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
+    }
+
+    @Override
+    public String toString() {
+        JsonAdapter<Application> jsonAdapter = new Moshi.Builder().build().adapter(Application.class);
+        return jsonAdapter.toJson(this);
     }
 }

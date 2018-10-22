@@ -1,15 +1,9 @@
 package org.csuc.typesafe.authoritzation;
 
-import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
 import com.typesafe.config.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.typesafe.server.Application;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * @author amartinez
