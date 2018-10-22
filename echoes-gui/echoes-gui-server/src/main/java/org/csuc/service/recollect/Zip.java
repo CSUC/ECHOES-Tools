@@ -1,10 +1,10 @@
 package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.RecollectDAO;
-import org.Morphia.Core.dao.impl.RecollectDAOImpl;
-import org.Morphia.Core.entities.Recollect;
+import org.csuc.client.Client;
+import org.csuc.dao.RecollectDAO;
+import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.entities.Recollect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
@@ -34,7 +34,7 @@ public class Zip {
 
     private Client client = new Client("localhost", 27017, "echoes");
 
-    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     private RabbitMQConfig config = new ProducerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
 

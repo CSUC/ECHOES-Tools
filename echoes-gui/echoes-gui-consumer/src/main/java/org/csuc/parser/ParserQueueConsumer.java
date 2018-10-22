@@ -1,16 +1,16 @@
 package org.csuc.parser;
 
 import com.rabbitmq.client.*;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.ParserDAO;
-import org.Morphia.Core.dao.ParserErrorDAO;
-import org.Morphia.Core.dao.impl.ParserDAOImpl;
-import org.Morphia.Core.dao.impl.ParserErrorDAOImpl;
-import org.Morphia.Core.entities.ParserError;
-import org.Morphia.Core.utils.Status;
-import org.Morphia.Core.utils.parser.ParserFormat;
-import org.Morphia.Core.utils.parser.ParserMethod;
-import org.Morphia.Core.utils.parser.ParserType;
+import org.csuc.client.Client;
+import org.csuc.dao.ParserDAO;
+import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.impl.ParserDAOImpl;
+import org.csuc.dao.impl.ParserErrorDAOImpl;
+import org.csuc.entities.ParserError;
+import org.csuc.utils.Status;
+import org.csuc.utils.parser.ParserFormat;
+import org.csuc.utils.parser.ParserMethod;
+import org.csuc.utils.parser.ParserType;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,8 +46,8 @@ public class ParserQueueConsumer extends EndPoint implements Runnable, Consumer 
 
     private Client client = new Client("localhost", 27017, "echoes");
 
-    private ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
-    private ParserErrorDAO parserErrorDAO = new ParserErrorDAOImpl(org.Morphia.Core.entities.ParserError.class, client.getDatastore());
+    private ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
+    private ParserErrorDAO parserErrorDAO = new ParserErrorDAOImpl(org.csuc.entities.ParserError.class, client.getDatastore());
 
     private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
 
@@ -89,7 +89,7 @@ public class ParserQueueConsumer extends EndPoint implements Runnable, Consumer 
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
-        org.Morphia.Core.entities.Parser parser = null;
+        org.csuc.entities.Parser parser = null;
         try {
             //LocalDateTime inici = LocalDateTime.now();
             Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);

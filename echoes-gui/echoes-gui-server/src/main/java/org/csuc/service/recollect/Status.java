@@ -1,12 +1,12 @@
 package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.RecollectDAO;
-import org.Morphia.Core.dao.impl.RecollectDAOImpl;
-import org.Morphia.Core.entities.Recollect;
-import org.Morphia.Core.utils.Aggregation;
-import org.Morphia.Core.utils.StreamUtils;
+import org.csuc.client.Client;
+import org.csuc.dao.RecollectDAO;
+import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.entities.Recollect;
+import org.csuc.utils.Aggregation;
+import org.csuc.utils.StreamUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.utils.authorization.Authoritzation;
@@ -67,9 +67,9 @@ public class Status {
         }
 
         Client client = new Client("localhost", 27017, "echoes");
-        RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+        RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
-        org.Morphia.Core.utils.Status recollectStatus = org.Morphia.Core.utils.Status.convert(status);
+        org.csuc.utils.Status recollectStatus = org.csuc.utils.Status.convert(status);
 
         if (Objects.isNull(recollectStatus)) {
             throw new WebApplicationException(
@@ -125,7 +125,7 @@ public class Status {
         }
 
         Client client = new Client("localhost", 27017, "echoes");
-        RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+        RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
         try {
             Supplier<Iterator<Aggregation>> i  = ()-> recollectDAO.getStatusAggregation(user);

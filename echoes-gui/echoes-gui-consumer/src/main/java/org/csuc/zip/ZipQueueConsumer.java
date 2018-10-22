@@ -1,12 +1,12 @@
 package org.csuc.zip;
 
 import com.rabbitmq.client.*;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.RecollectDAO;
-import org.Morphia.Core.dao.impl.RecollectDAOImpl;
-import org.Morphia.Core.entities.Recollect;
-import org.Morphia.Core.entities.RecollectLink;
-import org.Morphia.Core.utils.recollect.StatusLink;
+import org.csuc.client.Client;
+import org.csuc.dao.RecollectDAO;
+import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.entities.Recollect;
+import org.csuc.entities.RecollectLink;
+import org.csuc.utils.recollect.StatusLink;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,11 +19,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -43,7 +41,7 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
     private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
 
     private Client client = new Client("localhost", 27017, "echoes");
-    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     /**
      * @param endpointName

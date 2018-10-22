@@ -84,7 +84,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
         'Authorization': req.headers.authorization
     };
 
-    // console.log(headers)
+    //console.log(headers)
 
     var pagesize = req.query.pagesize;
     var page = req.query.page;
@@ -96,7 +96,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
-        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        if(response && response.statusCode == 202)  res.json(JSON.parse(body));
         else{
             res.status(400).end();
         }

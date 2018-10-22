@@ -4,13 +4,13 @@ import com.rabbitmq.client.*;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nl.mindbus.a2a.A2AType;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.RecollectDAO;
-import org.Morphia.Core.dao.impl.RecollectDAOImpl;
-import org.Morphia.Core.entities.RecollectError;
-import org.Morphia.Core.entities.RecollectLink;
-import org.Morphia.Core.utils.Status;
-import org.Morphia.Core.utils.recollect.StatusLink;
+import org.csuc.client.Client;
+import org.csuc.dao.RecollectDAO;
+import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.entities.RecollectError;
+import org.csuc.entities.RecollectLink;
+import org.csuc.utils.Status;
+import org.csuc.utils.recollect.StatusLink;
 import org.Recollect.Core.Recollect;
 import org.Recollect.Core.client.HttpOAIClient;
 import org.Recollect.Core.client.OAIClient;
@@ -54,11 +54,11 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
     private Client client = new Client("localhost", 27017, "echoes");
 
-    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
 
-    private org.Morphia.Core.entities.Recollect recollect = null;
+    private org.csuc.entities.Recollect recollect = null;
 
 
     /**
@@ -149,8 +149,8 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
                 Path path = Files.createDirectories(Paths.get(serverConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
 
-                org.Morphia.Core.entities.Recollect finalRecollect = recollect;
-                org.Morphia.Core.entities.Recollect finalRecollect1 = recollect;
+                org.csuc.entities.Recollect finalRecollect = recollect;
+                org.csuc.entities.Recollect finalRecollect1 = recollect;
 
                 observable
                         .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
@@ -201,7 +201,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
         }
     }
 
-    private void appendError(org.Morphia.Core.entities.Recollect recollect, String e) {
+    private void appendError(org.csuc.entities.Recollect recollect, String e) {
         if (Objects.nonNull(recollect)) {
             recollect.setStatus(Status.ERROR);
             recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));

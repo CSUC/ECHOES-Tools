@@ -2,10 +2,10 @@ package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
 import com.mongodb.WriteResult;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.RecollectDAO;
-import org.Morphia.Core.dao.impl.RecollectDAOImpl;
-import org.Morphia.Core.utils.Status;
+import org.csuc.client.Client;
+import org.csuc.dao.RecollectDAO;
+import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.utils.Status;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,9 +79,9 @@ public class Recollect {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+            RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
-            org.Morphia.Core.entities.Recollect recollect = recollectDAO.getById(id);
+            org.csuc.entities.Recollect recollect = recollectDAO.getById(id);
 
             logger.info(recollect);
 
@@ -123,9 +123,9 @@ public class Recollect {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+            RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
-            List<org.Morphia.Core.entities.Recollect> queryResults = recollectDAO.getByUser(user, page, pagesize, "-timestamp");
+            List<org.csuc.entities.Recollect> queryResults = recollectDAO.getByUser(user, page, pagesize, "-timestamp");
 
             double count = new Long(recollectDAO.countByUser(user)).doubleValue();
 
@@ -167,9 +167,9 @@ public class Recollect {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+            RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
-            org.Morphia.Core.entities.Recollect recollect = new org.Morphia.Core.entities.Recollect();
+            org.csuc.entities.Recollect recollect = new org.csuc.entities.Recollect();
 
             recollect.setHost(recollectRequest.getHost());
             recollect.setSet(recollectRequest.getSet());
@@ -183,7 +183,7 @@ public class Recollect {
 
             recollect.setStatus(Status.QUEUE);
 
-            Key<org.Morphia.Core.entities.Recollect> key = recollectDAO.insert(recollect);
+            Key<org.csuc.entities.Recollect> key = recollectDAO.insert(recollect);
 
             logger.debug(key);
 
@@ -241,7 +241,7 @@ public class Recollect {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            RecollectDAO recollectDAO = new RecollectDAOImpl(org.Morphia.Core.entities.Recollect.class, client.getDatastore());
+            RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             WriteResult writeResult = recollectDAO.deleteById(id);
 

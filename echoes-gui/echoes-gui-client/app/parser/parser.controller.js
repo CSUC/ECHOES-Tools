@@ -7,7 +7,7 @@
         .controller('ParserController', parserController);
 
     parserController.$inject = ['$scope', 'authService', 'uuid', 'NgTableParams', '$http', '$log', '$stateParams', '$interval',
-        'echoesChart', 'restApi', 'ngDialog', '$state'];
+        'echoesChart', 'restApi', 'ngDialog', '$state', '$timeout'];
 
     function parserController($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                               echoesChart, restApi, ngDialog, $state) {
@@ -74,7 +74,9 @@
                 count: count
             }, {
                 total: data._size,
-                getData: function ($defer, params) {
+                getData: function (params) {
+                    // console.log(params.page())
+                    // console.log(vm.page)
                     vm.page = params.page();
                     vm.count = params.count();
 
@@ -83,7 +85,8 @@
                         pagesize: vm.count,
                         page: vm.page
                     }).then(function (d) {
-                        $defer.resolve(d.data._embedded);
+                        return d.data._embedded;
+                        //return d.data._embedded;
                     }).catch(function (_data) {
                         $log.info(_data);
                         $window.location.href = "/404.html";

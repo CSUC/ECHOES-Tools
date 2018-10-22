@@ -19,14 +19,15 @@
         <module>echoes-gui-client</module>
         <module>echoes-gui-consumer</module>
         <module>echoes-gui-producer</module>
+        <module>echoes-gui-database</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.csuc</groupId>
-                <artifactId>Morphia-Core</artifactId>
-                <version>0.1</version>
+                <artifactId>echoes-gui-database</artifactId>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.csuc</groupId>
@@ -36,7 +37,7 @@
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>Parser-Core</artifactId>
-                <version>1.1</version>
+                <version>1.1.2</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

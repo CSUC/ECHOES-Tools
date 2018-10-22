@@ -1,11 +1,11 @@
 package org.csuc.service.parser;
 
 import com.auth0.jwk.JwkException;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.ParserDAO;
-import org.Morphia.Core.dao.impl.ParserDAOImpl;
-import org.Morphia.Core.entities.Parser;
-import org.Morphia.Core.utils.parser.ParserFormat;
+import org.csuc.client.Client;
+import org.csuc.dao.ParserDAO;
+import org.csuc.dao.impl.ParserDAOImpl;
+import org.csuc.entities.Parser;
+import org.csuc.utils.parser.ParserFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.utils.authorization.Authoritzation;
@@ -79,10 +79,10 @@ public class Format {
         }
 
         Client client = new Client("localhost", 27017, "echoes");
-        ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+        ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
         try {
-            List<org.Morphia.Core.entities.Parser> queryResults = parserDAO.getByFormat(parserFormat, user, page, pagesize);
+            List<org.csuc.entities.Parser> queryResults = parserDAO.getByFormat(parserFormat, user, page, pagesize);
 
             double count = new Long(parserDAO.countByFormat(parserFormat, user)).doubleValue();
 

@@ -1,12 +1,12 @@
 package org.csuc.service.parser;
 
 import com.auth0.jwk.JwkException;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.ParserDAO;
-import org.Morphia.Core.dao.impl.ParserDAOImpl;
-import org.Morphia.Core.entities.Parser;
-import org.Morphia.Core.utils.StreamUtils;
-import org.Morphia.Core.utils.Aggregation;
+import org.csuc.client.Client;
+import org.csuc.dao.ParserDAO;
+import org.csuc.dao.impl.ParserDAOImpl;
+import org.csuc.entities.Parser;
+import org.csuc.utils.StreamUtils;
+import org.csuc.utils.Aggregation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.utils.authorization.Authoritzation;
@@ -67,9 +67,9 @@ public class Status {
         }
 
         Client client = new Client("localhost", 27017, "echoes");
-        ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+        ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
-        org.Morphia.Core.utils.Status parserStatus = org.Morphia.Core.utils.Status.convert(status);
+        org.csuc.utils.Status parserStatus = org.csuc.utils.Status.convert(status);
 
         if (Objects.isNull(parserStatus)) {
             throw new WebApplicationException(
@@ -125,7 +125,7 @@ public class Status {
         }
 
         Client client = new Client("localhost", 27017, "echoes");
-        ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+        ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
         try {
             Supplier<Iterator<Aggregation>> i  = ()-> parserDAO.getStatusAggregation(user);

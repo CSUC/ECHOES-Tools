@@ -17,7 +17,6 @@
 		<module>metadata-schema-definitions</module>
 		<module>Recollect-Core</module>
 		<module>Validation-Core</module>
-		<module>Morphia-Core</module>
     	<module>EDM-Transformations</module>
         <module>Binding-Core</module>
 		<module>echoes-gui</module>

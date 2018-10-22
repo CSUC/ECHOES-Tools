@@ -2,16 +2,16 @@ package org.csuc.service.parser;
 
 import com.auth0.jwk.JwkException;
 import com.mongodb.WriteResult;
-import org.Morphia.Core.client.Client;
-import org.Morphia.Core.dao.ParserDAO;
-import org.Morphia.Core.dao.ParserErrorDAO;
-import org.Morphia.Core.dao.impl.ParserDAOImpl;
-import org.Morphia.Core.dao.impl.ParserErrorDAOImpl;
-import org.Morphia.Core.entities.ParserError;
-import org.Morphia.Core.utils.Status;
-import org.Morphia.Core.utils.parser.ParserFormat;
-import org.Morphia.Core.utils.parser.ParserMethod;
-import org.Morphia.Core.utils.parser.ParserType;
+import org.csuc.client.Client;
+import org.csuc.dao.ParserDAO;
+import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.impl.ParserDAOImpl;
+import org.csuc.dao.impl.ParserErrorDAOImpl;
+import org.csuc.entities.ParserError;
+import org.csuc.utils.Status;
+import org.csuc.utils.parser.ParserFormat;
+import org.csuc.utils.parser.ParserMethod;
+import org.csuc.utils.parser.ParserType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,9 +84,9 @@ public class Parser {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+            ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
-            org.Morphia.Core.entities.Parser parser = parserDAO.getById(id);
+            org.csuc.entities.Parser parser = parserDAO.getById(id);
 
             if(!Objects.equals(user, parser.getUser())) return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -123,9 +123,9 @@ public class Parser {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+            ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
-            List<org.Morphia.Core.entities.Parser> queryResults = parserDAO.getByUser(user, page, pagesize, "-timestamp");
+            List<org.csuc.entities.Parser> queryResults = parserDAO.getByUser(user, page, pagesize, "-timestamp");
 
             double count = new Long(parserDAO.countByUser(user)).doubleValue();
 
@@ -164,9 +164,9 @@ public class Parser {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+            ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
-            org.Morphia.Core.entities.Parser parser = new org.Morphia.Core.entities.Parser();
+            org.csuc.entities.Parser parser = new org.csuc.entities.Parser();
 
             parser.setFormat(ParserFormat.convert(parserRequest.getFormat()));
             parser.setMethod(ParserMethod.convert(parserRequest.getMethod()));
@@ -175,7 +175,7 @@ public class Parser {
             parser.setStatus(Status.QUEUE);
             parser.setUser(parserRequest.getUser());
 
-            Key<org.Morphia.Core.entities.Parser> key = parserDAO.insert(parser);
+            Key<org.csuc.entities.Parser> key = parserDAO.insert(parser);
 
             logger.debug(key);
 
@@ -230,7 +230,7 @@ public class Parser {
 
         try {
             Client client = new Client("localhost", 27017, "echoes");
-            ParserDAO parserDAO = new ParserDAOImpl(org.Morphia.Core.entities.Parser.class, client.getDatastore());
+            ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
 
             WriteResult writeResult = parserDAO.deleteById(id);
 

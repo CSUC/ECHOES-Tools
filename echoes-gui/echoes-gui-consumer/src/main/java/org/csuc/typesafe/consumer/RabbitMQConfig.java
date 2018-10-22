@@ -2,7 +2,6 @@ package org.csuc.typesafe.consumer;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import org.Morphia.Core.entities.Parser;
 
 /**
  * @author amartinez

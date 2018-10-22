@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
-            <artifactId>Morphia-Core</artifactId>
+            <artifactId>echoes-gui-database</artifactId>
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
