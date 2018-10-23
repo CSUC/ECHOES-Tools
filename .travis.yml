@@ -1,13 +1,16 @@
 language: java
 services: mongodb
 sudo: false
+cache:
+  directories:
+  - $HOME/.m2
 jdk:
 - oraclejdk8
 env:
-  - EDM=external
+  - PROFILE=tools
 before_install:
 - git submodule update --init --recursive
-script: mvn install -D$EDM -B -V
+script: mvn install -P tools -B -V
 notifications:
   email:
     recipients:
