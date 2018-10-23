@@ -15,6 +15,8 @@
     <version>0.0.1</version>
 
     <properties>
+        <echoes.gui.server.path>${echoes.path}/echoes-gui-server</echoes.gui.server.path>
+
         <echoes.gui.client.version>0.0.1</echoes.gui.client.version>
         <echoes.gui.config.version>0.0.1</echoes.gui.config.version>
         <echoes.gui.consumer.version>0.0.1</echoes.gui.consumer.version>
@@ -134,4 +136,41 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../bin</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}</directory>
+                                    <includes>
+                                        <include>echoes-gui-client.json</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

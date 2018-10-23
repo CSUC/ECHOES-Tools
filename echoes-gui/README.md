@@ -36,21 +36,31 @@ AUTH0_DOMAIN={DOMAIN}
 ```bash
 var AUTH0_CLIENT_ID='{CLIENT_ID}'; 
 var AUTH0_DOMAIN='{DOMAIN}'; 
-var AUTH0_CALLBACK_URL='http://localhost:3000/callback';
+var AUTH0_CALLBACK_URL='{CALLBACK}';
 var AUTH0_AUDIENCE='{API_IDENTIFIER}';
 ```
 
 https://auth0.com/
 
 
-## RUN
+## RUN (PM2)
+
+Advanced process manager for production Node.js applications. Load balancer, logs facility, startup script, micro service management, at a glance.
+
+http://pm2.keymetrics.io/
 
 ```bash
-./echoes-gui/start.sh >/dev/null 2>&1
+pm2 start bin/echoes-gui-client.json
 ```
 
 ### MONITORING
 
 ```bash
 pm2 monit
+```
+
+### LOGS
+
+```bash
+pm2 logs
 ```

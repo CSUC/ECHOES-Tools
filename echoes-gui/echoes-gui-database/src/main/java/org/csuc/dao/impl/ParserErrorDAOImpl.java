@@ -9,14 +9,10 @@ import org.csuc.entities.ParserError;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import static org.mongodb.morphia.aggregation.Group.grouping;
-
-
 /**
  * @author amartinez
  */
 public class ParserErrorDAOImpl extends BasicDAO<ParserError, ObjectId> implements ParserErrorDAO {
-
 
     private static Logger logger = LogManager.getLogger(ParserErrorDAOImpl.class);
 
@@ -26,11 +22,13 @@ public class ParserErrorDAOImpl extends BasicDAO<ParserError, ObjectId> implemen
 
     @Override
     public ParserError getByReference(Parser parser) throws Exception {
+        logger.info("[{}]\t[getByReference] - parser: {}", ParserErrorDAOImpl.class.getSimpleName(), parser.toString());
         return find(createQuery().field("parser-id").equal(parser)).get();
     }
 
     @Override
     public ParserError getByReference(String objectId) throws Exception {
+        logger.debug("[{}]\t[getByReference] - objectId: {}", ParserErrorDAOImpl.class.getSimpleName(), objectId);
         return find(createQuery().filter("parser-id", ds.createQuery(Parser.class).filter("_id", objectId).getKey())).get();
     }
 

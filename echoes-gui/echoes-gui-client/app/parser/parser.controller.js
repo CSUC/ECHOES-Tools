@@ -12,7 +12,7 @@
     function parserController($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                               echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Parser-Core';
+        vm.title = 'Parser';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
@@ -75,8 +75,6 @@
             }, {
                 total: data._size,
                 getData: function (params) {
-                    // console.log(params.page())
-                    // console.log(vm.page)
                     vm.page = params.page();
                     vm.count = params.count();
 
@@ -110,7 +108,7 @@
                 $state.go($state.current, {}, {reload: true});
             }).catch(function (_data) {
                 $log.info(_data);
-                $window.location.href = "/404.html";
+                //$window.location.href = "/404.html";
             });
         }
 

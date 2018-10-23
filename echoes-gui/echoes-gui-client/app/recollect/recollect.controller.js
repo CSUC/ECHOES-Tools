@@ -12,7 +12,7 @@
     function recollect($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                        echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Recollect-Core';
+        vm.title = 'Recollect';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
@@ -68,7 +68,7 @@
                 count: count
             }, {
                 total: data._size,
-                getData: function ($defer, params) {
+                getData: function (params) {
                     vm.page = params.page();
                     vm.count = params.count();
 
@@ -78,7 +78,8 @@
                         page: vm.page
                     }).then(function (d) {
                         //return d.data._embedded;
-                        $defer.resolve(d.data._embedded)
+                        return d.data._embedded;
+                        //$defer.resolve(d.data._embedded)
                     }).catch(function (_data) {
                         $log.info(_data);
                         $defer.reject();
@@ -103,7 +104,7 @@
                 $state.go($state.current, {}, {reload : true});
             }).catch(function (_data) {
                 $log.info(_data);
-                $window.location.href = "/404.html";
+                //$window.location.href = "/404.html";
             });
         }
 
@@ -154,7 +155,6 @@
                                 });
                             }
                         };
-                        ///
 
                         $scope.tableProperties = [
                             {
@@ -191,7 +191,6 @@
                             });
                         };
 
-                        ///
                     }]
                 });
         };

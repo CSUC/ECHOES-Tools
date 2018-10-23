@@ -4,6 +4,12 @@
   "main": "index.js",
   "author": "Albert Martínez",
   "email": "albert.martinez@csuc.cat",
+  "description": "echoes-gui",
+  "licenses" : [
+    { "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/CSUC/ECHOES-Tools/echoes-gui/echoes-gui-client"

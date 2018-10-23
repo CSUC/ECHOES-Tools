@@ -31,7 +31,6 @@ import static org.mongodb.morphia.aggregation.Group.grouping;
  */
 public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserDAO {
 
-
     private static Logger logger = LogManager.getLogger(ParserDAOImpl.class);
 
     public ParserDAOImpl(Class<Parser> entityClass, Datastore ds) {
@@ -43,6 +42,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         Parser parser = createQuery().field("_id").equal(objectId).get();
         if(Objects.isNull(parser))  throw new Exception();
 
+        logger.debug("[{}]\t[getById] - objectId: {}", ParserDAOImpl.class.getSimpleName(), objectId);
         return parser;
     }
 
@@ -50,6 +50,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByUser(String user, String orderby) throws Exception {
         if(Objects.isNull(user))  throw new Exception();
 
+        logger.debug("[{}]\t[getByUser] - user: {}\toption:[order: {}]", ParserDAOImpl.class.getSimpleName(), user, orderby);
         return (Objects.nonNull(orderby))
                 ? find(createQuery().field("user").equal(user).order(orderby)).asList()
                 : find(createQuery().field("user").equal(user)).asList();
@@ -59,6 +60,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByUser(String user, int offset, int limit, String orderby) throws Exception {
         if(Objects.isNull(user))  throw new Exception();
 
+        logger.debug("[{}]\t[getByUser] - user: {}\toption:[offset: {}\tlimit: {}\torder: {}]", ParserDAOImpl.class.getSimpleName(), user, offset, limit, orderby);
         return (Objects.nonNull(orderby))
                 ? find(createQuery().field("user").equal(user).order(orderby)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit))
                 : find(createQuery().field("user").equal(user)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
@@ -68,6 +70,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     @Override
     public long countByUser(String user) throws Exception {
         if(Objects.isNull(user))  throw new Exception();
+
+        logger.debug("[{}]\t[countByUser] - user: {}", ParserDAOImpl.class.getSimpleName(), user);
         return find(createQuery().field("user").equal(user)).count();
     }
 
@@ -75,6 +79,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByMethod(ParserMethod method) throws Exception {
         if(Objects.isNull(method))  throw new Exception();
 
+        logger.debug("[{}]\t[getByMethod] - method: {}", ParserDAOImpl.class.getSimpleName(), method.toString());
         return find(createQuery().field("method").equal(method)).asList();
     }
 
@@ -89,6 +94,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[getByMethod] - method: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), method.toString(), user);
         return find(query).asList();
     }
 
@@ -96,6 +102,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByMethod(ParserMethod method, int offset, int limit) throws Exception {
         if(Objects.isNull(method))  throw new Exception();
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByMethod] - method: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), method.toString(), offset, limit);
         return find(createQuery().field("method").equal(method)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
@@ -111,12 +119,16 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         );
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByMethod] - method: {}\tuser: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), method.toString(), user, offset, limit);
         return find(query).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
     @Override
     public long countByMethod(ParserMethod method) throws Exception {
         if(Objects.isNull(method))  throw new Exception();
+
+        logger.debug("[{}]\t[countByMethod] - method: {}", ParserDAOImpl.class.getSimpleName(), method.toString());
         return find(createQuery().field("method").equal(method)).count();
     }
 
@@ -131,6 +143,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[countByMethod] - method: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), method.toString(), user);
         return find(query).count();
     }
 
@@ -138,6 +151,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByType(ParserType type) throws Exception {
         if(Objects.isNull(type))  throw new Exception();
 
+        logger.debug("[{}]\t[getByType] - type: {}", ParserDAOImpl.class.getSimpleName(), type.value());
         return find(createQuery().field("type").equal(type)).asList();
     }
 
@@ -152,6 +166,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[getByType] - type: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), type.value(), user);
         return find(query).asList();
     }
 
@@ -160,6 +175,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(type))  throw new Exception();
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByType] - type: {}\toptions:[offset: {} \tlimit: {}]", ParserDAOImpl.class.getSimpleName(), type.value(), offset, limit);
         return find(createQuery().field("type").equal(type)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
@@ -175,12 +192,16 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         );
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByType] - type: {}\tuser: {}\toptions:[offset: {} \tlimit: {}]", ParserDAOImpl.class.getSimpleName(), type.value(), user, offset, limit);
         return find(query).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
     @Override
     public long countByType(ParserType type) throws Exception {
         if(Objects.isNull(type))  throw new Exception();
+
+        logger.debug("[{}]\t[countByType] - type: {}", ParserDAOImpl.class.getSimpleName(), type.value());
         return find(createQuery().field("type").equal(type)).count();
     }
 
@@ -195,6 +216,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[countByType] - type: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), type.value(), user);
         return find(query).count();
     }
 
@@ -202,6 +224,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByFormat(ParserFormat format) throws Exception {
         if(Objects.isNull(format))  throw new Exception();
 
+        logger.debug("[{}]\t[getByFormat] - format: {}", ParserDAOImpl.class.getSimpleName(), format.value());
         return find(createQuery().field("format").equal(format)).asList();
     }
 
@@ -216,6 +239,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[getByFormat] - format: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), format.value(), user);
         return find(query).asList();
     }
 
@@ -224,6 +248,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(format))  throw new Exception();
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByFormat] - format: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), format.value(), offset, limit);
         return find(createQuery().field("format").equal(format)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
@@ -238,12 +264,15 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[getByFormat] - format: {}\tuser: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), format.value(), user, offset, limit);
         return find(query).asList();
     }
 
     @Override
     public long countByFormat(ParserFormat format) throws Exception {
         if(Objects.isNull(format))  throw new Exception();
+
+        logger.debug("[{}]\t[countByFormat] - format: {}", ParserDAOImpl.class.getSimpleName(), format.value());
         return find(createQuery().field("format").equal(format)).count();
     }
 
@@ -258,6 +287,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[countByFormat] - format: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), format.value(), user);
         return find(query).count();
     }
 
@@ -265,6 +295,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
     public List<Parser> getByStatus(Status status) throws Exception {
         if(Objects.isNull(status))  throw new Exception();
 
+        logger.debug("[{}]\t[getByStatus] - status: {}", ParserDAOImpl.class.getSimpleName(), status);
         return find(createQuery().field("status").equal(status)).asList();
     }
 
@@ -279,6 +310,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[getByStatus] - status: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), status, user);
         return find(query).asList();
     }
 
@@ -287,6 +319,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(status))  throw new Exception();
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByStatus] - status: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), status, offset, limit);
         return find(createQuery().field("status").equal(status)).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
@@ -302,6 +336,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         );
 
         //new FindOptions().skip(offset).limit(limit)
+
+        logger.debug("[{}]\t[getByStatus] - status: {}\toptions:[offset: {}\tlimit: {}]", ParserDAOImpl.class.getSimpleName(), status, offset, limit);
         return find(query).asList(new FindOptions().skip(offset > 0 ? ( ( offset - 1 ) * limit ) : 0 ).limit(limit));
     }
 
@@ -322,6 +358,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 query.criteria("user").equal(user)
         );
 
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", ParserDAOImpl.class.getSimpleName(), status, user);
         return find(query).count();
     }
 
@@ -334,6 +371,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                         grouping("total", Accumulator.accumulator("$sum", 1))
                 )
                 .aggregate(Aggregation.class, AggregationOptions.builder().allowDiskUse(true).batchSize(50).build());
+
+        logger.debug("[{}]\t[getStatusAggregation]", ParserDAOImpl.class.getSimpleName());
         return aggregate;
     }
 
@@ -348,6 +387,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
                 )
                 .aggregate(Aggregation.class, AggregationOptions.builder().allowDiskUse(true).batchSize(50).build());
 
+        logger.debug("[{}]\t[getStatusAggregation] - user: {}", ParserDAOImpl.class.getSimpleName(), user);
         return aggregate;
     }
 
@@ -356,6 +396,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(parser))  throw new Exception();
         Key<Parser> result = save(parser);
         if(Objects.isNull(result))    throw new Exception();
+
+        logger.debug("[{}]\t[insert] - parser: {}", ParserDAOImpl.class.getSimpleName(), parser.toString());
         return result;
     }
 
@@ -364,6 +406,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(objectId))    throw new Exception();
         WriteResult writeResult = delete(getById(objectId));
         if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteById] - objectId: {}", ParserDAOImpl.class.getSimpleName(), objectId);
         return writeResult;
     }
 
@@ -372,6 +416,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(user))    throw new Exception();
         WriteResult writeResult = getDatastore().delete(createQuery().field("user").equal(user));
         if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteByUser] - user: {}", ParserDAOImpl.class.getSimpleName(), user);
         return writeResult;
     }
 
@@ -380,6 +426,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(method))    throw new Exception();
         WriteResult writeResult = getDatastore().delete(createQuery().field("method").equal(method));
         if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteByMethod] - method: {}", ParserDAOImpl.class.getSimpleName(), method.value());
         return writeResult;
     }
 
@@ -388,6 +436,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(type))    throw new Exception();
         WriteResult writeResult = getDatastore().delete(createQuery().field("type").equal(type));
         if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteByType] - type: {}", ParserDAOImpl.class.getSimpleName(), type.value());
         return writeResult;
     }
 
@@ -396,6 +446,8 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         if(Objects.isNull(status))    throw new Exception();
         WriteResult writeResult = getDatastore().delete(createQuery().field("status").equal(status));
         if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteByStatus] - status: {}", ParserDAOImpl.class.getSimpleName(), status.value());
         return writeResult;
     }
 }

@@ -3,6 +3,8 @@ package org.csuc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Slf4jLog;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -13,6 +15,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class App {
 
     public static void main(String[] args) throws Exception {
+        Log.setLog(new Slf4jLog());
+
         final ResourceConfig application =
                 new ResourceConfig()
                         .packages("org.csuc.service")

@@ -10,7 +10,7 @@
 
     function recollectDetail($scope, authService, $stateParams, echoesChart, restApi, $log, $window, $interval) {
         var vm = this;
-        vm.title = 'Recollect-Core-detail';
+        vm.title = 'Recollect-detail';
         vm.auth = authService;
         vm.profile;
         vm._id = $stateParams._id;

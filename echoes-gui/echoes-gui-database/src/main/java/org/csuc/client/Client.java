@@ -48,9 +48,9 @@ public class Client {
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
-            logger.info("WriteConcern   :       {}", mongo.getWriteConcern().toString());
-            logger.info("Status         :       {}", status);
-            logger.info("Read prefrence :       {}", datastore.getMongo().getReadPreference());
+            logger.debug("WriteConcern   :       {}", mongo.getWriteConcern().toString());
+            logger.debug("Status         :       {}", status);
+            logger.debug("Read prefrence :       {}", datastore.getMongo().getReadPreference());
             this.datastore.ensureIndexes(); // creates all defined with @Indexed
             this.datastore.ensureCaps();
         } catch (MongoSocketOpenException e) {
@@ -81,9 +81,9 @@ public class Client {
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
-            logger.info("WriteConcern   :       {}", mongo.getWriteConcern().toString());
-            logger.info("Status         :       {}", status);
-            logger.info("Read prefrence :       {}", datastore.getMongo().getReadPreference());
+            logger.debug("WriteConcern   :       {}", mongo.getWriteConcern().toString());
+            logger.debug("Status         :       {}", status);
+            logger.debug("Read prefrence :       {}", datastore.getMongo().getReadPreference());
 
             this.datastore.setDefaultWriteConcern(concern);
             this.datastore.ensureIndexes(); // creates all defined with @Indexed

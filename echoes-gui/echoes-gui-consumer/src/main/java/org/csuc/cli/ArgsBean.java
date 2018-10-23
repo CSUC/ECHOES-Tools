@@ -17,9 +17,10 @@ public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
-    @Option(name="-h", aliases = "--help", help = true, required = false)
+    @Option(name="-h", aliases = "--help", help = true)
     private boolean help = false;
 
+    @Argument(index = 0, handler = PathOptionHandler.class, usage = "RabbitMQ config", metaVar = "{ rabbitmq.json | rabbitmq.conf | rabbitmq.properties }")
     private Path arguments;
 
     public ArgsBean(String[] args){
@@ -65,7 +66,6 @@ public class ArgsBean {
         return arguments;
     }
 
-    @Argument(index = 0, multiValued = false, required = false, handler = PathOptionHandler.class, metaVar = "{ rabbitmq.json | rabbitmq.conf | rabbitmq.properties }")
     public void setArguments(Path arguments) {
         this.arguments = arguments;
     }

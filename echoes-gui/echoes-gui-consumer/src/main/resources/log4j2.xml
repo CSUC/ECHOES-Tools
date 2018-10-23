@@ -27,10 +27,6 @@
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
-        <Logger name="org.eclipse.jetty" level="info" additivity="true">
-            <appender-ref ref="RollingFile" level="info"/>
-        </Logger>
-
         <Root level="info" additivity="false">
             <appender-ref ref="Console"/>
         </Root>
