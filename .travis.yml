@@ -6,11 +6,9 @@ cache:
   - $HOME/.m2
 jdk:
 - oraclejdk8
-env:
-  - PROFILE=tools
 before_install:
 - git submodule update --init --recursive
-script: mvn install -P tools -B -V
+script: mvn install -B -V
 notifications:
   email:
     recipients:
