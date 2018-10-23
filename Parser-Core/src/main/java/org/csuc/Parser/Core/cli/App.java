@@ -55,69 +55,74 @@ public class App {
 
         Parser factory = null;
 
-        if(bean.getType().equals(EnumTypes.OAI)){
-            if(MethodType.DOM4J.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserOAI(new Dom4j()));
+        try {
+            if(bean.getType().equals(EnumTypes.OAI)){
+                if(MethodType.DOM4J.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserOAI(new Dom4j()));
+                }
+                if(MethodType.SAX.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
+                }
+                if(MethodType.DOM.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
+                }
+                if(MethodType.XSLT.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
+                }
+                factory.execute(new URL(bean.getInput()));
+            }else if(bean.getType().equals(EnumTypes.URL)){
+                if(MethodType.DOM4J.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserURL(new Dom4j()));
+                }
+                if(MethodType.SAX.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserURL(new Sax()));
+                }
+                if(MethodType.DOM.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserURL(new Dom()));
+                }
+                if(MethodType.XSLT.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
+                }
+                factory.execute(new URL(bean.getInput()));
+            }else if(bean.getType().equals(EnumTypes.FILE)){
+                if(MethodType.DOM4J.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
+                }
+                if(MethodType.SAX.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
+                }
+                if(MethodType.DOM.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
+                }
+                if(MethodType.XSLT.equals(bean.getMethod())){
+                    factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));
+                }
+                factory.execute(bean.getInput());
             }
-            if(MethodType.SAX.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
-            }
-            if(MethodType.DOM.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
-            }
-            if(MethodType.XSLT.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
-            }
-            factory.execute(new URL(bean.getInput()));
-        }else if(bean.getType().equals(EnumTypes.URL)){
-            if(MethodType.DOM4J.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserURL(new Dom4j()));
-            }
-            if(MethodType.SAX.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserURL(new Sax()));
-            }
-            if(MethodType.DOM.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserURL(new Dom()));
-            }
-            if(MethodType.XSLT.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
-            }
-            factory.execute(new URL(bean.getInput()));
-        }else if(bean.getType().equals(EnumTypes.FILE)){
-            if(MethodType.DOM4J.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
-            }
-            if(MethodType.SAX.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
-            }
-            if(MethodType.DOM.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
-            }
-            if(MethodType.XSLT.equals(bean.getMethod())){
-                factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));
-            }
-            factory.execute(bean.getInput());
-        }
 
-        if(Objects.nonNull(factory)) {
-            if (Objects.isNull(bean.getOut())) {
-                if (Objects.equals(bean.getFormat(), FormatType.JSON)) {
-                    factory.JSON(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
-                } else if (Objects.equals(bean.getFormat(), FormatType.XML)) {
-                    factory.XML(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
-                } else {
-                    factory.XML(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
-                }
-            }else{
-                if(Objects.equals(bean.getFormat(), FormatType.JSON)){
-                    factory.JSON(new FileOutputStream(Paths.get(bean.getOut() + File.separator + "result.json").toFile()));
-                }else if(Objects.equals(bean.getFormat(), FormatType.XML)){
-                    factory.XML(new FileOutputStream(Paths.get(bean.getOut() + File.separator  + "result.xml").toFile()));
+            if(Objects.nonNull(factory)) {
+                if (Objects.isNull(bean.getOut())) {
+                    if (Objects.equals(bean.getFormat(), FormatType.JSON)) {
+                        factory.JSON(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
+                    } else if (Objects.equals(bean.getFormat(), FormatType.XML)) {
+                        factory.XML(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
+                    } else {
+                        factory.XML(IoBuilder.forLogger(App.class).setLevel(Level.INFO).buildOutputStream());
+                    }
                 }else{
-                    factory.XML(new FileOutputStream(Paths.get(bean.getOut() + File.separator  + "result.json").toFile()));
+                    if(Objects.equals(bean.getFormat(), FormatType.JSON)){
+                        factory.JSON(new FileOutputStream(Paths.get(bean.getOut() + File.separator + "result.json").toFile()));
+                    }else if(Objects.equals(bean.getFormat(), FormatType.XML)){
+                        factory.XML(new FileOutputStream(Paths.get(bean.getOut() + File.separator  + "result.xml").toFile()));
+                    }else{
+                        factory.XML(new FileOutputStream(Paths.get(bean.getOut() + File.separator  + "result.json").toFile()));
+                    }
                 }
             }
+
+            logger.info(String.format("End %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
+        }catch(Exception e){
+            logger.error(e);
         }
-        logger.info(String.format("End %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
 	}
 }

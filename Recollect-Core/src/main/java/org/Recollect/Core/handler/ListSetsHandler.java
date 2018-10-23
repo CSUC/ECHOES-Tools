@@ -36,34 +36,26 @@ public class ListSetsHandler implements Source<SetType> {
     }
 
     @Override
-    public List<SetType> nextIteration() {
+    public List<SetType> nextIteration() throws Exception {
         InputStream stream = null;
-        try {
-            if (resumptionToken == null) { // First call
-                stream = client.execute(parameters()
-                        .withVerb(ListSets));
-            } else { // Resumption calls
-                stream = client.execute(parameters()
-                        .withVerb(ListSets)
-                        .withResumptionToken(resumptionToken));
-            }
-            OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
-           
-            if(Objects.nonNull(oai.getListSets().getResumptionToken())){
-				 if(!oai.getListSets().getResumptionToken().getValue().isEmpty()) {
-					 resumptionToken = oai.getListSets().getResumptionToken().getValue();
-				 }else ended = true;
-				 
-			 }else ended = true;
-            
-            stream.close();
-            return  oai.getListSets().getSet();
-        } catch (Exception e) {        	
-        	logger.error(e);
-            return null;           
-        }finally {
-            IOUtils.closeQuietly(stream);
+        if (resumptionToken == null) { // First call
+            stream = client.execute(parameters()
+                    .withVerb(ListSets));
+        } else { // Resumption calls
+            stream = client.execute(parameters()
+                    .withVerb(ListSets)
+                    .withResumptionToken(resumptionToken));
         }
+        OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
+
+        if (Objects.nonNull(oai.getListSets().getResumptionToken())) {
+            if (!oai.getListSets().getResumptionToken().getValue().isEmpty()) {
+                resumptionToken = oai.getListSets().getResumptionToken().getValue();
+            } else ended = true;
+
+        } else ended = true;
+
+        return oai.getListSets().getSet();
     }
     
     @Override

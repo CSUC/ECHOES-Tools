@@ -10,8 +10,8 @@ import java.net.URL;
 public interface Parser {
 
 
-    void execute(String fileOrPath);
-    void execute(URL url);
+    void execute(String fileOrPath) throws Exception;
+    void execute(URL url)  throws Exception;
 
     void XML(OutputStream outs);
     void JSON(OutputStream outs);

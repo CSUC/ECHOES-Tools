@@ -30,45 +30,26 @@ public class Sax implements ParserMethod {
     private FragmentContentHandler contentHandler;
     private SAXParser parser;
 
-    public Sax(){
+    public Sax() throws Exception{
         logger.info(String.format("Method: %s", getClass().getSimpleName()));
-        try{
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setNamespaceAware(true);
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        factory.setNamespaceAware(true);
 
-            parser = factory.newSAXParser();
+        parser = factory.newSAXParser();
 
-            XMLReader xr = parser.getXMLReader();
+        XMLReader xr = parser.getXMLReader();
 
-            contentHandler = new FragmentContentHandler(xr);
-
-        }catch (ParserConfigurationException e){
-            logger.error(e);
-        }catch(SAXException e){
-            logger.error(e);
-        }
+        contentHandler = new FragmentContentHandler(xr);
     }
 
     @Override
-    public void parser(String fileOrPath) {
-        try {
-            parser.parse(new FileInputStream(fileOrPath), contentHandler);
-        } catch (SAXException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+    public void parser(String fileOrPath) throws Exception {
+        parser.parse(new FileInputStream(fileOrPath), contentHandler);
     }
 
     @Override
-    public void parser(URL url) {
-        try {
-            parser.parse(url.toString(), contentHandler);
-        } catch (SAXException e) {
-            logger.error(e);
-        } catch (IOException e) {
-            logger.error(e);
-        }
+    public void parser(URL url) throws Exception{
+        parser.parse(url.toString(), contentHandler);
     }
 
     @Override

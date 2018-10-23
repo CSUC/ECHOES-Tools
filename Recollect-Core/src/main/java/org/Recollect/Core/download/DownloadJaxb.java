@@ -59,14 +59,11 @@ public class DownloadJaxb implements Download {
 
 
     @Override
-    public void execute(Map<String, String> properties) {
+    public void execute(Map<String, String> properties) throws Exception {
         JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
 
-        logger.info(String.format("Donwload item (%s) identifier %s",
-                element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
-
         EDM edm = null;
-        try {
+        //try {
             if (element.getDeclaredType().equals(A2AType.class))
                 edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
             else if (element.getDeclaredType().equals(OaiDcType.class))
@@ -80,24 +77,25 @@ public class DownloadJaxb implements Download {
             } else logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
             if (Objects.nonNull(edm))
                 edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
-        } catch (Exception e) {
-            logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
-        }
+       // } catch (Exception e) {
+       //     logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
+       // }
+        logger.info(String.format("Donwload item (%s) identifier %s",
+                element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
     }
 
     @Override
-    public void execute(Path outs, Map<String, String> properties) {
+    public void execute(Path outs, Map<String, String> properties) throws Exception {
         Path filename = Paths.get(outs + File.separator
                 + StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + ".xml");
 
         if (Files.exists(outs, LinkOption.NOFOLLOW_LINKS)) {
             JAXBElement<?> element = (JAXBElement<?>) record.getMetadata().getAny();
 
-            logger.info(String.format("Donwload item (%s) identifier %s",
-                    element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
+
 
             EDM edm = null;
-            try {
+//            try {
                 if (element.getDeclaredType().equals(A2AType.class))
                     edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) element.getValue(), properties);
                 else if (element.getDeclaredType().equals(OaiDcType.class))
@@ -110,9 +108,11 @@ public class DownloadJaxb implements Download {
                     logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
                 if (Objects.nonNull(edm))
                     edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
-            } catch (Exception e) {
-                logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
-            }
+//            } catch (Exception e) {
+//                logger.error("id:   {}  {}", record.getHeader().getIdentifier(), e);
+//            }
+            logger.info(String.format("Donwload item (%s) identifier %s",
+                    element.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
         }
     }
 }

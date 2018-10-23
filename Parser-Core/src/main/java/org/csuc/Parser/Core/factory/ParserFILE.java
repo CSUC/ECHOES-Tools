@@ -32,25 +32,25 @@ public class ParserFILE implements Parser {
     }
 
     @Override
-    public void execute(String fileOrPath) {
+    public void execute(String fileOrPath) throws Exception {
         Path path = Paths.get(fileOrPath);
-        if(Objects.nonNull(path) && Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
-            try {
-                Files.walk(path)
-                        .filter(Files::isRegularFile)
-                        .filter(f-> f.toString().endsWith(".xml"))
-                        .forEach(f->{
-                            logger.info(String.format("%s file: %s", iter.incrementAndGet(), f.getFileName()));
+        if (Objects.nonNull(path) && Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+            Files.walk(path)
+                    .filter(Files::isRegularFile)
+                    .filter(f -> f.toString().endsWith(".xml"))
+                    .forEach(f -> {
+                        logger.info(String.format("%s file: %s", iter.incrementAndGet(), f.getFileName()));
+                        try {
                             method.parser(f.toString());
-                        });
-            } catch (IOException e) {
-                logger.error(e);
-            }
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         }
     }
 
     @Override
-    public void execute(URL url) {
+    public void execute(URL url) throws Exception {
         throw new IllegalArgumentException("execute URL is not valid for ParserFile!");
     }
 

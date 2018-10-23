@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public interface ParserMethod {
 
-    void parser(String fileOrPath);
-    void parser(URL url);
+    void parser(String fileOrPath) throws Exception;
+    void parser(URL url) throws Exception;
 
     void createXML(OutputStream outs);
     void createJSON(OutputStream outs);

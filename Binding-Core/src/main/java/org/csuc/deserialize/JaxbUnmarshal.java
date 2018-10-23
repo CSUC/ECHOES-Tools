@@ -275,4 +275,9 @@ public class JaxbUnmarshal {
 		SchemaFactory sf = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
 		return sf.newSchema( schemaFiles );
 	}
+
+
+    public ValidationHandler getValidationEvent() {
+        return validationEvent;
+    }
 }

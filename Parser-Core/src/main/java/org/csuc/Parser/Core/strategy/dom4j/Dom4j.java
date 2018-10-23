@@ -70,23 +70,15 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void parser(String fileOrPath) {
-        try {
-            Document document = reader.read(new FileInputStream(fileOrPath));
-            treeWalk(document);
-        } catch (DocumentException | FileNotFoundException e) {
-            logger.error(e);
-        }
+    public void parser(String fileOrPath) throws Exception {
+        Document document = reader.read(new FileInputStream(fileOrPath));
+        treeWalk(document);
     }
 
     @Override
-    public void parser(URL url) {
-        try {
-            Document document = reader.read(url);
-            treeWalk(document);
-        } catch (DocumentException e) {
-            logger.error(e);
-        }
+    public void parser(URL url) throws Exception {
+        Document document = reader.read(url);
+        treeWalk(document);
     }
 
     @Override

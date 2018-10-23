@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+    <Appenders>
+        <!-- All -->
+        <RollingFile name="RollingFile"
+                     fileName="${echoes.path}/logs/${artifactId}-${date:yyyy-MM-dd}.log"
+                     filePattern="${echoes.path}/logs/rotate/${artifactId}-%d{yyyy-MM-dd}-%i.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
+                    DEBUG=blue} - %msg%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 KB" />
+            </Policies>
+        </RollingFile>
+        <!-- Console -->
+        <Console name="Console">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.csuc" level="INFO" additivity="true">
+            <appender-ref ref="RollingFile" level="INFO"/>
+        </Logger>
+
+        <Logger name="org.eclipse.jetty" level="DEBUG" additivity="true">
+            <appender-ref ref="RollingFile" level="DEBUG"/>
+        </Logger>
+
+        <Root level="INFO" additivity="false">
+            <appender-ref ref="Console"/>
+        </Root>
+
+    </Loggers>
+</Configuration>

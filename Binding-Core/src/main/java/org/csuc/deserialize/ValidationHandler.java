@@ -6,12 +6,16 @@ import org.apache.logging.log4j.Logger;
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.ValidationEventLocator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ValidationHandler implements ValidationEventHandler {
 
     private static Logger logger = LogManager.getLogger(ValidationHandler.class);
 
     private boolean isValidating = true;
+
+    private List<String> eventError = new ArrayList<>();
 
     @Override
     public boolean handleEvent(ValidationEvent event) {
@@ -21,8 +25,9 @@ public class ValidationHandler implements ValidationEventHandler {
 
             ValidationEventLocator locator = event.getLocator();
 
-            logger.info(String.format("lineNumber: %s\ncolumnNumber: %s\nmessage: %s",
+            eventError.add(String.format("lineNumber: %s    columnNumber: %s    message: %s",
                     locator.getLineNumber(), locator.getColumnNumber(), event.getMessage()));
+
             isValidating = false;
         }
         return true;
@@ -30,5 +35,9 @@ public class ValidationHandler implements ValidationEventHandler {
 
     public boolean isValidating() {
         return isValidating;
+    }
+
+    public List<String> getEventError() {
+        return eventError;
     }
 }

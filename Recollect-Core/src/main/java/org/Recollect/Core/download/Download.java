@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public interface Download {
 
-    void execute(Map<String, String> properties);
+    void execute(Map<String, String> properties) throws Exception;
 
-    void execute(Path outs, Map<String, String> properties);
+    void execute(Path outs, Map<String, String> properties) throws Exception;
 
 }

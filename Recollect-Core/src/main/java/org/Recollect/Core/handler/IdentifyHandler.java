@@ -29,21 +29,12 @@ public class IdentifyHandler {
         this.client = client;
     }
 
-    public IdentifyType handle () {
-        InputStream stream = null;
-        try {
-            stream = client.execute(parameters()
-                    .withVerb(Identify));
-            
-            OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
-            
-            stream.close();
-            return oai.getIdentify();
-        }catch (Exception e) {        	
-        	logger.error(e);
-            return null;           
-        }finally {
-            IOUtils.closeQuietly(stream);
-        }
+    public IdentifyType handle () throws Exception {
+        InputStream stream = client.execute(parameters()
+                .withVerb(Identify));
+
+        OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}).getObject();
+
+        return oai.getIdentify();
     }
 }

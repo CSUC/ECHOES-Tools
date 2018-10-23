@@ -177,6 +177,7 @@
 				<module>Validation-Core</module>
 				<module>EDM-Transformations</module>
 				<module>Binding-Core</module>
+				<module>echoes-gui</module>
 			</modules>
 		</profile>
 		<profile>

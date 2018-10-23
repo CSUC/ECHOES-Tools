@@ -3,16 +3,6 @@
  */
 package org.Recollect.Core.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-
-import javax.net.ssl.SSLContext;
-
 import org.Recollect.Core.parameters.Parameters;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -30,6 +20,11 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+
 
 /**
  * @author amartinez
@@ -45,30 +40,20 @@ public class HttpOAIClient implements OAIClient {
 	private int timeout = 10000; // 10 seg
 
 
-	public HttpOAIClient(String baseUrl)  {
+	public HttpOAIClient(String baseUrl) throws Exception {
 		this.baseUrl = isAvailableHost(baseUrl);
-		
-//		httpclient = new DefaultHttpClient(createHttpParams());
 	}
 	
 	@Override
-	public InputStream execute(Parameters parameters) {
-		try {
-			logger.debug(String.format("%s GET %s", baseUrl, parameters.toUrl("")));
-			HttpResponse response = httpclient.execute(createGetRequest(parameters));
+	public InputStream execute(Parameters parameters) throws Exception {
+		logger.debug(String.format("%s GET %s", baseUrl, parameters.toUrl("")));
+		HttpResponse response = httpclient.execute(createGetRequest(parameters));
 
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK )			
-				return response.getEntity().getContent();
-			else
-				logger.error(String.format("%s error querying service. Returned HTTP Status Code: %s", baseUrl, response.getStatusLine().getStatusCode()));//				
-			return null;
-		} catch (IOException e) {
-			logger.error(baseUrl + " " + e);
-			return null;
-		}
+		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK)	return response.getEntity().getContent();
+		else
+			throw new Exception(String.format("%s error querying service. Returned HTTP Status Code: %s", baseUrl, response.getStatusLine().getStatusCode()));
 	}
 
-	
 	
 	private HttpUriRequest createGetRequest(Parameters parameters) {
 		return new HttpGet(parameters.toUrl(baseUrl));
@@ -96,48 +81,35 @@ public class HttpOAIClient implements OAIClient {
 	}
 
 	
-	public String isAvailableHost(String url) {		
-		try {			
-			SSLContext sslContext = new SSLContextBuilder()
-				      .loadTrustMaterial(null, (certificate, authType) -> true).build();
-		
-			RequestConfig config = RequestConfig.custom()
-					  .setConnectTimeout(timeout)
-					  .setConnectionRequestTimeout(timeout)
-					  .setSocketTimeout(timeout).build();
-			
-			httpclient = HttpClients.custom()
-				      .setSSLContext(sslContext)
-				      .setSSLHostnameVerifier(new NoopHostnameVerifier())
-				      .setDefaultRequestConfig(config)
-				      .build();
-				    
-		    HttpGet httpGet = new HttpGet(url);
-		    
-		    HttpClientContext context = HttpClientContext.create();
-		    
-		    httpclient.execute(httpGet, context);
-		    List<URI> redirectURIs = context.getRedirectLocations();
-		    if (redirectURIs != null && !redirectURIs.isEmpty()) {
-		        for (URI redirectURI : redirectURIs) {
-		        	logger.debug(String.format("%s redirect to %s", url , redirectURI));
-		        }
-		        return redirectURIs.get(redirectURIs.size() - 1).toString();
-		    }
-		    return url;
-		} catch (IOException e) {
-			logger.error(baseUrl + " " + e);
-			return url;
-		} catch (KeyManagementException e) {
-			logger.error(baseUrl + " " + e);
-			 return url;
-		} catch (NoSuchAlgorithmException e) {
-			logger.error(baseUrl + " " + e);
-			 return url;
-		} catch (KeyStoreException e) {
-			logger.error(baseUrl + " " + e);
-			 return url;
-		}	
+	public String isAvailableHost(String url) throws Exception {
+		SSLContext sslContext = new SSLContextBuilder()
+				.loadTrustMaterial(null, (certificate, authType) -> true).build();
+
+		RequestConfig config = RequestConfig.custom()
+				.setConnectTimeout(timeout)
+				.setConnectionRequestTimeout(timeout)
+				.setSocketTimeout(timeout).build();
+
+		httpclient = HttpClients.custom()
+				.setSSLContext(sslContext)
+				.setSSLHostnameVerifier(new NoopHostnameVerifier())
+				.setDefaultRequestConfig(config)
+				.build();
+
+		HttpGet httpGet = new HttpGet(url);
+
+		HttpClientContext context = HttpClientContext.create();
+
+		httpclient.execute(httpGet, context);
+		List<URI> redirectURIs = context.getRedirectLocations();
+		if (redirectURIs != null && !redirectURIs.isEmpty()) {
+			for (URI redirectURI : redirectURIs) {
+				logger.debug(String.format("%s redirect to %s", url, redirectURI));
+			}
+			return redirectURIs.get(redirectURIs.size() - 1).toString();
+		}
+		return url;
+
 	}
 
 	@Override
