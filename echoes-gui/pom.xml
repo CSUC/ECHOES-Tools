@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ECHOES-Tools</artifactId>
+        <groupId>org.csuc</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>echoes-gui</artifactId>
+    <version>0.0.1</version>
+
+    <properties>
+        <echoes.gui.server.path>${echoes.path}/echoes-gui-server</echoes.gui.server.path>
+
+        <echoes.gui.client.version>0.0.1</echoes.gui.client.version>
+        <echoes.gui.config.version>0.0.1</echoes.gui.config.version>
+        <echoes.gui.consumer.version>0.0.1</echoes.gui.consumer.version>
+        <echoes.gui.producer.version>0.0.1</echoes.gui.producer.version>
+        <echoes.gui.database.version>0.0.1</echoes.gui.database.version>
+        <echoes.gui.server.version>0.0.1</echoes.gui.server.version>
+
+        <recollect.core.version>1.3</recollect.core.version>
+        <parser.core.version>1.3</parser.core.version>
+
+        <typesafe.config.version>1.3.3</typesafe.config.version>
+        <moshi.version>1.6.0</moshi.version>
+        <amqp.client.version>5.2.0</amqp.client.version>
+        <commons.lang3.version>3.7</commons.lang3.version>
+    </properties>
+
+    <modules>
+        <module>echoes-gui-server</module>
+        <module>echoes-gui-client</module>
+        <module>echoes-gui-consumer</module>
+        <module>echoes-gui-producer</module>
+        <module>echoes-gui-database</module>
+        <module>echoes-gui-config</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-client</artifactId>
+                <version>${echoes.gui.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-config</artifactId>
+                <version>${echoes.gui.config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-consumer</artifactId>
+                <version>${echoes.gui.consumer.version.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-database</artifactId>
+                <version>${echoes.gui.database.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-producer</artifactId>
+                <version>${echoes.gui.producer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>echoes-gui-server</artifactId>
+                <version>${echoes.gui.server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>recollect-core</artifactId>
+                <version>${recollect.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.csuc</groupId>
+                <artifactId>parser-core</artifactId>
+                <version>${parser.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-iostreams</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>${typesafe.config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>args4j</groupId>
+                <artifactId>args4j</artifactId>
+                <version>${args4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.squareup.moshi/moshi -->
+            <dependency>
+                <groupId>com.squareup.moshi</groupId>
+                <artifactId>moshi</artifactId>
+                <version>${moshi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${amqp.client.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../bin</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}</directory>
+                                    <includes>
+                                        <include>echoes-gui-client.json</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

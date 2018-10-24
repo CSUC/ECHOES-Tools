@@ -1,0 +1,79 @@
+<div class="container">
+    <a ui-sref="recollect" ui-sref-opts="{reload:true}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back </a>
+    <h2>{{vm.title}}</h2>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>id</td>
+            <td>{{vm.data._id}}</td>
+        </tr>
+        <tr ng-show="vm.data.timestamp">
+            <td>timestamp</td>
+            <td>{{vm.data.timestamp}}</td>
+        </tr>
+        <tr  ng-show="vm.data.host">
+            <td>host</td>
+            <td>{{vm.data.host}}</td>
+        </tr>
+        <tr ng-show="vm.data.set">
+            <td>set</td>
+            <td>{{vm.data.set}}</td>
+        </tr>
+        <tr ng-show="vm.data.metadataPrefix">
+            <td>metadataPrefix</td>
+            <td>{{vm.data.metadataPrefix}}</td>
+        </tr>
+        <tr ng-show="vm.data.from">
+            <td>from</td>
+            <td>{{vm.data.from}}</td>
+        </tr>
+        <tr  ng-show="vm.data.until">
+            <td>until</td>
+            <td>{{vm.data.until}}</td>
+        </tr>
+        <tr  ng-show="vm.data.granularity">
+            <td>granularity</td>
+            <td>{{vm.data.granularity}}</td>
+        </tr>
+        <tr  ng-show="vm.data.status">
+            <td>status</td>
+            <td>{{vm.data.status}}</td>
+        </tr>
+        <tr  ng-show="vm.data.user">
+            <td>user</td>
+            <td>{{vm.data.user}}</td>
+        </tr>
+        <tr ng-show="vm.data.duration">
+            <td>duration</td>
+            <td>{{vm.data.duration}}</td>
+        </tr>
+        <tr  ng-show="vm.data.properties">
+            <td>properties</td>
+            <td>
+                <ul class="list-unstyled">
+                    <li ng-repeat="(k,p) in vm.data.properties">
+                       {{k}} : {{p}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr ng-show="vm.data.link && !vm.data.error">
+            <td>link</td>
+            <td>
+                <a ng-if="!vm.data.link">create link</a>
+                <a ng-if="vm.data.link && vm.data.link.statusLink == 'NULL' || vm.data.statusLink == 'EXPIRED' " ng-click="vm.generateLink()">generate link</a>
+                <a ng-if="vm.data.link && vm.data.link.statusLink != 'NULL' && vm.data.link.statusLink != 'GENERATE' ">{{vm.data.link.statusLink}}</a>
+                <a ng-if="vm.data.link && vm.data.link.statusLink != 'NULL' && vm.data.link.statusLink == 'GENERATE' "
+                   target="_self" href="/rest/api/recollect/user/{{vm.profile.sub}}/id/{{vm.data._id}}/download">download</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <uib-accordion ng-show="vm.data.error">
+        <div uib-accordion-group class="panel-default" heading="Exception">
+            <pre>{{vm.data.error | json : spacing}}</pre>
+        </div>
+
+    </uib-accordion>
+</div>
