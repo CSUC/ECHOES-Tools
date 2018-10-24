@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>ECHOES GUI</title>
+    <base href="/">
+    <!-- Viewport settings-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- Basic style -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" ; href="node_modules/ng-table/bundles/ng-table.css">
+    <link rel="stylesheet" ; href="node_modules/ng-dialog/css/ngDialog-theme-default.min.css">
+    <link rel="stylesheet" ; href="node_modules/ng-dialog/css/ngDialog-theme-plain.min.css">
+    <link rel="stylesheet" ; href="node_modules/ng-dialog/css/ngDialog.min.css">
+    <link rel="stylesheet" ; href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+
+    <style>
+        .btn-disabled,
+        .btn-disabled[disabled] {
+            cursor: default !important;
+            pointer-events: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<div ng-app="app">
+    <navbar></navbar>
+
+    <div class="container">
+        <ui-view></ui-view>
+    </div>
+</div>
+
+<script type="text/javascript" src="node_modules/auth0-js/build/auth0.js"></script>
+<script type="text/javascript" src="auth0-variables.js"></script>
+<script type="text/javascript" src="node_modules/angular/angular.js"></script>
+<script type="text/javascript" src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="node_modules/angular-auth0/dist/angular-auth0.js"></script>
+<script type="text/javascript" src="node_modules/angular-jwt/dist/angular-jwt.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/app.run.js"></script>
+<script type="text/javascript" src="app/navbar/navbar.directive.js"></script>
+<script type="text/javascript" src="app/home/home.controller.js"></script>
+<script type="text/javascript" src="app/profile/profile.controller.js"></script>
+<script type="text/javascript" src="app/parser/parser.controller.js"></script>
+<script type="text/javascript" src="app/parser/parser.controller.detail.js"></script>
+<script type="text/javascript" src="app/recollect/recollect.controller.js"></script>
+<script type="text/javascript" src="app/recollect/recollect.controller.detail.js"></script>
+<script type="text/javascript" src="app/validation/validation.controller.js"></script>
+<script type="text/javascript" src="app/ping/ping.controller.js"></script>
+<script type="text/javascript" src="app/callback/callback.controller.js"></script>
+<script type="text/javascript" src="app/auth/auth.service.js"></script>
+
+<script type="text/javascript" src="app/factories/rest.factory.js"></script>
+<script type="text/javascript" src="app/factories/echoes.chart.factory.js"></script>
+<script type="text/javascript" src="app/services/restApiService.js"></script>
+
+<script type="text/javascript" src="node_modules/angular-uuid/angular-uuid.js"></script>
+<script type="text/javascript" src="node_modules/ng-table/bundles/ng-table.js"></script>
+<script type="text/javascript" src="node_modules/ng-dialog/js/ngDialog.min.js"></script>
+<script type="text/javascript" src="node_modules/angular-messages/angular-messages.js"></script>
+
+<script type="text/javascript" src="node_modules/chart.js/dist/Chart.min.js"></script>
+<script type="text/javascript" src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+
+</body>
+</html>
