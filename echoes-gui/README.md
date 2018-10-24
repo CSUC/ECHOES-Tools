@@ -45,7 +45,7 @@ Review setting and fill it with you configuration data.
 ```bash
 var AUTH0_CLIENT_ID='{CLIENT_ID}'; 
 var AUTH0_DOMAIN='{DOMAIN}'; 
-var AUTH0_CALLBACK_URL='http://localhost:3000/callback';
+var AUTH0_CALLBACK_URL='{CALLBACK}';
 var AUTH0_AUDIENCE='{API_IDENTIFIER}';
 ```
 Review setting and fill it with you configuration data.
