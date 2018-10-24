@@ -1,0 +1,123 @@
+<div id="container" class="container">
+    <div class="row">
+        <div ng-if="vm.data._size == 0"
+             ng-init="clickToOpen()">
+        </div>
+        <div class="panel panel-default"  ng-show="vm.data._size > 0">
+            <div class="panel-heading"><h3>Statistics</h3></div>
+            <div class="panel-body">
+                <canvas id="doughnut" class="chart chart-doughnut" chart-data="vm.chart.data"
+                        chart-labels="vm.chart.labels"
+                        chart-options="vm.chart.options" chart-colors="vm.chart.colors" height="100%"></canvas>
+            </div>
+        </div>
+
+        <div class="panel panel-default profile-area"  ng-show="vm.data._size > 0">
+            <div class="panel-heading">
+                <h3>{{vm.title}} <span class="badge badge-light">{{vm.data._size}}</span>
+                    <button type="button" class="btn btn-primary" ng-click="clickToOpen()">new</button>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table ng-table="vm.tableParams" class="table" show-filter="true">
+                    <tr ng-repeat="data in $data">
+                        <td title="'id'" filter="{ _id: 'text'}" sortable="'_id'">
+                            <a ui-sref="recollect-detail({_id: '{{data._id}}'})" ng-if="data.status == 'END' || data.status == 'ERROR'">{{data._id}}</a>
+                            <a ng-if="data.status != 'END' && data.status != 'ERROR'"
+                               ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
+                        </td>
+                        <td title="'host'" filter="{ host: 'text'}" sortable="'host'">
+                            {{data.host}}
+                        </td>
+                        <td title="'set'" filter="{ set: 'text'}" sortable="'set'">
+                            {{data.set}}
+                        </td>
+                        <td title="'metadataPrefix'" filter="{ metadataPrefix: 'text'}" sortable="'metadataPrefix'">
+                            {{data.metadataPrefix}}
+                        </td>
+                        <td title="'status'" filter="{ status: 'text'}" sortable="'status'">
+                            {{data.status}}
+                        </td>
+                        <td title="'timestamp'" filter="{ timestamp: 'text'}" sortable="'timestamp'">
+                            {{data.timestamp}}
+                        </td>
+                        <td title="'remove'">
+                            <a ng-click="remove(data._id)">
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="recollect.tpl.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">{{ngDialogData.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+            <!-- HOST -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.host.$pristine
+             || userForm.host.$invalid && userForm.host.$error.pattern || userForm.host.$invalid && userForm.host.$dirty}">
+                <label>host*</label>
+                <input type="text" name="host" class="form-control" ng-model="model.host" required
+                       ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/">
+                <p ng-show="userForm.host.$invalid && userForm.host.$error.required" class="help-block">host is required.</p>
+                <p ng-show="userForm.host.$invalid && userForm.host.$error.pattern" class="help-block">host not valid url.</p>
+            </div>
+
+            <!-- metadataPrefix -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.metadataPrefix.$pristine
+             || userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.pattern || userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$dirty}">
+                <label>metadataPrefix*</label>
+                <input type="text" name="metadataPrefix" class="form-control" ng-model="model.metadataPrefix" required
+                       ng-pattern="/^\w+/">
+                <p ng-show="userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.required" class="help-block">metadataPrefix is required.</p>
+                <p ng-show="userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.pattern" class="help-block">metadataPrefix not valid url.</p>
+            </div>
+
+            <!-- set -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.set.$pristine
+             || userForm.set.$invalid && userForm.set.$error.pattern || userForm.set.$invalid && userForm.set.$dirty}">
+                <label>set*</label>
+                <input type="text" name="set" class="form-control" ng-model="model.set" required>
+                <p ng-show="userForm.set.$invalid && userForm.set.$error.required" class="help-block">set is required.</p>
+            </div>
+
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+                    <th>key</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="property in tableProperties">
+                    <td>
+                        <input type="checkbox" ng-model="tableProperties.selected"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="property.key" required/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="property.value" required/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <input ng-hide="!tableProperties.length" type="button" class="btn btn-danger pull-right" ng-click="remove()" value="Remove">
+            <input type="submit" class="btn btn-primary addnew pull-right" value="Add New" ng-click="addNew()">
+
+
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+</script>
