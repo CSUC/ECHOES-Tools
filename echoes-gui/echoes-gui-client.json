@@ -1,0 +1,46 @@
+{
+  "apps":[
+    {
+      "name":"Auth0-Server",
+      "cwd":"${project.parent.basedir}/echoes-gui/echoes-gui-client",
+      "script":"./server.js"
+    },
+    {
+      "name":"Auth0 API",
+      "cwd":"${project.parent.basedir}/echoes-gui/echoes-gui-client",
+      "script":"./api.js"
+    },
+    {
+      "name":"RabbitMQ-Consumer",
+      "cwd":"${project.parent.basedir}/",
+      "script":"/usr/bin/java",
+      "args":[
+        "-jar",
+        "bin/echoes-gui-consumer-${echoes.gui.consumer.version}.jar"
+      ],
+      "env":{
+      },
+      "node_args":[
+      ],
+      "log_date_format":"YYYY-MM-DD HH:mm Z",
+      "exec_interpreter":"none",
+      "exec_mode":"fork"
+    },
+    {
+      "name":"Jetty-Server",
+      "cwd":"${project.parent.basedir}/",
+      "script":"/usr/bin/java",
+      "args":[
+        "-jar",
+        "bin/echoes-gui-server-${echoes.gui.server.version}.jar"
+      ],
+      "env":{
+      },
+      "node_args":[
+      ],
+      "log_date_format":"YYYY-MM-DD HH:mm Z",
+      "exec_interpreter":"none",
+      "exec_mode":"fork"
+    }
+  ]
+}
