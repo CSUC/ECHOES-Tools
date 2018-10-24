@@ -166,10 +166,10 @@
 		<metadata.schema.definitions.oaidc.version>1.1</metadata.schema.definitions.oaidc.version>
 		<metadata.schema.definitions.oaipmh.version>1.1</metadata.schema.definitions.oaipmh.version>
 
+		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<corelib.edm.definitions.version>2.6.6-SNAPSHOT</corelib.edm.definitions.version>
 
 		<jersey.version>2.27</jersey.version>
-		<maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
 		<cobertura.maven.plugin>2.7</cobertura.maven.plugin>
 		<junit.version>4.12</junit.version>
 		<log4j2.version>2.11.1</log4j2.version>
