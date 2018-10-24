@@ -77,12 +77,12 @@
 
             <dependency>
                 <groupId>org.csuc</groupId>
-                <artifactId>Recollect-Core</artifactId>
+                <artifactId>recollect-core</artifactId>
                 <version>${recollect.core.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.csuc</groupId>
-                <artifactId>Parser-Core</artifactId>
+                <artifactId>parser-core</artifactId>
                 <version>${parser.core.version}</version>
             </dependency>
             <dependency>

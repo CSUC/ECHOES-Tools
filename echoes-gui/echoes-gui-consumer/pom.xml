@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-consumer</artifactId>
-    <version>0.0.1</version>
+    <version>${echoes.gui.consumer.version}</version>
     <packaging>jar</packaging>
 
     <name>echoes-gui-consumer</name>
@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
-            <artifactId>Parser-Core</artifactId>
+            <artifactId>parser-core</artifactId>
         </dependency>
         <dependency>
             <groupId>args4j</groupId>
@@ -56,7 +56,7 @@
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
-            <artifactId>Recollect-Core</artifactId>
+            <artifactId>recollect-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

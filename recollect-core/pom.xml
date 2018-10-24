@@ -9,8 +9,8 @@
 		<version>${revision}</version>
 	</parent>
 
-	<artifactId>Recollect-Core</artifactId>
-	<version>1.3</version>
+	<artifactId>recollect-core</artifactId>
+	<version>${recollect.core.version}</version>
 
 	<name>Recollect</name>
 	<url>http://maven.apache.org</url>
@@ -79,27 +79,27 @@
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaipmh</artifactId>
-			<version>1.1</version>
+			<version>${metadata.schema.definitions.oaipmh.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-oaidc</artifactId>
-			<version>1.1</version>
+			<version>${metadata.schema.definitions.oaidc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-a2a</artifactId>
-			<version>1.1</version>
+			<version>${metadata.schema.definitions.a2a.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-ead</artifactId>
-			<version>1.1</version>
+			<version>${metadata.schema.definitions.ead.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>metadata-schema-definitions-memorix</artifactId>
-			<version>1.1</version>
+			<version>${metadata.schema.definitions.memorix.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jibx</groupId>
@@ -111,13 +111,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
-			<artifactId>EDM-Transformations</artifactId>
-			<version>1.3</version>
+			<artifactId>edm-transformations</artifactId>
+			<version>${edm.transformations.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
-			<artifactId>Binding-Core</artifactId>
-			<version>1.3</version>
+			<artifactId>binding-core</artifactId>
+			<version>${binding.core.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
 		<dependency>

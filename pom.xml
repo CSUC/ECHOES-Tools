@@ -12,13 +12,13 @@
 	<modules>
 		<module>europeana-parent-pom</module>
 		<module>corelib/corelib-edm-definitions</module>
-		<module>Parser-Core</module>
-		<module>sparql-Loader</module>
+		<module>parser-core</module>
+		<module>sparql-loader</module>
 		<module>metadata-schema-definitions</module>
-		<module>Recollect-Core</module>
-		<module>Validation-Core</module>
-		<module>EDM-Transformations</module>
-		<module>Binding-Core</module>
+		<module>recollect-core</module>
+		<module>validation-core</module>
+		<module>edm-transformations</module>
+		<module>binding-core</module>
 		<module>echoes-gui</module>
 	</modules>
 
@@ -85,7 +85,7 @@
 			<dependency>
 				<groupId>eu.europeana.corelib</groupId>
 				<artifactId>corelib-edm-definitions</artifactId>
-				<version>2.6.6-SNAPSHOT</version>
+				<version>${corelib.edm.definitions.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
@@ -152,11 +152,21 @@
 	<properties>
 		<revision>1.3.1</revision>
 
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.testTarget>1.8</maven.compiler.testTarget>
-		<maven.compiler.testSource>1.8</maven.compiler.testSource>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<binding.core.version>1.3</binding.core.version>
+		<edm.transformations.version>1.3</edm.transformations.version>
+		<parser.core.version>1.3</parser.core.version>
+		<recollect.core.version>1.3</recollect.core.version>
+		<sparql.loader.version>1.3</sparql.loader.version>
+		<validation.core.version>1.3</validation.core.version>
+
+		<metadata.schema.definitions.version>1.1</metadata.schema.definitions.version>
+		<metadata.schema.definitions.a2a.version>1.1</metadata.schema.definitions.a2a.version>
+		<metadata.schema.definitions.ead.version>1.1</metadata.schema.definitions.ead.version>
+		<metadata.schema.definitions.memorix.version>1.1</metadata.schema.definitions.memorix.version>
+		<metadata.schema.definitions.oaidc.version>1.1</metadata.schema.definitions.oaidc.version>
+		<metadata.schema.definitions.oaipmh.version>1.1</metadata.schema.definitions.oaipmh.version>
+
+		<corelib.edm.definitions.version>2.6.6-SNAPSHOT</corelib.edm.definitions.version>
 
 		<jersey.version>2.25.1</jersey.version>
 		<maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
@@ -173,7 +183,12 @@
 		<saxon.he.version>9.8.0-6</saxon.he.version>
 		<jibx.schema.version>1.2.6</jibx.schema.version>
 
-
 		<echoes.path>/tmp/echoes</echoes.path>
+
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.testTarget>1.8</maven.compiler.testTarget>
+		<maven.compiler.testSource>1.8</maven.compiler.testSource>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 </project>
