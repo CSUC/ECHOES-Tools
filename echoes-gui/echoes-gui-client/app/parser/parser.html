@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div ng-if="vm.data._size == 0"
+                 ng-init="clickToOpen()">
+            </div>
+            <div class="panel panel-default" ng-show="vm.data._size > 0">
+                <div class="panel-heading"><h3>Statistics</h3></div>
+                <div class="panel-body">
+                    <canvas id="doughnut" class="chart chart-doughnut" chart-data="vm.chart.data" chart-labels="vm.chart.labels"
+                            chart-options="vm.chart.options" chart-colors="vm.chart.colors" height="100%"></canvas>
+                </div>
+            </div>
+
+            <div class="panel panel-default profile-area" ng-show="vm.data._size > 0">
+                <div class="panel-heading col-xs-12">
+                    <h3>{{vm.title}} <span class="badge badge-light">{{vm.data._size}}</span>
+                        <button type="button" class="btn btn-primary" ng-click="clickToOpen()">new</button>
+                    </h3>
+                </div>
+                <div class="panel-body col-xs-12">
+                    <table ng-table="vm.tableParams" class="table" show-filter="true">
+                        <tr ng-repeat="data in $data">
+                            <td title="'id'" filter="{ _id: 'text'}" sortable="'_id'">
+                                <a ng-if="data.status != 'ERROR'" ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }" target="_self" href="/rest/api/parser/user/{{vm.profile.sub}}/id/{{data._id}}/download">{{data._id}}</a>
+                                <a ui-sref="parser-detail({_id: '{{data._id}}'})" ng-if="data.status == 'ERROR'">{{data._id}}</a>
+
+                            </td>
+                            <td title="'format'" filter="{ format: 'text'}" sortable="'format'">
+                                {{data.format}}
+                            </td>
+                            <td title="'method'" filter="{ method: 'text'}" sortable="'method'">
+                                {{data.method}}
+                            </td>
+                            <td title="'type'" filter="{ type: 'text'}" sortable="'type'">
+                                {{data.type}}
+                            </td>
+                            <td title="'input'" filter="{ value: 'text'}" sortable="'value'">
+                                {{data.value}}
+                            </td>
+                            <td title="'status'" filter="{ status: 'text'}" sortable="'status'">
+                                {{data.status}}
+                            </td>
+                            <td title="'timestamp'" filter="{ timestamp: 'text'}" sortable="'timestamp'">
+                                {{data.timestamp}}
+                            </td>
+                            <td title="'remove'">
+                                <a ng-click="remove(data._id)">
+                                    <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="parser.tpl.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">{{ngDialogData.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+            <!-- METHOD -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.method.$invalid && userForm.method.$pristine }">
+                <label>Method*</label>
+                <select name="method" class="form-control" ng-model="model.method" ng-options="value for value in options.methods" required></select>
+                <p ng-show="userForm.method.$invalid && userForm.method.$error.required" class="help-block">method is required.</p>
+            </div>
+
+            <!-- Type -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.type.$invalid && userForm.type.$pristine}">
+                <label>Type*</label>
+                <select name="type" class="form-control" ng-model="model.type" ng-options="value for value in options.types" required></select>
+                <p ng-show="userForm.type.$invalid && userForm.type.$error.required" class="help-block">type is required.</p>
+            </div>
+
+            <!-- Format -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.format.$invalid && userForm.format.$pristine }">
+                <label>Format*</label>
+                <select name="format" class="form-control" ng-model="model.format" ng-options="value for value in options.formats" required></select>
+                <p ng-show="userForm.format.$invalid && userForm.format.$error.required" class="help-block">format is required.</p>
+            </div>
+
+            <!-- VALUE -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.text.$pristine
+             || userForm.text.$invalid && userForm.text.$error.pattern || userForm.text.$invalid && userForm.text.$dirty}">
+                <label>Input*</label>
+                <input type="text" name="text" class="form-control" ng-model="model.text" required
+                       ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/">
+                <p ng-show="userForm.text.$invalid && userForm.text.$error.required" class="help-block">Input is required.</p>
+                <p ng-show="userForm.text.$invalid && userForm.text.$error.pattern" class="help-block">Input not valid url.</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+</script>

@@ -1,0 +1,55 @@
+{
+  "name": "echoes-gui-client",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Albert Martínez",
+  "email": "albert.martinez@csuc.cat",
+  "description": "echoes-gui",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CSUC/ECHOES-Tools/echoes-gui/echoes-gui-client"
+  },
+  "scripts": {
+    "start": "npm-run-all --parallel server api",
+    "server": "node server.js",
+    "api": "node api.js",
+    "test": "npm-check"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.5",
+    "angular": "^1.6.1",
+    "angular-auth0": "^3.0.0",
+    "angular-bootstrap-form-validation": "^0.9.7",
+    "angular-chart.js": "^1.1.1",
+    "angular-jwt": "^0.1.8",
+    "angular-messages": "1.7.0",
+    "angular-ui-bootstrap": "^2.5.6",
+    "angular-uuid": "0.0.4",
+    "auth0-js": "^9.0.1",
+    "body-parser": "^1.18.3",
+    "bootstrap": "^3.3.7",
+    "chart.js": "2.7.2",
+    "cors": "^2.8.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
+    "express-jwt-authz": "^1.0.0",
+    "jwks-rsa": "^1.1.1",
+    "method-override": "^2.3.10",
+    "ng-dialog": "1.4.0",
+    "ng-table": "3.0.1",
+    "npm-run-all": "^4.0.0",
+    "request": "^2.87.0",
+    "requestify": "^0.2.5",
+    "util": "^0.11.0"
+  },
+  "devDependencies": {
+    "npm-check": "^5.5.2"
+  }
+}
