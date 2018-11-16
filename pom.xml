@@ -20,6 +20,7 @@
 		<module>edm-transformations</module>
 		<module>binding-core</module>
 		<module>echoes-gui</module>
+		<module>rdf-format</module>
 	</modules>
 
 	<build>

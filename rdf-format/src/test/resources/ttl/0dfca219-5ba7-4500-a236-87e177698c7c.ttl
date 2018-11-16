@@ -1,0 +1,116 @@
+@prefix ore:   <http://www.openarchives.org/ore/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdaGr2: <http://rdvocab.info/ElementsGr2/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix edm:   <http://www.europeana.eu/schemas/edm/> .
+
+<Place:Sneek>  a        edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Sneek" .
+
+<TimeSpan:1877>  a      edm:TimeSpan ;
+        skos:prefLabel  "1877" .
+
+<Agent:Person:d64c2b28-d953-4803-a470-1f4e19c667c5>
+        a                edm:Agent ;
+        dc:identifier    "Person:d64c2b28-d953-4803-a470-1f4e19c667c5" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:hasMet       <Place:Kolderwolde> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:altLabel    "Buma" ;
+        skos:prefLabel   "Hantje" .
+
+<TimeSpan:1934>  a      edm:TimeSpan ;
+        skos:prefLabel  "1934" .
+
+<Place:Westdongeradeel>
+        a               edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Westdongeradeel" .
+
+<Agent:Person:35fb4da5-ff44-4264-a834-32b1fd2e0ea4>
+        a                edm:Agent ;
+        dc:identifier    "Person:35fb4da5-ff44-4264-a834-32b1fd2e0ea4" ;
+        rdaGr2:gender    "Vrouw" ;
+        edm:hasMet       <Place:Bozum> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:altLabel    "Visser" ;
+        skos:prefLabel   "Joukje" .
+
+<Place:Kolderwolde>  a  edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Kolderwolde" .
+
+<Place:Bozum>  a        edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Bozum" .
+
+<Concept:other:Vermeld>
+        a               skos:Concept ;
+        skos:prefLabel  "other:Vermeld" ;
+        skos:related    <Agent:Person:fb4388dc-8e12-c716-08b3-7df8dfcf9e3f> , <Agent:Person:35fb4da5-ff44-4264-a834-32b1fd2e0ea4> , <Agent:Person:d64c2b28-d953-4803-a470-1f4e19c667c5> .
+
+<ProvidedCHO:58d4ea15-ffac-7ac9-87a2-a144e4b80c9f>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:fb4388dc-8e12-c716-08b3-7df8dfcf9e3f> ;
+        dc:coverage       <Place:Westdongeradeel> ;
+        dc:date           "1934-12-12" ;
+        dc:description    "Archiefnaam: Notarieel archief - Tresoar, Deel: 129129, Periode: 1934" ;
+        dc:identifier     "58d4ea15-ffac-7ac9-87a2-a144e4b80c9f" ;
+        dc:language       "nl" ;
+        dc:title          "Minuut-akten 1934" ;
+        dc:type           "Notariële archieven" ;
+        dcterms:temporal  <TimeSpan:1934> ;
+        edm:isRelatedTo   <Concept:Notari%C3%ABlearchieven> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/58d4ea15-ffac-7ac9-87a2-a144e4b80c9f>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:58d4ea15-ffac-7ac9-87a2-a144e4b80c9f> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Paesens> , <TimeSpan:1934> , <ProvidedCHO:58d4ea15-ffac-7ac9-87a2-a144e4b80c9f> , <Place:Westdongeradeel> , <Agent:Person:fb4388dc-8e12-c716-08b3-7df8dfcf9e3f> , <Concept:other:Vermeld> , <Concept:Notari%C3%ABlearchieven> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/58d4ea15-ffac-7ac9-87a2-a144e4b80c9f> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:58d2b87a-5e80-4239-8174-63c3a160cab9>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:d64c2b28-d953-4803-a470-1f4e19c667c5> , <Agent:Person:35fb4da5-ff44-4264-a834-32b1fd2e0ea4> ;
+        dc:coverage       <Place:Sneek> ;
+        dc:date           "1877-04-10" ;
+        dc:description    "Archiefnaam: Notarieel archief - Tresoar, Deel: 121003, Periode: 1877" ;
+        dc:identifier     "58d2b87a-5e80-4239-8174-63c3a160cab9" ;
+        dc:language       "nl" ;
+        dc:title          "Minuut-akten 1877" ;
+        dc:type           "Notariële archieven" ;
+        dcterms:temporal  <TimeSpan:1877> ;
+        edm:isRelatedTo   <Concept:Notari%C3%ABlearchieven> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/58d2b87a-5e80-4239-8174-63c3a160cab9>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:58d2b87a-5e80-4239-8174-63c3a160cab9> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Kolderwolde> , <Place:Bozum> , <Agent:Person:35fb4da5-ff44-4264-a834-32b1fd2e0ea4> , <Place:Sneek> , <TimeSpan:1877> , <Concept:Notari%C3%ABlearchieven> , <ProvidedCHO:58d2b87a-5e80-4239-8174-63c3a160cab9> , <Concept:other:Vermeld> , <Agent:Person:d64c2b28-d953-4803-a470-1f4e19c667c5> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/58d2b87a-5e80-4239-8174-63c3a160cab9> ;
+        edm:provider              "Tresoar" .
+
+<Place:Paesens>  a      edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Paesens" .
+
+<Agent:Person:fb4388dc-8e12-c716-08b3-7df8dfcf9e3f>
+        a                edm:Agent ;
+        dc:identifier    "Person:fb4388dc-8e12-c716-08b3-7df8dfcf9e3f" ;
+        rdaGr2:gender    "Man" ;
+        edm:hasMet       <Place:Paesens> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:altLabel    "Jong" ;
+        skos:prefLabel   "Age" .
+
+<Concept:Notari%C3%ABlearchieven>
+        a               skos:Concept ;
+        skos:prefLabel  "Notariële archieven" .
