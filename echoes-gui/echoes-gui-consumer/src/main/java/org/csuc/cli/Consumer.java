@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.parser.ParserQueueConsumer;
 import org.csuc.recollect.RecollectQueueConsumer;
-import org.csuc.typesafe.consumer.ConsumerConfig;
+import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.zip.ZipQueueConsumer;
 import org.csuc.zip.ZipScheduled;
@@ -24,7 +24,7 @@ public class Consumer {
 
     private static ArgsBean bean;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         bean = new ArgsBean(args);
         CmdLineParser parser = new CmdLineParser(bean);
         try {
@@ -34,7 +34,7 @@ public class Consumer {
             System.exit(1);
         }
 
-        RabbitMQConfig rabbitMQConfig = new ConsumerConfig(null).getRabbitMQConfig();
+        RabbitMQConfig rabbitMQConfig = new ProducerAndConsumerConfig(null).getRabbitMQConfig();
         logger.info(rabbitMQConfig);
 
         try {

@@ -190,7 +190,7 @@
 				<filtering>true</filtering>
 				<excludes>
 					<exclude>**/*.json</exclude>
-					<exclude>**/*.xslt</exclude>
+					<!--<exclude>**/*.xslt</exclude>-->
 					<!-- <exclude>log4j2.xml</exclude> -->
 				</excludes>
 			</resource>

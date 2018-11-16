@@ -46,20 +46,16 @@ public class A2A2EDMTest {
 
     @Test
     public void transformation() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = a2a.transformation(null);
-            assertNull(transformations);
+            a2a.transformation(null, null);
         }catch(Exception e){}
     }
 
 
     @Test
     public void transformation1() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = a2a.transformation(null, null, null);
-            assertNull(transformations);
+            a2a.transformation(null, null, null);
         }catch(Exception e){}
     }
 

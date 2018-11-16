@@ -58,16 +58,12 @@ public class MEMORIX2EDMTest {
 
     /**
      *
-     * {@link MEMORIX2EDM#transformation(String)}.
      *
      * @throws Exception
      */
     @Test
     public void transformation() throws Exception {
-        XSLTTransformations transformations = memorix.transformation(xslt.getPath());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        memorix.transformation(xslt.getPath());
     }
 
 

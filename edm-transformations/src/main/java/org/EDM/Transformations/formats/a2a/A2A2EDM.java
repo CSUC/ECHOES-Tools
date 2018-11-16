@@ -3,19 +3,19 @@
  */
 package org.EDM.Transformations.formats.a2a;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Stream;
 
 import nl.mindbus.a2a.*;
 import org.EDM.Transformations.formats.EDM;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
+import org.EDM.Transformations.formats.utils.FormatType;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -148,7 +148,7 @@ public class A2A2EDM extends RDF implements EDM {
                         HasMet residence = new HasMet();
 
                         residence.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.COUNTRY.value(),
                                         StringUtils.deleteWhitespace(country.getValue())))
                                 .toString());
                         a.getHasMetList().add(residence);
@@ -158,7 +158,7 @@ public class A2A2EDM extends RDF implements EDM {
                         HasMet residence = new HasMet();
 
                         residence.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.PROVINCE.value(),
                                         StringUtils.deleteWhitespace(province.getValue())))
                                 .toString());
                         a.getHasMetList().add(residence);
@@ -168,7 +168,7 @@ public class A2A2EDM extends RDF implements EDM {
                         HasMet residence = new HasMet();
 
                         residence.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.STATE.value(),
                                         StringUtils.deleteWhitespace(state.getValue())))
                                 .toString());
                         a.getHasMetList().add(residence);
@@ -178,7 +178,7 @@ public class A2A2EDM extends RDF implements EDM {
                         HasMet residence = new HasMet();
 
                         residence.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),
                                         StringUtils.deleteWhitespace(pl.getValue())))
                                 .toString());
                         a.getHasMetList().add(residence);
@@ -190,7 +190,7 @@ public class A2A2EDM extends RDF implements EDM {
                         Resource resourcePlaceOfBirth = new Resource();
                         resourcePlaceOfBirth.setResource(IriToUri
                                 .iriToUri(String.format("%s:%s",
-                                        org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),StringUtils.deleteWhitespace(birthPlace.getValue())))
+                                        org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),StringUtils.deleteWhitespace(birthPlace.getValue())))
                                 .toString());
                         placeOfBirth.setResource(resourcePlaceOfBirth);
                         placeOfBirth.setString("");
@@ -260,7 +260,7 @@ public class A2A2EDM extends RDF implements EDM {
                         Coverage coverage = new Coverage();
                         Resource coverageResource = new Resource();
                         coverageResource.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.COUNTRY.value(),
                                         StringUtils.deleteWhitespace(country.getValue())))
                                 .toString());
                         coverage.setResource(coverageResource);
@@ -276,7 +276,7 @@ public class A2A2EDM extends RDF implements EDM {
                         Coverage coverage = new Coverage();
                         Resource coverageResource = new Resource();
                         coverageResource.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.PROVINCE.value(),
                                         StringUtils.deleteWhitespace(province.getValue())))
                                 .toString());
                         coverage.setResource(coverageResource);
@@ -292,7 +292,7 @@ public class A2A2EDM extends RDF implements EDM {
                         Coverage coverage = new Coverage();
                         Resource coverageResource = new Resource();
                         coverageResource.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.STATE.value(),
                                         StringUtils.deleteWhitespace(state.getValue())))
                                 .toString());
                         coverage.setResource(coverageResource);
@@ -308,7 +308,7 @@ public class A2A2EDM extends RDF implements EDM {
                         Coverage coverage = new Coverage();
                         Resource coverageResource = new Resource();
                         coverageResource.setResource(IriToUri
-                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                                .iriToUri(String.format("%s:%s", org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),
                                         StringUtils.deleteWhitespace(pl.getValue())))
                                 .toString());
                         coverage.setResource(coverageResource);
@@ -509,44 +509,44 @@ public class A2A2EDM extends RDF implements EDM {
 				present.forEach((CtPerson person) -> {
 					Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace p) ->{
 						Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.COUNTRY.value(),
                                     ((String x) -> new HashSet<String>())).add(country.getValue());
 						});
 
 						Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PROVINCE.value(),
                                     (x -> new HashSet<String>())).add(province.getValue());
 						});
 
 						Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.STATE.value(),
                                     ((String x) -> new HashSet<String>())).add(state.getValue());
 						});
 
 						Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),
                                     ((String x) -> new HashSet<String>())).add(pl.getValue());
 						});
 					});
 
                     Optional.ofNullable(person.getBirthPlace()).ifPresent((CtDetailPlace p) -> {
                         Optional.ofNullable(p.getCountry()).ifPresent((CtTransString country) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.COUNTRY.value(),
                                     ((String x) -> new HashSet<String>())).add(country.getValue());
                         });
 
                         Optional.ofNullable(p.getProvince()).ifPresent((CtTransString province) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PROVINCE.value(),
                                     ((String x) -> new HashSet<String>())).add(province.getValue());
                         });
 
                         Optional.ofNullable(p.getState()).ifPresent((CtTransString state) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.STATE.value(),
                                     ((String x) -> new HashSet<String>())).add(state.getValue());
                         });
 
                         Optional.ofNullable(p.getPlace()).ifPresent((CtTransString pl) ->{
-                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                            mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),
                                     ((String x) -> new HashSet<String>())).add(pl.getValue());
                         });
 					});
@@ -555,22 +555,22 @@ public class A2A2EDM extends RDF implements EDM {
 
             Optional.ofNullable(a2a.getSource()).map(CtSource::getSourcePlace).ifPresent((CtPlace present) ->{
                 Optional.ofNullable(present.getCountry()).ifPresent((CtTransString country) ->{
-                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.COUNTRY.value(),
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.COUNTRY.value(),
                             ((String x) -> new HashSet<String>())).add(country.getValue());
                 });
 
                 Optional.ofNullable(present.getProvince()).ifPresent((CtTransString province) ->{
-                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PROVINCE.value(),
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PROVINCE.value(),
                             ((String x) -> new HashSet<String>())).add(province.getValue());
                 });
 
                 Optional.ofNullable(present.getState()).ifPresent((CtTransString state) ->{
-                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.STATE.value(),
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.STATE.value(),
                             ((String x) -> new HashSet<String>())).add(state.getValue());
                 });
 
                 Optional.ofNullable(present.getPlace()).ifPresent((CtTransString pl) ->{
-                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.a2a.PlaceType.PLACE.value(),
+                    mapPlace.computeIfAbsent(org.EDM.Transformations.formats.utils.PlaceType.PLACE.value(),
                             ((String x) -> new HashSet<String>())).add(pl.getValue());
                 });
             });
@@ -779,17 +779,17 @@ public class A2A2EDM extends RDF implements EDM {
 	}
 
     @Override
-    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+    public void transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+    public void transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt) throws Exception {
+    public void transformation(String xslt) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for A2A2EDM!");
     }
 
@@ -801,9 +801,49 @@ public class A2A2EDM extends RDF implements EDM {
     }
 
     @Override
+    public void creation(FormatType formatType) throws Exception {
+        if (!Objects.equals(this, new RDF())){
+            File file = Files.createTempFile(identifier, ".xml").toFile();
+
+            try{
+                JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
+                        false, new FileOutputStream(file), RDF.class, -1);
+
+                Model model = RDFDataMgr.loadModel(file.toString());
+
+                RDFDataMgr.write(
+                        IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+                        model,
+                        formatType.lang());
+            }finally {
+                file.delete();
+            }
+        }
+    }
+
+    @Override
     public void creation(Charset encoding, boolean alone, OutputStream outs) {
         if (!Objects.equals(this, new RDF()))
             JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class, -1);
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs, FormatType formatType) throws Exception {
+        if (!Objects.equals(this, new RDF())){
+            if(formatType.equals(FormatType.RDFXML))   creation(encoding, alone, outs);
+            else{
+                File file = Files.createTempFile(identifier, ".xml").toFile();
+                try{
+                    JibxMarshall.marshall(this, encoding.toString(), alone, new FileOutputStream(file), RDF.class, -1);
+
+                    Model model = RDFDataMgr.loadModel(file.toString());
+
+                    RDFDataMgr.write(outs, model, formatType.lang());
+                }finally {
+                    file.delete();
+                }
+            }
+        }
     }
 
     @Override

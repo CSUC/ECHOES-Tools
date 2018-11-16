@@ -54,30 +54,23 @@ public class EAD2EDMTest {
 
     /**
      *
-     * {@link EAD2EDM#transformation(String)}.
      *
      * @throws Exception
      */
     @Test
     public void transformation() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(xslt.getPath());
     }
 
     /**
-     *
-     * {@link EAD2EDM#transformation(String, OutputStream, Map)}.
      *
      * @throws Exception
      */
     @Test
     public void transformation1() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(
+                xslt.getPath(),
+                new FileOutputStream(tmp), properties());
     }
 
     /**
@@ -136,10 +129,7 @@ public class EAD2EDMTest {
      */
     @Test
     public void validateSchema() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
 
         JibxUnMarshall jibx = ead.validateSchema(new FileReader(tmp), RDF.class);
 
@@ -155,10 +145,7 @@ public class EAD2EDMTest {
      */
     @Test
     public void validateSchema1() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
 
         JibxUnMarshall jibx = ead.validateSchema(new FileReader(tmp), "name", RDF.class);
 
@@ -174,10 +161,7 @@ public class EAD2EDMTest {
      */
     @Test
     public void validateSchema2() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
 
         JibxUnMarshall jibx = ead.validateSchema(new FileInputStream(tmp), UTF_8, RDF.class);
 
@@ -193,12 +177,9 @@ public class EAD2EDMTest {
      */
     @Test
     public void validateSchema3() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
+        ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
 
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
-
-        JibxUnMarshall jibx = ead.validateSchema(new FileInputStream(tmp), "name", UTF_8, RDF.class);
+                JibxUnMarshall jibx = ead.validateSchema(new FileInputStream(tmp), "name", UTF_8, RDF.class);
 
         assertNotNull(jibx);
         assertNotNull(jibx.getElement());
@@ -207,10 +188,7 @@ public class EAD2EDMTest {
 
     @Test
     public void modify() throws Exception {
-        XSLTTransformations transformations = ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
-        assertNotNull(transformations);
-
-        transformations.transformationsFromSource(new StreamSource(new FileInputStream(xml)));
+        ead.transformation(xslt.getPath(), new FileOutputStream(tmp), properties());
 
         JibxUnMarshall jibx = ead.validateSchema(new FileInputStream(tmp), "name", UTF_8, RDF.class);
 

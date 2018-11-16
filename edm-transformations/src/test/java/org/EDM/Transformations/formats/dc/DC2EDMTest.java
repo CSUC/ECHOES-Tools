@@ -45,31 +45,25 @@ public class DC2EDMTest {
 
     /**
      *
-     * {@link DC2EDM#transformation(String)}.
      *
      * @throws Exception
      */
     @Test
     public void transformation() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = dc.transformation(null);
-            assertNull(transformations);
+            dc.transformation(null,  null);
         }catch(Exception e){}
     }
 
     /**
      *
-     * {@link DC2EDM#transformation(String, OutputStream, Map)}.
      *
      * @throws Exception
      */
     @Test
     public void transformation1() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = dc.transformation(null, null, null);
-            assertNull(transformations);
+            dc.transformation(null, null, null);
         }catch(Exception e){}
     }
 

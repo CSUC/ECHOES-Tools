@@ -1,5 +1,7 @@
 package org.EDM.Transformations.formats.utils;
 
+import eu.europeana.corelib.definitions.jibx.LiteralType;
+import org.apache.jena.riot.Lang;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import static org.junit.Assert.*;
 
 public class RomanNumeralTest {
 
-    private static Logger logger = LogManager.getLogger(RomanNumeralTest.class);
+    //private static Logger logger = LogManager.getLogger(RomanNumeralTest.class);
 
     @Test
     public void testRomanNumeralTest() throws IOException {

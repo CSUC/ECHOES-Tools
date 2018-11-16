@@ -11,12 +11,15 @@ import eu.europeana.corelib.definitions.jibx.RDF;
 import eu.europeana.corelib.definitions.jibx.ResourceType;
 import isbn._1_931666_22_9.Ead;
 import org.EDM.Transformations.formats.EDM;
+import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
+
+import javax.xml.transform.Source;
 
 /**
  * @author amartinez
@@ -44,19 +47,19 @@ public class EAD2EDM implements EDM {
     }
 
     @Override
-    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+    public void transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
         String xsl = getClass().getClassLoader().getResource("ead/ead2edm.xsl").toExternalForm();
-        return new XSLTTransformations(xsl, out, xsltProperties);
+        new XSLTTransformations(xsl, out, xsltProperties);
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
-        return new XSLTTransformations(xslt, out, xsltProperties);
+    public void transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        new XSLTTransformations(xslt, out, xsltProperties);
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt) throws Exception {
-        return new XSLTTransformations(xslt, IoBuilder.forLogger(EAD2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties);
+    public void transformation(String xslt) throws Exception {
+        new XSLTTransformations(xslt, IoBuilder.forLogger(EAD2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties);
     }
 
     @Override
@@ -65,8 +68,18 @@ public class EAD2EDM implements EDM {
     }
 
     @Override
+    public void creation(FormatType formatType) throws IOException {
+        //
+    }
+
+    @Override
     public void creation(Charset encoding, boolean alone, OutputStream outs) {
         throw new IllegalArgumentException("creation is not valid for EAD2EDM!");
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs, FormatType formatType) throws Exception {
+        //
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.Recollect.Core.handler;
 
 import static org.Recollect.Core.parameters.Parameters.parameters;
 import static org.Recollect.Core.util.Verb.Type.GetRecord;
+import static org.Recollect.Core.util.Verb.Type.ListRecords;
 
 import java.io.InputStream;
 import java.util.Objects;
