@@ -54,6 +54,8 @@ public class App {
             System.exit(1);
         }
 
+        bean.promptEnterKey();
+
         logger.info(String.format("start %s %s", logger.getName(), now));
 
         try {
@@ -62,9 +64,8 @@ public class App {
                     try {
                         Files.walk(bean.getInput())
                                 .filter(Files::isRegularFile)
-                                //.filter(f -> f.toString().endsWith(".xml"))
                                 .parallel()
-                                .forEach((Path f) -> httpPost(bean.getContentType(), f.toFile()));
+                                .forEach((Path f) -> httpPost(bean.getContentType().lang().getContentType().getContentType(), f.toFile()));
                     } catch (IOException e) {
                         logger.error(e);
                     }
@@ -88,9 +89,9 @@ public class App {
 
         HttpPost httppost;
         if(Objects.nonNull(bean.getContext_uri()))
-            httppost = new HttpPost(String.format("%s/namespace/%s/sparql?context-uri=%s", bean.getHostname(), bean.getNamespace(), bean.getContext_uri()));
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql?context-uri=%s", bean.getHostname(), bean.getNamespace(), bean.getContext_uri()));
         else
-            httppost = new HttpPost(String.format("%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
 
 
 

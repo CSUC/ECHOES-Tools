@@ -1,8 +1,8 @@
 package org.csuc.sparql.loader.cli;
 
-import org.apache.jena.riot.RDFFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.util.FormatType;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.util.Scanner;
 
 /**
  * @author amartinez
@@ -34,8 +35,8 @@ public class ArgsBean {
     @Option(name = "-i", aliases = "--input", usage = "file or folder input", required = true)
     private Path input;
 
-    @Option(name = "--contentType", usage = "content type")
-    private String contentType = RDFFormat.RDFXML_ABBREV.toString();
+    @Option(name = "--content-type", usage = "content type")
+    private FormatType contentType = FormatType.RDFXML;
 
     @Option(name = "-n", aliases = "--namespace", usage = "namespace")
     private String namespace = "kb";
@@ -47,7 +48,7 @@ public class ArgsBean {
     private Integer threads = 1;
 
     @Option(name = "--context-uri", usage = "virtual graph")
-    private String context_uri = StandardCharsets.UTF_8.name();
+    private String context_uri;
 
 
     public ArgsBean(String[] args) {
@@ -124,11 +125,11 @@ public class ArgsBean {
         this.hostname = hostname;
     }
 
-    public String getContentType() {
+    public FormatType getContentType() {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(FormatType contentType) {
         this.contentType = contentType;
     }
 
@@ -165,5 +166,11 @@ public class ArgsBean {
         logger.info("   Charset         :   {}", charset);
         logger.info("   Delete files    :   {}", deleteFiles);
         logger.info("   Threads         :   {}", threads);
+    }
+
+    public void promptEnterKey() {
+        System.out.println("Press \"ENTER\" to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }

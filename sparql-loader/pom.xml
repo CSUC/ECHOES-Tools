@@ -23,7 +23,7 @@
         <httpcomponents.httpclient.version>4.5.5</httpcomponents.httpclient.version>
         <httpcomponents.httpcore.version>4.4.9</httpcomponents.httpcore.version>
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
-        <jena.arq.version>3.5.0</jena.arq.version>
+        <jena.arq.version>3.9.0</jena.arq.version>
     </properties>
 
     <dependencies>
@@ -88,6 +88,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>rdf-format</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
