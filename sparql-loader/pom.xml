@@ -13,7 +13,7 @@
 
     <groupId>org.csuc</groupId>
     <artifactId>sparql-loader</artifactId>
-    <version>${sparql.loader.version}</version>
+    <version>1.3.4</version>
     <packaging>jar</packaging>
 
     <name>Sparql-Loader</name>
