@@ -67,10 +67,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
         <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-arq</artifactId>
+            <groupId>org.csuc</groupId>
+            <artifactId>rdf-format</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -78,7 +79,7 @@
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
