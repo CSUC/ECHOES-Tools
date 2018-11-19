@@ -64,8 +64,7 @@ public class Jaxb implements Download {
         EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
-            edm.creation();
-            //edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), formatType);
+            edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), formatType);
 
         logger.info(String.format("Donwload item (%s) identifier %s",
                 jaxbElement.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));

@@ -184,10 +184,6 @@ public class Main {
             getRecordParameters.withIdentifier(bean.getIdentifier());
             getRecordParameters.withMetadataFormatPrefix(bean.getMetadataPrefix());
 
-            if (Objects.nonNull(bean.getOut()))
-                pathWithSetSpec = Files.createDirectories(bean.getOut());
-
-            //FactoryDownload.createDownloadRecordType(recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),xslt);
             Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
             Observable<Download> observable =
                     FactoryDownload.createDownloadRecordType(
@@ -195,21 +191,37 @@ public class Main {
                             bean.getSchema()
                     );
 
-            observable
-                    .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-                    .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
-                    .flatMap(g -> g.observeOn(Schedulers.io()))
-                    .observeOn(Schedulers.io())
-                    .subscribe(
-                            (Download l) -> {
-                                logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
-                            },
-                            e -> logger.error("Error: " + e),
-                            () -> logger.info(String.format("Completed %s: %s", getRecordParameters.getIdentifier(), TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
-                    );
-            Thread.sleep(3000);
+            if (Objects.nonNull(bean.getOut())) {
+                pathWithSetSpec = Files.createDirectories(bean.getOut());
 
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .groupBy(i -> batch.getAndIncrement() % bean.getThreads())
+                        .flatMap(g -> g.observeOn(Schedulers.io()))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+            }else{
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(bean.getArguments(), bean.getFormat());
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+            }
         }catch(Exception e) {
             logger.error(e);
         }

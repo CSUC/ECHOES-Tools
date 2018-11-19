@@ -19,7 +19,7 @@
 		<module>validation-core</module>
 		<module>edm-transformations</module>
 		<module>binding-core</module>
-		<!--<module>echoes-gui</module>-->
+		<module>echoes-gui</module>
 		<module>rdf-format</module>
 	</modules>
 
@@ -156,29 +156,35 @@
 			<dependency>
 				<groupId>org.apache.jena</groupId>
 				<artifactId>apache-jena-libs</artifactId>
-				<version>3.9.0</version>
+				<version>${org.apache.jena.version}</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.jena</groupId>
 				<artifactId>jena-core</artifactId>
-				<version>3.9.0</version>
+				<version>${org.apache.jena.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.jena</groupId>
 				<artifactId>jena-arq</artifactId>
-				<version>3.9.0</version>
+				<version>${org.apache.jena.version}</version>
 			</dependency>
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena-csv</artifactId>
-                <version>3.9.0</version>
+                <version>${org.apache.jena.version}</version>
             </dependency>
 			<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-iri -->
 			<dependency>
 				<groupId>org.apache.jena</groupId>
 				<artifactId>jena-iri</artifactId>
-				<version>3.9.0</version>
+				<version>${org.apache.jena.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-osgi -->
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-osgi</artifactId>
+				<version>${org.apache.jena.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.squareup.moshi/moshi -->
 			<dependency>
@@ -230,6 +236,7 @@
 		<typesafe.config.version>1.3.3</typesafe.config.version>
 		<moshi.version>1.6.0</moshi.version>
 		<amqp.client.version>5.2.0</amqp.client.version>
+		<org.apache.jena.version>3.9.0</org.apache.jena.version>
 
 		<echoes.path>/tmp/echoes</echoes.path>
 

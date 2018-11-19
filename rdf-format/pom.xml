@@ -47,17 +47,16 @@
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-osgi -->
         <dependency>
             <groupId>org.apache.jena</groupId>
-            <artifactId>apache-jena-libs</artifactId>
-            <type>pom</type>
-            <version>3.9.0</version>
+            <artifactId>jena-osgi</artifactId>
+            <version>${org.apache.jena.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-csv -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-csv</artifactId>
-            <version>3.9.0</version>
         </dependency>
     </dependencies>
 
