@@ -7,13 +7,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-public class ConsumerConfigTest {
+public class ProducerAndConsumerConfigTest {
 
-    private static Logger logger = LogManager.getLogger(ConsumerConfigTest.class);
+    private static Logger logger = LogManager.getLogger(ProducerAndConsumerConfigTest.class);
 
     @Test
     public void getRabbitMQConfig() {
-        RabbitMQConfig rabbitMQConfig = new ConsumerConfig(null).getRabbitMQConfig();
+        RabbitMQConfig rabbitMQConfig = new ProducerAndConsumerConfig(null).getRabbitMQConfig();
 
         assertNotNull(rabbitMQConfig);
 

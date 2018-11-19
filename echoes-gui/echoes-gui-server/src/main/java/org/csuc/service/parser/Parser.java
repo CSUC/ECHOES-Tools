@@ -8,6 +8,8 @@ import org.csuc.dao.ParserErrorDAO;
 import org.csuc.dao.impl.ParserDAOImpl;
 import org.csuc.dao.impl.ParserErrorDAOImpl;
 import org.csuc.entities.ParserError;
+import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
+import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.utils.Status;
 import org.csuc.utils.parser.ParserFormat;
 import org.csuc.utils.parser.ParserMethod;
@@ -16,8 +18,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
-import org.csuc.typesafe.producer.ProducerConfig;
-import org.csuc.typesafe.producer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.authorization.Authoritzation;
@@ -43,7 +43,7 @@ public class Parser {
     private static Logger logger = LogManager.getLogger(Parser.class);
 
 
-    private RabbitMQConfig config = new ProducerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
+    private RabbitMQConfig config = new ProducerAndConsumerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
 
     @Context
     private UriInfo uriInfo;

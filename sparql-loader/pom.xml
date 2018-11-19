@@ -82,7 +82,6 @@
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-arq</artifactId>
-            <version>${jena.arq.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

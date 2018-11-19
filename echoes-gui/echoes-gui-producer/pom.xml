@@ -48,6 +48,11 @@
             <groupId>com.squareup.moshi</groupId>
             <artifactId>moshi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>echoes-gui-config</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

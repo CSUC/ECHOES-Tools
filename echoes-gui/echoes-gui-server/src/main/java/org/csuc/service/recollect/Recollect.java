@@ -5,13 +5,13 @@ import com.mongodb.WriteResult;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
+import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.utils.Status;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
-import org.csuc.typesafe.producer.ProducerConfig;
-import org.csuc.typesafe.producer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.authorization.Authoritzation;
@@ -38,7 +38,7 @@ public class Recollect {
     private static Logger logger = LogManager.getLogger(Recollect.class);
 
 
-    private RabbitMQConfig config = new ProducerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
+    private RabbitMQConfig config = new ProducerAndConsumerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
 
     @Context
     private UriInfo uriInfo;

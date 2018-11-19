@@ -1,4 +1,4 @@
-package org.csuc.typesafe.producer;
+package org.csuc.typesafe.consumer;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
@@ -13,13 +13,13 @@ import java.util.Objects;
 /**
  * @author amartinez
  */
-public class ProducerConfig extends ConfigBeanFactory {
+public class ProducerAndConsumerConfig extends ConfigBeanFactory {
 
-    private static Logger logger = LogManager.getLogger(ProducerConfig.class);
+    private static Logger logger = LogManager.getLogger(ProducerAndConsumerConfig.class);
 
     private Path filename;
 
-    public ProducerConfig(Path filename) {
+    public ProducerAndConsumerConfig(Path filename) {
         this.filename = filename;
     }
 

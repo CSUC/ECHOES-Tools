@@ -1,19 +1,23 @@
 package org.Recollect.Core.cli;
 
+import org.EDM.Transformations.formats.utils.SchemaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kohsuke.args4j.*;
+import org.csuc.util.FormatType;
+import org.kohsuke.args4j.Argument;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 import org.kohsuke.args4j.spi.MapOptionHandler;
 import org.openarchives.oai._2.VerbType;
 
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author amartinez
@@ -22,45 +26,55 @@ public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
-    @Option(name = "-h", aliases = "--help", help = true, required = false)
+    @Option(name = "-h", aliases = "--help", help = true)
     private boolean help = false;
 
+    @Option(name = "--host", usage = "host", required = true)
     private String host;
 
     @Option(name = "-v", aliases = "--verb", usage = "verb ", required = true)
     private VerbType verb;
 
-    @Option(name = "-i", aliases = "--identifier", usage = "identifier ", required = false)
+    @Option(name = "-i", aliases = "--identifier", usage = "identifier ")
     private String identifier;
 
-    @Option(name = "-m", aliases = "--metadataPrefix", usage = "metadataPrefix ", required = false)
+    @Option(name = "-m", aliases = "--metadataPrefix", usage = "metadataPrefix ")
     private String metadataPrefix;
 
-    @Option(name = "-f", aliases = "--from", usage = "from ", required = false)
+    @Option(name = "-f", aliases = "--from", usage = "from ")
     private String from;
 
-    @Option(name = "-u", aliases = "--until", usage = "until ", required = false)
+    @Option(name = "-u", aliases = "--until", usage = "until ")
     private String until;
 
-    @Option(name = "-s", aliases = "--set", usage = "set ", required = false)
+    @Option(name = "-s", aliases = "--set", usage = "set ")
     private String set;
 
-    @Option(name = "-g", aliases = "--granularity", usage = "granularity", required = false)
+    @Option(name = "-g", aliases = "--granularity", usage = "granularity")
     private String granularity;
 
-    @Option(name = "-r", aliases = "--resumptionToken", usage = "resumptionToken", required = false)
+    @Option(name = "-r", aliases = "--resumptionToken", usage = "resumptionToken")
     private String resumptionToken;
 
-    @Argument(index = 0, multiValued = true, required = false, handler = MapOptionHandler.class,
+    @Argument(index = 0, multiValued = true, handler = MapOptionHandler.class,
             metaVar = "{edmType | provider | rights | language | dataProvider ... }")
     private Map<String, String> arguments = new HashMap<>();
 
-    @Option(name = "-o", aliases = "--out", required = false, usage = "out")
+    @Option(name = "-o", aliases = "--out", usage = "out")
     private Path out;
 
-    private Path xslt;
+//    @Option(name = "-x", aliases = "--xslt", usage = "xslt")
+//    private Path xslt;
 
+    @Option(name = "-t", aliases = "--threads", usage = "threads", handler = IntOptionHandler.class, metaVar = "<int>")
     private Integer threads = 1;
+
+    @Option(name = "--format", usage = "format out")
+    private FormatType format = FormatType.RDFXML;
+
+    @Option(name = "--schema", usage="SCHEMA", required = true)
+    private SchemaType schema;
+
 
     public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -97,7 +111,7 @@ public class ArgsBean {
         return host;
     }
 
-    @Option(name = "--host", usage = "host", required = true)
+
     public void setHost(String host) throws MalformedURLException, URISyntaxException {
         URL url = new URL(host);
         url.toURI();
@@ -176,15 +190,15 @@ public class ArgsBean {
         this.out = out;
     }
 
-    public String getXslt() {
-        return Objects.isNull(xslt) ? null : xslt.toString();
-    }
+//    public String getXslt() {
+//        return Objects.isNull(xslt) ? null : xslt.toString();
+//    }
 
-    @Option(name = "-x", aliases = "--xslt", required = false, usage = "xslt")
-    public void setXslt(Path xslt) throws FileNotFoundException {
-        if (Files.notExists(xslt)) throw new FileNotFoundException("File not exist!");
-        this.xslt = xslt;
-    }
+
+//    public void setXslt(Path xslt) throws FileNotFoundException {
+//        if (Files.notExists(xslt)) throw new FileNotFoundException("File not exist!");
+//        this.xslt = xslt;
+//    }
 
     public Map<String, String> getArguments() {
         return arguments;
@@ -199,12 +213,26 @@ public class ArgsBean {
         return threads;
     }
 
-    @Option(name = "-t", aliases = "--threads", usage = "threads", required = false, handler = IntOptionHandler.class, metaVar = "<int>")
     public void setThreads(Integer threads) {
         if(threads == 0)    throw new IllegalThreadStateException("Threads > 0");
         this.threads = threads;
     }
 
+    public FormatType getFormat() {
+        return format;
+    }
+
+    public void setFormat(FormatType format) {
+        this.format = format;
+    }
+
+    public SchemaType getSchema() {
+        return schema;
+    }
+
+    public void setSchema(SchemaType schema) {
+        this.schema = schema;
+    }
 
     public boolean isHelp() {
         return help;
@@ -224,8 +252,10 @@ public class ArgsBean {
         logger.info("   Set                 :   {}", set);
         logger.info("   Granularity         :   {}", granularity);
         logger.info("   resumptionToken     :   {}", resumptionToken);
-        logger.info("   XSLT                :   {}", xslt);
+//        logger.info("   XSLT                :   {}", xslt);
         logger.info("   out                 :   {}", out);
+        logger.info("   RDFFormat           :   {}", format);
+        logger.info("   Schema              :   {}", schema);
         logger.info("   Threads             :   {}", threads);
         logger.info("   Edm properties      :   {}", arguments);
     }
