@@ -1,0 +1,3218 @@
+@prefix ore:   <http://www.openarchives.org/ore/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdaGr2: <http://rdvocab.info/ElementsGr2/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix edm:   <http://www.europeana.eu/schemas/edm/> .
+
+<Agent:Person:2c71b291-0a7a-4b6f-43d3-fbc087d8f8bc>
+        a                edm:Agent ;
+        dc:identifier    "Person:2c71b291-0a7a-4b6f-43d3-fbc087d8f8bc" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Haselhorst" ;
+        skos:prefLabel   "Elisabeth" .
+
+<Agent:Person:33a2c247-7536-337e-b36f-3f8b8666896a>
+        a                edm:Agent ;
+        dc:identifier    "Person:33a2c247-7536-337e-b36f-3f8b8666896a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Zondervan" ;
+        skos:prefLabel   "Joukje" .
+
+<Agent:Person:d7674786-c233-6107-8e40-452097d24753>
+        a                edm:Agent ;
+        dc:identifier    "Person:d7674786-c233-6107-8e40-452097d24753" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Terveer" ;
+        skos:prefLabel   "Franciskus Antonius" .
+
+<Agent:Person:8e5d99c0-49bb-f378-f09b-b60bbd45ac80>
+        a                edm:Agent ;
+        dc:identifier    "Person:8e5d99c0-49bb-f378-f09b-b60bbd45ac80" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Leeuwen" ;
+        skos:prefLabel   "Johanna Elisabeth" .
+
+<http://allefriezen.nl/zoeken/deeds/ec5109f3-277a-48d7-4b77-8b79e07a06f0>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec5109f3-277a-48d7-4b77-8b79e07a06f0> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <ProvidedCHO:ec5109f3-277a-48d7-4b77-8b79e07a06f0> , <Concept:Bevolkingsregister> , <TimeSpan:1922> , <Agent:Person:4584cae5-8703-197a-9f39-58cd623103b4> , <Concept:Geregistreerde> , <TimeSpan:1904> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/7f3ec2f8-3fe1-8f3c-3ddb-2be85e0ca2b5.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec5109f3-277a-48d7-4b77-8b79e07a06f0> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:da4630f5-1b40-3186-67ae-2817898bfb0a>
+        a                edm:Agent ;
+        dc:identifier    "Person:da4630f5-1b40-3186-67ae-2817898bfb0a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Smits" ;
+        skos:prefLabel   "Roelof Jan" .
+
+<Agent:Person:1f4559f1-a419-c552-8792-410334b35915>
+        a                    edm:Agent ;
+        dc:identifier        "Person:1f4559f1-a419-c552-8792-410334b35915" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Heerenveen> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Makkinga" ;
+        skos:prefLabel       "Dirkje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <Agent:Person:ede79dfc-9476-340a-9d22-d05f7213bf50> , <ProvidedCHO:ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5> , <Concept:Geregistreerde> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/27922b0f-279f-b3a7-1d6f-4189234af50a.jpg> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:10e7fdc2-7043-4606-9b96-b4eabf48c211>
+        a                edm:Agent ;
+        dc:identifier    "Person:10e7fdc2-7043-4606-9b96-b4eabf48c211" ;
+        rdaGr2:gender    "Vrouw" ;
+        edm:hasMet       <Place:Beetsterzwaag> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:altLabel    "Sytsema" ;
+        skos:prefLabel   "Sytske" .
+
+<Agent:Person:cd8391d7-b8cb-393a-2ebc-b0afaebe07b5>
+        a                edm:Agent ;
+        dc:identifier    "Person:cd8391d7-b8cb-393a-2ebc-b0afaebe07b5" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Eelkje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/977d69a9-3bb0-a1e5-1db9-9f70bbb4768f.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/e345a2c8-6953-d0ee-9f9f-951376569fc0.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:fdabde6c-7ae2-f5e4-2d0b-ef6bbd1f0aab>
+        a                edm:Agent ;
+        dc:identifier    "Person:fdabde6c-7ae2-f5e4-2d0b-ef6bbd1f0aab" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Schwaner" ;
+        skos:prefLabel   "Anna Louisa" .
+
+<Agent:Person:8d0892f8-7981-8a18-3cc2-46d030326df4>
+        a                    edm:Agent ;
+        dc:identifier        "Person:8d0892f8-7981-8a18-3cc2-46d030326df4" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Menaldum> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Hoekstra" ;
+        skos:prefLabel       "Neeltje Tjallings" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4501b9-212f-0edd-db45-dd0272aa7905>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4501b9-212f-0edd-db45-dd0272aa7905> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/278defe7-8fe1-6fba-63f3-5a755aec4763.jpg> , <TimeSpan:1904> , <Agent:Person:fdabde6c-7ae2-f5e4-2d0b-ef6bbd1f0aab> , <Agent:Person:745137d9-2ddf-2ccf-07ed-0164e95270d1> , <Concept:Bevolkingsregister> , <Agent:Person:cd8391d7-b8cb-393a-2ebc-b0afaebe07b5> , <ProvidedCHO:ec4501b9-212f-0edd-db45-dd0272aa7905> , <Agent:Person:ddcd0164-f012-f410-c79c-228e5cb9dda6> , <Place:Leeuwarden> , <Agent:Person:493b1a9b-79c0-ebca-6976-a1d3252001f6> , <Agent:Person:2edab8e1-9bf2-9fd0-a82b-9f37d76b702a> , <Agent:Person:ce71d07c-1437-4460-564f-89e0c557b216> , <Concept:Geregistreerde> , <Agent:Person:610b9faf-8be4-64e7-691d-b86fbe2b984a> , <Agent:Person:dd85391b-3508-b235-7875-e71f5f25e3c9> , <Agent:Person:4a5bec0c-8fb0-9c1f-3d8e-1ba547e8f81a> , <TimeSpan:1876> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4501b9-212f-0edd-db45-dd0272aa7905> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec445e67-6451-03b5-6537-b26807e8b1b4>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec445e67-6451-03b5-6537-b26807e8b1b4> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:21328f79-8ab1-67ec-528e-994790c0a9c0> , <Place:Leeuwarden> , <ProvidedCHO:ec445e67-6451-03b5-6537-b26807e8b1b4> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/52351690-45ec-ea66-2391-328416c06b49.jpg> , <Concept:Geregistreerde> , <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec445e67-6451-03b5-6537-b26807e8b1b4> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec516dec-e853-b14b-dff7-71868616acfa>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:38ebd9a3-b6cd-da5c-ae36-65716f9ebc37> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4627, Periode: 1859-1876" ;
+        dc:identifier     "ec516dec-e853-b14b-dff7-71868616acfa" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/27922b0f-279f-b3a7-1d6f-4189234af50a.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec4cffa5-e37e-f675-0bd4-1a61c6677b7e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:f85a288a-04d7-069b-b629-caf3e412b5fa> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4596, Periode: 1848-1859" ;
+        dc:identifier     "ec4cffa5-e37e-f675-0bd4-1a61c6677b7e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:3365c722-62dd-8c05-f87d-932f48c772ed>
+        a                edm:Agent ;
+        dc:identifier    "Person:3365c722-62dd-8c05-f87d-932f48c772ed" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Freeve" ;
+        skos:prefLabel   "Johanna Martha" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4947e2d9-2c41-b4fc-0a44-0404c70f4b8d.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec47c4c5-6364-7a97-8c2f-a7412703b1ea>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec47c4c5-6364-7a97-8c2f-a7412703b1ea> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <TimeSpan:1848> , <ProvidedCHO:ec47c4c5-6364-7a97-8c2f-a7412703b1ea> , <TimeSpan:1859> , <Agent:Person:7f97d89f-3edf-ed99-6886-46a963a4718a> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/45866e08-0a96-799a-a832-3357030c3426.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec47c4c5-6364-7a97-8c2f-a7412703b1ea> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec445e67-6451-03b5-6537-b26807e8b1b4>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:21328f79-8ab1-67ec-528e-994790c0a9c0> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4680, Periode: 1859-1876" ;
+        dc:identifier     "ec445e67-6451-03b5-6537-b26807e8b1b4" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4501b9-212f-0edd-db45-dd0272aa7905>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:fdabde6c-7ae2-f5e4-2d0b-ef6bbd1f0aab> , <Agent:Person:dd85391b-3508-b235-7875-e71f5f25e3c9> , <Agent:Person:610b9faf-8be4-64e7-691d-b86fbe2b984a> , <Agent:Person:745137d9-2ddf-2ccf-07ed-0164e95270d1> , <Agent:Person:4a5bec0c-8fb0-9c1f-3d8e-1ba547e8f81a> , <Agent:Person:cd8391d7-b8cb-393a-2ebc-b0afaebe07b5> , <Agent:Person:2edab8e1-9bf2-9fd0-a82b-9f37d76b702a> , <Agent:Person:493b1a9b-79c0-ebca-6976-a1d3252001f6> , <Agent:Person:ddcd0164-f012-f410-c79c-228e5cb9dda6> , <Agent:Person:ce71d07c-1437-4460-564f-89e0c557b216> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-01-01" , "1904-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4693, Periode: 1876-1904" ;
+        dc:identifier     "ec4501b9-212f-0edd-db45-dd0272aa7905" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1876 - 1904" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:41da787f-2a0f-166f-faa4-5ee86bc9f775>
+        a                edm:Agent ;
+        dc:identifier    "Person:41da787f-2a0f-166f-faa4-5ee86bc9f775" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Geeske" .
+
+<http://allefriezen.nl/zoeken/deeds/ec47a9dd-c55a-9659-5f65-5e6338558736>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec47a9dd-c55a-9659-5f65-5e6338558736> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/04ebccbf-38e6-0c7b-42ec-466d40be4883.jpg> , <TimeSpan:1904> , <Place:Leeuwarden> , <TimeSpan:1876> , <ProvidedCHO:ec47a9dd-c55a-9659-5f65-5e6338558736> , <Agent:Person:744133b7-a4fb-8b30-c4e8-ef68c5796c68> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec47a9dd-c55a-9659-5f65-5e6338558736> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <TimeSpan:1922> , <Concept:Bevolkingsregister> , <TimeSpan:1904> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/76353444-8809-75b0-695e-06b36492df9a.jpg> , <ProvidedCHO:ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c> , <Agent:Person:a759da67-d08c-70a4-63c1-1e0aaf791e77> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:27e3809a-72e0-5aa3-b1d9-70d309d257e6>
+        a                    edm:Agent ;
+        dc:identifier        "Person:27e3809a-72e0-5aa3-b1d9-70d309d257e6" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Wal" ;
+        skos:prefLabel       "Antje" .
+
+<ProvidedCHO:ec43b86c-c085-c372-21f3-4a6582446750>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:2c71b291-0a7a-4b6f-43d3-fbc087d8f8bc> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4591, Periode: 1848-1859" ;
+        dc:identifier     "ec43b86c-c085-c372-21f3-4a6582446750" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Place:Rottevalle>  a   edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Rottevalle" .
+
+<Agent:Person:276ac23d-9f25-8537-6382-25cefe635e45>
+        a                edm:Agent ;
+        dc:identifier    "Person:276ac23d-9f25-8537-6382-25cefe635e45" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Grilk" ;
+        skos:prefLabel   "Jantje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/af132532-d521-a844-c6c0-75f87b813be2.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec47d754-a25b-cd05-c48b-e19616bebbcf>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec47d754-a25b-cd05-c48b-e19616bebbcf> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec47d754-a25b-cd05-c48b-e19616bebbcf> , <Agent:Person:13a5484e-8023-42f9-4ce6-462196d70a60> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <TimeSpan:1922> , <Place:Leeuwarden> , <TimeSpan:1904> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/283f1343-cd57-e36f-652b-60a9989d38da.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec47d754-a25b-cd05-c48b-e19616bebbcf> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/67cc2927-211a-d311-a346-e76fd59ae2b4.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/7d1d0665-8a74-8491-3330-f6d85fc07069.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec511bf4-bece-502c-5564-54bf3e9b15e3>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:af715276-eaa1-e43b-f7ba-861d494d63e7> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 5027, Periode: 1922-1939" ;
+        dc:identifier     "ec511bf4-bece-502c-5564-54bf3e9b15e3" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1939> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<TimeSpan:1848>  a      edm:TimeSpan ;
+        skos:prefLabel  "1848" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4d8f95bd-bedb-9d2c-e178-4d8b2a5321c3.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/31c0165a-e682-8a67-c1f0-6bd6957bf58e.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:f85a288a-04d7-069b-b629-caf3e412b5fa>
+        a                edm:Agent ;
+        dc:identifier    "Person:f85a288a-04d7-069b-b629-caf3e412b5fa" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Grand" ;
+        skos:prefLabel   "Kaatje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/98ed42c8-624a-9a99-3196-dfb44e3544f6.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:fa601c77-7304-f8d7-3805-593bc27f4716>
+        a                edm:Agent ;
+        dc:identifier    "Person:fa601c77-7304-f8d7-3805-593bc27f4716" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Dirk" .
+
+<ProvidedCHO:ec47d754-a25b-cd05-c48b-e19616bebbcf>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:13a5484e-8023-42f9-4ce6-462196d70a60> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4899, Periode: 1904-1922" ;
+        dc:identifier     "ec47d754-a25b-cd05-c48b-e19616bebbcf" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:dbc2f68d-826a-db5e-5a83-51b0338ae86a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4617, Periode: 1859-1876" ;
+        dc:identifier     "ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4f6ec6-0762-cafc-8242-dba6cabdeb9d>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:5c97b21e-0bdf-1f59-2bb9-cee5da94d000> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4637, Periode: 1859-1876" ;
+        dc:identifier     "ec4f6ec6-0762-cafc-8242-dba6cabdeb9d" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4c4c97-26a3-580e-1c1c-d8759508aa4f>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4c4c97-26a3-580e-1c1c-d8759508aa4f> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <TimeSpan:1922> , <ProvidedCHO:ec4c4c97-26a3-580e-1c1c-d8759508aa4f> , <TimeSpan:1904> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/bd7b7eeb-9fb0-5e86-d21f-62352ccbf7bb.jpg> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <Agent:Person:301ef865-67f7-ab3c-e507-56fa21bca91c> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4c4c97-26a3-580e-1c1c-d8759508aa4f> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec46c58a-1adc-02c8-280a-c3fcfa1b986a>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec46c58a-1adc-02c8-280a-c3fcfa1b986a> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:ab143c1c-dbd8-75e7-62af-17baf2f345b5> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/006ec339-a86f-ef61-f935-6db00d51b2cd.jpg> , <TimeSpan:1859> , <ProvidedCHO:ec46c58a-1adc-02c8-280a-c3fcfa1b986a> , <TimeSpan:1876> , <Concept:Geregistreerde> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec46c58a-1adc-02c8-280a-c3fcfa1b986a> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/17e7fa0d-8281-1306-b27f-06c7465dde70.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4d9e02-d27a-90c8-5b41-cf376eae043b>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4d9e02-d27a-90c8-5b41-cf376eae043b> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <Agent:Person:afff3fd4-9ff9-e333-853d-bdaca8101625> , <Concept:Geregistreerde> , <TimeSpan:1922> , <ProvidedCHO:ec4d9e02-d27a-90c8-5b41-cf376eae043b> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/47377acd-7aaa-8a60-4572-d6fa74652b18.jpg> , <TimeSpan:1904> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4d9e02-d27a-90c8-5b41-cf376eae043b> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec508cff-ded4-d390-a433-1b021a26d53b>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec508cff-ded4-d390-a433-1b021a26d53b> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/bfda3dc3-fe97-cd4c-0ed7-a25a5ac73660.jpg> , <Concept:Geregistreerde> , <TimeSpan:1922> , <ProvidedCHO:ec508cff-ded4-d390-a433-1b021a26d53b> , <Agent:Person:924aa629-8f73-4410-3627-cb1d623d5a88> , <TimeSpan:1939> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4d8f95bd-bedb-9d2c-e178-4d8b2a5321c3.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec508cff-ded4-d390-a433-1b021a26d53b> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec44ff38-6641-146a-b2aa-2ac7767f9786>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec44ff38-6641-146a-b2aa-2ac7767f9786> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <TimeSpan:1922> , <Place:Leeuwarden> , <Agent:Person:00f60e02-7a3d-55f8-4a98-f45f0d70966a> , <ProvidedCHO:ec44ff38-6641-146a-b2aa-2ac7767f9786> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4a55219b-634b-0164-2078-03be5ad66312.jpg> , <TimeSpan:1904> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec44ff38-6641-146a-b2aa-2ac7767f9786> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec50304b-fc70-e068-f40f-e1a9c72324c3>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec50304b-fc70-e068-f40f-e1a9c72324c3> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <Agent:Person:07f8ddd4-b046-9d1b-e09b-cd6b49413617> , <TimeSpan:1848> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec50304b-fc70-e068-f40f-e1a9c72324c3> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/218acd59-6c38-9376-67bc-9b7022f5124b.jpg> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec50304b-fc70-e068-f40f-e1a9c72324c3> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:bd86cea1-7066-9c84-9bd9-901f01f84943>
+        a                edm:Agent ;
+        dc:identifier    "Person:bd86cea1-7066-9c84-9bd9-901f01f84943" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Vaartjes" ;
+        skos:prefLabel   "Tietje" .
+
+<Agent:Person:fe6ab0a1-1228-973f-9c4c-060e420b9ec0>
+        a                edm:Agent ;
+        dc:identifier    "Person:fe6ab0a1-1228-973f-9c4c-060e420b9ec0" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Helmig" ;
+        skos:prefLabel   "Agatha" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/57ab00e8-798a-7930-0e29-3cae3d66e9c5.jpg>
+        a       edm:WebResource .
+
+<Place:Opsterland>  a   edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Opsterland" .
+
+<http://allefriezen.nl/zoeken/deeds/ec5036d0-c7ec-428f-9e7f-3d392cfbf560>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec5036d0-c7ec-428f-9e7f-3d392cfbf560> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/9d1d82ad-4326-f3c4-4609-80ae8f04d05c.jpg> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec5036d0-c7ec-428f-9e7f-3d392cfbf560> , <Concept:Geregistreerde> , <TimeSpan:1848> , <Place:Leeuwarden> , <Agent:Person:cbee0c49-53d0-be36-7f67-ce9684ef6c60> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec5036d0-c7ec-428f-9e7f-3d392cfbf560> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/a91a6edc-5151-8d28-fcb0-2244cfb4add0.jpg> , <TimeSpan:1859> , <Concept:Geregistreerde> , <Agent:Person:d0ed205e-2d26-d974-2d4e-986abe36246e> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec46c58a-1adc-02c8-280a-c3fcfa1b986a>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:ab143c1c-dbd8-75e7-62af-17baf2f345b5> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4638, Periode: 1859-1876" ;
+        dc:identifier     "ec46c58a-1adc-02c8-280a-c3fcfa1b986a" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec508cff-ded4-d390-a433-1b021a26d53b>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:924aa629-8f73-4410-3627-cb1d623d5a88> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 5031, Periode: 1922-1939" ;
+        dc:identifier     "ec508cff-ded4-d390-a433-1b021a26d53b" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1939> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/a3e73658-d88d-d36d-8e4b-ff12b3a6c10d.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec507e12-cbc8-7ef8-c764-781394bf5636>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:fe6ab0a1-1228-973f-9c4c-060e420b9ec0> , <Agent:Person:c7d88df4-d73b-a1e7-a8cc-504b57629946> , <Agent:Person:33a2c247-7536-337e-b36f-3f8b8666896a> , <Agent:Person:e4453180-1746-d128-fd9b-3c6d66d47e50> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 5003, Periode: 1922-1939" ;
+        dc:identifier     "ec507e12-cbc8-7ef8-c764-781394bf5636" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1939> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec44ff38-6641-146a-b2aa-2ac7767f9786>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:00f60e02-7a3d-55f8-4a98-f45f0d70966a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Schippers 1904 - 1922, Bron: boek, Deel: 4950, Periode: 1904-1922" ;
+        dc:identifier     "ec44ff38-6641-146a-b2aa-2ac7767f9786" ;
+        dc:language       "nl" ;
+        dc:title          "Schippers 1904 - 1922 5" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:c99091d2-3af1-02ba-5faa-65064600911e>
+        a                edm:Agent ;
+        dc:identifier    "Person:c99091d2-3af1-02ba-5faa-65064600911e" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Hendrik" .
+
+<ProvidedCHO:ec5036d0-c7ec-428f-9e7f-3d392cfbf560>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:cbee0c49-53d0-be36-7f67-ce9684ef6c60> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4588, Periode: 1848-1859" ;
+        dc:identifier     "ec5036d0-c7ec-428f-9e7f-3d392cfbf560" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:13a5484e-8023-42f9-4ce6-462196d70a60>
+        a                edm:Agent ;
+        dc:identifier    "Person:13a5484e-8023-42f9-4ce6-462196d70a60" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Schuit" ;
+        skos:prefLabel   "Harmen" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:5b1f6585-a4e6-2f58-0597-8170b8bc3f8d> , <Concept:Bevolkingsregister> , <Agent:Person:14e9d081-67cb-2b75-8f11-4959d9ff8f65> , <ProvidedCHO:ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/cc34cc8e-a323-5a05-b133-6241d1ec3a60.jpg> , <Concept:Geregistreerde> , <TimeSpan:1922> , <Agent:Person:dc89b885-1b06-04b7-3521-c7d9344f6f30> , <Place:Leeuwarden> , <Agent:Person:d55b1bf9-d545-ed66-866c-2fbf6b96fe39> , <TimeSpan:1939> , <Agent:Person:bc4cf23a-bd45-87c1-f5b1-8f96bb5b26e6> , <Agent:Person:276ac23d-9f25-8537-6382-25cefe635e45> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:2f1e512b-6263-fbcf-0485-7fe3f7d55bae> , <Agent:Person:89320e14-55ba-4aba-8715-ebdda9db34b4> , <Agent:Person:d3347256-1380-d230-c1c4-4a2552ad2672> , <Agent:Person:d9ff834e-0d44-9f72-b54d-2a3aea823264> , <Agent:Person:fba5776f-9bbc-6273-80f7-42174b463306> , <Agent:Person:0015a7a3-a5e2-b907-2206-9c540aa47182> , <Agent:Person:f21f8156-1fb9-f482-1452-a6a94352810a> , <Agent:Person:fa601c77-7304-f8d7-3805-593bc27f4716> , <Agent:Person:ef567f44-676e-1633-44e9-40d3a31c1906> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-01-01" , "1904-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4737, Periode: 1876-1904" ;
+        dc:identifier     "ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1876 - 1904" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec438b26-443a-b932-2fb0-2ca2c973f44d>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:90fd486c-a23b-f320-47d3-406bec035c76> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4886, Periode: 1904-1922" ;
+        dc:identifier     "ec438b26-443a-b932-2fb0-2ca2c973f44d" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4bdf1c-e938-615c-3487-257522795203>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4bdf1c-e938-615c-3487-257522795203> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:24bc4a70-8399-5df1-0ca2-f1e8c670550a> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec4bdf1c-e938-615c-3487-257522795203> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <Agent:Person:e767915d-712b-b288-b2c0-1435f087215b> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/98ed42c8-624a-9a99-3196-dfb44e3544f6.jpg> , <TimeSpan:1876> , <TimeSpan:1904> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4bdf1c-e938-615c-3487-257522795203> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:d3347256-1380-d230-c1c4-4a2552ad2672>
+        a                edm:Agent ;
+        dc:identifier    "Person:d3347256-1380-d230-c1c4-4a2552ad2672" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Willem" .
+
+<Place:Heerenveen>  a   edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Heerenveen" .
+
+<Agent:Person:dc89b885-1b06-04b7-3521-c7d9344f6f30>
+        a                edm:Agent ;
+        dc:identifier    "Person:dc89b885-1b06-04b7-3521-c7d9344f6f30" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Grilk" ;
+        skos:prefLabel   "Cornelia Trijntje" .
+
+<TimeSpan:1843>  a      edm:TimeSpan ;
+        skos:prefLabel  "1843" .
+
+<Place:Emden,Duitsland>
+        a               edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Emden, Duitsland" .
+
+<Agent:Person:d55b1bf9-d545-ed66-866c-2fbf6b96fe39>
+        a                edm:Agent ;
+        dc:identifier    "Person:d55b1bf9-d545-ed66-866c-2fbf6b96fe39" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Grilk" ;
+        skos:prefLabel   "Jan Gerrit" .
+
+<http://allefriezen.nl/zoeken/deeds/ec5067ca-d20b-ec31-3474-c2f4aacf3b1e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec5067ca-d20b-ec31-3474-c2f4aacf3b1e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/c83de633-f670-6193-9aa9-7d571c394abd.jpg> , <TimeSpan:1922> , <Place:Leeuwarden> , <ProvidedCHO:ec5067ca-d20b-ec31-3474-c2f4aacf3b1e> , <Concept:Bevolkingsregister> , <Agent:Person:d7674786-c233-6107-8e40-452097d24753> , <Concept:Geregistreerde> , <TimeSpan:1904> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec5067ca-d20b-ec31-3474-c2f4aacf3b1e> ;
+        edm:provider              "Tresoar" .
+
+<TimeSpan:1939>  a      edm:TimeSpan ;
+        skos:prefLabel  "1939" .
+
+<Agent:Person:e767915d-712b-b288-b2c0-1435f087215b>
+        a                edm:Agent ;
+        dc:identifier    "Person:e767915d-712b-b288-b2c0-1435f087215b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Wiersma" ;
+        skos:prefLabel   "Klaas" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4a3d51-ae6d-1da9-a930-cb8c38f7c890>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4a3d51-ae6d-1da9-a930-cb8c38f7c890> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:c99091d2-3af1-02ba-5faa-65064600911e> , <ProvidedCHO:ec4a3d51-ae6d-1da9-a930-cb8c38f7c890> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/3576631b-9b58-619d-9591-89535867e1a4.jpg> , <Agent:Person:35c775b3-8940-f1fc-6770-f74bca99e50b> , <Agent:Person:41da787f-2a0f-166f-faa4-5ee86bc9f775> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> , <Agent:Person:a73f8625-7868-fb64-e693-f602de676d30> , <TimeSpan:1922> , <Agent:Person:412d207a-eb67-d8fa-c569-edc3707f075e> , <Agent:Person:77004f48-af2f-4266-5ee8-029fa184718b> , <Agent:Person:306bd858-1602-e9cc-5935-f9f15264d87a> , <Agent:Person:abac2141-e135-ed88-883f-9f199089494e> , <TimeSpan:1939> , <Agent:Person:a62130c2-4403-3827-0fe9-8d9934f7b3bd> , <Agent:Person:e93ebe43-5948-7763-8ee1-dff3b10d5bd3> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4a3d51-ae6d-1da9-a930-cb8c38f7c890> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:7a0123d4-c329-eac8-3966-b2b8efac3eaf>
+        a                edm:Agent ;
+        dc:identifier    "Person:7a0123d4-c329-eac8-3966-b2b8efac3eaf" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Hoogterp" ;
+        skos:prefLabel   "Maria" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/a9b3a5ae-6080-d6ae-0264-9d1394a8961b.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:d6be88d1-b5e0-80e2-57e3-ac8894b0fb54>
+        a                edm:Agent ;
+        dc:identifier    "Person:d6be88d1-b5e0-80e2-57e3-ac8894b0fb54" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kuipers" ;
+        skos:prefLabel   "Aukje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/1769577f-5a29-c9f6-ac7b-2d78c03d39a4.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:35c775b3-8940-f1fc-6770-f74bca99e50b>
+        a                edm:Agent ;
+        dc:identifier    "Person:35c775b3-8940-f1fc-6770-f74bca99e50b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Geertje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec452881-4621-d1d3-bb3d-e665027561af>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec452881-4621-d1d3-bb3d-e665027561af> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <Concept:Geregistreerde> , <TimeSpan:1922> , <Concept:Bevolkingsregister> , <Agent:Person:13f863f9-18c7-bc7a-b811-10b8e6c1a50d> , <TimeSpan:1904> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/db40978b-0e1c-007e-b425-be4b664637bd.jpg> , <ProvidedCHO:ec452881-4621-d1d3-bb3d-e665027561af> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec452881-4621-d1d3-bb3d-e665027561af> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4d5583-8a5e-050a-1d27-a9c3dcb552ed>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4d5583-8a5e-050a-1d27-a9c3dcb552ed> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <ProvidedCHO:ec4d5583-8a5e-050a-1d27-a9c3dcb552ed> , <Place:Leeuwarden> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/83a5fa52-2941-7566-c328-10382f20c5ce.jpg> , <TimeSpan:1904> , <Concept:Bevolkingsregister> , <Agent:Person:da4630f5-1b40-3186-67ae-2817898bfb0a> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4d5583-8a5e-050a-1d27-a9c3dcb552ed> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:7f97d89f-3edf-ed99-6886-46a963a4718a>
+        a                edm:Agent ;
+        dc:identifier    "Person:7f97d89f-3edf-ed99-6886-46a963a4718a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Willemse" ;
+        skos:prefLabel   "Willem Jan" .
+
+<ProvidedCHO:ec4a3d51-ae6d-1da9-a930-cb8c38f7c890>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:35c775b3-8940-f1fc-6770-f74bca99e50b> , <Agent:Person:a62130c2-4403-3827-0fe9-8d9934f7b3bd> , <Agent:Person:306bd858-1602-e9cc-5935-f9f15264d87a> , <Agent:Person:77004f48-af2f-4266-5ee8-029fa184718b> , <Agent:Person:412d207a-eb67-d8fa-c569-edc3707f075e> , <Agent:Person:abac2141-e135-ed88-883f-9f199089494e> , <Agent:Person:41da787f-2a0f-166f-faa4-5ee86bc9f775> , <Agent:Person:a73f8625-7868-fb64-e693-f602de676d30> , <Agent:Person:c99091d2-3af1-02ba-5faa-65064600911e> , <Agent:Person:e93ebe43-5948-7763-8ee1-dff3b10d5bd3> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 4987, Periode: 1922-1939" ;
+        dc:identifier     "ec4a3d51-ae6d-1da9-a930-cb8c38f7c890" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1939> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4c5182-6985-b436-1a98-472cc528f118>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:4e063df9-f01e-80ab-aa6e-a2f8c5fd43b2> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4629, Periode: 1859-1876" ;
+        dc:identifier     "ec4c5182-6985-b436-1a98-472cc528f118" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4a166f-1128-772a-a229-d33fd38ee971>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:c52897fe-174b-ee3a-28e6-77ca26f4615e> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4589, Periode: 1848-1859" ;
+        dc:identifier     "ec4a166f-1128-772a-a229-d33fd38ee971" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/bd7b7eeb-9fb0-5e86-d21f-62352ccbf7bb.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec4d5583-8a5e-050a-1d27-a9c3dcb552ed>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:da4630f5-1b40-3186-67ae-2817898bfb0a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Kostgangers 1904 - 1922, Bron: boek, Deel: 4925, Periode: 1904-1922" ;
+        dc:identifier     "ec4d5583-8a5e-050a-1d27-a9c3dcb552ed" ;
+        dc:language       "nl" ;
+        dc:title          "Kostgangers 1904 - 1922 6" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4bc0e6-1625-57de-cbe1-3893353a8a68>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4bc0e6-1625-57de-cbe1-3893353a8a68> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec4bc0e6-1625-57de-cbe1-3893353a8a68> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/71563f96-c523-198e-9983-5d42093f0057.jpg> , <Agent:Person:5b480e1d-426b-bd81-a6da-91f97e7ef88d> , <TimeSpan:1904> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4bc0e6-1625-57de-cbe1-3893353a8a68> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/28f36a8e-25e8-132f-f097-1e9b498bd1d8.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/ce01031e-d01c-d3fa-853b-9b1d49480e2a.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/7f3ec2f8-3fe1-8f3c-3ddb-2be85e0ca2b5.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4384f7-0a70-ec20-025f-0983da068427>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4384f7-0a70-ec20-025f-0983da068427> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Agent:Person:83297d07-4c26-7471-43c6-1db6179f8c08> , <Concept:Geregistreerde> , <TimeSpan:1859> , <TimeSpan:1876> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/b1224b63-c713-02bf-87df-6db6bf92cb51.jpg> , <ProvidedCHO:ec4384f7-0a70-ec20-025f-0983da068427> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4384f7-0a70-ec20-025f-0983da068427> ;
+        edm:provider              "Tresoar" .
+
+<TimeSpan:1922>  a      edm:TimeSpan ;
+        skos:prefLabel  "1922" .
+
+<Agent:Person:73801ea3-f8f2-f377-e940-505575cf0726>
+        a                edm:Agent ;
+        dc:identifier    "Person:73801ea3-f8f2-f377-e940-505575cf0726" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Heesen" ;
+        skos:prefLabel   "Machiel Cornelis" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4e8469-5c9d-42c6-7259-b29c3e582893>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4e8469-5c9d-42c6-7259-b29c3e582893> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <ProvidedCHO:ec4e8469-5c9d-42c6-7259-b29c3e582893> , <TimeSpan:1848> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/977d69a9-3bb0-a1e5-1db9-9f70bbb4768f.jpg> , <Agent:Person:0f5f7f48-9f6e-c652-0eb5-05dfdc9626c2> , <TimeSpan:1859> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4e8469-5c9d-42c6-7259-b29c3e582893> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/278defe7-8fe1-6fba-63f3-5a755aec4763.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:f251c709-6019-78ab-adfd-f6fe7bd8116d>
+        a                edm:Agent ;
+        dc:identifier    "Person:f251c709-6019-78ab-adfd-f6fe7bd8116d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lubach" ;
+        skos:prefLabel   "Klaas" .
+
+<ProvidedCHO:ec4384f7-0a70-ec20-025f-0983da068427>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:83297d07-4c26-7471-43c6-1db6179f8c08> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4617, Periode: 1859-1876" ;
+        dc:identifier     "ec4384f7-0a70-ec20-025f-0983da068427" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:abac2141-e135-ed88-883f-9f199089494e>
+        a                edm:Agent ;
+        dc:identifier    "Person:abac2141-e135-ed88-883f-9f199089494e" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Damkort" ;
+        skos:prefLabel   "Grietje Annes" .
+
+<Agent:Person:0015a7a3-a5e2-b907-2206-9c540aa47182>
+        a                edm:Agent ;
+        dc:identifier    "Person:0015a7a3-a5e2-b907-2206-9c540aa47182" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Lucia Willemina" .
+
+<Agent:Person:e4453180-1746-d128-fd9b-3c6d66d47e50>
+        a                edm:Agent ;
+        dc:identifier    "Person:e4453180-1746-d128-fd9b-3c6d66d47e50" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Brandsma" ;
+        skos:prefLabel   "Maaike Sijmons" .
+
+<ProvidedCHO:ec5109f3-277a-48d7-4b77-8b79e07a06f0>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:4584cae5-8703-197a-9f39-58cd623103b4> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4859, Periode: 1904-1922" ;
+        dc:identifier     "ec5109f3-277a-48d7-4b77-8b79e07a06f0" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec487132-b30b-19ce-5f26-d8473d37efbf>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec487132-b30b-19ce-5f26-d8473d37efbf> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <ProvidedCHO:ec487132-b30b-19ce-5f26-d8473d37efbf> , <Agent:Person:708fd6c2-d802-0a07-6983-099d4ea0382c> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/6cdf9abb-15be-0614-32b4-f8487af600b3.jpg> , <Place:Leeuwarden> , <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec487132-b30b-19ce-5f26-d8473d37efbf> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:ede79dfc-9476-340a-9d22-d05f7213bf50> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4615, Periode: 1859-1876" ;
+        dc:identifier     "ec4cacd9-2b86-9c2d-8695-7d94ecb10ff5" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<TimeSpan:1904>  a      edm:TimeSpan ;
+        skos:prefLabel  "1904" .
+
+<Agent:Person:284749f4-7524-4b2b-af7a-8f3ca2768e3b>
+        a                edm:Agent ;
+        dc:identifier    "Person:284749f4-7524-4b2b-af7a-8f3ca2768e3b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Tuinder" ;
+        skos:prefLabel   "Antje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/efc75e90-41ef-f73d-da28-e8b6a78674ca.jpg>
+        a       edm:WebResource .
+
+<Place:Ureterp>  a      edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Ureterp" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/5eb34ad8-3c02-ceda-7dba-abc2dafa8642.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:cbee0c49-53d0-be36-7f67-ce9684ef6c60>
+        a                edm:Agent ;
+        dc:identifier    "Person:cbee0c49-53d0-be36-7f67-ce9684ef6c60" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Molenaar" ;
+        skos:prefLabel   "Tettje" .
+
+<Agent:Person:d0ed205e-2d26-d974-2d4e-986abe36246e>
+        a                edm:Agent ;
+        dc:identifier    "Person:d0ed205e-2d26-d974-2d4e-986abe36246e" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Schaffer" ;
+        skos:prefLabel   "Carel Daniel Lodewijk" .
+
+<ProvidedCHO:ec47c4c5-6364-7a97-8c2f-a7412703b1ea>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:7f97d89f-3edf-ed99-6886-46a963a4718a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4584, Periode: 1848-1859" ;
+        dc:identifier     "ec47c4c5-6364-7a97-8c2f-a7412703b1ea" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/76353444-8809-75b0-695e-06b36492df9a.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:66d1b4bc-dd4e-15e0-e8d8-6d7005047b80>
+        a                edm:Agent ;
+        dc:identifier    "Person:66d1b4bc-dd4e-15e0-e8d8-6d7005047b80" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Baart" ;
+        skos:prefLabel   "Hendrik Jan" .
+
+<Place:Beetsterzwaag>
+        a               edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Beetsterzwaag" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/6ea513aa-f0b4-8c1a-a22a-882c6cf3d0f8.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/b1224b63-c713-02bf-87df-6db6bf92cb51.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec47a9dd-c55a-9659-5f65-5e6338558736>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:744133b7-a4fb-8b30-c4e8-ef68c5796c68> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-01-01" , "1904-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4823, Periode: 1876-1904" ;
+        dc:identifier     "ec47a9dd-c55a-9659-5f65-5e6338558736" ;
+        dc:language       "nl" ;
+        dc:title          "Garnizoen Harlingen/Leeuwarden 1897-1906" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4a1faa-18f2-9907-0cf9-8871cabcb71e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4a1faa-18f2-9907-0cf9-8871cabcb71e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1904> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/1769577f-5a29-c9f6-ac7b-2d78c03d39a4.jpg> , <ProvidedCHO:ec4a1faa-18f2-9907-0cf9-8871cabcb71e> , <Agent:Person:b45d7df8-1ec0-1e6e-df34-8c96f8f19efb> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4a1faa-18f2-9907-0cf9-8871cabcb71e> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:a759da67-d08c-70a4-63c1-1e0aaf791e77> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Dienstboden 1904 - 1922, Bron: boek, Deel: 4930, Periode: 1904-1922" ;
+        dc:identifier     "ec49c55d-ae0c-a1ad-f93c-b0dfc3a1d92c" ;
+        dc:language       "nl" ;
+        dc:title          "Dienstboden 1904 - 1922 3" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec428a2b-6f6b-18de-109a-4cac2f6708dc>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec428a2b-6f6b-18de-109a-4cac2f6708dc> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/0624b52c-d6ed-85f6-d590-d33f6ff10fdd.jpg> , <Agent:Person:05707501-9462-5942-f442-10df70a96ecd> , <TimeSpan:1922> , <TimeSpan:1904> , <ProvidedCHO:ec428a2b-6f6b-18de-109a-4cac2f6708dc> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec428a2b-6f6b-18de-109a-4cac2f6708dc> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/52351690-45ec-ea66-2391-328416c06b49.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:89320e14-55ba-4aba-8715-ebdda9db34b4>
+        a                edm:Agent ;
+        dc:identifier    "Person:89320e14-55ba-4aba-8715-ebdda9db34b4" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Reilingh" ;
+        skos:prefLabel   "Willemptje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/45866e08-0a96-799a-a832-3357030c3426.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/f3d9f7ac-7a02-0519-8aab-f0ddd876af6a.jpg> , <ProvidedCHO:ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb> , <Concept:Bevolkingsregister> , <TimeSpan:1859> , <Concept:Geregistreerde> , <TimeSpan:1848> , <Place:Leeuwarden> , <Agent:Person:740fc0f1-a89e-3c9f-3890-e7bada75e4b9> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:fa87040c-1993-7c10-1241-18f638e48227>
+        a                edm:Agent ;
+        dc:identifier    "Person:fa87040c-1993-7c10-1241-18f638e48227" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Veen" ;
+        skos:prefLabel   "Martha" .
+
+<ProvidedCHO:ec4a1faa-18f2-9907-0cf9-8871cabcb71e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:b45d7df8-1ec0-1e6e-df34-8c96f8f19efb> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4872, Periode: 1904-1922" ;
+        dc:identifier     "ec4a1faa-18f2-9907-0cf9-8871cabcb71e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/f42087dc-6e3f-34f8-5831-d1dc6f5741ec.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:708fd6c2-d802-0a07-6983-099d4ea0382c>
+        a                edm:Agent ;
+        dc:identifier    "Person:708fd6c2-d802-0a07-6983-099d4ea0382c" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Barendsma" ;
+        skos:prefLabel   "Jantje" .
+
+<Agent:Person:916e6c69-e8ae-8f1b-a2d5-4d8030eb2087>
+        a                edm:Agent ;
+        dc:identifier    "Person:916e6c69-e8ae-8f1b-a2d5-4d8030eb2087" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Oberink" ;
+        skos:prefLabel   "Taetske" .
+
+<ProvidedCHO:ec428a2b-6f6b-18de-109a-4cac2f6708dc>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:05707501-9462-5942-f442-10df70a96ecd> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4842, Periode: 1904-1922" ;
+        dc:identifier     "ec428a2b-6f6b-18de-109a-4cac2f6708dc" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Place:Leeuwarden>  a   edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Leeuwarden" .
+
+<Agent:Person:dd85391b-3508-b235-7875-e71f5f25e3c9>
+        a                edm:Agent ;
+        dc:identifier    "Person:dd85391b-3508-b235-7875-e71f5f25e3c9" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Christina Frederika" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4ff9fb-2bb7-7b05-1955-caf26da81325>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4ff9fb-2bb7-7b05-1955-caf26da81325> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec4ff9fb-2bb7-7b05-1955-caf26da81325> , <Concept:Geregistreerde> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/a9b3a5ae-6080-d6ae-0264-9d1394a8961b.jpg> , <Place:Leeuwarden> , <Agent:Person:493ccabf-d3e6-1e5a-46e4-09cc01f8ee0f> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4ff9fb-2bb7-7b05-1955-caf26da81325> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/137fd90f-e29c-0472-ddce-eecd5341b07a.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:b45d7df8-1ec0-1e6e-df34-8c96f8f19efb>
+        a                edm:Agent ;
+        dc:identifier    "Person:b45d7df8-1ec0-1e6e-df34-8c96f8f19efb" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Jong" ;
+        skos:prefLabel   "Martinus" .
+
+<ProvidedCHO:ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:740fc0f1-a89e-3c9f-3890-e7bada75e4b9> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4608, Periode: 1848-1859" ;
+        dc:identifier     "ec47a1fe-768d-6cac-f7f6-1bc6bbcc87eb" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4ffb96-8721-d805-9674-3ca240731dff>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4ffb96-8721-d805-9674-3ca240731dff> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec4ffb96-8721-d805-9674-3ca240731dff> , <Concept:Bevolkingsregister> , <TimeSpan:1859> , <TimeSpan:1848> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <Agent:Person:36b9fefc-daa9-b274-3dc1-4833b31a31f0> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/57ab00e8-798a-7930-0e29-3cae3d66e9c5.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4ffb96-8721-d805-9674-3ca240731dff> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:306bd858-1602-e9cc-5935-f9f15264d87a>
+        a                edm:Agent ;
+        dc:identifier    "Person:306bd858-1602-e9cc-5935-f9f15264d87a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Fegter" ;
+        skos:prefLabel   "Eilsina" .
+
+<Agent:Person:9ba82bd4-52cb-2d57-d35e-4a83892338f7>
+        a                edm:Agent ;
+        dc:identifier    "Person:9ba82bd4-52cb-2d57-d35e-4a83892338f7" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Winselaar" ;
+        skos:prefLabel   "Fedde Jarings" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/9513411a-6e98-e799-0606-b31800d1f721.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:f2ea9202-bf18-cbe1-654f-4389da3c3cdf>
+        a                edm:Agent ;
+        dc:identifier    "Person:f2ea9202-bf18-cbe1-654f-4389da3c3cdf" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Flieringa" ;
+        skos:prefLabel   "Hendrika" .
+
+<ProvidedCHO:ec4ff9fb-2bb7-7b05-1955-caf26da81325>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:493ccabf-d3e6-1e5a-46e4-09cc01f8ee0f> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4678, Periode: 1859-1876" ;
+        dc:identifier     "ec4ff9fb-2bb7-7b05-1955-caf26da81325" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:0a165aa9-3532-bfb1-87b6-496b237a9960>
+        a                edm:Agent ;
+        dc:identifier    "Person:0a165aa9-3532-bfb1-87b6-496b237a9960" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Heide" ;
+        skos:prefLabel   "Haije" .
+
+<ProvidedCHO:ec4c4c97-26a3-580e-1c1c-d8759508aa4f>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:301ef865-67f7-ab3c-e507-56fa21bca91c> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4908, Periode: 1904-1922" ;
+        dc:identifier     "ec4c4c97-26a3-580e-1c1c-d8759508aa4f" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/8eb7d229-21e8-f373-5359-5a67109af188.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec4d9e02-d27a-90c8-5b41-cf376eae043b>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:afff3fd4-9ff9-e333-853d-bdaca8101625> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4899, Periode: 1904-1922" ;
+        dc:identifier     "ec4d9e02-d27a-90c8-5b41-cf376eae043b" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4ffb96-8721-d805-9674-3ca240731dff>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:36b9fefc-daa9-b274-3dc1-4833b31a31f0> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4581, Periode: 1848-1859" ;
+        dc:identifier     "ec4ffb96-8721-d805-9674-3ca240731dff" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec50304b-fc70-e068-f40f-e1a9c72324c3>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:07f8ddd4-b046-9d1b-e09b-cd6b49413617> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4598, Periode: 1848-1859" ;
+        dc:identifier     "ec50304b-fc70-e068-f40f-e1a9c72324c3" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:91371e7c-88a2-1aae-c117-268cf172e41c>
+        a                    edm:Agent ;
+        dc:identifier        "Person:91371e7c-88a2-1aae-c117-268cf172e41c" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Berg" ;
+        skos:prefLabel       "Klaas Jans" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4c538f-96a5-7d08-1f97-12d9cb532a75>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4c538f-96a5-7d08-1f97-12d9cb532a75> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:7a0123d4-c329-eac8-3966-b2b8efac3eaf> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> , <TimeSpan:1859> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/137fd90f-e29c-0472-ddce-eecd5341b07a.jpg> , <TimeSpan:1848> , <Concept:Geregistreerde> , <ProvidedCHO:ec4c538f-96a5-7d08-1f97-12d9cb532a75> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4c538f-96a5-7d08-1f97-12d9cb532a75> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:14e9d081-67cb-2b75-8f11-4959d9ff8f65>
+        a                edm:Agent ;
+        dc:identifier    "Person:14e9d081-67cb-2b75-8f11-4959d9ff8f65" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Bierman" ;
+        skos:prefLabel   "Jan" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/83a5fa52-2941-7566-c328-10382f20c5ce.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/49563b12-79bf-832f-04e3-01464a18104b.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec512322-bd72-975d-70a3-2b094d120003>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec512322-bd72-975d-70a3-2b094d120003> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1922> , <Agent:Person:2d9fca0c-0f90-7a9e-fdde-e6d85adb31b3> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/ed2e9789-8089-ba90-641e-b3bc50cf6fa1.jpg> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <Agent:Person:6f8f4e88-fa0e-8785-b229-10816418b1ea> , <ProvidedCHO:ec512322-bd72-975d-70a3-2b094d120003> , <Agent:Person:38eb44b4-1c65-646b-8b00-ad63c21c80d9> , <Agent:Person:d6be88d1-b5e0-80e2-57e3-ac8894b0fb54> , <Agent:Person:57207d5d-8313-777c-986b-9edec0847bd3> , <Concept:Bevolkingsregister> , <TimeSpan:1939> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec512322-bd72-975d-70a3-2b094d120003> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/3576631b-9b58-619d-9591-89535867e1a4.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:f21f8156-1fb9-f482-1452-a6a94352810a>
+        a                edm:Agent ;
+        dc:identifier    "Person:f21f8156-1fb9-f482-1452-a6a94352810a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Aukje" .
+
+<ProvidedCHO:ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:d0ed205e-2d26-d974-2d4e-986abe36246e> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4640, Periode: 1859-1876" ;
+        dc:identifier     "ec487cc0-e56b-4a3c-dcb7-44fec3b2a70f" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4f4988-ec73-b937-7624-e04ad2d2157d>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4f4988-ec73-b937-7624-e04ad2d2157d> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:aca8dcff-1297-67e2-3929-592e76056bb7> , <ProvidedCHO:ec4f4988-ec73-b937-7624-e04ad2d2157d> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/8e664951-a2ce-65a5-1b75-5a647dce4b47.jpg> , <TimeSpan:1859> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <TimeSpan:1848> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4f4988-ec73-b937-7624-e04ad2d2157d> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/2f3d3be0-6220-9ad8-7265-3e41b234ea79.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec512322-bd72-975d-70a3-2b094d120003>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:d6be88d1-b5e0-80e2-57e3-ac8894b0fb54> , <Agent:Person:6f8f4e88-fa0e-8785-b229-10816418b1ea> , <Agent:Person:57207d5d-8313-777c-986b-9edec0847bd3> , <Agent:Person:38eb44b4-1c65-646b-8b00-ad63c21c80d9> , <Agent:Person:2d9fca0c-0f90-7a9e-fdde-e6d85adb31b3> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 4987, Periode: 1922-1939" ;
+        dc:identifier     "ec512322-bd72-975d-70a3-2b094d120003" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1939> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4dacbb-2891-5330-e0cc-1841b469d6f0>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4dacbb-2891-5330-e0cc-1841b469d6f0> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:3d4a62f0-3151-1423-b269-6e6250298047> , <ProvidedCHO:ec4dacbb-2891-5330-e0cc-1841b469d6f0> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4a93c9e4-fbb1-43b3-8181-ffbe091f4545.jpg> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <TimeSpan:1876> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4dacbb-2891-5330-e0cc-1841b469d6f0> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:a73f8625-7868-fb64-e693-f602de676d30>
+        a                edm:Agent ;
+        dc:identifier    "Person:a73f8625-7868-fb64-e693-f602de676d30" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Gerk" .
+
+<Agent:Person:a62130c2-4403-3827-0fe9-8d9934f7b3bd>
+        a                edm:Agent ;
+        dc:identifier    "Person:a62130c2-4403-3827-0fe9-8d9934f7b3bd" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Jantje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec49eae7-0b82-84f4-d076-4e1badbf9e51>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec49eae7-0b82-84f4-d076-4e1badbf9e51> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:554e3e12-b072-423a-9ccd-469267ad621d> , <ProvidedCHO:ec49eae7-0b82-84f4-d076-4e1badbf9e51> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/6ea513aa-f0b4-8c1a-a22a-882c6cf3d0f8.jpg> , <TimeSpan:1922> , <Place:Leeuwarden> , <TimeSpan:1904> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec49eae7-0b82-84f4-d076-4e1badbf9e51> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec4f4988-ec73-b937-7624-e04ad2d2157d>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:aca8dcff-1297-67e2-3929-592e76056bb7> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4594, Periode: 1848-1859" ;
+        dc:identifier     "ec4f4988-ec73-b937-7624-e04ad2d2157d" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:bc4cf23a-bd45-87c1-f5b1-8f96bb5b26e6> , <Agent:Person:5b1f6585-a4e6-2f58-0597-8170b8bc3f8d> , <Agent:Person:dc89b885-1b06-04b7-3521-c7d9344f6f30> , <Agent:Person:276ac23d-9f25-8537-6382-25cefe635e45> , <Agent:Person:14e9d081-67cb-2b75-8f11-4959d9ff8f65> , <Agent:Person:d55b1bf9-d545-ed66-866c-2fbf6b96fe39> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 4976, Periode: 1922-1939" ;
+        dc:identifier     "ec4e7ae9-e6cb-3483-d93d-df16ca7b33fd" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1939> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4b2890-1d1c-3c1a-7268-97964dfc2668>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4b2890-1d1c-3c1a-7268-97964dfc2668> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:2a8456e5-32c5-0bd8-2e29-0d6eac857810> , <TimeSpan:1904> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec4b2890-1d1c-3c1a-7268-97964dfc2668> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/119d74b2-097b-83d2-60ee-4e3cc73c71ad.jpg> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4b2890-1d1c-3c1a-7268-97964dfc2668> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/006ec339-a86f-ef61-f935-6db00d51b2cd.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec483aa9-c0ec-0949-e13c-f14fe75cd92d>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec483aa9-c0ec-0949-e13c-f14fe75cd92d> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <TimeSpan:1904> , <ProvidedCHO:ec483aa9-c0ec-0949-e13c-f14fe75cd92d> , <Place:Leeuwarden> , <Agent:Person:75efd69e-0a9e-83f6-3010-4c10ff56a44a> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/f519e8cc-356f-6351-2ad5-aa45b30243d8.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec483aa9-c0ec-0949-e13c-f14fe75cd92d> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec48e47d-1220-972e-0bd0-5ca911ffaa72>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec48e47d-1220-972e-0bd0-5ca911ffaa72> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <TimeSpan:1876> , <TimeSpan:1859> , <ProvidedCHO:ec48e47d-1220-972e-0bd0-5ca911ffaa72> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/41998e4b-f6f5-8db6-f3a2-5f9d871d8b80.jpg> , <Agent:Person:f251c709-6019-78ab-adfd-f6fe7bd8116d> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec48e47d-1220-972e-0bd0-5ca911ffaa72> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:38eb44b4-1c65-646b-8b00-ad63c21c80d9>
+        a                edm:Agent ;
+        dc:identifier    "Person:38eb44b4-1c65-646b-8b00-ad63c21c80d9" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Tiezema" ;
+        skos:prefLabel   "Pietje" .
+
+<Agent:Person:4a5bec0c-8fb0-9c1f-3d8e-1ba547e8f81a>
+        a                edm:Agent ;
+        dc:identifier    "Person:4a5bec0c-8fb0-9c1f-3d8e-1ba547e8f81a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Pieter" .
+
+<ProvidedCHO:ec4bdf1c-e938-615c-3487-257522795203>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:e767915d-712b-b288-b2c0-1435f087215b> , <Agent:Person:24bc4a70-8399-5df1-0ca2-f1e8c670550a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-01-01" , "1904-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4775, Periode: 1876-1904" ;
+        dc:identifier     "ec4bdf1c-e938-615c-3487-257522795203" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1876 - 1904" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec5067ca-d20b-ec31-3474-c2f4aacf3b1e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:d7674786-c233-6107-8e40-452097d24753> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4905, Periode: 1904-1922" ;
+        dc:identifier     "ec5067ca-d20b-ec31-3474-c2f4aacf3b1e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4f1fa1-4bef-3b50-dcee-e121b8447e7e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4f1fa1-4bef-3b50-dcee-e121b8447e7e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <ProvidedCHO:ec4f1fa1-4bef-3b50-dcee-e121b8447e7e> , <TimeSpan:1904> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/8390a28e-0de8-1134-4243-b0f47e94b4e2.jpg> , <TimeSpan:1922> , <Concept:Bevolkingsregister> , <Agent:Person:4100be73-b32b-e10a-e665-26a21533d9a8> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4f1fa1-4bef-3b50-dcee-e121b8447e7e> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec45bfb1-c4e7-542d-a03e-9cc13d42e78f>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec45bfb1-c4e7-542d-a03e-9cc13d42e78f> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <ProvidedCHO:ec45bfb1-c4e7-542d-a03e-9cc13d42e78f> , <TimeSpan:1848> , <Agent:Person:b045216e-8f02-c275-9422-f5a94e488d46> , <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/e345a2c8-6953-d0ee-9f9f-951376569fc0.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec45bfb1-c4e7-542d-a03e-9cc13d42e78f> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/218acd59-6c38-9376-67bc-9b7022f5124b.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:0f5f7f48-9f6e-c652-0eb5-05dfdc9626c2>
+        a                edm:Agent ;
+        dc:identifier    "Person:0f5f7f48-9f6e-c652-0eb5-05dfdc9626c2" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Weide" ;
+        skos:prefLabel   "Aafke" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4e2168-da71-c57b-c42e-1d4933aeda3b>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4e2168-da71-c57b-c42e-1d4933aeda3b> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <ProvidedCHO:ec4e2168-da71-c57b-c42e-1d4933aeda3b> , <Concept:Geregistreerde> , <Agent:Person:6ce84281-3eba-0c6a-57b2-8b803940451f> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/9513411a-6e98-e799-0606-b31800d1f721.jpg> , <TimeSpan:1876> , <Concept:Bevolkingsregister> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4e2168-da71-c57b-c42e-1d4933aeda3b> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/a91a6edc-5151-8d28-fcb0-2244cfb4add0.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec48e47d-1220-972e-0bd0-5ca911ffaa72>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:f251c709-6019-78ab-adfd-f6fe7bd8116d> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4616, Periode: 1859-1876" ;
+        dc:identifier     "ec48e47d-1220-972e-0bd0-5ca911ffaa72" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:b3b35aa5-ac3e-bba8-d589-0b06d0c520e0>
+        a                    edm:Agent ;
+        dc:identifier        "Person:b3b35aa5-ac3e-bba8-d589-0b06d0c520e0" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Ureterp> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Haan" ;
+        skos:prefLabel       "Uilkje Jans" .
+
+<http://allefriezen.nl/zoeken/deeds/ec5123b2-c191-4b26-063b-11cd7f856c3d>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec5123b2-c191-4b26-063b-11cd7f856c3d> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec5123b2-c191-4b26-063b-11cd7f856c3d> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/92b8203e-9bc8-3745-6d6e-1e915bc39d65.jpg> , <TimeSpan:1876> , <Agent:Person:38a9ec31-403f-1171-0241-d7e97d0023da> , <Place:Leeuwarden> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec5123b2-c191-4b26-063b-11cd7f856c3d> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec452881-4621-d1d3-bb3d-e665027561af>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:13f863f9-18c7-bc7a-b811-10b8e6c1a50d> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4860, Periode: 1904-1922" ;
+        dc:identifier     "ec452881-4621-d1d3-bb3d-e665027561af" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/36eedb8d-c925-32be-28a6-615ee8f6e6ba.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec45bfb1-c4e7-542d-a03e-9cc13d42e78f>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:b045216e-8f02-c275-9422-f5a94e488d46> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4596, Periode: 1848-1859" ;
+        dc:identifier     "ec45bfb1-c4e7-542d-a03e-9cc13d42e78f" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:ac09f002-934f-4895-94ee-e91725f06c9a>
+        a                edm:Agent ;
+        dc:identifier    "Person:ac09f002-934f-4895-94ee-e91725f06c9a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Terpstra" ;
+        skos:prefLabel   "Taetske" .
+
+<Agent:Person:e64dcef6-0cab-3566-18cc-d622bf49c40a>
+        a                edm:Agent ;
+        dc:identifier    "Person:e64dcef6-0cab-3566-18cc-d622bf49c40a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Visser" ;
+        skos:prefLabel   "Trijntje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/300105c0-5b86-9eed-f2de-2d82dd6b296c.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:ef567f44-676e-1633-44e9-40d3a31c1906>
+        a                edm:Agent ;
+        dc:identifier    "Person:ef567f44-676e-1633-44e9-40d3a31c1906" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beekhuis" ;
+        skos:prefLabel   "Theoderus Hendricus" .
+
+<ProvidedCHO:ec4e2168-da71-c57b-c42e-1d4933aeda3b>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:6ce84281-3eba-0c6a-57b2-8b803940451f> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4654, Periode: 1859-1876" ;
+        dc:identifier     "ec4e2168-da71-c57b-c42e-1d4933aeda3b" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/6cdf9abb-15be-0614-32b4-f8487af600b3.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:90fd486c-a23b-f320-47d3-406bec035c76>
+        a                edm:Agent ;
+        dc:identifier    "Person:90fd486c-a23b-f320-47d3-406bec035c76" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Meij" ;
+        skos:prefLabel   "Mettje" .
+
+<Agent:Person:ede79dfc-9476-340a-9d22-d05f7213bf50>
+        a                edm:Agent ;
+        dc:identifier    "Person:ede79dfc-9476-340a-9d22-d05f7213bf50" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Noordraven" ;
+        skos:prefLabel   "Christina" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4fb8d4-2a76-e25a-c5de-75050cc56afa>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4fb8d4-2a76-e25a-c5de-75050cc56afa> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1904> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/49563b12-79bf-832f-04e3-01464a18104b.jpg> , <ProvidedCHO:ec4fb8d4-2a76-e25a-c5de-75050cc56afa> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <Agent:Person:3af4133d-5fc5-9a6d-0b79-3d41ee0335c0> , <TimeSpan:1922> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4fb8d4-2a76-e25a-c5de-75050cc56afa> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:7eafeaea-0db2-c60e-87b2-1c194db6f2e7>
+        a                edm:Agent ;
+        dc:identifier    "Person:7eafeaea-0db2-c60e-87b2-1c194db6f2e7" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Oordt" ;
+        skos:prefLabel   "Lodewijk Joseph Karel" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4b0b02-0b46-a656-b29b-7840640c9223>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4b0b02-0b46-a656-b29b-7840640c9223> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <ProvidedCHO:ec4b0b02-0b46-a656-b29b-7840640c9223> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4947e2d9-2c41-b4fc-0a44-0404c70f4b8d.jpg> , <TimeSpan:1876> , <TimeSpan:1859> , <Agent:Person:fa4b6341-4920-5d96-0787-2e3a9f44f1f6> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4b0b02-0b46-a656-b29b-7840640c9223> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:05707501-9462-5942-f442-10df70a96ecd>
+        a                edm:Agent ;
+        dc:identifier    "Person:05707501-9462-5942-f442-10df70a96ecd" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Werff" ;
+        skos:prefLabel   "Johanna Meinsina" .
+
+<ProvidedCHO:ec5123b2-c191-4b26-063b-11cd7f856c3d>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:38a9ec31-403f-1171-0241-d7e97d0023da> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4623, Periode: 1859-1876" ;
+        dc:identifier     "ec5123b2-c191-4b26-063b-11cd7f856c3d" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4bc0e6-1625-57de-cbe1-3893353a8a68>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:5b480e1d-426b-bd81-a6da-91f97e7ef88d> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4853, Periode: 1904-1922" ;
+        dc:identifier     "ec4bc0e6-1625-57de-cbe1-3893353a8a68" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/bfda3dc3-fe97-cd4c-0ed7-a25a5ac73660.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4eab0d-f6ba-073e-a921-ca30078a380f>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4eab0d-f6ba-073e-a921-ca30078a380f> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <TimeSpan:1876> , <Agent:Person:e64dcef6-0cab-3566-18cc-d622bf49c40a> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <ProvidedCHO:ec4eab0d-f6ba-073e-a921-ca30078a380f> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/d8f6af32-ea57-0dc7-169c-9a7cef3b4e78.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4eab0d-f6ba-073e-a921-ca30078a380f> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec4b0b02-0b46-a656-b29b-7840640c9223>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:fa4b6341-4920-5d96-0787-2e3a9f44f1f6> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4653, Periode: 1859-1876" ;
+        dc:identifier     "ec4b0b02-0b46-a656-b29b-7840640c9223" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:27b5d2e6-cb58-4df4-9fba-732d60ef3f33>
+        a                              edm:Agent ;
+        dc:identifier                  "Person:27b5d2e6-cb58-4df4-9fba-732d60ef3f33" ;
+        rdaGr2:gender                  "Man" ;
+        rdaGr2:professionOrOccupation  "timmerman" ;
+        edm:hasMet                     <Place:Beetsterzwaag> ;
+        edm:isRelatedTo                <Concept:other:Vermeld> ;
+        skos:altLabel                  "Huizinga" ;
+        skos:prefLabel                 "Klaas" .
+
+<Agent:Person:38ebd9a3-b6cd-da5c-ae36-65716f9ebc37>
+        a                edm:Agent ;
+        dc:identifier    "Person:38ebd9a3-b6cd-da5c-ae36-65716f9ebc37" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beneken" ;
+        skos:prefLabel   "Teubelina" .
+
+<Agent:Person:af715276-eaa1-e43b-f7ba-861d494d63e7>
+        a                edm:Agent ;
+        dc:identifier    "Person:af715276-eaa1-e43b-f7ba-861d494d63e7" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kosters" ;
+        skos:prefLabel   "Jantina Johanna Elsina" .
+
+<Agent:Person:fba5776f-9bbc-6273-80f7-42174b463306>
+        a                edm:Agent ;
+        dc:identifier    "Person:fba5776f-9bbc-6273-80f7-42174b463306" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Anske" .
+
+<ProvidedCHO:ec4e8469-5c9d-42c6-7259-b29c3e582893>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:0f5f7f48-9f6e-c652-0eb5-05dfdc9626c2> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4602, Periode: 1848-1859" ;
+        dc:identifier     "ec4e8469-5c9d-42c6-7259-b29c3e582893" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4eab0d-f6ba-073e-a921-ca30078a380f>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:e64dcef6-0cab-3566-18cc-d622bf49c40a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4663, Periode: 1859-1876" ;
+        dc:identifier     "ec4eab0d-f6ba-073e-a921-ca30078a380f" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:740fc0f1-a89e-3c9f-3890-e7bada75e4b9>
+        a                edm:Agent ;
+        dc:identifier    "Person:740fc0f1-a89e-3c9f-3890-e7bada75e4b9" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Steenfort" ;
+        skos:prefLabel   "Trijntje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec512db8-d33a-3d07-006f-f9f177ff7f20>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec512db8-d33a-3d07-006f-f9f177ff7f20> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <Agent:Person:cc58e828-62c3-479d-720f-2e60bb99b03d> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/17e7fa0d-8281-1306-b27f-06c7465dde70.jpg> , <TimeSpan:1859> , <TimeSpan:1876> , <ProvidedCHO:ec512db8-d33a-3d07-006f-f9f177ff7f20> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec512db8-d33a-3d07-006f-f9f177ff7f20> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:e8dd1cd0-69d2-82a2-ab9a-be31ddb1f60c>
+        a                edm:Agent ;
+        dc:identifier    "Person:e8dd1cd0-69d2-82a2-ab9a-be31ddb1f60c" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Dyk" ;
+        skos:prefLabel   "Sjoukje" .
+
+<Agent:Person:3825ed35-9d08-8819-1e71-b2ac9be6b97d>
+        a                edm:Agent ;
+        dc:identifier    "Person:3825ed35-9d08-8819-1e71-b2ac9be6b97d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Leeuwen" ;
+        skos:prefLabel   "Nicolaas Dirk" .
+
+<Agent:Person:afff3fd4-9ff9-e333-853d-bdaca8101625>
+        a                edm:Agent ;
+        dc:identifier    "Person:afff3fd4-9ff9-e333-853d-bdaca8101625" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Meer" ;
+        skos:prefLabel   "Anne" .
+
+<Concept:Bevolkingsregister>
+        a               skos:Concept ;
+        skos:prefLabel  "Bevolkingsregister" .
+
+<ProvidedCHO:ec487132-b30b-19ce-5f26-d8473d37efbf>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:708fd6c2-d802-0a07-6983-099d4ea0382c> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4604, Periode: 1848-1859" ;
+        dc:identifier     "ec487132-b30b-19ce-5f26-d8473d37efbf" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec512db8-d33a-3d07-006f-f9f177ff7f20>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:cc58e828-62c3-479d-720f-2e60bb99b03d> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4655, Periode: 1859-1876" ;
+        dc:identifier     "ec512db8-d33a-3d07-006f-f9f177ff7f20" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/ed2e9789-8089-ba90-641e-b3bc50cf6fa1.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:e93ebe43-5948-7763-8ee1-dff3b10d5bd3>
+        a                edm:Agent ;
+        dc:identifier    "Person:e93ebe43-5948-7763-8ee1-dff3b10d5bd3" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Lammert" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/925e9b6e-982e-47d4-a019-93b0b8d4e089.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4a93c9e4-fbb1-43b3-8181-ffbe091f4545.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:4e063df9-f01e-80ab-aa6e-a2f8c5fd43b2>
+        a                edm:Agent ;
+        dc:identifier    "Person:4e063df9-f01e-80ab-aa6e-a2f8c5fd43b2" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Habakottee" ;
+        skos:prefLabel   "Martha" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/c83de633-f670-6193-9aa9-7d571c394abd.jpg>
+        a       edm:WebResource .
+
+<Place:Menaldum>  a     edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Menaldum" .
+
+<Agent:Person:406827d9-073d-49f4-b976-166e7aba4052>
+        a                edm:Agent ;
+        dc:identifier    "Person:406827d9-073d-49f4-b976-166e7aba4052" ;
+        rdaGr2:gender    "Vrouw" ;
+        edm:hasMet       <Place:Beets> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:altLabel    "Libersma" ;
+        skos:prefLabel   "Janke" .
+
+<Agent:Person:d9ff834e-0d44-9f72-b54d-2a3aea823264>
+        a                edm:Agent ;
+        dc:identifier    "Person:d9ff834e-0d44-9f72-b54d-2a3aea823264" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Joanna Wilhelmina" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/742e9a03-d4f7-aedb-318d-8b5eabd48c92.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:24f1feea-18b8-031d-7c27-668e531cde2b>
+        a                edm:Agent ;
+        dc:identifier    "Person:24f1feea-18b8-031d-7c27-668e531cde2b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Ravestijn" ;
+        skos:prefLabel   "Johannes Jacobus" .
+
+<Concept:other:Vermeld>
+        a               skos:Concept ;
+        skos:prefLabel  "other:Vermeld" ;
+        skos:related    <Agent:Person:66275cbb-5138-4a51-8690-b62ec1da02c6> , <Agent:Person:406827d9-073d-49f4-b976-166e7aba4052> , <Agent:Person:27b5d2e6-cb58-4df4-9fba-732d60ef3f33> , <Agent:Person:10e7fdc2-7043-4606-9b96-b4eabf48c211> .
+
+<http://allefriezen.nl/zoeken/deeds/ec512138-b836-fba9-87fc-55b7ff6e6aaa>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec512138-b836-fba9-87fc-55b7ff6e6aaa> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:74989e26-c94d-6df8-f9e5-81c3f0083062> , <Place:Ureterp> , <Agent:Person:1f4559f1-a419-c552-8792-410334b35915> , <Place:Leeuwarden> , <TimeSpan:1843> , <Agent:Person:91371e7c-88a2-1aae-c117-268cf172e41c> , <Agent:Person:a0f76177-dd34-7339-1311-07720c0d292d> , <Agent:Person:ef4f4c76-fab9-b760-84ac-b5550d138c08> , <Agent:Person:8d0892f8-7981-8a18-3cc2-46d030326df4> , <TimeSpan:1848> , <ProvidedCHO:ec512138-b836-fba9-87fc-55b7ff6e6aaa> , <Agent:Person:d0499f5d-c712-9e34-9cf3-b9d683eed31b> , <Place:Menaldum> , <Concept:Bevolkingsregister> , <Agent:Person:0adb42f4-2b16-bc7e-7359-d57f66323e66> , <Agent:Person:a1bb0d03-8bc3-230a-14a0-8b5d96efea6b> , <Agent:Person:b3b35aa5-ac3e-bba8-d589-0b06d0c520e0> , <Place:Emden,Duitsland> , <Agent:Person:27e3809a-72e0-5aa3-b1d9-70d309d257e6> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/5eb34ad8-3c02-ceda-7dba-abc2dafa8642.jpg> , <Place:Rottevalle> , <Place:Heerenveen> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec512138-b836-fba9-87fc-55b7ff6e6aaa> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec44ac2f-af68-571b-01a8-b66189423593>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec44ac2f-af68-571b-01a8-b66189423593> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:47199290-20fe-8465-7e53-73347d57d74b> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec44ac2f-af68-571b-01a8-b66189423593> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4e88405d-ba7c-ca08-5a09-f773b95f3a81.jpg> , <Concept:Geregistreerde> , <TimeSpan:1922> , <Place:Leeuwarden> , <TimeSpan:1904> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec44ac2f-af68-571b-01a8-b66189423593> ;
+        edm:provider              "Tresoar" .
+
+<Place:Beets>  a        edm:Place ;
+        skos:altLabel   "Place" ;
+        skos:prefLabel  "Beets" .
+
+<Agent:Person:24bc4a70-8399-5df1-0ca2-f1e8c670550a>
+        a                edm:Agent ;
+        dc:identifier    "Person:24bc4a70-8399-5df1-0ca2-f1e8c670550a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Slooten" ;
+        skos:prefLabel   "Froukje" .
+
+<Agent:Person:745137d9-2ddf-2ccf-07ed-0164e95270d1>
+        a                edm:Agent ;
+        dc:identifier    "Person:745137d9-2ddf-2ccf-07ed-0164e95270d1" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Pieter" .
+
+<Agent:Person:5b1f6585-a4e6-2f58-0597-8170b8bc3f8d>
+        a                edm:Agent ;
+        dc:identifier    "Person:5b1f6585-a4e6-2f58-0597-8170b8bc3f8d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Grilk" ;
+        skos:prefLabel   "Cornelis" .
+
+<http://allefriezen.nl/zoeken/deeds/ec51cce3-14f0-4e53-e890-d401783ed933>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec51cce3-14f0-4e53-e890-d401783ed933> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <TimeSpan:1904> , <TimeSpan:1922> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> , <Agent:Person:3ea70d39-8e25-e259-e443-6af400a905b3> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/aff4c40c-aae8-b8f0-d56b-9a68dd5686c0.jpg> , <ProvidedCHO:ec51cce3-14f0-4e53-e890-d401783ed933> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec51cce3-14f0-4e53-e890-d401783ed933> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec50e740-a9f9-373d-8ef0-29e99c3afb72>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec50e740-a9f9-373d-8ef0-29e99c3afb72> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/ce01031e-d01c-d3fa-853b-9b1d49480e2a.jpg> , <TimeSpan:1876> , <Concept:Geregistreerde> , <Agent:Person:0a165aa9-3532-bfb1-87b6-496b237a9960> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <ProvidedCHO:ec50e740-a9f9-373d-8ef0-29e99c3afb72> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec50e740-a9f9-373d-8ef0-29e99c3afb72> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:ce71d07c-1437-4460-564f-89e0c557b216>
+        a                edm:Agent ;
+        dc:identifier    "Person:ce71d07c-1437-4460-564f-89e0c557b216" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitschat" ;
+        skos:prefLabel   "Hille" .
+
+<ProvidedCHO:ec512138-b836-fba9-87fc-55b7ff6e6aaa>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:91371e7c-88a2-1aae-c117-268cf172e41c> , <Agent:Person:a0f76177-dd34-7339-1311-07720c0d292d> , <Agent:Person:1f4559f1-a419-c552-8792-410334b35915> , <Agent:Person:b3b35aa5-ac3e-bba8-d589-0b06d0c520e0> , <Agent:Person:ef4f4c76-fab9-b760-84ac-b5550d138c08> , <Agent:Person:a1bb0d03-8bc3-230a-14a0-8b5d96efea6b> , <Agent:Person:d0499f5d-c712-9e34-9cf3-b9d683eed31b> , <Agent:Person:74989e26-c94d-6df8-f9e5-81c3f0083062> , <Agent:Person:8d0892f8-7981-8a18-3cc2-46d030326df4> , <Agent:Person:0adb42f4-2b16-bc7e-7359-d57f66323e66> , <Agent:Person:27e3809a-72e0-5aa3-b1d9-70d309d257e6> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-12-31" , "1843-01-01" ;
+        dc:description    "Archiefnaam: Wijkregister 1843-1848, Bron: boek, Deel: 4057, Periode: 1843-1848" ;
+        dc:identifier     "ec512138-b836-fba9-87fc-55b7ff6e6aaa" ;
+        dc:language       "nl" ;
+        dc:title          "Wijkregister 1843-1848 C 14" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1843> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/e142b407-fc02-2924-e07b-3c56aab0fac6.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec44ac2f-af68-571b-01a8-b66189423593>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:47199290-20fe-8465-7e53-73347d57d74b> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4897, Periode: 1904-1922" ;
+        dc:identifier     "ec44ac2f-af68-571b-01a8-b66189423593" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:aca8dcff-1297-67e2-3929-592e76056bb7>
+        a                edm:Agent ;
+        dc:identifier    "Person:aca8dcff-1297-67e2-3929-592e76056bb7" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lambert" ;
+        skos:prefLabel   "Jean Pierre" .
+
+<Agent:Person:a0f76177-dd34-7339-1311-07720c0d292d>
+        a                    edm:Agent ;
+        dc:identifier        "Person:a0f76177-dd34-7339-1311-07720c0d292d" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Lodewijks" ;
+        skos:prefLabel       "Truike" .
+
+<Agent:Person:36b9fefc-daa9-b274-3dc1-4833b31a31f0>
+        a                edm:Agent ;
+        dc:identifier    "Person:36b9fefc-daa9-b274-3dc1-4833b31a31f0" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Woude" ;
+        skos:prefLabel   "Tjitske" .
+
+<Agent:Person:2a8456e5-32c5-0bd8-2e29-0d6eac857810>
+        a                edm:Agent ;
+        dc:identifier    "Person:2a8456e5-32c5-0bd8-2e29-0d6eac857810" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Naafkan" ;
+        skos:prefLabel   "Karl" .
+
+<Agent:Person:c8a3a1ab-d0c3-6fe3-868a-05d70005a814>
+        a                edm:Agent ;
+        dc:identifier    "Person:c8a3a1ab-d0c3-6fe3-868a-05d70005a814" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Oolgaard" ;
+        skos:prefLabel   "Philippus Jacobus" .
+
+<Agent:Person:6f8f4e88-fa0e-8785-b229-10816418b1ea>
+        a                edm:Agent ;
+        dc:identifier    "Person:6f8f4e88-fa0e-8785-b229-10816418b1ea" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kuipers" ;
+        skos:prefLabel   "Dirk Hattums" .
+
+<Agent:Person:d0499f5d-c712-9e34-9cf3-b9d683eed31b>
+        a                    edm:Agent ;
+        dc:identifier        "Person:d0499f5d-c712-9e34-9cf3-b9d683eed31b" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Emden,Duitsland> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Brons" ;
+        skos:prefLabel       "Bruno" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/b2d7eb08-cd4d-c036-af46-37a5a736c21f.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:2497c956-d313-4b1f-1eba-395e608eea57>
+        a                edm:Agent ;
+        dc:identifier    "Person:2497c956-d313-4b1f-1eba-395e608eea57" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lubberts" ;
+        skos:prefLabel   "Maria Paulina" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/52852ae6-2353-93d5-9995-c5c0e979c341.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:bcdb184e-40b8-f36a-2566-70f268406989>
+        a                edm:Agent ;
+        dc:identifier    "Person:bcdb184e-40b8-f36a-2566-70f268406989" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Oolgaard" ;
+        skos:prefLabel   "Bonnefacius" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/71563f96-c523-198e-9983-5d42093f0057.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4bdb54-054f-e300-f6b5-2870f78bb6cf>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4bdb54-054f-e300-f6b5-2870f78bb6cf> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1922> , <TimeSpan:1904> , <ProvidedCHO:ec4bdb54-054f-e300-f6b5-2870f78bb6cf> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/300105c0-5b86-9eed-f2de-2d82dd6b296c.jpg> , <Agent:Person:66d1b4bc-dd4e-15e0-e8d8-6d7005047b80> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4bdb54-054f-e300-f6b5-2870f78bb6cf> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec46ba02-b305-f14c-fcc6-572da1ecd7cc>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec46ba02-b305-f14c-fcc6-572da1ecd7cc> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <Agent:Person:8e5d99c0-49bb-f378-f09b-b60bbd45ac80> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/e142b407-fc02-2924-e07b-3c56aab0fac6.jpg> , <Agent:Person:3825ed35-9d08-8819-1e71-b2ac9be6b97d> , <Concept:Bevolkingsregister> , <Agent:Person:ac09f002-934f-4895-94ee-e91725f06c9a> , <TimeSpan:1922> , <Place:Leeuwarden> , <TimeSpan:1939> , <ProvidedCHO:ec46ba02-b305-f14c-fcc6-572da1ecd7cc> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec46ba02-b305-f14c-fcc6-572da1ecd7cc> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec4c538f-96a5-7d08-1f97-12d9cb532a75>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:7a0123d4-c329-eac8-3966-b2b8efac3eaf> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4580, Periode: 1848-1859" ;
+        dc:identifier     "ec4c538f-96a5-7d08-1f97-12d9cb532a75" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:66275cbb-5138-4a51-8690-b62ec1da02c6>
+        a                edm:Agent ;
+        dc:identifier    "Person:66275cbb-5138-4a51-8690-b62ec1da02c6" ;
+        rdaGr2:gender    "Vrouw" ;
+        edm:hasMet       <Place:Beets> ;
+        edm:isRelatedTo  <Concept:other:Vermeld> ;
+        skos:prefLabel   "Sara" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/790f1a4e-e0e9-f740-4398-0c43db4226b9.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:c0da7e34-9bd2-1e70-ee5d-9b1d7a22e4c7>
+        a                edm:Agent ;
+        dc:identifier    "Person:c0da7e34-9bd2-1e70-ee5d-9b1d7a22e4c7" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Nijp" ;
+        skos:prefLabel   "Jacob" .
+
+<http://allefriezen.nl/zoeken/deeds/ec47bfa9-5563-9571-bc0d-a560cb9599cd>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec47bfa9-5563-9571-bc0d-a560cb9599cd> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <TimeSpan:1904> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/742e9a03-d4f7-aedb-318d-8b5eabd48c92.jpg> , <Concept:Bevolkingsregister> , <TimeSpan:1922> , <ProvidedCHO:ec47bfa9-5563-9571-bc0d-a560cb9599cd> , <Agent:Person:73801ea3-f8f2-f377-e940-505575cf0726> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec47bfa9-5563-9571-bc0d-a560cb9599cd> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:2edab8e1-9bf2-9fd0-a82b-9f37d76b702a>
+        a                edm:Agent ;
+        dc:identifier    "Person:2edab8e1-9bf2-9fd0-a82b-9f37d76b702a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Antje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/eda8ad01-f076-df7d-562f-18bdf5354a59.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec4bdb54-054f-e300-f6b5-2870f78bb6cf>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:66d1b4bc-dd4e-15e0-e8d8-6d7005047b80> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4835, Periode: 1904-1922" ;
+        dc:identifier     "ec4bdb54-054f-e300-f6b5-2870f78bb6cf" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:2f1e512b-6263-fbcf-0485-7fe3f7d55bae>
+        a                edm:Agent ;
+        dc:identifier    "Person:2f1e512b-6263-fbcf-0485-7fe3f7d55bae" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lam" ;
+        skos:prefLabel   "Herman" .
+
+<Agent:Person:554e3e12-b072-423a-9ccd-469267ad621d>
+        a                edm:Agent ;
+        dc:identifier    "Person:554e3e12-b072-423a-9ccd-469267ad621d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Split" ;
+        skos:prefLabel   "Christiaan" .
+
+<ProvidedCHO:ec4dacbb-2891-5330-e0cc-1841b469d6f0>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:3d4a62f0-3151-1423-b269-6e6250298047> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-01-01" , "1876-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4630, Periode: 1859-1876" ;
+        dc:identifier     "ec4dacbb-2891-5330-e0cc-1841b469d6f0" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec49eae7-0b82-84f4-d076-4e1badbf9e51>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:554e3e12-b072-423a-9ccd-469267ad621d> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4902, Periode: 1904-1922" ;
+        dc:identifier     "ec49eae7-0b82-84f4-d076-4e1badbf9e51" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:ef4f4c76-fab9-b760-84ac-b5550d138c08>
+        a                    edm:Agent ;
+        dc:identifier        "Person:ef4f4c76-fab9-b760-84ac-b5550d138c08" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Meijer" ;
+        skos:prefLabel       "Maria" .
+
+<Agent:Person:0adb42f4-2b16-bc7e-7359-d57f66323e66>
+        a                    edm:Agent ;
+        dc:identifier        "Person:0adb42f4-2b16-bc7e-7359-d57f66323e66" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Zijlstra" ;
+        skos:prefLabel       "Menalda Johannes" .
+
+<ProvidedCHO:ec4b2890-1d1c-3c1a-7268-97964dfc2668>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:2a8456e5-32c5-0bd8-2e29-0d6eac857810> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Kostgangers 1904 - 1922, Bron: boek, Deel: 4924, Periode: 1904-1922" ;
+        dc:identifier     "ec4b2890-1d1c-3c1a-7268-97964dfc2668" ;
+        dc:language       "nl" ;
+        dc:title          "Kostgangers 1904 - 1922 5" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/d8704698-397b-bb3c-9581-75f125337779.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec483aa9-c0ec-0949-e13c-f14fe75cd92d>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:75efd69e-0a9e-83f6-3010-4c10ff56a44a> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4861, Periode: 1904-1922" ;
+        dc:identifier     "ec483aa9-c0ec-0949-e13c-f14fe75cd92d" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:dbc2f68d-826a-db5e-5a83-51b0338ae86a>
+        a                edm:Agent ;
+        dc:identifier    "Person:dbc2f68d-826a-db5e-5a83-51b0338ae86a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Bakker" ;
+        skos:prefLabel   "Pieter Murraij" .
+
+<Agent:Person:a759da67-d08c-70a4-63c1-1e0aaf791e77>
+        a                edm:Agent ;
+        dc:identifier    "Person:a759da67-d08c-70a4-63c1-1e0aaf791e77" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Dijkstra" ;
+        skos:prefLabel   "Clara" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4e88405d-ba7c-ca08-5a09-f773b95f3a81.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:47199290-20fe-8465-7e53-73347d57d74b>
+        a                edm:Agent ;
+        dc:identifier    "Person:47199290-20fe-8465-7e53-73347d57d74b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Ruward" ;
+        skos:prefLabel   "Akke" .
+
+<ProvidedCHO:ec4f1fa1-4bef-3b50-dcee-e121b8447e7e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:4100be73-b32b-e10a-e665-26a21533d9a8> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4873, Periode: 1904-1922" ;
+        dc:identifier     "ec4f1fa1-4bef-3b50-dcee-e121b8447e7e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/db40978b-0e1c-007e-b425-be4b664637bd.jpg>
+        a       edm:WebResource .
+
+<TimeSpan:1876>  a      edm:TimeSpan ;
+        skos:prefLabel  "1876" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/d8f6af32-ea57-0dc7-169c-9a7cef3b4e78.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec46e1a0-b466-666f-c651-9e0b6405b346>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec46e1a0-b466-666f-c651-9e0b6405b346> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <Place:Leeuwarden> , <TimeSpan:1876> , <TimeSpan:1859> , <Agent:Person:fa87040c-1993-7c10-1241-18f638e48227> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec46e1a0-b466-666f-c651-9e0b6405b346> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/2f3d3be0-6220-9ad8-7265-3e41b234ea79.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec46e1a0-b466-666f-c651-9e0b6405b346> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:c7d88df4-d73b-a1e7-a8cc-504b57629946>
+        a                edm:Agent ;
+        dc:identifier    "Person:c7d88df4-d73b-a1e7-a8cc-504b57629946" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Tuininga" ;
+        skos:prefLabel   "Simon" .
+
+<Agent:Person:bc4cf23a-bd45-87c1-f5b1-8f96bb5b26e6>
+        a                edm:Agent ;
+        dc:identifier    "Person:bc4cf23a-bd45-87c1-f5b1-8f96bb5b26e6" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Bierman" ;
+        skos:prefLabel   "Trijntje" .
+
+<Agent:Person:3d4a62f0-3151-1423-b269-6e6250298047>
+        a                edm:Agent ;
+        dc:identifier    "Person:3d4a62f0-3151-1423-b269-6e6250298047" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Toor" ;
+        skos:prefLabel   "Hendrika" .
+
+<Agent:Person:75efd69e-0a9e-83f6-3010-4c10ff56a44a>
+        a                edm:Agent ;
+        dc:identifier    "Person:75efd69e-0a9e-83f6-3010-4c10ff56a44a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Westra" ;
+        skos:prefLabel   "Geertje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec511c99-6402-15a8-ed13-b008e6ea2d9e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec511c99-6402-15a8-ed13-b008e6ea2d9e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:c0da7e34-9bd2-1e70-ee5d-9b1d7a22e4c7> , <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <TimeSpan:1939> , <ProvidedCHO:ec511c99-6402-15a8-ed13-b008e6ea2d9e> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/efc75e90-41ef-f73d-da28-e8b6a78674ca.jpg> , <TimeSpan:1922> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec511c99-6402-15a8-ed13-b008e6ea2d9e> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:5b480e1d-426b-bd81-a6da-91f97e7ef88d>
+        a                edm:Agent ;
+        dc:identifier    "Person:5b480e1d-426b-bd81-a6da-91f97e7ef88d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Dijkstra" ;
+        skos:prefLabel   "Walericus Hermanus" .
+
+<ProvidedCHO:ec4fb8d4-2a76-e25a-c5de-75050cc56afa>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:3af4133d-5fc5-9a6d-0b79-3d41ee0335c0> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4882, Periode: 1904-1922" ;
+        dc:identifier     "ec4fb8d4-2a76-e25a-c5de-75050cc56afa" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec511c99-6402-15a8-ed13-b008e6ea2d9e>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:c0da7e34-9bd2-1e70-ee5d-9b1d7a22e4c7> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-01-01" , "1939-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 5030, Periode: 1922-1939" ;
+        dc:identifier     "ec511c99-6402-15a8-ed13-b008e6ea2d9e" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1939> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec516dec-e853-b14b-dff7-71868616acfa>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec516dec-e853-b14b-dff7-71868616acfa> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec516dec-e853-b14b-dff7-71868616acfa> , <Place:Leeuwarden> , <TimeSpan:1859> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/6c28722c-d37c-1b39-aca9-d04cc2b204ae.jpg> , <Agent:Person:38ebd9a3-b6cd-da5c-ae36-65716f9ebc37> , <Concept:Bevolkingsregister> , <TimeSpan:1876> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec516dec-e853-b14b-dff7-71868616acfa> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4cffa5-e37e-f675-0bd4-1a61c6677b7e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4cffa5-e37e-f675-0bd4-1a61c6677b7e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec4cffa5-e37e-f675-0bd4-1a61c6677b7e> , <Concept:Geregistreerde> , <TimeSpan:1848> , <Concept:Bevolkingsregister> , <TimeSpan:1859> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/437f7f92-85e5-88ac-95aa-d503441ae3a5.jpg> , <Agent:Person:f85a288a-04d7-069b-b629-caf3e412b5fa> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4cffa5-e37e-f675-0bd4-1a61c6677b7e> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:4100be73-b32b-e10a-e665-26a21533d9a8>
+        a                edm:Agent ;
+        dc:identifier    "Person:4100be73-b32b-e10a-e665-26a21533d9a8" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Jongma" ;
+        skos:prefLabel   "Sijtje" .
+
+<Agent:Person:38a9ec31-403f-1171-0241-d7e97d0023da>
+        a                edm:Agent ;
+        dc:identifier    "Person:38a9ec31-403f-1171-0241-d7e97d0023da" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Schreinhout" ;
+        skos:prefLabel   "Johannes" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/5b82fdd1-17f9-6934-ef39-6e29195d6df0.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/9d1d82ad-4326-f3c4-4609-80ae8f04d05c.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/92b8203e-9bc8-3745-6d6e-1e915bc39d65.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Place:Leeuwarden> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/4530394c-de17-98d5-5924-23004573f19d.jpg> , <Concept:Geregistreerde> , <TimeSpan:1904> , <ProvidedCHO:ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13> , <Agent:Person:9ba82bd4-52cb-2d57-d35e-4a83892338f7> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13> ;
+        edm:provider              "Tresoar" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4eca7e-c3d5-e300-cd78-2d8be180d167>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4eca7e-c3d5-e300-cd78-2d8be180d167> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/67cc2927-211a-d311-a346-e76fd59ae2b4.jpg> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <TimeSpan:1848> , <Agent:Person:916e6c69-e8ae-8f1b-a2d5-4d8030eb2087> , <ProvidedCHO:ec4eca7e-c3d5-e300-cd78-2d8be180d167> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4eca7e-c3d5-e300-cd78-2d8be180d167> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:4584cae5-8703-197a-9f39-58cd623103b4>
+        a                edm:Agent ;
+        dc:identifier    "Person:4584cae5-8703-197a-9f39-58cd623103b4" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Gall" ;
+        skos:prefLabel   "Johanna Martha Sjouk" .
+
+<http://allefriezen.nl/zoeken/deeds/ec48d98c-f3cb-10c4-a805-4e297bf155ca>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec48d98c-f3cb-10c4-a805-4e297bf155ca> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Agent:Person:6c77dd4b-be0e-c2e3-f1c7-bfb21c5e31bf> , <Place:Leeuwarden> , <ProvidedCHO:ec48d98c-f3cb-10c4-a805-4e297bf155ca> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/36eedb8d-c925-32be-28a6-615ee8f6e6ba.jpg> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec48d98c-f3cb-10c4-a805-4e297bf155ca> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:cc58e828-62c3-479d-720f-2e60bb99b03d>
+        a                edm:Agent ;
+        dc:identifier    "Person:cc58e828-62c3-479d-720f-2e60bb99b03d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kerhof" ;
+        skos:prefLabel   "Barbera" .
+
+<ProvidedCHO:ec4eca7e-c3d5-e300-cd78-2d8be180d167>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:916e6c69-e8ae-8f1b-a2d5-4d8030eb2087> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4608, Periode: 1848-1859" ;
+        dc:identifier     "ec4eca7e-c3d5-e300-cd78-2d8be180d167" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:9ba82bd4-52cb-2d57-d35e-4a83892338f7> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4916, Periode: 1904-1922" ;
+        dc:identifier     "ec4c7a2e-f0fa-8e33-295c-ea1c6937ed13" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:ddcd0164-f012-f410-c79c-228e5cb9dda6>
+        a                edm:Agent ;
+        dc:identifier    "Person:ddcd0164-f012-f410-c79c-228e5cb9dda6" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitschat" ;
+        skos:prefLabel   "Catharina Dieuwke" .
+
+<Agent:Person:00f60e02-7a3d-55f8-4a98-f45f0d70966a>
+        a                edm:Agent ;
+        dc:identifier    "Person:00f60e02-7a3d-55f8-4a98-f45f0d70966a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Boom" ;
+        skos:prefLabel   "Geertje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec43b86c-c085-c372-21f3-4a6582446750>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec43b86c-c085-c372-21f3-4a6582446750> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:2c71b291-0a7a-4b6f-43d3-fbc087d8f8bc> , <TimeSpan:1848> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <ProvidedCHO:ec43b86c-c085-c372-21f3-4a6582446750> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/9bd8e13a-3c9a-c105-3c45-7ba86261f2de.jpg> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec43b86c-c085-c372-21f3-4a6582446750> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec48d98c-f3cb-10c4-a805-4e297bf155ca>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:6c77dd4b-be0e-c2e3-f1c7-bfb21c5e31bf> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4630, Periode: 1859-1876" ;
+        dc:identifier     "ec48d98c-f3cb-10c4-a805-4e297bf155ca" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec442e05-6fb5-6416-9d75-6634423d2ec0>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec442e05-6fb5-6416-9d75-6634423d2ec0> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <https://tresoar-images.memorix.nl/hcl/thumb/640x480/790f1a4e-e0e9-f740-4398-0c43db4226b9.jpg> , <Agent:Person:7eafeaea-0db2-c60e-87b2-1c194db6f2e7> , <Agent:Person:53ee23ba-672e-326b-a90f-2076141691bf> , <TimeSpan:1904> , <TimeSpan:1876> , <Place:Leeuwarden> , <Concept:Geregistreerde> , <Agent:Person:bcdb184e-40b8-f36a-2566-70f268406989> , <Agent:Person:3365c722-62dd-8c05-f87d-932f48c772ed> , <Concept:Bevolkingsregister> , <Agent:Person:c8a3a1ab-d0c3-6fe3-868a-05d70005a814> , <ProvidedCHO:ec442e05-6fb5-6416-9d75-6634423d2ec0> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec442e05-6fb5-6416-9d75-6634423d2ec0> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:53ee23ba-672e-326b-a90f-2076141691bf>
+        a                edm:Agent ;
+        dc:identifier    "Person:53ee23ba-672e-326b-a90f-2076141691bf" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Oolgaard" ;
+        skos:prefLabel   "Pieter Johannes" .
+
+<Agent:Person:07f8ddd4-b046-9d1b-e09b-cd6b49413617>
+        a                edm:Agent ;
+        dc:identifier    "Person:07f8ddd4-b046-9d1b-e09b-cd6b49413617" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Olthof" ;
+        skos:prefLabel   "Baukje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/925e9b6e-982e-47d4-a019-93b0b8d4e089.jpg> , <Agent:Person:24f1feea-18b8-031d-7c27-668e531cde2b> , <TimeSpan:1876> , <Place:Leeuwarden> , <TimeSpan:1904> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/8390a28e-0de8-1134-4243-b0f47e94b4e2.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec511bf4-bece-502c-5564-54bf3e9b15e3>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec511bf4-bece-502c-5564-54bf3e9b15e3> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec511bf4-bece-502c-5564-54bf3e9b15e3> , <Concept:Geregistreerde> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/5b82fdd1-17f9-6934-ef39-6e29195d6df0.jpg> , <Agent:Person:af715276-eaa1-e43b-f7ba-861d494d63e7> , <TimeSpan:1922> , <TimeSpan:1939> , <Place:Leeuwarden> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec511bf4-bece-502c-5564-54bf3e9b15e3> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/04ebccbf-38e6-0c7b-42ec-466d40be4883.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec442e05-6fb5-6416-9d75-6634423d2ec0>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:3365c722-62dd-8c05-f87d-932f48c772ed> , <Agent:Person:bcdb184e-40b8-f36a-2566-70f268406989> , <Agent:Person:53ee23ba-672e-326b-a90f-2076141691bf> , <Agent:Person:7eafeaea-0db2-c60e-87b2-1c194db6f2e7> , <Agent:Person:c8a3a1ab-d0c3-6fe3-868a-05d70005a814> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-12-31" , "1876-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4747, Periode: 1876-1904" ;
+        dc:identifier     "ec442e05-6fb5-6416-9d75-6634423d2ec0" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1876 - 1904" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/ec429a16-03c2-79be-5239-a7912a63e2e8>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec429a16-03c2-79be-5239-a7912a63e2e8> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1848> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Agent:Person:f2ea9202-bf18-cbe1-654f-4389da3c3cdf> , <Place:Leeuwarden> , <ProvidedCHO:ec429a16-03c2-79be-5239-a7912a63e2e8> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/31c0165a-e682-8a67-c1f0-6bd6957bf58e.jpg> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec429a16-03c2-79be-5239-a7912a63e2e8> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4a55219b-634b-0164-2078-03be5ad66312.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:21328f79-8ab1-67ec-528e-994790c0a9c0>
+        a                edm:Agent ;
+        dc:identifier    "Person:21328f79-8ab1-67ec-528e-994790c0a9c0" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Veenhof" ;
+        skos:prefLabel   "Aart" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/eda8ad01-f076-df7d-562f-18bdf5354a59.jpg> , <Place:Leeuwarden> , <TimeSpan:1859> , <Concept:Bevolkingsregister> , <Agent:Person:dbc2f68d-826a-db5e-5a83-51b0338ae86a> , <ProvidedCHO:ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4b0f76-b220-7bc0-abc5-b8bbb5010e3e> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:83297d07-4c26-7471-43c6-1db6179f8c08>
+        a                edm:Agent ;
+        dc:identifier    "Person:83297d07-4c26-7471-43c6-1db6179f8c08" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Proost" ;
+        skos:prefLabel   "Catharina" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1876> , <TimeSpan:1859> , <ProvidedCHO:ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0> , <Concept:Bevolkingsregister> , <Agent:Person:284749f4-7524-4b2b-af7a-8f3ca2768e3b> , <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/af132532-d521-a844-c6c0-75f87b813be2.jpg> , <Concept:Geregistreerde> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:24f1feea-18b8-031d-7c27-668e531cde2b> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-12-31" , "1876-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1876 - 1904, Bron: boek, Deel: 4824, Periode: 1876-1904" ;
+        dc:identifier     "ec4bdbb3-a833-3cc1-74f5-e8894a9cd28b" ;
+        dc:language       "nl" ;
+        dc:title          "Garnizoen Harlingen/Leeuwarden 1907-1921" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1876> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:493ccabf-d3e6-1e5a-46e4-09cc01f8ee0f>
+        a                edm:Agent ;
+        dc:identifier    "Person:493ccabf-d3e6-1e5a-46e4-09cc01f8ee0f" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Broekstra" ;
+        skos:prefLabel   "Grietje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4f6ec6-0762-cafc-8242-dba6cabdeb9d>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4f6ec6-0762-cafc-8242-dba6cabdeb9d> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:5c97b21e-0bdf-1f59-2bb9-cee5da94d000> , <Place:Leeuwarden> , <TimeSpan:1859> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/a3e73658-d88d-d36d-8e4b-ff12b3a6c10d.jpg> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <ProvidedCHO:ec4f6ec6-0762-cafc-8242-dba6cabdeb9d> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4f6ec6-0762-cafc-8242-dba6cabdeb9d> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec429a16-03c2-79be-5239-a7912a63e2e8>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:f2ea9202-bf18-cbe1-654f-4389da3c3cdf> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1859-12-31" , "1848-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4595, Periode: 1848-1859" ;
+        dc:identifier     "ec429a16-03c2-79be-5239-a7912a63e2e8" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1848> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/cc34cc8e-a323-5a05-b133-6241d1ec3a60.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/9bd8e13a-3c9a-c105-3c45-7ba86261f2de.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:3ea70d39-8e25-e259-e443-6af400a905b3>
+        a                edm:Agent ;
+        dc:identifier    "Person:3ea70d39-8e25-e259-e443-6af400a905b3" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Scholtens" ;
+        skos:prefLabel   "Metje" .
+
+<Agent:Person:fa4b6341-4920-5d96-0787-2e3a9f44f1f6>
+        a                edm:Agent ;
+        dc:identifier    "Person:fa4b6341-4920-5d96-0787-2e3a9f44f1f6" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kuipers" ;
+        skos:prefLabel   "Arend" .
+
+<ProvidedCHO:ec51cce3-14f0-4e53-e890-d401783ed933>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:3ea70d39-8e25-e259-e443-6af400a905b3> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Dienstboden 1904 - 1922, Bron: boek, Deel: 4936, Periode: 1904-1922" ;
+        dc:identifier     "ec51cce3-14f0-4e53-e890-d401783ed933" ;
+        dc:language       "nl" ;
+        dc:title          "Dienstboden 1904 - 1922 9" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:284749f4-7524-4b2b-af7a-8f3ca2768e3b> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4647, Periode: 1859-1876" ;
+        dc:identifier     "ec4e4f91-bfdc-1ddb-cf0b-ece1c22f33b0" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<ProvidedCHO:ec50e740-a9f9-373d-8ef0-29e99c3afb72>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:0a165aa9-3532-bfb1-87b6-496b237a9960> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4663, Periode: 1859-1876" ;
+        dc:identifier     "ec50e740-a9f9-373d-8ef0-29e99c3afb72" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:412d207a-eb67-d8fa-c569-edc3707f075e>
+        a                edm:Agent ;
+        dc:identifier    "Person:412d207a-eb67-d8fa-c569-edc3707f075e" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Dirk" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/f3d9f7ac-7a02-0519-8aab-f0ddd876af6a.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec501407-eec3-5248-0db0-1786cfa5f981>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec501407-eec3-5248-0db0-1786cfa5f981> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1848> , <TimeSpan:1859> , <Agent:Person:e8dd1cd0-69d2-82a2-ab9a-be31ddb1f60c> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/f42087dc-6e3f-34f8-5831-d1dc6f5741ec.jpg> , <Place:Leeuwarden> , <ProvidedCHO:ec501407-eec3-5248-0db0-1786cfa5f981> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec501407-eec3-5248-0db0-1786cfa5f981> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/47377acd-7aaa-8a60-4572-d6fa74652b18.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec507e12-cbc8-7ef8-c764-781394bf5636>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec507e12-cbc8-7ef8-c764-781394bf5636> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:c7d88df4-d73b-a1e7-a8cc-504b57629946> , <TimeSpan:1939> , <Concept:Bevolkingsregister> , <Agent:Person:33a2c247-7536-337e-b36f-3f8b8666896a> , <ProvidedCHO:ec507e12-cbc8-7ef8-c764-781394bf5636> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/8eb7d229-21e8-f373-5359-5a67109af188.jpg> , <TimeSpan:1922> , <Concept:Geregistreerde> , <Agent:Person:fe6ab0a1-1228-973f-9c4c-060e420b9ec0> , <Agent:Person:e4453180-1746-d128-fd9b-3c6d66d47e50> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec507e12-cbc8-7ef8-c764-781394bf5636> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:77004f48-af2f-4266-5ee8-029fa184718b>
+        a                edm:Agent ;
+        dc:identifier    "Person:77004f48-af2f-4266-5ee8-029fa184718b" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lamsma" ;
+        skos:prefLabel   "Anne" .
+
+<TimeSpan:1835>  a      edm:TimeSpan ;
+        skos:prefLabel  "1835" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/41998e4b-f6f5-8db6-f3a2-5f9d871d8b80.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec5016d2-441e-2f86-6cd0-71d6e6b0aeab>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec5016d2-441e-2f86-6cd0-71d6e6b0aeab> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Geregistreerde> , <TimeSpan:1904> , <Agent:Person:bd86cea1-7066-9c84-9bd9-901f01f84943> , <Concept:Bevolkingsregister> , <TimeSpan:1922> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/d8704698-397b-bb3c-9581-75f125337779.jpg> , <ProvidedCHO:ec5016d2-441e-2f86-6cd0-71d6e6b0aeab> , <Place:Leeuwarden> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec5016d2-441e-2f86-6cd0-71d6e6b0aeab> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec501407-eec3-5248-0db0-1786cfa5f981>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:e8dd1cd0-69d2-82a2-ab9a-be31ddb1f60c> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1848-01-01" , "1859-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1848 - 1859, Bron: boek, Deel: 4580, Periode: 1848-1859" ;
+        dc:identifier     "ec501407-eec3-5248-0db0-1786cfa5f981" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1848 - 1859" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1848> , <TimeSpan:1859> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:c52897fe-174b-ee3a-28e6-77ca26f4615e>
+        a                edm:Agent ;
+        dc:identifier    "Person:c52897fe-174b-ee3a-28e6-77ca26f4615e" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Deelstra" ;
+        skos:prefLabel   "Jan" .
+
+<Agent:Person:b045216e-8f02-c275-9422-f5a94e488d46>
+        a                edm:Agent ;
+        dc:identifier    "Person:b045216e-8f02-c275-9422-f5a94e488d46" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Galama" ;
+        skos:prefLabel   "Geertruida" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/6c28722c-d37c-1b39-aca9-d04cc2b204ae.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:301ef865-67f7-ab3c-e507-56fa21bca91c>
+        a                edm:Agent ;
+        dc:identifier    "Person:301ef865-67f7-ab3c-e507-56fa21bca91c" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Talsma" ;
+        skos:prefLabel   "Antje" .
+
+<http://allefriezen.nl/zoeken/deeds/ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Place:Leeuwarden> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/80ec6db8-c6b4-5a18-5121-5fc776340da8.jpg> , <Agent:Person:f21f8156-1fb9-f482-1452-a6a94352810a> , <Agent:Person:fa601c77-7304-f8d7-3805-593bc27f4716> , <Agent:Person:89320e14-55ba-4aba-8715-ebdda9db34b4> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <TimeSpan:1876> , <ProvidedCHO:ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7> , <TimeSpan:1904> , <Agent:Person:d3347256-1380-d230-c1c4-4a2552ad2672> , <Agent:Person:fba5776f-9bbc-6273-80f7-42174b463306> , <Agent:Person:2f1e512b-6263-fbcf-0485-7fe3f7d55bae> , <Agent:Person:d9ff834e-0d44-9f72-b54d-2a3aea823264> , <Agent:Person:ef567f44-676e-1633-44e9-40d3a31c1906> , <Agent:Person:0015a7a3-a5e2-b907-2206-9c540aa47182> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec499eb2-55ec-6365-f8c4-fcfe8eb3e2d7> ;
+        edm:provider              "Tresoar" .
+
+<Concept:Geregistreerde>
+        a               skos:Concept ;
+        skos:prefLabel  "Geregistreerde" ;
+        skos:related    <Agent:Person:66d1b4bc-dd4e-15e0-e8d8-6d7005047b80> , <Agent:Person:3825ed35-9d08-8819-1e71-b2ac9be6b97d> , <Agent:Person:c7d88df4-d73b-a1e7-a8cc-504b57629946> , <Agent:Person:4584cae5-8703-197a-9f39-58cd623103b4> , <Agent:Person:53ee23ba-672e-326b-a90f-2076141691bf> , <Agent:Person:fdabde6c-7ae2-f5e4-2d0b-ef6bbd1f0aab> , <Agent:Person:90fd486c-a23b-f320-47d3-406bec035c76> , <Agent:Person:301ef865-67f7-ab3c-e507-56fa21bca91c> , <Agent:Person:3af4133d-5fc5-9a6d-0b79-3d41ee0335c0> , <Agent:Person:3ea70d39-8e25-e259-e443-6af400a905b3> , <Agent:Person:89320e14-55ba-4aba-8715-ebdda9db34b4> , <Agent:Person:fa4b6341-4920-5d96-0787-2e3a9f44f1f6> , <Agent:Person:00f60e02-7a3d-55f8-4a98-f45f0d70966a> , <Agent:Person:d9ff834e-0d44-9f72-b54d-2a3aea823264> , <Agent:Person:708fd6c2-d802-0a07-6983-099d4ea0382c> , <Agent:Person:ef4f4c76-fab9-b760-84ac-b5550d138c08> , <Agent:Person:a0f76177-dd34-7339-1311-07720c0d292d> , <Agent:Person:abac2141-e135-ed88-883f-9f199089494e> , <Agent:Person:916e6c69-e8ae-8f1b-a2d5-4d8030eb2087> , <Agent:Person:d55b1bf9-d545-ed66-866c-2fbf6b96fe39> , <Agent:Person:cbee0c49-53d0-be36-7f67-ce9684ef6c60> , <Agent:Person:2a8456e5-32c5-0bd8-2e29-0d6eac857810> , <Agent:Person:a759da67-d08c-70a4-63c1-1e0aaf791e77> , <Agent:Person:d7674786-c233-6107-8e40-452097d24753> , <Agent:Person:c0da7e34-9bd2-1e70-ee5d-9b1d7a22e4c7> , <Agent:Person:610b9faf-8be4-64e7-691d-b86fbe2b984a> , <Agent:Person:75efd69e-0a9e-83f6-3010-4c10ff56a44a> , <Agent:Person:3365c722-62dd-8c05-f87d-932f48c772ed> , <Agent:Person:7eafeaea-0db2-c60e-87b2-1c194db6f2e7> , <Agent:Person:8e5d99c0-49bb-f378-f09b-b60bbd45ac80> , <Agent:Person:745137d9-2ddf-2ccf-07ed-0164e95270d1> , <Agent:Person:41da787f-2a0f-166f-faa4-5ee86bc9f775> , <Agent:Person:e8dd1cd0-69d2-82a2-ab9a-be31ddb1f60c> , <Agent:Person:cc58e828-62c3-479d-720f-2e60bb99b03d> , <Agent:Person:0f5f7f48-9f6e-c652-0eb5-05dfdc9626c2> , <Agent:Person:fba5776f-9bbc-6273-80f7-42174b463306> , <Agent:Person:27e3809a-72e0-5aa3-b1d9-70d309d257e6> , <Agent:Person:13f863f9-18c7-bc7a-b811-10b8e6c1a50d> , <Agent:Person:91371e7c-88a2-1aae-c117-268cf172e41c> , <Agent:Person:21328f79-8ab1-67ec-528e-994790c0a9c0> , <Agent:Person:ede79dfc-9476-340a-9d22-d05f7213bf50> , <Agent:Person:ab143c1c-dbd8-75e7-62af-17baf2f345b5> , <Agent:Person:57207d5d-8313-777c-986b-9edec0847bd3> , <Agent:Person:bcdb184e-40b8-f36a-2566-70f268406989> , <Agent:Person:0adb42f4-2b16-bc7e-7359-d57f66323e66> , <Agent:Person:493ccabf-d3e6-1e5a-46e4-09cc01f8ee0f> , <Agent:Person:36b9fefc-daa9-b274-3dc1-4833b31a31f0> , <Agent:Person:77004f48-af2f-4266-5ee8-029fa184718b> , <Agent:Person:b45d7df8-1ec0-1e6e-df34-8c96f8f19efb> , <Agent:Person:47199290-20fe-8465-7e53-73347d57d74b> , <Agent:Person:f251c709-6019-78ab-adfd-f6fe7bd8116d> , <Agent:Person:ddcd0164-f012-f410-c79c-228e5cb9dda6> , <Agent:Person:83297d07-4c26-7471-43c6-1db6179f8c08> , <Agent:Person:4a5bec0c-8fb0-9c1f-3d8e-1ba547e8f81a> , <Agent:Person:740fc0f1-a89e-3c9f-3890-e7bada75e4b9> , <Agent:Person:a62130c2-4403-3827-0fe9-8d9934f7b3bd> , <Agent:Person:e64dcef6-0cab-3566-18cc-d622bf49c40a> , <Agent:Person:b045216e-8f02-c275-9422-f5a94e488d46> , <Agent:Person:cd8391d7-b8cb-393a-2ebc-b0afaebe07b5> , <Agent:Person:ce71d07c-1437-4460-564f-89e0c557b216> , <Agent:Person:afff3fd4-9ff9-e333-853d-bdaca8101625> , <Agent:Person:b3b35aa5-ac3e-bba8-d589-0b06d0c520e0> , <Agent:Person:6ce84281-3eba-0c6a-57b2-8b803940451f> , <Agent:Person:da4630f5-1b40-3186-67ae-2817898bfb0a> , <Agent:Person:14e9d081-67cb-2b75-8f11-4959d9ff8f65> , <Agent:Person:5c97b21e-0bdf-1f59-2bb9-cee5da94d000> , <Agent:Person:f2ea9202-bf18-cbe1-654f-4389da3c3cdf> , <Agent:Person:f85a288a-04d7-069b-b629-caf3e412b5fa> , <Agent:Person:a1bb0d03-8bc3-230a-14a0-8b5d96efea6b> , <Agent:Person:5b480e1d-426b-bd81-a6da-91f97e7ef88d> , <Agent:Person:0015a7a3-a5e2-b907-2206-9c540aa47182> , <Agent:Person:2497c956-d313-4b1f-1eba-395e608eea57> , <Agent:Person:aca8dcff-1297-67e2-3929-592e76056bb7> , <Agent:Person:73801ea3-f8f2-f377-e940-505575cf0726> , <Agent:Person:38a9ec31-403f-1171-0241-d7e97d0023da> , <Agent:Person:d3347256-1380-d230-c1c4-4a2552ad2672> , <Agent:Person:bd86cea1-7066-9c84-9bd9-901f01f84943> , <Agent:Person:284749f4-7524-4b2b-af7a-8f3ca2768e3b> , <Agent:Person:dc89b885-1b06-04b7-3521-c7d9344f6f30> , <Agent:Person:13a5484e-8023-42f9-4ce6-462196d70a60> , <Agent:Person:e4453180-1746-d128-fd9b-3c6d66d47e50> , <Agent:Person:d0499f5d-c712-9e34-9cf3-b9d683eed31b> , <Agent:Person:74989e26-c94d-6df8-f9e5-81c3f0083062> , <Agent:Person:38eb44b4-1c65-646b-8b00-ad63c21c80d9> , <Agent:Person:a73f8625-7868-fb64-e693-f602de676d30> , <Agent:Person:c99091d2-3af1-02ba-5faa-65064600911e> , <Agent:Person:ac09f002-934f-4895-94ee-e91725f06c9a> , <Agent:Person:fe6ab0a1-1228-973f-9c4c-060e420b9ec0> , <Agent:Person:e93ebe43-5948-7763-8ee1-dff3b10d5bd3> , <Agent:Person:2edab8e1-9bf2-9fd0-a82b-9f37d76b702a> , <Agent:Person:6c77dd4b-be0e-c2e3-f1c7-bfb21c5e31bf> , <Agent:Person:dd85391b-3508-b235-7875-e71f5f25e3c9> , <Agent:Person:e767915d-712b-b288-b2c0-1435f087215b> , <Agent:Person:24bc4a70-8399-5df1-0ca2-f1e8c670550a> , <Agent:Person:f21f8156-1fb9-f482-1452-a6a94352810a> , <Agent:Person:9ba82bd4-52cb-2d57-d35e-4a83892338f7> , <Agent:Person:2d9fca0c-0f90-7a9e-fdde-e6d85adb31b3> , <Agent:Person:7a0123d4-c329-eac8-3966-b2b8efac3eaf> , <Agent:Person:276ac23d-9f25-8537-6382-25cefe635e45> , <Agent:Person:412d207a-eb67-d8fa-c569-edc3707f075e> , <Agent:Person:2c71b291-0a7a-4b6f-43d3-fbc087d8f8bc> , <Agent:Person:af715276-eaa1-e43b-f7ba-861d494d63e7> , <Agent:Person:493b1a9b-79c0-ebca-6976-a1d3252001f6> , <Agent:Person:dbc2f68d-826a-db5e-5a83-51b0338ae86a> , <Agent:Person:4e063df9-f01e-80ab-aa6e-a2f8c5fd43b2> , <Agent:Person:2f1e512b-6263-fbcf-0485-7fe3f7d55bae> , <Agent:Person:24f1feea-18b8-031d-7c27-668e531cde2b> , <Agent:Person:306bd858-1602-e9cc-5935-f9f15264d87a> , <Agent:Person:ef567f44-676e-1633-44e9-40d3a31c1906> , <Agent:Person:924aa629-8f73-4410-3627-cb1d623d5a88> , <Agent:Person:554e3e12-b072-423a-9ccd-469267ad621d> , <Agent:Person:35c775b3-8940-f1fc-6770-f74bca99e50b> , <Agent:Person:c52897fe-174b-ee3a-28e6-77ca26f4615e> , <Agent:Person:0a165aa9-3532-bfb1-87b6-496b237a9960> , <Agent:Person:33a2c247-7536-337e-b36f-3f8b8666896a> , <Agent:Person:7f97d89f-3edf-ed99-6886-46a963a4718a> , <Agent:Person:8d0892f8-7981-8a18-3cc2-46d030326df4> , <Agent:Person:5b1f6585-a4e6-2f58-0597-8170b8bc3f8d> , <Agent:Person:4100be73-b32b-e10a-e665-26a21533d9a8> , <Agent:Person:d0ed205e-2d26-d974-2d4e-986abe36246e> , <Agent:Person:bc4cf23a-bd45-87c1-f5b1-8f96bb5b26e6> , <Agent:Person:fa87040c-1993-7c10-1241-18f638e48227> , <Agent:Person:3d4a62f0-3151-1423-b269-6e6250298047> , <Agent:Person:744133b7-a4fb-8b30-c4e8-ef68c5796c68> , <Agent:Person:d6be88d1-b5e0-80e2-57e3-ac8894b0fb54> , <Agent:Person:6f8f4e88-fa0e-8785-b229-10816418b1ea> , <Agent:Person:fa601c77-7304-f8d7-3805-593bc27f4716> , <Agent:Person:1f4559f1-a419-c552-8792-410334b35915> , <Agent:Person:38ebd9a3-b6cd-da5c-ae36-65716f9ebc37> , <Agent:Person:05707501-9462-5942-f442-10df70a96ecd> , <Agent:Person:c8a3a1ab-d0c3-6fe3-868a-05d70005a814> , <Agent:Person:07f8ddd4-b046-9d1b-e09b-cd6b49413617> .
+
+<http://allefriezen.nl/zoeken/deeds/ec438b26-443a-b932-2fb0-2ca2c973f44d>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec438b26-443a-b932-2fb0-2ca2c973f44d> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Agent:Person:90fd486c-a23b-f320-47d3-406bec035c76> , <TimeSpan:1922> , <ProvidedCHO:ec438b26-443a-b932-2fb0-2ca2c973f44d> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/28f36a8e-25e8-132f-f097-1e9b498bd1d8.jpg> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <TimeSpan:1904> , <Concept:Bevolkingsregister> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec438b26-443a-b932-2fb0-2ca2c973f44d> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:ec5016d2-441e-2f86-6cd0-71d6e6b0aeab>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:bd86cea1-7066-9c84-9bd9-901f01f84943> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1922-12-31" , "1904-01-01" ;
+        dc:description    "Archiefnaam: Schippers 1904 - 1922, Bron: boek, Deel: 4950, Periode: 1904-1922" ;
+        dc:identifier     "ec5016d2-441e-2f86-6cd0-71d6e6b0aeab" ;
+        dc:language       "nl" ;
+        dc:title          "Schippers 1904 - 1922 5" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/4530394c-de17-98d5-5924-23004573f19d.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:5c97b21e-0bdf-1f59-2bb9-cee5da94d000>
+        a                edm:Agent ;
+        dc:identifier    "Person:5c97b21e-0bdf-1f59-2bb9-cee5da94d000" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Andringa de Kempenaer van" ;
+        skos:prefLabel   "Henrietta Jacoba" .
+
+<Concept:Notari%C3%ABlearchieven>
+        a               skos:Concept ;
+        skos:prefLabel  "Notariële archieven" .
+
+<ProvidedCHO:ec46ba02-b305-f14c-fcc6-572da1ecd7cc>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:3825ed35-9d08-8819-1e71-b2ac9be6b97d> , <Agent:Person:ac09f002-934f-4895-94ee-e91725f06c9a> , <Agent:Person:8e5d99c0-49bb-f378-f09b-b60bbd45ac80> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1939-12-31" , "1922-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1922 - 1939, Bron: boek, Deel: 4988, Periode: 1922-1939" ;
+        dc:identifier     "ec46ba02-b305-f14c-fcc6-572da1ecd7cc" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1922 - 1939" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1939> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:a1bb0d03-8bc3-230a-14a0-8b5d96efea6b>
+        a                    edm:Agent ;
+        dc:identifier        "Person:a1bb0d03-8bc3-230a-14a0-8b5d96efea6b" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Rottevalle> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Haan" ;
+        skos:prefLabel       "Gerrit Martens" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/8e664951-a2ce-65a5-1b75-5a647dce4b47.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec47bfa9-5563-9571-bc0d-a560cb9599cd>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:73801ea3-f8f2-f377-e940-505575cf0726> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Gestichten 1904 - 1922, Bron: boek, Deel: 4945, Periode: 1904-1922" ;
+        dc:identifier     "ec47bfa9-5563-9571-bc0d-a560cb9599cd" ;
+        dc:language       "nl" ;
+        dc:title          "Gestichten 1904 - 1922 5" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1922> , <TimeSpan:1904> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<http://allefriezen.nl/zoeken/deeds/58d380bf-745f-4673-afda-a956348811d0>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:58d380bf-745f-4673-afda-a956348811d0> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Notari%C3%ABlearchieven> , <TimeSpan:1835> , <Agent:Person:10e7fdc2-7043-4606-9b96-b4eabf48c211> , <Agent:Person:27b5d2e6-cb58-4df4-9fba-732d60ef3f33> , <Agent:Person:66275cbb-5138-4a51-8690-b62ec1da02c6> , <Agent:Person:406827d9-073d-49f4-b976-166e7aba4052> , <Place:Opsterland> , <Concept:other:Vermeld> , <ProvidedCHO:58d380bf-745f-4673-afda-a956348811d0> , <Place:Beets> , <Place:Beetsterzwaag> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/58d380bf-745f-4673-afda-a956348811d0> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:610b9faf-8be4-64e7-691d-b86fbe2b984a>
+        a                edm:Agent ;
+        dc:identifier    "Person:610b9faf-8be4-64e7-691d-b86fbe2b984a" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Beitsma" ;
+        skos:prefLabel   "Anne" .
+
+<Agent:Person:74989e26-c94d-6df8-f9e5-81c3f0083062>
+        a                    edm:Agent ;
+        dc:identifier        "Person:74989e26-c94d-6df8-f9e5-81c3f0083062" ;
+        rdaGr2:gender        "Onbekend" ;
+        rdaGr2:placeOfBirth  <Place:Leeuwarden> ;
+        edm:isRelatedTo      <Concept:Geregistreerde> ;
+        skos:altLabel        "Hof" ;
+        skos:prefLabel       "Grietje" .
+
+<TimeSpan:1859>  a      edm:TimeSpan ;
+        skos:prefLabel  "1859" .
+
+<Agent:Person:13f863f9-18c7-bc7a-b811-10b8e6c1a50d>
+        a                edm:Agent ;
+        dc:identifier    "Person:13f863f9-18c7-bc7a-b811-10b8e6c1a50d" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Graaf" ;
+        skos:prefLabel   "Klaasje" .
+
+<Agent:Person:3af4133d-5fc5-9a6d-0b79-3d41ee0335c0>
+        a                edm:Agent ;
+        dc:identifier    "Person:3af4133d-5fc5-9a6d-0b79-3d41ee0335c0" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Lourensz" ;
+        skos:prefLabel   "Folkert Ulrik" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/80ec6db8-c6b4-5a18-5121-5fc776340da8.jpg>
+        a       edm:WebResource .
+
+<http://allefriezen.nl/zoeken/deeds/ec4c5182-6985-b436-1a98-472cc528f118>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4c5182-6985-b436-1a98-472cc528f118> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <Concept:Bevolkingsregister> , <Concept:Geregistreerde> , <TimeSpan:1859> , <ProvidedCHO:ec4c5182-6985-b436-1a98-472cc528f118> , <Place:Leeuwarden> , <Agent:Person:4e063df9-f01e-80ab-aa6e-a2f8c5fd43b2> , <TimeSpan:1876> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/7d1d0665-8a74-8491-3330-f6d85fc07069.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4c5182-6985-b436-1a98-472cc528f118> ;
+        edm:provider              "Tresoar" .
+
+<Agent:Person:6ce84281-3eba-0c6a-57b2-8b803940451f>
+        a                edm:Agent ;
+        dc:identifier    "Person:6ce84281-3eba-0c6a-57b2-8b803940451f" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Stoffels" ;
+        skos:prefLabel   "Trijntje Elisabeth Margaretha" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/aff4c40c-aae8-b8f0-d56b-9a68dd5686c0.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:924aa629-8f73-4410-3627-cb1d623d5a88>
+        a                edm:Agent ;
+        dc:identifier    "Person:924aa629-8f73-4410-3627-cb1d623d5a88" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Reitsma" ;
+        skos:prefLabel   "Gerben" .
+
+<http://allefriezen.nl/zoeken/deeds/ec4a166f-1128-772a-a229-d33fd38ee971>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec4a166f-1128-772a-a229-d33fd38ee971> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <ProvidedCHO:ec4a166f-1128-772a-a229-d33fd38ee971> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/b2d7eb08-cd4d-c036-af46-37a5a736c21f.jpg> , <TimeSpan:1848> , <Concept:Geregistreerde> , <Place:Leeuwarden> , <Agent:Person:c52897fe-174b-ee3a-28e6-77ca26f4615e> , <Concept:Bevolkingsregister> , <TimeSpan:1859> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec4a166f-1128-772a-a229-d33fd38ee971> ;
+        edm:provider              "Tresoar" .
+
+<ProvidedCHO:58d380bf-745f-4673-afda-a956348811d0>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:406827d9-073d-49f4-b976-166e7aba4052> , <Agent:Person:10e7fdc2-7043-4606-9b96-b4eabf48c211> , <Agent:Person:27b5d2e6-cb58-4df4-9fba-732d60ef3f33> , <Agent:Person:66275cbb-5138-4a51-8690-b62ec1da02c6> ;
+        dc:coverage       <Place:Opsterland> ;
+        dc:date           "1835-04-10" ;
+        dc:description    "Archiefnaam: Notarieel archief - Tresoar, Deel: 010020, Periode: 1834-1836" ;
+        dc:identifier     "58d380bf-745f-4673-afda-a956348811d0" ;
+        dc:language       "nl" ;
+        dc:title          "Minuut-akten 1834-1836" ;
+        dc:type           "Notariële archieven" ;
+        dcterms:temporal  <TimeSpan:1835> ;
+        edm:isRelatedTo   <Concept:Notari%C3%ABlearchieven> ;
+        edm:type          "IMAGE" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/119d74b2-097b-83d2-60ee-4e3cc73c71ad.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:744133b7-a4fb-8b30-c4e8-ef68c5796c68>
+        a                edm:Agent ;
+        dc:identifier    "Person:744133b7-a4fb-8b30-c4e8-ef68c5796c68" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Bijkerh" ;
+        skos:prefLabel   "Louis" .
+
+<http://allefriezen.nl/zoeken/deeds/ec498296-d7e3-649a-0484-a49e2f2693f6>
+        a                         ore:Aggregation ;
+        edm:aggregatedCHO         <ProvidedCHO:ec498296-d7e3-649a-0484-a49e2f2693f6> ;
+        edm:dataProvider          "Tresoar" ;
+        edm:hasView               <TimeSpan:1904> , <ProvidedCHO:ec498296-d7e3-649a-0484-a49e2f2693f6> , <Place:Leeuwarden> , <Agent:Person:2497c956-d313-4b1f-1eba-395e608eea57> , <TimeSpan:1922> , <Concept:Geregistreerde> , <Concept:Bevolkingsregister> , <https://tresoar-images.memorix.nl/hcl/thumb/640x480/52852ae6-2353-93d5-9995-c5c0e979c341.jpg> ;
+        edm:intermediateProvider  "br_a" ;
+        edm:isShownAt             <http://allefriezen.nl/zoeken/deeds/ec498296-d7e3-649a-0484-a49e2f2693f6> ;
+        edm:provider              "Tresoar" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/f519e8cc-356f-6351-2ad5-aa45b30243d8.jpg>
+        a       edm:WebResource .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/437f7f92-85e5-88ac-95aa-d503441ae3a5.jpg>
+        a       edm:WebResource .
+
+<Agent:Person:6c77dd4b-be0e-c2e3-f1c7-bfb21c5e31bf>
+        a                edm:Agent ;
+        dc:identifier    "Person:6c77dd4b-be0e-c2e3-f1c7-bfb21c5e31bf" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Venstra" ;
+        skos:prefLabel   "Bouwe" .
+
+<Agent:Person:2d9fca0c-0f90-7a9e-fdde-e6d85adb31b3>
+        a                edm:Agent ;
+        dc:identifier    "Person:2d9fca0c-0f90-7a9e-fdde-e6d85adb31b3" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kuipers" ;
+        skos:prefLabel   "Hattum Dirk" .
+
+<Agent:Person:57207d5d-8313-777c-986b-9edec0847bd3>
+        a                edm:Agent ;
+        dc:identifier    "Person:57207d5d-8313-777c-986b-9edec0847bd3" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Kuipers" ;
+        skos:prefLabel   "Jeltje" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/283f1343-cd57-e36f-652b-60a9989d38da.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec498296-d7e3-649a-0484-a49e2f2693f6>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:2497c956-d313-4b1f-1eba-395e608eea57> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1904-01-01" , "1922-12-31" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1904 - 1922, Bron: boek, Deel: 4840, Periode: 1904-1922" ;
+        dc:identifier     "ec498296-d7e3-649a-0484-a49e2f2693f6" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1904 - 1922" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1904> , <TimeSpan:1922> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:ab143c1c-dbd8-75e7-62af-17baf2f345b5>
+        a                edm:Agent ;
+        dc:identifier    "Person:ab143c1c-dbd8-75e7-62af-17baf2f345b5" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Jongsma" ;
+        skos:prefLabel   "Geertruida" .
+
+<https://tresoar-images.memorix.nl/hcl/thumb/640x480/0624b52c-d6ed-85f6-d590-d33f6ff10fdd.jpg>
+        a       edm:WebResource .
+
+<ProvidedCHO:ec46e1a0-b466-666f-c651-9e0b6405b346>
+        a                 edm:ProvidedCHO ;
+        dc:contributor    <Agent:Person:fa87040c-1993-7c10-1241-18f638e48227> ;
+        dc:coverage       <Place:Leeuwarden> ;
+        dc:date           "1876-12-31" , "1859-01-01" ;
+        dc:description    "Archiefnaam: Bevolkingsregister 1859 - 1876, Bron: boek, Deel: 4679, Periode: 1859-1876" ;
+        dc:identifier     "ec46e1a0-b466-666f-c651-9e0b6405b346" ;
+        dc:language       "nl" ;
+        dc:title          "Bevolkingsregister 1859 - 1876" ;
+        dc:type           "Bevolkingsregister" ;
+        dcterms:temporal  <TimeSpan:1859> , <TimeSpan:1876> ;
+        edm:isRelatedTo   <Concept:Bevolkingsregister> ;
+        edm:type          "IMAGE" .
+
+<Agent:Person:493b1a9b-79c0-ebca-6976-a1d3252001f6>
+        a                edm:Agent ;
+        dc:identifier    "Person:493b1a9b-79c0-ebca-6976-a1d3252001f6" ;
+        rdaGr2:gender    "Onbekend" ;
+        edm:isRelatedTo  <Concept:Geregistreerde> ;
+        skos:altLabel    "Hoogsteen" ;
+        skos:prefLabel   "Fokeltje Jans" .
