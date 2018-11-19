@@ -59,7 +59,6 @@
             <artifactId>jena-csv</artifactId>
             <version>3.9.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

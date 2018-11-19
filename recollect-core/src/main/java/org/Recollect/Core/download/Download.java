@@ -1,8 +1,7 @@
 package org.Recollect.Core.download;
 
-import org.EDM.Transformations.formats.utils.FormatType;
+import org.csuc.util.FormatType;
 
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Map;
 

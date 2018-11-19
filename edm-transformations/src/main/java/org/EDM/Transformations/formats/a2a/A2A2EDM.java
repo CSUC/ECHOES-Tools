@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import nl.mindbus.a2a.*;
 import org.EDM.Transformations.formats.EDM;
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RDFDataMgr;
@@ -61,6 +60,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.csuc.serialize.JibxMarshall;
+import org.csuc.util.FormatType;
 
 /**
  * @author amartinez
@@ -805,16 +805,19 @@ public class A2A2EDM extends RDF implements EDM {
         if (!Objects.equals(this, new RDF())){
             File file = Files.createTempFile(identifier, ".xml").toFile();
 
-            try{
+            try {
                 JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
                         false, new FileOutputStream(file), RDF.class, -1);
 
                 Model model = RDFDataMgr.loadModel(file.toString());
 
                 RDFDataMgr.write(
-                        IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+//                        IoBuilder.forLogger(A2A2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+                        System.out,
                         model,
                         formatType.lang());
+            }catch (Exception e){
+                logger.error(e);
             }finally {
                 file.delete();
             }

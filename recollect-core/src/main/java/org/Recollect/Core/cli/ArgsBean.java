@@ -1,27 +1,23 @@
 package org.Recollect.Core.cli;
 
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.utils.SchemaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.util.FormatType;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.spi.ExplicitBooleanOptionHandler;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 import org.kohsuke.args4j.spi.MapOptionHandler;
 import org.openarchives.oai._2.VerbType;
 
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author amartinez
@@ -75,9 +71,6 @@ public class ArgsBean {
 
     @Option(name = "--format", usage = "format out")
     private FormatType format = FormatType.RDFXML;
-
-//    @Option(name = "--transformation", handler= ExplicitBooleanOptionHandler.class, usage= "fix the database", metaVar = "<boolean>")
-//    private boolean transformation = false;
 
     @Option(name = "--schema", usage="SCHEMA", required = true)
     private SchemaType schema;
@@ -233,14 +226,6 @@ public class ArgsBean {
         this.format = format;
     }
 
-//    public boolean isTransformation() {
-//        return transformation;
-//    }
-//
-//    public void setTransformation(boolean transformation) {
-//        this.transformation = transformation;
-//    }
-
     public SchemaType getSchema() {
         return schema;
     }
@@ -271,7 +256,6 @@ public class ArgsBean {
         logger.info("   out                 :   {}", out);
         logger.info("   RDFFormat           :   {}", format);
         logger.info("   Schema              :   {}", schema);
-//        logger.info("   Transformation      :   {}", transformation);
         logger.info("   Threads             :   {}", threads);
         logger.info("   Edm properties      :   {}", arguments);
     }

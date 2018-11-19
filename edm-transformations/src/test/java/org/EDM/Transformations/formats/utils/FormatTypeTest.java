@@ -1,5 +1,6 @@
 package org.EDM.Transformations.formats.utils;
 
+import org.csuc.util.FormatType;
 import org.junit.Test;
 
 import java.util.EnumSet;

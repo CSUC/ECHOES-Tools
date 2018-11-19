@@ -4,7 +4,6 @@ import eu.europeana.corelib.definitions.jibx.RDF;
 import nl.mindbus.a2a.A2AType;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.FactoryEDM;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.junit.Before;

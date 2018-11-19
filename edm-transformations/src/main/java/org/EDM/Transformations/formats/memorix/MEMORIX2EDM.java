@@ -3,32 +3,24 @@ package org.EDM.Transformations.formats.memorix;
 import eu.europeana.corelib.definitions.jibx.RDF;
 import nl.memorix_maior.api.rest._3.Memorix;
 import org.EDM.Transformations.formats.EDM;
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.net.ssl.TrustStoreConfigurationException;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.util.FormatType;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import sun.applet.Main;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.bind.util.JAXBSource;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -54,42 +46,26 @@ public class MEMORIX2EDM implements EDM {
     public void transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
         InputStream xsl = getClass().getClassLoader().getResourceAsStream("memorix/memorix.xslt");
 
-        StringWriter sw = new StringWriter();
-        JAXBContext context = JAXBContext.newInstance(Memorix.class);
-        Marshaller m = context.createMarshaller();
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
 
-        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://api.memorix-maior.nl/REST/3.0/ http://api.memorix-maior.nl/REST/3.0/MRX-API-ANY.xsd");
-        m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-
-        m.marshal(type, sw);
-
-        System.out.println(sw.toString());
         new XSLTTransformations(xsl, out, xsltProperties)
-                .transformationsFromSource(new StreamSource(new StringReader(sw.toString())));
+                .transformationsFromSource(source);
     }
 
     @Override
     public void transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
-        StringWriter sw = new StringWriter();
-        JAXBContext context = JAXBContext.newInstance(Memorix.class);
-        Marshaller m = context.createMarshaller();
-
-        m.marshal(type, sw);
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
 
         new XSLTTransformations(xslt, out, xsltProperties)
-                .transformationsFromSource(new DOMSource(getDocument(type)));
+                .transformationsFromSource(source);
     }
 
     @Override
     public void transformation(String xslt) throws Exception {
-        StringWriter sw = new StringWriter();
-        JAXBContext context = JAXBContext.newInstance(Memorix.class);
-        Marshaller m = context.createMarshaller();
-
-        m.marshal(type, sw);
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
 
         new XSLTTransformations(xslt, IoBuilder.forLogger(MEMORIX2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties)
-                .transformationsFromSource(new DOMSource(getDocument(type)));
+                .transformationsFromSource(source);
     }
 
     @Override

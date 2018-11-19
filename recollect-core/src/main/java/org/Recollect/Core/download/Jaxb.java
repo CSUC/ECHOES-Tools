@@ -8,13 +8,13 @@ import org.EDM.Transformations.formats.a2a.A2A2EDM;
 import org.EDM.Transformations.formats.dc.DC2EDM;
 import org.EDM.Transformations.formats.ead.EAD2EDM;
 import org.EDM.Transformations.formats.memorix.MEMORIX2EDM;
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.utils.SchemaType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.util.FormatType;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 public class Jaxb implements Download {
 
-    private static Logger logger = LogManager.getLogger(DownloadJaxb.class);
+    private static Logger logger = LogManager.getLogger(Jaxb.class);
 
     private RecordType record;
     private JAXBElement<?> jaxbElement;
@@ -50,10 +50,10 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Map<String, String> properties) throws Exception {
-        EDM edm = getMetadataSchema(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
+        EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
-            edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream());
+            edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream());
 
         logger.info(String.format("Donwload item (%s) identifier %s",
                 jaxbElement.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));
@@ -61,10 +61,11 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Map<String, String> properties, FormatType formatType) throws Exception {
-        EDM edm = getMetadataSchema(IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
+        EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
-            edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(DownloadJaxb.class).setLevel(Level.INFO).buildOutputStream(), formatType);
+            edm.creation();
+            //edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), formatType);
 
         logger.info(String.format("Donwload item (%s) identifier %s",
                 jaxbElement.getDeclaredType().getSimpleName(), record.getHeader().getIdentifier()));

@@ -72,14 +72,14 @@
         </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
+			<artifactId>log4j-core</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>rdf-format</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
 	<build>
 	<plugins>
 		<plugin>
@@ -110,26 +110,12 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
-                <includes>
-                    <include>**/*.xsl</include>
-                    <include>**/*.xslt</include>
-                    <!--<include>**/log4j2.xm</include>-->
-                    <!--<include>log4j2.xml</include>-->
-                </includes>
 				<excludes>
-					<exclude>**/*.json</exclude>
 					<exclude>**/log4j2.xml</exclude>
 				</excludes>
 			</resource>
 			<resource>
 				<directory>src/test/resources</directory>
-				<includes>
-					<include>**/*.xsl</include>
-                    <include>**/*.xslt</include>
-				</includes>
-                <excludes>
-                    <exclude>**/*.xml</exclude>
-                </excludes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>

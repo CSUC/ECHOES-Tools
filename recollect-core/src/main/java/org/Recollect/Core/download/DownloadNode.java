@@ -1,12 +1,12 @@
 package org.Recollect.Core.download;
 
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.util.FormatType;
 import org.openarchives.oai._2.RecordType;
 import org.w3c.dom.Node;
 

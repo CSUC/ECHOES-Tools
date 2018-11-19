@@ -8,9 +8,7 @@ import eu.europeana.corelib.definitions.jibx.Date;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
 import net.sf.saxon.functions.IriToUri;
 import org.EDM.Transformations.formats.EDM;
-import org.EDM.Transformations.formats.utils.FormatType;
 import org.EDM.Transformations.formats.utils.TimeUtil;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RDFDataMgr;
@@ -20,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.csuc.serialize.JibxMarshall;
+import org.csuc.util.FormatType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 import org.purl.dc.elements._1.ElementType;
 
@@ -441,7 +440,8 @@ public class DC2EDM extends RDF implements EDM {
                 Model model = RDFDataMgr.loadModel(file.toString());
 
                 RDFDataMgr.write(
-                        IoBuilder.forLogger(DC2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+//                        IoBuilder.forLogger(DC2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+                        System.out,
                         model,
                         formatType.lang());
             }finally {

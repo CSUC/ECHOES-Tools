@@ -4,11 +4,9 @@
 package org.EDM.Transformations.formats;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
-import org.EDM.Transformations.formats.utils.FormatType;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.util.FormatType;
 
-import javax.xml.transform.Source;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Map;

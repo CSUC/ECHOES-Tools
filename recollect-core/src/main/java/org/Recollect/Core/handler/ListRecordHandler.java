@@ -7,7 +7,6 @@ import org.Recollect.Core.client.OAIClient;
 import org.Recollect.Core.parameters.ListRecordsParameters;
 import org.Recollect.Core.parameters.Parameters;
 import org.Recollect.Core.util.Source;
-import org.Recollect.Core.util.Verb.Type;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.deserialize.JaxbUnmarshal;

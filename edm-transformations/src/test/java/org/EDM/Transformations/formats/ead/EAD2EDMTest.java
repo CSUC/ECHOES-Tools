@@ -4,7 +4,6 @@ import eu.europeana.corelib.definitions.jibx.RDF;
 import isbn._1_931666_22_9.Ead;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.FactoryEDM;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.deserialize.JaxbUnmarshal;
@@ -12,7 +11,6 @@ import org.csuc.deserialize.JibxUnMarshall;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
