@@ -1,5 +1,6 @@
 package org.csuc;
 
+import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -27,6 +28,12 @@ public class App {
 
         Server jettyServer = new Server(8080);
         jettyServer.setHandler(context);
+
+        MongoSessionIdManager idMgr = new MongoSessionIdManager(jettyServer);
+        idMgr.setWorkerName("node0");
+        idMgr.setScavengePeriod(60);
+
+        jettyServer.setSessionIdManager(idMgr);
 
         ServletHolder jerseyServlet =
                 new ServletHolder(new org.glassfish.jersey.servlet.ServletContainer(application));
