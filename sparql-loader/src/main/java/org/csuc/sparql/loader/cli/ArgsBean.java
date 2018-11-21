@@ -1,8 +1,8 @@
-    package org.csuc.sparql.loader.cli;
+package org.csuc.sparql.loader.cli;
 
-import org.apache.jena.riot.RDFFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.util.FormatType;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -14,40 +14,44 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.util.Scanner;
 
-    /**
+/**
  * @author amartinez
  */
 public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
-    @Option(name="-h", aliases = "--help", help = true, required = false)
+    @Option(name = "-h", aliases = "--help", help = true)
     private boolean help = false;
 
-    @Option(name = "--host", usage= "host", required = false)
-    private String host = "localhost";
+    @Option(name = "--deleteFiles", aliases = "--deleteFiles", usage = "delete files")
+    private boolean deleteFiles = false;
 
-    @Option(name = "-p", aliases = "--port", usage= "port", required = false, handler = IntOptionHandler.class)
-    private int port = 9999;
+    @Option(name = "--hostname", usage = "hostname")
+    private String hostname = "localhost:9999";
 
+    @Option(name = "-i", aliases = "--input", usage = "file or folder input", required = true)
     private Path input;
 
-    @Option(name = "--contentType", usage= "content type", required = false)
-    private String contentType = RDFFormat.RDFXML_ABBREV.toString();
+    @Option(name = "--content-type", usage = "content type")
+    private FormatType contentType = FormatType.RDFXML;
 
-    @Option(name = "--context", usage= "context", required = false)
-    private String context = "blazegraph";
+    @Option(name = "-n", aliases = "--namespace", usage = "namespace")
+    private String namespace = "kb";
 
-    @Option(name = "-n", aliases = "--namespace", usage= "context", required = false)
-    private String namespace;
-
+    @Option(name = "-c", aliases = "--charset", usage = "charset out", metaVar = "[UTF-8, ISO_8859_1, US_ASCII, UTF_16, UTF_16BE, UTF_16LE]")
     private String charset = StandardCharsets.UTF_8.name();
 
-
+    @Option(name = "-t", aliases = "--threads", usage = "threads", handler = IntOptionHandler.class)
     private Integer threads = 1;
 
-    public ArgsBean(String[] args){
+    @Option(name = "--context-uri", usage = "virtual graph")
+    private String context_uri;
+
+
+    public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
 
         try {
@@ -55,7 +59,7 @@ public class ArgsBean {
             // parse the arguments.
             parser.parseArgument(args);
 
-            if(this.help){
+            if (this.help) {
                 System.err.println("Usage: ");
                 parser.printUsage(System.err);
                 System.err.println();
@@ -63,13 +67,13 @@ public class ArgsBean {
             }
 
             this.run();
-        } catch( CmdLineException e ) {
-            if(this.help){
+        } catch (CmdLineException e) {
+            if (this.help) {
                 System.err.println("Usage: ");
                 parser.printUsage(System.err);
                 System.err.println();
                 return;
-            }else{
+            } else {
                 System.err.println(e.getMessage());
                 parser.printUsage(System.err);
                 System.err.println();
@@ -90,9 +94,8 @@ public class ArgsBean {
         return input;
     }
 
-    @Option(name = "-i", aliases = "--input", usage= "file or folder input", required = true)
     public void setInput(Path input) throws FileNotFoundException {
-        if(Files.notExists(input)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", input));
+        if (Files.notExists(input)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", input));
         this.input = input;
     }
 
@@ -100,8 +103,6 @@ public class ArgsBean {
         return Charset.forName(charset);
     }
 
-    @Option(name = "-c", aliases = "--charset", usage = "charset out",
-            required = false, metaVar = "[UTF-8, ISO_8859_1, US_ASCII, UTF_16, UTF_16BE, UTF_16LE]")
     public void setCharset(String charset) {
         this.charset = Charset.forName(charset).toString();
     }
@@ -110,42 +111,26 @@ public class ArgsBean {
         return threads;
     }
 
-    @Option(name = "-t", aliases = "--threads", usage = "threads", required = false, handler = IntOptionHandler.class)
+
     public void setThreads(Integer threads) {
-        if(threads == 0)    throw new IllegalThreadStateException("Threads > 0");
+        if (threads == 0) throw new IllegalThreadStateException("Threads > 0");
         this.threads = threads;
     }
 
-    public String getHost() {
-        return host;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getContentType() {
+    public FormatType getContentType() {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(FormatType contentType) {
         this.contentType = contentType;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
     }
 
     public String getNamespace() {
@@ -156,14 +141,36 @@ public class ArgsBean {
         this.namespace = namespace;
     }
 
-    public void run(){
-        logger.info("   Host            :   {}", host);
-        logger.info("   Port            :   {}", port);
+    public boolean isDeleteFiles() {
+        return deleteFiles;
+    }
+
+    public void setDeleteFiles(boolean deleteFiles) {
+        this.deleteFiles = deleteFiles;
+    }
+
+    public String getContext_uri() {
+        return context_uri;
+    }
+
+    public void setContext_uri(String context_uri) {
+        this.context_uri = context_uri;
+    }
+
+    public void run() {
+        logger.info("   Hostname        :   {}", hostname);
         logger.info("   Content-Type    :   {}", contentType);
-        logger.info("   Context         :   {}", context);
         logger.info("   Namespace       :   {}", namespace);
+        logger.info("   context_uri     :   {}", context_uri);
         logger.info("   Input           :   {}", input);
         logger.info("   Charset         :   {}", charset);
+        logger.info("   Delete files    :   {}", deleteFiles);
         logger.info("   Threads         :   {}", threads);
+    }
+
+    public void promptEnterKey() {
+        System.out.println("Press \"ENTER\" to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }

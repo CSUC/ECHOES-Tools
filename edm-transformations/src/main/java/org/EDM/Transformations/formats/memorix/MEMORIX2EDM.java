@@ -9,7 +9,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.util.FormatType;
+import org.w3c.dom.Document;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.util.JAXBSource;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMResult;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -35,21 +42,30 @@ public class MEMORIX2EDM implements EDM {
         this.properties = properties;
     }
 
-
     @Override
-    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
-        String xsl = getClass().getClassLoader().getResource("memorix/memorix.xslt").toExternalForm();
-        return new XSLTTransformations(xsl, out, xsltProperties);
+    public void transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        InputStream xsl = getClass().getClassLoader().getResourceAsStream("memorix/memorix.xslt");
+
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
+
+        new XSLTTransformations(xsl, out, xsltProperties)
+                .transformationsFromSource(source);
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
-        return new XSLTTransformations(xslt, out, xsltProperties);
+    public void transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
+
+        new XSLTTransformations(xslt, out, xsltProperties)
+                .transformationsFromSource(source);
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt) throws Exception {
-        return new XSLTTransformations(xslt, IoBuilder.forLogger(MEMORIX2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties);
+    public void transformation(String xslt) throws Exception {
+        JAXBSource source = new JAXBSource( JAXBContext.newInstance(Memorix.class), type );
+
+        new XSLTTransformations(xslt, IoBuilder.forLogger(MEMORIX2EDM.class).setLevel(Level.INFO).buildOutputStream(), properties)
+                .transformationsFromSource(source);
     }
 
     @Override
@@ -58,7 +74,17 @@ public class MEMORIX2EDM implements EDM {
     }
 
     @Override
+    public void creation(FormatType formatType) throws IllegalArgumentException {
+        throw new IllegalArgumentException("creation is not valid for MEMORIX2EDM!");
+    }
+
+    @Override
     public void creation(Charset encoding, boolean alone, OutputStream outs) {
+        throw new IllegalArgumentException("creation is not valid for MEMORIX2EDM!");
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs, FormatType formatType) throws Exception {
         throw new IllegalArgumentException("creation is not valid for MEMORIX2EDM!");
     }
 
@@ -90,5 +116,14 @@ public class MEMORIX2EDM implements EDM {
     @Override
     public void modify(RDF rdf) {
 
+    }
+
+    public static Document getDocument(Object jaxb) throws JAXBException, ParserConfigurationException {
+        DOMResult res = new DOMResult();
+        JAXBContext context = JAXBContext.newInstance(Memorix.class);
+        context.createMarshaller().marshal(jaxb, res);
+        Document doc = (Document) res.getNode();
+        System.out.println(doc.toString());
+        return doc;
     }
 }

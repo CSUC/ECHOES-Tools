@@ -1,20 +1,9 @@
 package org.Recollect.Core.cli;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import nl.memorix_maior.api.rest._3.Memorix;
+import nl.mindbus.a2a.A2AType;
 import org.Recollect.Core.Recollect;
 import org.Recollect.Core.client.HttpOAIClient;
 import org.Recollect.Core.client.OAIClient;
@@ -34,7 +23,19 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.openarchives.oai._2.*;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
-import nl.mindbus.a2a.A2AType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -183,15 +184,15 @@ public class Main {
             getRecordParameters.withIdentifier(bean.getIdentifier());
             getRecordParameters.withMetadataFormatPrefix(bean.getMetadataPrefix());
 
-            if (Objects.nonNull(bean.getOut()))
+            Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
+            Observable<Download> observable =
+                    FactoryDownload.createDownloadRecordType(
+                            recollect.getRecord(getRecordParameters, classType),
+                            bean.getSchema()
+                    );
+
+            if (Objects.nonNull(bean.getOut())) {
                 pathWithSetSpec = Files.createDirectories(bean.getOut());
-
-            //FactoryDownload.createDownloadRecordType(recollect.getRecord(getRecordParameters, new Class[] { OAIPMHtype.class, A2AType.class, OaiDcType.class }),xslt);
-
-            Observable<Download> observable;
-
-            if(Objects.isNull(bean.getXslt())) {
-                observable = FactoryDownload.createDownloadRecordType(recollect.getRecord(getRecordParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class}), bean.getXslt());
 
                 observable
                         .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
@@ -201,10 +202,23 @@ public class Main {
                         .subscribe(
                                 (Download l) ->{
                                     logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(pathWithSetSpec, bean.getArguments() );
+                                    l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
                                 } ,
                                 e -> logger.error("Error: " + e),
-                                () -> logger.info(String.format("Completed %s: %s", getRecordParameters.getIdentifier(), TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
+                                () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
+                        );
+                Thread.sleep(3000);
+            }else{
+                observable
+                        .doOnNext(i-> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                (Download l) ->{
+                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                    l.execute(bean.getArguments(), bean.getFormat());
+                                } ,
+                                e -> logger.error("Error: " + e),
+                                () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
                         );
                 Thread.sleep(3000);
             }
@@ -276,11 +290,13 @@ public class Main {
                     listRecordsParameters.withFrom(dateProvider.parse(bean.getUntil()));
             }
 
-            Observable<Download> observable;
+            Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
 
-            if(Objects.isNull(bean.getXslt()))
-                observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class }), bean.getXslt());
-            else observable = FactoryDownload.createDownloadIterator(recollect.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class}), bean.getXslt());
+            Observable<Download> observable =
+                    FactoryDownload.createDownloadIterator(
+                        recollect.listRecords(listRecordsParameters, classType),
+                        bean.getSchema()
+                    );
 
             if (Objects.nonNull(bean.getOut())) {
                 pathWithSetSpec = Files.createDirectories(Paths.get(bean.getOut() + File.separator + listRecordsParameters.getSetSpec()));
@@ -293,7 +309,7 @@ public class Main {
                         .subscribe(
                                 (Download l) ->{
                                     logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(pathWithSetSpec, bean.getArguments() );
+                                    l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
                                 } ,
                                 e -> logger.error("Error: " + e),
                                 () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
@@ -306,7 +322,7 @@ public class Main {
                         .subscribe(
                                 (Download l) ->{
                                     logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(bean.getArguments() );
+                                    l.execute(bean.getArguments(), bean.getFormat());
                                 } ,
                                 e -> logger.error("Error: " + e),
                                 () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))

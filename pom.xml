@@ -20,6 +20,7 @@
 		<module>edm-transformations</module>
 		<module>binding-core</module>
 		<module>echoes-gui</module>
+		<module>rdf-format</module>
 	</modules>
 
 	<build>
@@ -52,6 +53,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -147,16 +153,61 @@
 				<version>${jibx.schema.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>apache-jena-libs</artifactId>
+				<version>${org.apache.jena.version}</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-core</artifactId>
+				<version>${org.apache.jena.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-arq</artifactId>
+				<version>${org.apache.jena.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-csv</artifactId>
+                <version>${org.apache.jena.version}</version>
+            </dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-iri -->
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-iri</artifactId>
+				<version>${org.apache.jena.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-osgi -->
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-osgi</artifactId>
+				<version>${org.apache.jena.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.squareup.moshi/moshi -->
+			<dependency>
+				<groupId>com.squareup.moshi</groupId>
+				<artifactId>moshi</artifactId>
+				<version>${moshi.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.rabbitmq</groupId>
+				<artifactId>amqp-client</artifactId>
+				<version>${amqp.client.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<revision>1.3.4</revision>
+		<revision>1.3.5</revision>
 
 		<binding.core.version>1.3</binding.core.version>
-		<edm.transformations.version>1.3</edm.transformations.version>
+		<edm.transformations.version>1.3.4</edm.transformations.version>
 		<parser.core.version>1.3</parser.core.version>
-		<recollect.core.version>1.3</recollect.core.version>
-		<sparql.loader.version>1.3</sparql.loader.version>
+		<recollect.core.version>1.3.4</recollect.core.version>
+		<sparql.loader.version>1.3.4</sparql.loader.version>
 		<validation.core.version>1.3</validation.core.version>
 
 		<metadata.schema.definitions.version>1.1</metadata.schema.definitions.version>
@@ -182,6 +233,10 @@
 		<jackson.core.version>2.9.7</jackson.core.version>
 		<jackson.core.databind.version>2.9.7</jackson.core.databind.version>
 		<jibx.schema.version>1.2.6</jibx.schema.version>
+		<typesafe.config.version>1.3.3</typesafe.config.version>
+		<moshi.version>1.6.0</moshi.version>
+		<amqp.client.version>5.2.0</amqp.client.version>
+		<org.apache.jena.version>3.9.0</org.apache.jena.version>
 
 		<echoes.path>/tmp/echoes</echoes.path>
 

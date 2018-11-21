@@ -8,8 +8,8 @@ import org.csuc.entities.Recollect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
-import org.csuc.typesafe.producer.ProducerConfig;
-import org.csuc.typesafe.producer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
+import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.utils.authorization.Authoritzation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ public class Zip {
 
     private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
-    private RabbitMQConfig config = new ProducerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
+    private RabbitMQConfig config = new ProducerAndConsumerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
 
     @Context
     private UriInfo uriInfo;

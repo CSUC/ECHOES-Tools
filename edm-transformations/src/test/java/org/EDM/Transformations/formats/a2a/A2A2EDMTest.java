@@ -4,7 +4,6 @@ import eu.europeana.corelib.definitions.jibx.RDF;
 import nl.mindbus.a2a.A2AType;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.FactoryEDM;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.junit.Before;
@@ -46,20 +45,16 @@ public class A2A2EDMTest {
 
     @Test
     public void transformation() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = a2a.transformation(null);
-            assertNull(transformations);
+            a2a.transformation(null, null);
         }catch(Exception e){}
     }
 
 
     @Test
     public void transformation1() throws Exception {
-        XSLTTransformations transformations = null;
         try{
-            transformations = a2a.transformation(null, null, null);
-            assertNull(transformations);
+            a2a.transformation(null, null, null);
         }catch(Exception e){}
     }
 

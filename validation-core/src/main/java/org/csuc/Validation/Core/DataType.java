@@ -1,7 +1,7 @@
 package org.csuc.Validation.Core;
 
 import eu.europeana.corelib.definitions.jibx.*;
-import org.EDM.Transformations.formats.a2a.PlaceType;
+import org.EDM.Transformations.formats.utils.PlaceType;
 import org.EDM.Transformations.formats.utils.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

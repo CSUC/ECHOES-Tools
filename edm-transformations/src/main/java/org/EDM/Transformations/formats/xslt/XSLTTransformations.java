@@ -3,11 +3,7 @@
  */
 package org.EDM.Transformations.formats.xslt;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -58,6 +54,18 @@ public class XSLTTransformations {
         xsltProperties.values().removeIf(Objects::isNull);
         this.xsltProperties = xsltProperties;
 	}
+
+    public XSLTTransformations(InputStream xslt, OutputStream out, Map<String,String> xsltProperties) throws Exception {
+        if(Objects.isNull(xslt)) throw new Exception("xslt must not be null");
+        if(Objects.isNull(out)) throw new Exception("out must not be null");
+        if(Objects.isNull(xsltProperties)) throw new Exception("xsltProperties must not be null");
+
+        xlsStreamSource = new StreamSource(xslt);
+
+        this.out = out;
+        xsltProperties.values().removeIf(Objects::isNull);
+        this.xsltProperties = xsltProperties;
+    }
 
     /**
      *

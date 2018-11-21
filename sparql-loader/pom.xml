@@ -13,7 +13,7 @@
 
     <groupId>org.csuc</groupId>
     <artifactId>sparql-loader</artifactId>
-    <version>${sparql.loader.version}</version>
+    <version>1.3.4</version>
     <packaging>jar</packaging>
 
     <name>Sparql-Loader</name>
@@ -23,7 +23,6 @@
         <httpcomponents.httpclient.version>4.5.5</httpcomponents.httpclient.version>
         <httpcomponents.httpcore.version>4.4.9</httpcomponents.httpcore.version>
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
-        <jena.arq.version>3.5.0</jena.arq.version>
     </properties>
 
     <dependencies>
@@ -78,11 +77,16 @@
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
         <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-arq</artifactId>
-            <version>${jena.arq.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>rdf-format</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -91,6 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>a</id>

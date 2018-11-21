@@ -90,6 +90,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-database</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -128,6 +129,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-producer</artifactId>
+            <version>0.0.1</version>
         </dependency>
 
         <dependency>
@@ -157,6 +159,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-config</artifactId>
+            <version>0.0.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->

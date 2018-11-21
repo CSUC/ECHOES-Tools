@@ -3,34 +3,31 @@
  */
 package org.EDM.Transformations.formats.dc;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import eu.europeana.corelib.definitions.jibx.*;
 import eu.europeana.corelib.definitions.jibx.Date;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
+import net.sf.saxon.functions.IriToUri;
 import org.EDM.Transformations.formats.EDM;
 import org.EDM.Transformations.formats.utils.TimeUtil;
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.deserialize.JibxUnMarshall;
 import org.csuc.serialize.JibxMarshall;
+import org.csuc.util.FormatType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
-
-import net.sf.saxon.functions.IriToUri;
 import org.purl.dc.elements._1.ElementType;
+
+import javax.xml.bind.JAXBElement;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.*;
 
 /**
  * @author amartinez
@@ -411,17 +408,17 @@ public class DC2EDM extends RDF implements EDM {
     }
 
     @Override
-    public XSLTTransformations transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
+    public void transformation(OutputStream out, Map<String, String> xsltProperties) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
+    public void transformation(String xslt, OutputStream out, Map<String, String> xsltProperties) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
     }
 
     @Override
-    public XSLTTransformations transformation(String xslt) throws Exception {
+    public void transformation(String xslt) throws Exception {
         throw new IllegalArgumentException("transformation is not valid for DC2EDM!");
     }
 
@@ -433,9 +430,50 @@ public class DC2EDM extends RDF implements EDM {
     }
 
     @Override
+    public void creation(FormatType formatType) throws IOException {
+        if (!Objects.equals(this, new RDF())){
+            File file = Files.createTempFile(identifier, ".xml").toFile();
+            try{
+                JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
+                        false, new FileOutputStream(file), RDF.class, -1);
+
+                Model model = RDFDataMgr.loadModel(file.toString());
+
+                RDFDataMgr.write(
+//                        IoBuilder.forLogger(DC2EDM.class).setLevel(Level.INFO).buildOutputStream(),
+                        System.out,
+                        model,
+                        formatType.lang());
+            }finally {
+                file.delete();
+            }
+        }
+    }
+
+    @Override
     public void creation(Charset encoding, boolean alone, OutputStream outs) {
         if (!Objects.equals(this, new RDF()))
             JibxMarshall.marshall(this, encoding.toString(), alone, outs, RDF.class, -1);
+    }
+
+    @Override
+    public void creation(Charset encoding, boolean alone, OutputStream outs, FormatType formatType) throws Exception {
+        if (!Objects.equals(this, new RDF())) {
+            if (formatType.equals(FormatType.RDFXML)) creation(encoding, alone, outs);
+            else {
+                File file = Files.createTempFile(identifier, ".xml").toFile();
+                try {
+                    JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
+                            false, new FileOutputStream(file), RDF.class, -1);
+
+                    Model model = RDFDataMgr.loadModel(file.toString());
+
+                    RDFDataMgr.write(outs, model, formatType.lang());
+                } finally {
+                    file.delete();
+                }
+            }
+        }
     }
 
     @Override
