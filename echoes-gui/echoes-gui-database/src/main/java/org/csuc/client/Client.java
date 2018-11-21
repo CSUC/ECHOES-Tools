@@ -38,7 +38,16 @@ public class Client {
             List<ServerAddress> addrs = new ArrayList<>();
             addrs.add(new ServerAddress(this.host, this.port));
 
-            MongoClient mongo = new MongoClient(this.host, this.port);
+            MongoClient mongo = new MongoClient(addrs,
+                    MongoClientOptions.builder()
+                            .retryWrites(true)
+                            .socketKeepAlive(true)
+                            .connectionsPerHost(100)
+                            .threadsAllowedToBlockForConnectionMultiplier(100)
+                            .maxConnectionIdleTime(60000)
+                            .socketTimeout(60000)
+                            .requiredReplicaSetName("rs0")
+                            .build());
 
             ReplicaSetStatus status = mongo.getReplicaSetStatus();
 
@@ -71,7 +80,15 @@ public class Client {
             MongoClient mongo = new MongoClient(addrs,
                     MongoClientOptions.builder()
                             .readPreference(ReadPreference.secondaryPreferred())
-                            .writeConcern(concern).build());
+                            .writeConcern(concern)
+                            .retryWrites(true)
+                            .socketKeepAlive(true)
+                            .connectionsPerHost(100)
+                            .threadsAllowedToBlockForConnectionMultiplier(100)
+                            .maxConnectionIdleTime(60000)
+                            .socketTimeout(60000)
+                            .requiredReplicaSetName("rs0")
+                            .build());
 
             ReplicaSetStatus status = mongo.getReplicaSetStatus();
 
