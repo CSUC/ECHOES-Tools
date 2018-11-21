@@ -201,7 +201,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<revision>1.3.4</revision>
+		<revision>1.3.5</revision>
 
 		<binding.core.version>1.3</binding.core.version>
 		<edm.transformations.version>1.3.4</edm.transformations.version>
