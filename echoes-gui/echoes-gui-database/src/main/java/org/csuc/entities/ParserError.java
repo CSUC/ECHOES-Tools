@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * @author amartinez
  */
-@Entity(value = "parser-error", noClassnameStored = true)
+@Entity(value = "analyse-error", noClassnameStored = true)
 @Indexes(
         @Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true))
 )
@@ -18,7 +18,7 @@ public class ParserError {
     @Id
     private String _id;
 
-    @Reference("parser-id")
+    @Reference("analyse-id")
     private Parser parser;
 
     @Property("exception")

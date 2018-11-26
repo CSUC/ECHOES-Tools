@@ -25,7 +25,7 @@ public class ProducerAndConsumerConfigTest {
 
         assertEquals(15672, rabbitMQConfig.getPortManagement());
 
-        assertEquals("parser", rabbitMQConfig.getParserQueue());
+        assertEquals("analyse", rabbitMQConfig.getParserQueue());
         assertEquals("recollect", rabbitMQConfig.getRecollectQueue());
         assertEquals("validation", rabbitMQConfig.getValidationQueue());
         assertEquals("zip", rabbitMQConfig.getZipQueue());

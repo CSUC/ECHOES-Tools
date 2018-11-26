@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-producer</artifactId>
-    <version>${echoes.gui.producer.version}</version>
+    <version>0.0.1</version>
     <name>echoes-gui-producer</name>
 
     <dependencies>

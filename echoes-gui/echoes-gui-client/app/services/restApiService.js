@@ -26,17 +26,17 @@
                     data = this.fillDataInObjectByList(data, _params, [
                         'page', 'pagesize'
                     ]);
-                    data.url = this.getApiBaseUrl() + 'parser/user/' + _params.user;
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user;
                     break;
                 case "getParserError":
                     data = this.fillDataInObjectByList(data, _params, []);
-                    data.url = this.getApiBaseUrl() + 'parser/user/' + _params.user + '/id/' + _params.id + '/error';
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id + '/error';
                     break;
                 case "createParser":
                     data = this.fillDataInObjectByList(data, _params, [
                         'method', 'type', 'format', 'user', 'value'
                     ]);
-                    data.url = this.getApiBaseUrl() + 'parser/create';
+                    data.url = this.getApiBaseUrl() + 'analyse/create';
                     break
                 case "createRecollect":
                     data = this.fillDataInObjectByList(data, _params, [
@@ -46,7 +46,7 @@
                     break
                 case "deleteParser":
                     data = this.fillDataInObjectByList(data, _params, []);
-                    data.url = this.getApiBaseUrl() + 'parser/user/' + _params.user + '/id/' + _params.id + '/delete';
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id + '/delete';
                     break;
                 case "deleteRecollect":
                     data = this.fillDataInObjectByList(data, _params, []);
@@ -58,7 +58,7 @@
                     break;
                 case "getParserStatusAggregation":
                     data = this.fillDataInObjectByList(data, _params, []);
-                    data.url = this.getApiBaseUrl() + 'parser/user/' + _params.user + '/status/aggregation';
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/status/aggregation';
                     break;
                 case "getRecollect":
                     data = this.fillDataInObjectByList(data, _params, [

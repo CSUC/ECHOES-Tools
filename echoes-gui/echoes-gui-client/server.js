@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 
-app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -26,7 +26,7 @@ app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user +'/id/' + req.params.id
+        url: 'http://localhost:8080/rest/analyse/user/' + req.params.user +'/id/' + req.params.id
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
@@ -38,7 +38,7 @@ app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
 
 });
 
-app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id/download', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
     };
@@ -48,7 +48,7 @@ app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next)
     var r = request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/download'
+        url: 'http://localhost:8080/rest/analyse/user/' + req.params.user + '/id/' + req.params.id + '/download'
     })
     r.pipe(res);
 
@@ -59,7 +59,7 @@ app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next)
 
 });
 
-app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id/error', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -68,7 +68,7 @@ app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/error'
+        url: 'http://localhost:8080/rest/analyse/user/' + req.params.user + '/id/' + req.params.id + '/error'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
@@ -79,7 +79,7 @@ app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
     });
 });
 
-app.get('/rest/api/parser/user/:user', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization
     };
@@ -92,7 +92,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' +req.params.user + '?pagesize=' + pagesize + '&page=' + page
+        url: 'http://localhost:8080/rest/analyse/user/' +req.params.user + '?pagesize=' + pagesize + '&page=' + page
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -104,7 +104,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
 
 });
 
-app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/status/aggregation', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization
     };
@@ -114,7 +114,7 @@ app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, ne
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/status/aggregation'
+        url: 'http://localhost:8080/rest/analyse/user/' + req.params.user + '/status/aggregation'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -125,7 +125,7 @@ app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, ne
     });
 });
 
-app.post('/rest/api/parser/create', function (req, res, next) {
+app.post('/rest/api/analyse/create', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -144,7 +144,7 @@ app.post('/rest/api/parser/create', function (req, res, next) {
     request({
         method: 'POST',
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/create',
+        url: 'http://localhost:8080/rest/analyse/create',
         json: formData
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
@@ -156,7 +156,7 @@ app.post('/rest/api/parser/create', function (req, res, next) {
     });
 });
 
-app.delete('/rest/api/parser/user/:user/id/:id/delete', function (req, res, next) {
+app.delete('/rest/api/analyse/user/:user/id/:id/delete', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -167,7 +167,7 @@ app.delete('/rest/api/parser/user/:user/id/:id/delete', function (req, res, next
     request({
         method: 'DELETE',
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/delete',
+        url: 'http://localhost:8080/rest/analyse/user/' + req.params.user + '/id/' + req.params.id + '/delete',
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 

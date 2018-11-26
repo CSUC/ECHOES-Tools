@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * @author amartinez
  */
-@Entity(value = "parser", noClassnameStored = true)
+@Entity(value = "analyse", noClassnameStored = true)
 @Indexes(
         @Index(fields = {@Field("_id")}, options = @IndexOptions(unique = true))
 )

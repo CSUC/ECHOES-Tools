@@ -22,14 +22,14 @@ public class ParserErrorDAOImpl extends BasicDAO<ParserError, ObjectId> implemen
 
     @Override
     public ParserError getByReference(Parser parser) throws Exception {
-        logger.info("[{}]\t[getByReference] - parser: {}", ParserErrorDAOImpl.class.getSimpleName(), parser.toString());
-        return find(createQuery().field("parser-id").equal(parser)).get();
+        logger.info("[{}]\t[getByReference] - analyse: {}", ParserErrorDAOImpl.class.getSimpleName(), parser.toString());
+        return find(createQuery().field("analyse-id").equal(parser)).get();
     }
 
     @Override
     public ParserError getByReference(String objectId) throws Exception {
         logger.debug("[{}]\t[getByReference] - objectId: {}", ParserErrorDAOImpl.class.getSimpleName(), objectId);
-        return find(createQuery().filter("parser-id", ds.createQuery(Parser.class).filter("_id", objectId).getKey())).get();
+        return find(createQuery().filter("analyse-id", ds.createQuery(Parser.class).filter("_id", objectId).getKey())).get();
     }
 
 }

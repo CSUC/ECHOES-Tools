@@ -31,7 +31,7 @@ public class Application {
     }
 
     public String getParserFolder(String uuid) throws IOException {
-        Path path = Paths.get(folder + File.separator + "parser" + File.separator + uuid);
+        Path path = Paths.get(folder + File.separator + "analyse" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();

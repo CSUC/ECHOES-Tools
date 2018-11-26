@@ -11,7 +11,7 @@
   function validation($scope, authService, uuid) {
 
     var vm = this;
-    vm.title = 'Validation-Core';
+    vm.title = 'Validation-core';
     vm.auth = authService;
     vm.profile;
 

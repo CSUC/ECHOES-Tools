@@ -157,7 +157,7 @@ public class JaxbUnmarshal {
 	public JaxbUnmarshal(SAXSource saxSource, Class[] classType) {
 		logger.debug(String.format("read SAXSource %s", saxSource));
 		try {			
-			// configure a validating SAX2.0 parser (Xerces2)
+			// configure a validating SAX2.0 analyse (Xerces2)
 			final String JAXP_SCHEMA_LANGUAGE =
 	           "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 			final String JAXP_SCHEMA_LOCATION =

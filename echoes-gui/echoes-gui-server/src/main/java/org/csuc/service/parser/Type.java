@@ -24,7 +24,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 /**
  * @author amartinez
  */
-@Path("/parser")
+@Path("/analyse")
 public class Type {
 
     private static Logger logger = LogManager.getLogger(Type.class);

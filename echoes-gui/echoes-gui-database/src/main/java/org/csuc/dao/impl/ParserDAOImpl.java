@@ -397,7 +397,7 @@ public class ParserDAOImpl extends BasicDAO<Parser, ObjectId> implements ParserD
         Key<Parser> result = save(parser);
         if(Objects.isNull(result))    throw new Exception();
 
-        logger.debug("[{}]\t[insert] - parser: {}", ParserDAOImpl.class.getSimpleName(), parser.toString());
+        logger.debug("[{}]\t[insert] - analyse: {}", ParserDAOImpl.class.getSimpleName(), parser.toString());
         return result;
     }
 

@@ -29,7 +29,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 /**
  * @author amartinez
  */
-@Path("/parser")
+@Path("/analyse")
 public class Status {
 
     private static Logger logger = LogManager.getLogger(Status.class);

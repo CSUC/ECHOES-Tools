@@ -55,9 +55,9 @@
                 onEnter: checkAuthentication
             })
             .state('parser', {
-                url: '/parser',
+                url: '/analyse',
                 controller: 'ParserController',
-                templateUrl: 'app/parser/parser.html',
+                templateUrl: 'app/analyse/analyse.html',
                 controllerAs: 'vm',
                 params: {
                     profile: null,
@@ -67,9 +67,9 @@
                 onEnter: checkAuthentication
             })
             .state('parser-detail', {
-                url: '/parser/:_id',
+                url: '/analyse/:_id',
                 controller: 'ParserControllerDetail',
-                templateUrl: 'app/parser/parser.detail.html',
+                templateUrl: 'app/analyse/analyse.detail.html',
                 controllerAs: 'vm',
                 params:{
                     data: null

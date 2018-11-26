@@ -10,7 +10,7 @@
 
     function parserDetail($scope, authService, $stateParams, echoesChart, restApi, $log, $window) {
         var vm = this;
-        vm.title = 'Parser-detail';
+        vm.title = 'analyse-detail';
         vm.auth = authService;
         vm.profile;
         vm._id = $stateParams._id;
