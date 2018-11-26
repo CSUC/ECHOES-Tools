@@ -21,7 +21,8 @@
 		<module>binding-core</module>
 		<module>echoes-gui</module>
 		<module>rdf-format</module>
-	</modules>
+        <module>echoes-hdfs</module>
+    </modules>
 
 	<build>
 		<pluginManagement>
