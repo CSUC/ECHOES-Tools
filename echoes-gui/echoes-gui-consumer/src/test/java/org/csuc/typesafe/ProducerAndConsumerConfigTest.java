@@ -6,7 +6,7 @@ import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProducerAndConsumerConfigTest {
 

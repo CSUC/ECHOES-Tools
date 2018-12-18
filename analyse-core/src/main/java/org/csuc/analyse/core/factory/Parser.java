@@ -1,5 +1,6 @@
 package org.csuc.analyse.core.factory;
 
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ public interface Parser {
     void execute(URL url)  throws Exception;
 
     void XML(OutputStream outs);
-    void HDFS_XML(String uri, String user, String home, Path dest) throws IOException;
+    void HDFS_XML(FileSystem fileSystem, Path dest) throws IOException;
 
     void JSON(OutputStream outs);
-    void HDFS_JSON(String uri, String user, String home, Path dest) throws IOException;
+    void HDFS_JSON(FileSystem fileSystem, Path dest) throws IOException;
 }

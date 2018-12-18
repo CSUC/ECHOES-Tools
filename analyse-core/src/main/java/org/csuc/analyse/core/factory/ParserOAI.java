@@ -1,5 +1,6 @@
 package org.csuc.analyse.core.factory;
 
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.core.strategy.ParserMethod;
@@ -53,8 +54,8 @@ public class ParserOAI implements Parser {
     }
 
     @Override
-    public void HDFS_XML(String uri, String user, String home, org.apache.hadoop.fs.Path dest) throws IOException{
-        method.createHDFS_XML(uri, user, home, dest);
+    public void HDFS_XML(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException{
+        method.createHDFS_XML(fileSystem, dest);
     }
 
     @Override
@@ -63,8 +64,8 @@ public class ParserOAI implements Parser {
     }
 
     @Override
-    public void HDFS_JSON(String uri, String user, String home, org.apache.hadoop.fs.Path dest) throws IOException {
-        method.createHDFS_JSON(uri, user, home, dest);
+    public void HDFS_JSON(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException {
+        method.createHDFS_JSON(fileSystem, dest);
     }
 
 

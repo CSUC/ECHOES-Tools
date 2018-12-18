@@ -119,6 +119,11 @@
 
                         $scope.model = {};
 
+                        $scope.options = {
+                            schema: ["A2A", "DC", "MEMORIX", "EAD"],
+                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
+                        }
+
                         $scope.submitForm = function (isValid) {
                             var properties = {};
                             if (isValid) {
@@ -137,6 +142,8 @@
                                     'from': vm.profile.from,
                                     'until': $scope.model.until,
                                     'granularity': $scope.model.granularity,
+                                    'format': $scope.model.format,
+                                    'schema': $scope.model.schema,
                                     'properties': properties,
                                     'user': vm.profile.sub
                                 };

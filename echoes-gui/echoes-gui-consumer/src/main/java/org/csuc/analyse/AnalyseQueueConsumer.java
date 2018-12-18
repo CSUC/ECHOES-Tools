@@ -1,16 +1,6 @@
 package org.csuc.analyse;
 
 import com.rabbitmq.client.*;
-import org.csuc.client.Client;
-import org.csuc.dao.ParserDAO;
-import org.csuc.dao.ParserErrorDAO;
-import org.csuc.dao.impl.ParserDAOImpl;
-import org.csuc.dao.impl.ParserErrorDAOImpl;
-import org.csuc.entities.ParserError;
-import org.csuc.utils.Status;
-import org.csuc.utils.parser.ParserFormat;
-import org.csuc.utils.parser.ParserMethod;
-import org.csuc.utils.parser.ParserType;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,9 +10,21 @@ import org.csuc.analyse.core.strategy.dom.Dom;
 import org.csuc.analyse.core.strategy.dom4j.Dom4j;
 import org.csuc.analyse.core.strategy.sax.Sax;
 import org.csuc.analyse.core.strategy.xslt.Xslt;
+import org.csuc.client.Client;
+import org.csuc.dao.AnalyseDAO;
+import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.impl.AnalyseDAOImpl;
+import org.csuc.dao.impl.AnalyseErrorDAOImpl;
+import org.csuc.entities.Analyse;
+import org.csuc.entities.AnalyseError;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
+import org.csuc.utils.Status;
 import org.csuc.utils.Time;
+import org.csuc.utils.parser.ParserFormat;
+import org.csuc.utils.parser.ParserMethod;
+import org.csuc.utils.parser.ParserType;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,13 +45,13 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
     private Logger logger = LogManager.getLogger(AnalyseQueueConsumer.class);
 
-    private Client client = new Client("localhost", 27017, "echoes");
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private ParserDAO parserDAO = new ParserDAOImpl(org.csuc.entities.Parser.class, client.getDatastore());
-    private ParserErrorDAO parserErrorDAO = new ParserErrorDAOImpl(org.csuc.entities.ParserError.class, client.getDatastore());
+    private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
 
-    private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
-
+    private AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
+    private ParserErrorDAO parserErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
 
     /**
      * @param endpointName
@@ -88,16 +90,16 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
-        org.csuc.entities.Parser parser = null;
+        Analyse analyse = null;
         try {
             //LocalDateTime inici = LocalDateTime.now();
             Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
 
             logger.info("[x] Received '{}'", map);
 
-            parser = parserDAO.getById(map.get("_id").toString());
-            parser.setStatus(Status.PROGRESS);
-            parserDAO.insert(parser);
+            analyse = analyseDAO.getById(map.get("_id").toString());
+            analyse.setStatus(Status.PROGRESS);
+            analyseDAO.insert(analyse);
 
             Parser factory = null;
 
@@ -147,37 +149,37 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
             if (Objects.nonNull(factory)) {
                 if (Objects.equals(map.get("format"), ParserFormat.JSON)) {
-                    factory.JSON(new FileOutputStream(Paths.get(serverConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
+                    factory.JSON(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
                 } else if (Objects.equals(map.get("format"), ParserFormat.XML)) {
-                    factory.XML(new FileOutputStream(Paths.get(serverConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.xml").toFile()));
+                    factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.xml").toFile()));
                 } else {
-                    factory.XML(new FileOutputStream(Paths.get(serverConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
+                    factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
                 }
             }
 
-            parser = parserDAO.getById(map.get("_id").toString());
-            parser.setStatus(Status.END);
-            parser.setDuration(Time.duration(LocalDateTime.parse(parser.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            analyse = analyseDAO.getById(map.get("_id").toString());
+            analyse.setStatus(Status.END);
+            analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
 
-            parserDAO.insert(parser);
+            analyseDAO.insert(analyse);
 
-            logger.info(String.format("[x] Consumed '%s\t%s'", map, parser.getDuration()));
+            logger.info(String.format("[x] Consumed '%s\t%s'", map, analyse.getDuration()));
 
             channel.basicAck(envelope.getDeliveryTag(), false);
         } catch (Exception e) {
             logger.error(e);
 
-            if (Objects.nonNull(parser)) {
-                parser.setStatus(Status.ERROR);
-                parser.setDuration(Time.duration(LocalDateTime.parse(parser.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            if (Objects.nonNull(analyse)) {
+                analyse.setStatus(Status.ERROR);
+                analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
 
-                ParserError parserError = new ParserError();
+                AnalyseError analyseError = new AnalyseError();
 
-                parserError.setException(e.toString());
-                parserError.setParser(parser);
+                analyseError.setException(e.toString());
+                analyseError.setAnalyse(analyse);
 
-                parserDAO.save(parser);
-                parserErrorDAO.save(parserError);
+                analyseDAO.save(analyse);
+                parserErrorDAO.save(analyseError);
             }
 
             try {

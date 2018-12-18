@@ -30,15 +30,17 @@ public class HDFSTest {
 
     @Test
     public void hdfs() throws IOException {
-        hdfs.mkdir(example);
+        hdfs.mkdir(hdfs.getFileSystem(), example);
 
         hdfs.write(
+                hdfs.getFileSystem(),
                 new Path(example, file.getName()),
                 new FileInputStream(file),
                 true
         );
 
         hdfs.get(
+                hdfs.getFileSystem(),
                 new Path(example, file.getName()),
                 System.out
         );
@@ -46,7 +48,10 @@ public class HDFSTest {
 
     @After
     public void tearDown() throws Exception {
-        hdfs.delete(new Path(hdfsConfig.getHome()));
-        hdfs.close();
+        hdfs.delete(
+                hdfs.getFileSystem(),
+                new Path(hdfsConfig.getHome()));
+
+        hdfs.close(hdfs.getFileSystem());
     }
 }

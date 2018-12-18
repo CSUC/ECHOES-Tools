@@ -2,36 +2,41 @@ package org.csuc.recollect;
 
 import com.rabbitmq.client.*;
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
+import org.EDM.Transformations.formats.utils.SchemaType;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.csuc.EndPoint;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.RecollectError;
 import org.csuc.entities.RecollectLink;
-import org.csuc.utils.Status;
-import org.csuc.utils.recollect.StatusLink;
-import org.Recollect.Core.Recollect;
-import org.Recollect.Core.client.HttpOAIClient;
-import org.Recollect.Core.client.OAIClient;
-import org.Recollect.Core.download.Download;
-import org.Recollect.Core.download.FactoryDownload;
-import org.Recollect.Core.parameters.ListRecordsParameters;
-import org.Recollect.Core.util.Granularity;
-import org.Recollect.Core.util.TimeUtils;
-import org.Recollect.Core.util.UTCDateProvider;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.csuc.EndPoint;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
+import org.csuc.util.FormatType;
+import org.csuc.utils.Status;
 import org.csuc.utils.Time;
+import org.csuc.utils.recollect.StatusLink;
 import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
+import org.recollect.core.Recollect;
+import org.recollect.core.client.HttpOAIClient;
+import org.recollect.core.client.OAIClient;
+import org.recollect.core.download.Download;
+import org.recollect.core.download.FactoryDownload;
+import org.recollect.core.parameters.ListRecordsParameters;
+import org.recollect.core.util.Garbage;
+import org.recollect.core.util.Granularity;
+import org.recollect.core.util.TimeUtils;
+import org.recollect.core.util.UTCDateProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,7 +44,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
@@ -52,11 +56,12 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
     private Logger logger = LogManager.getLogger(RecollectQueueConsumer.class);
 
-    private Client client = new Client("localhost", 27017, "echoes");
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
+
+    private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
 
     private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
-    private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
 
     private org.csuc.entities.Recollect recollect = null;
 
@@ -123,6 +128,9 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
                 listRecordsParameters.withSetSpec(recollect.getSet());
 
+//                if (Objects.nonNull(recollect.getResumptionToken()))
+//                    listRecordsParameters.withgetResumptionToken(recollect.getResumptionToken());
+
                 if (Objects.nonNull(recollect.getFrom())) {
                     UTCDateProvider dateProvider = new UTCDateProvider();
                     if (Objects.nonNull(recollect.getGranularity()))
@@ -133,7 +141,6 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 }
                 if (Objects.nonNull(recollect.getGranularity()))
                     listRecordsParameters.withGranularity(recollect.getGranularity());
-
                 if (Objects.nonNull(recollect.getUntil())) {
                     UTCDateProvider dateProvider = new UTCDateProvider();
                     if (Objects.nonNull(recollect.getGranularity()))
@@ -143,28 +150,27 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                         listRecordsParameters.withFrom(dateProvider.parse(recollect.getUntil()));
                 }
 
-                Iterator iteratorRecordType = recollectOAI.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class});
+                Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
 
-                Observable<Download> observable = FactoryDownload.createDownloadIterator(iteratorRecordType, null);
+                Observable<Download> observable =
+                        FactoryDownload.createDownloadIterator(
+                                recollectOAI.listRecords(listRecordsParameters, classType), SchemaType.convert(recollect.getSchema())
+                        );
+                Path path = Files.createDirectories(Paths.get(applicationConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
 
-                Path path = Files.createDirectories(Paths.get(serverConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
-
-                org.csuc.entities.Recollect finalRecollect = recollect;
-                org.csuc.entities.Recollect finalRecollect1 = recollect;
+                logger.info(path);
 
                 observable
                         .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-                        .groupBy(i -> batch.getAndIncrement() % 4)
-                        .flatMap(g -> g.observeOn(Schedulers.io()))
-                        .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) -> {
+                                    if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
                                     logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(path, finalRecollect.getProperties());
+                                    l.execute(path, recollect.getProperties(), FormatType.convert(recollect.getFormat()));
                                 },
                                 e -> {
-                                    appendError(finalRecollect1, e.toString());
                                     logger.error("Error: " + e);
+                                    appendError(recollect, e.toString());
                                 },
                                 () -> {
                                     recollect = recollectDAO.getById(map.get("_id").toString());
@@ -181,6 +187,68 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
                                 }
                         );
+//                ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
+//                listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
+//                listRecordsParameters.withSetSpec(recollect.getSet());
+//
+//                if (Objects.nonNull(recollect.getFrom())) {
+//                    UTCDateProvider dateProvider = new UTCDateProvider();
+//                    if (Objects.nonNull(recollect.getGranularity()))
+//                        listRecordsParameters
+//                                .withFrom(dateProvider.parse(recollect.getFrom(), Granularity.fromRepresentation(recollect.getGranularity())));
+//                    else
+//                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getFrom()));
+//                }
+//                if (Objects.nonNull(recollect.getGranularity()))
+//                    listRecordsParameters.withGranularity(recollect.getGranularity());
+//
+//                if (Objects.nonNull(recollect.getUntil())) {
+//                    UTCDateProvider dateProvider = new UTCDateProvider();
+//                    if (Objects.nonNull(recollect.getGranularity()))
+//                        listRecordsParameters
+//                                .withUntil(dateProvider.parse(recollect.getUntil(), Granularity.fromRepresentation(recollect.getGranularity())));
+//                    else
+//                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getUntil()));
+//                }
+//
+//                Iterator iteratorRecordType = recollectOAI.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class});
+//
+//                Observable<Download> observable = FactoryDownload.createDownloadIterator(iteratorRecordType, null);
+//
+//                Path path = Files.createDirectories(Paths.get(applicationConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
+//
+//                org.csuc.entities.Recollect finalRecollect = recollect;
+//                org.csuc.entities.Recollect finalRecollect1 = recollect;
+//
+//                observable
+//                        .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+//                        .groupBy(i -> batch.getAndIncrement() % 4)
+//                        .flatMap(g -> g.observeOn(Schedulers.io()))
+//                        .observeOn(Schedulers.io())
+//                        .subscribe(
+//                                (Download l) -> {
+//                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+//                                    l.execute(path, finalRecollect.getProperties());
+//                                },
+//                                e -> {
+//                                    appendError(finalRecollect1, e.toString());
+//                                    logger.error("Error: " + e);
+//                                },
+//                                () -> {
+//                                    recollect = recollectDAO.getById(map.get("_id").toString());
+//                                    recollect.setStatus(Status.END);
+//                                    recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+//
+//                                    RecollectLink recollectLink = new RecollectLink();
+//                                    recollectLink.setStatusLink(StatusLink.NULL);
+//                                    recollect.setLink(recollectLink);
+//
+//                                    recollectDAO.getDatastore().save(recollectLink);
+//                                    recollectDAO.insert(recollect);
+//
+//                                    logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
+//                                }
+//                        );
                 Thread.sleep(3000);
             } else {
                 logger.error(recollectOAI.gethandleEventErrors());

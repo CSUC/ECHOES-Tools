@@ -1,14 +1,16 @@
 package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
+import org.csuc.typesafe.server.Application;
+import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Aggregation;
 import org.csuc.utils.StreamUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.response.ResponseEchoes;
 
@@ -18,6 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.File;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +44,8 @@ public class Status {
     @Context
     private HttpServletRequest servletRequest;
 
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
     @GET
     @Path("/user/{user}/status/{status}")
@@ -66,7 +72,7 @@ public class Status {
             );
         }
 
-        Client client = new Client("localhost", 27017, "echoes");
+        Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
         RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
         org.csuc.utils.Status recollectStatus = org.csuc.utils.Status.convert(status);
@@ -124,7 +130,7 @@ public class Status {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Client client = new Client("localhost", 27017, "echoes");
+        Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
         RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
         try {

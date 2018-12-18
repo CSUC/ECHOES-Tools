@@ -24,4 +24,13 @@ public enum SchemaType {
     public Class<?> getType(){
         return Class;
     }
+
+    public static SchemaType convert(String value) {
+        for (SchemaType inst : values()) {
+            if (inst.name().equals(value)) {
+                return inst;
+            }
+        }
+        return null;
+    }
 }

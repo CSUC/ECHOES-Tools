@@ -13,6 +13,8 @@ public class RecollectRequest {
     private String until;
     private String from;
     private String granularity;
+    private String format;
+    private String schema;
     private Map<String, String> properties;
     private String user;
 
@@ -82,5 +84,21 @@ public class RecollectRequest {
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

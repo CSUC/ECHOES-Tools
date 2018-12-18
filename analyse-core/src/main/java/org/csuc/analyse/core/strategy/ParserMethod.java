@@ -1,5 +1,6 @@
 package org.csuc.analyse.core.strategy;
 
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
@@ -17,9 +18,9 @@ public interface ParserMethod {
     void parser(URL url) throws Exception;
 
     void createXML(OutputStream outs);
-    void createHDFS_XML(String uri, String user, String home, Path dest) throws IOException;
+    void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException;
 
     void createJSON(OutputStream outs);
-    void createHDFS_JSON(String uri, String user, String home, Path dest) throws IOException;
+    void createHDFS_JSON(FileSystem fileSystem, Path dest) throws IOException;
 
 }

@@ -51,8 +51,11 @@ public class HDFS {
         fileSystem = FileSystem.get(URI.create(hdfsuri), conf);
     }
 
+    public FileSystem getFileSystem() {
+        return fileSystem;
+    }
 
-    public void mkdir(Path path) throws IOException {
+    public static void mkdir(FileSystem fileSystem, Path path) throws IOException {
         if(!fileSystem.exists(new Path(System.getProperty("hadoop.home.dir"), path))) {
             // Create new Directory
             fileSystem.mkdirs(new Path(System.getProperty("hadoop.home.dir"), path));
@@ -61,7 +64,7 @@ public class HDFS {
         }
     }
 
-    public void write(Path dest, InputStream inputStream, boolean overwrite) throws IOException {
+    public static void write(FileSystem fileSystem, Path dest, InputStream inputStream, boolean overwrite) throws IOException {
         //Init output stream
         FSDataOutputStream outputStream = fileSystem.create(new Path(System.getProperty("hadoop.home.dir"), dest), overwrite);
 
@@ -72,7 +75,7 @@ public class HDFS {
         logger.info(MessageFormat.format("End Write file into hdfs: {0}/{1}", System.getProperty("hadoop.home.dir"), dest));
     }
 
-    public void get(Path source, OutputStream outputStream) throws IOException {
+    public static void get(FileSystem fileSystem, Path source, OutputStream outputStream) throws IOException {
         logger.info(MessageFormat.format("Read file into hdfs: {0}/{1}", System.getProperty("hadoop.home.dir"), source));
         //Init input stream
         FSDataInputStream inputStream = fileSystem.open(new Path(System.getProperty("hadoop.home.dir"), source));
@@ -82,12 +85,12 @@ public class HDFS {
         inputStream.close();
     }
 
-    public void delete(Path source) throws IOException {
+    public static void delete(FileSystem fileSystem, Path source) throws IOException {
         if(fileSystem.exists(new Path(System.getProperty("hadoop.home.dir"), source)))
             fileSystem.delete(new Path(System.getProperty("hadoop.home.dir"), source), true);
     }
 
-    public void close() throws IOException {
+    public static void close(FileSystem fileSystem) throws IOException {
         fileSystem.close();
     }
 }

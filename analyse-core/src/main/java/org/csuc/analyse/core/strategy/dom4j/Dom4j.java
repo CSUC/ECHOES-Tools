@@ -2,6 +2,7 @@ package org.csuc.analyse.core.strategy.dom4j;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,7 +96,7 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_XML(String uri, String user, String home, Path dest) throws IOException {
+    public void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException {
         StringWriter stringWriter = new StringWriter();
 
         try {
@@ -105,9 +106,7 @@ public class Dom4j implements ParserMethod {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(createObject(), stringWriter);
 
-            HDFS hdfs = new HDFS(uri, user, home);
-
-            hdfs.write(dest, new ByteArrayInputStream(stringWriter.toString().getBytes(StandardCharsets.UTF_8)), true);
+            HDFS.write(fileSystem, dest, new ByteArrayInputStream(stringWriter.toString().getBytes(StandardCharsets.UTF_8)), true);
         } catch (JAXBException e) {
             logger.error(e);
         }
@@ -123,15 +122,13 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_JSON(String uri, String user, String home, Path dest) {
+    public void createHDFS_JSON(FileSystem fileSystem, Path dest) {
         try {
             ByteArrayInputStream byteArrayInputStream =
                     new ByteArrayInputStream(
                             new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsBytes(createObject()));
 
-            HDFS hdfs = new HDFS(uri, user, home);
-
-            hdfs.write(dest, byteArrayInputStream, true);
+            HDFS.write(fileSystem, dest, byteArrayInputStream, true);
         } catch (IOException e) {
             logger.error(e);
         }

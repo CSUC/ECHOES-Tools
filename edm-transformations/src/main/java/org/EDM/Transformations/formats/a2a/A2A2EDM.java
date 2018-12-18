@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -130,17 +131,19 @@ public class A2A2EDM extends RDF implements EDM {
                     identifier.setString(person.getPid());
                     a.getIdentifierList().add(identifier);
 
-                    IsRelatedTo isRelated = new IsRelatedTo();
-                    Resource resourceIsRelated = new Resource();
-                    resourceIsRelated.setResource(IriToUri.iriToUri(String.format("Concept:%s",
-                            StringUtils.deleteWhitespace(a2a.getRelationEP().stream()
-                                    .filter((CtRelationEP f) -> f.getPersonKeyRef().equals(person.getPid())).findFirst().get()
-                                    .getRelationType())))
-                            .toString());
+                    Optional.ofNullable(
+                            a2a.getRelationEP().stream().filter(ctRelationEP -> ctRelationEP.getPersonKeyRef().equals(person.getPid())).findFirst().orElse(null)
+                    ).ifPresent(ctRelationEP->{
+                        IsRelatedTo isRelated = new IsRelatedTo();
+                        Resource resourceIsRelated = new Resource();
+                        resourceIsRelated.setResource(IriToUri.iriToUri(String.format("Concept:%s",
+                                StringUtils.deleteWhitespace(ctRelationEP.getRelationType())))
+                                .toString());
 
-                    isRelated.setResource(resourceIsRelated);
-                    isRelated.setString("");
-                    a.getIsRelatedToList().add(isRelated);
+                        isRelated.setResource(resourceIsRelated);
+                        isRelated.setString("");
+                        a.getIsRelatedToList().add(isRelated);
+                    });
                 });
 
                 Optional.ofNullable(person.getResidence()).ifPresent((CtDetailPlace place) ->{

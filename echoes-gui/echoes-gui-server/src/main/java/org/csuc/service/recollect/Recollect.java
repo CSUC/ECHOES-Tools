@@ -2,18 +2,18 @@ package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
 import com.mongodb.WriteResult;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
-import org.csuc.utils.Status;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.csuc.Producer;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
+import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.response.ResponseEchoes;
 import org.mongodb.morphia.Key;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,11 @@ public class Recollect {
 
     private static Logger logger = LogManager.getLogger(Recollect.class);
 
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private RabbitMQConfig config = new ProducerAndConsumerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
+    private URL rabbitmqResource = getClass().getClassLoader().getResource("rabbitmq.conf");
+    private RabbitMQConfig config = new ProducerAndConsumerConfig((Objects.isNull(rabbitmqResource)) ? null : new File(rabbitmqResource.getFile()).toPath()).getRabbitMQConfig();
 
     @Context
     private UriInfo uriInfo;
@@ -78,7 +82,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client("localhost", 27017, "echoes");
+            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             org.csuc.entities.Recollect recollect = recollectDAO.getById(id);
@@ -122,7 +126,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client("localhost", 27017, "echoes");
+            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             List<org.csuc.entities.Recollect> queryResults = recollectDAO.getByUser(user, page, pagesize, "-timestamp");
@@ -166,10 +170,12 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client("localhost", 27017, "echoes");
+            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             org.csuc.entities.Recollect recollect = new org.csuc.entities.Recollect();
+
+            logger.info(recollectRequest.toString());
 
             recollect.setHost(recollectRequest.getHost());
             recollect.setSet(recollectRequest.getSet());
@@ -179,7 +185,8 @@ public class Recollect {
             if(Objects.nonNull(recollectRequest.getGranularity())) recollect.setGranularity(recollectRequest.getGranularity());
             if(Objects.nonNull(recollectRequest.getProperties())) recollect.setProperties(recollectRequest.getProperties());
             recollect.setUser(recollectRequest.getUser());
-
+            recollect.setFormat(recollectRequest.getFormat());
+            recollect.setSchema(recollectRequest.getSchema());
 
             recollect.setStatus(Status.QUEUE);
 
@@ -195,6 +202,8 @@ public class Recollect {
             message.put("metadataPrefix", recollect.getMetadataPrefix());
             message.put("from", recollect.getFrom());
             message.put("until", recollect.getUntil());
+            message.put("format", recollect.getFormat());
+            message.put("schema", recollect.getSchema());
             message.put("granularity", recollect.getGranularity());
             message.put("properties", recollect.getProperties());
 
@@ -240,7 +249,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client("localhost", 27017, "echoes");
+            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             WriteResult writeResult = recollectDAO.deleteById(id);
@@ -279,9 +288,7 @@ public class Recollect {
         }
 
         try {
-            Application serverConfig = new ServerConfig(null).getConfig();
-
-            File file = new File(serverConfig.getRecollectFolder(id));
+            File file = new File(applicationConfig.getRecollectFolder(id));
             java.nio.file.Path result =
                     Files.list(file.toPath())
                             .filter(f -> f.toString().endsWith(".zip"))

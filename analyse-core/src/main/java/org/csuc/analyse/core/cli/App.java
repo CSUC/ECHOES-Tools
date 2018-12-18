@@ -17,6 +17,7 @@ import org.csuc.analyse.core.util.EnumTypes;
 import org.csuc.analyse.core.util.FormatType;
 import org.csuc.analyse.core.util.MethodType;
 import org.csuc.analyse.core.util.TimeUtils;
+import org.csuc.core.HDFS;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -109,15 +110,16 @@ public class App {
 
             if (Objects.nonNull(factory)) {
                 if (bean.isHdfs()) { // Hadoop FS
+                    HDFS hdfs = new HDFS(bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome());
                     String uuid = UUID.randomUUID().toString();
                     if (Objects.equals(bean.getFormat(), FormatType.JSON)) {
                         factory.HDFS_JSON(
-                                bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome(),
+                                hdfs.getFileSystem(),
                                 new Path("analyse", new Path(bean.getType().toString(), new Path(bean.getMethod().value(), new Path(uuid, MessageFormat.format("result.{0}", bean.getFormat().value())))))
                         );
                     } else if (Objects.equals(bean.getFormat(), FormatType.XML)) {
                         factory.HDFS_XML(
-                                bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome(),
+                                hdfs.getFileSystem(),
                                 new Path("analyse", new Path(bean.getType().toString(), new Path(bean.getMethod().value(), new Path(uuid, MessageFormat.format("result.{0}", bean.getFormat().value())))))
                         );
                     }

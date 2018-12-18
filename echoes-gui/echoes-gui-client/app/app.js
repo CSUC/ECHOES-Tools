@@ -54,9 +54,9 @@
                 controllerAs: 'vm',
                 onEnter: checkAuthentication
             })
-            .state('parser', {
+            .state('analyse', {
                 url: '/analyse',
-                controller: 'ParserController',
+                controller: 'AnalyseController',
                 templateUrl: 'app/analyse/analyse.html',
                 controllerAs: 'vm',
                 params: {
@@ -66,9 +66,9 @@
                 },
                 onEnter: checkAuthentication
             })
-            .state('parser-detail', {
+            .state('analyse-detail', {
                 url: '/analyse/:_id',
-                controller: 'ParserControllerDetail',
+                controller: 'AnalyseControllerDetail',
                 templateUrl: 'app/analyse/analyse.detail.html',
                 controllerAs: 'vm',
                 params:{
@@ -104,6 +104,10 @@
                 templateUrl: 'app/validation/validation.html',
                 controllerAs: 'vm',
                 onEnter: checkAuthentication
+            })
+            .state('404', {
+                url: "/404",
+                templateUrl: "404.html"
             });
 
         // Initialization for the angular-auth0 library

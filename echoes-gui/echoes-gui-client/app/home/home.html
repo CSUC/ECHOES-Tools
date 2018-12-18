@@ -1,6 +1,9 @@
-<h4 ng-if="vm.auth.isAuthenticated()">
-    You are logged in! You can now <a ui-sref="ping">send authenticated requests</a> to your server.
-</h4>
-<h4 ng-if="!vm.auth.isAuthenticated()">
-  You are not logged in! Please <a ng-click="vm.auth.login()">Log In</a> to continue.
-</h4>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h4 ng-if="!vm.auth.isAuthenticated()">
+                You are not logged in! Please <a ng-click="vm.auth.login()">Log In</a> to continue.
+            </h4>
+        </div>
+    </div>
+</div>

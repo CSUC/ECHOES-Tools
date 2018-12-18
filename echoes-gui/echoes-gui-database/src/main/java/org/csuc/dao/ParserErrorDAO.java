@@ -1,16 +1,16 @@
 package org.csuc.dao;
 
 import org.bson.types.ObjectId;
-import org.csuc.entities.Parser;
-import org.csuc.entities.ParserError;
+import org.csuc.entities.Analyse;
+import org.csuc.entities.AnalyseError;
 import org.mongodb.morphia.dao.DAO;
 
 /**
  * @author amartinez
  */
-public interface ParserErrorDAO extends DAO<ParserError, ObjectId> {
+public interface ParserErrorDAO extends DAO<AnalyseError, ObjectId> {
 
-    ParserError getByReference(Parser parser) throws Exception;
+    AnalyseError getByReference(Analyse analyse) throws Exception;
 
-    ParserError getByReference(String objectId) throws Exception;
+    AnalyseError getByReference(String objectId) throws Exception;
 }
