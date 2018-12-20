@@ -1,23 +1,26 @@
 package org.csuc.zip;
 
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
 import org.csuc.entities.RecollectLink;
-import org.csuc.utils.recollect.StatusLink;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
+import org.csuc.utils.recollect.StatusLink;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,9 +36,11 @@ public class ZipScheduled extends TimerTask {
 
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private Client client = new Client("localhost", 27017, "echoes");
+    private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
+
     private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     @Override
@@ -47,7 +52,8 @@ public class ZipScheduled extends TimerTask {
                     final long time = new Date().getTime();
                     final long maxdiff = TimeUnit.DAYS.toMillis(1);
 
-                    Files.newDirectoryStream(Paths.get(serverConfig.getFolder() + File.separator + "recollect"), p -> (time - p.toFile().lastModified()) < maxdiff)
+                    Files.newDirectoryStream(Paths.get(applicationConfig.getFolder() + File.separator + "recollect"),
+                            p -> p.toString().endsWith(".zip") && ((time - p.toFile().lastModified()) < maxdiff))
                             .forEach(p -> {
                                 FileUtils.deleteQuietly(p.toFile());
                                 try {

@@ -37,4 +37,13 @@ public enum FormatType {
     public List<String> extensions(){
         return extensions;
     }
+
+    public static FormatType convert(String value) {
+        for (FormatType inst : values()) {
+            if (inst.name().equals(value)) {
+                return inst;
+            }
+        }
+        return null;
+    }
 }

@@ -9,8 +9,8 @@
     function restApi($http, restApiService, $log) {
         var data = {};
 
-        data.getParser = function (_params) {
-            var searchData = restApiService.getNew("getParser", _params);
+        data.getAnalyse = function (_params) {
+            var searchData = restApiService.getNew("getAnalyse", _params);
 
             $log.info(searchData);
 
@@ -21,8 +21,8 @@
             });
         };
 
-        data.getParserError = function (_params) {
-            var searchData = restApiService.getNew("getParserError", _params);
+        data.getAnalyseError = function (_params) {
+            var searchData = restApiService.getNew("getAnalyseError", _params);
 
             $log.info(searchData);
 
@@ -33,8 +33,8 @@
             });
         };
 
-        data.createParser = function (_params) {
-            var searchData = restApiService.getNew("createParser", _params);
+        data.createAnalyse = function (_params) {
+            var searchData = restApiService.getNew("createAnalyse", _params);
 
             $log.info(searchData);
 
@@ -59,8 +59,8 @@
             });
         };
 
-        data.deleteParser = function (_params) {
-            var searchData = restApiService.getNew("deleteParser", _params);
+        data.deleteAnalyse = function (_params) {
+            var searchData = restApiService.getNew("deleteAnalyse", _params);
 
             $log.info(searchData);
 
@@ -93,8 +93,8 @@
             });
         };
 
-        data.getParserStatusAggregation = function (_params) {
-            var searchData = restApiService.getNew("getParserStatusAggregation", _params);
+        data.getAnalyseStatusAggregation = function (_params) {
+            var searchData = restApiService.getNew("getAnalyseStatusAggregation", _params);
 
             $log.info(searchData);
 

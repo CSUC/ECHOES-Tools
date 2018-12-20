@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-server</artifactId>
-    <version>${echoes.gui.server.version}</version>
+    <version>0.0.1</version>
 
     <packaging>jar</packaging>
     <name>echoes-gui-server</name>
@@ -48,6 +48,13 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.27</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.test-framework.providers/jersey-test-framework-provider-jdk-http -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
             <version>2.27</version>
         </dependency>
 
@@ -185,7 +192,6 @@
             <artifactId>jetty-nosql</artifactId>
             <version>9.3.25.v20180904</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>

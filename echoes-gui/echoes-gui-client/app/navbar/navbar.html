@@ -1,49 +1,38 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">ECHOES GUI</a>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ui-sref="home">
-          Home
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ng-if="!vm.auth.isAuthenticated()"
-        ng-click="vm.auth.login()">
-          Log In
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ng-if="vm.auth.isAuthenticated()"
-        ui-sref="profile">
-          Profile
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ng-if="vm.auth.isAuthenticated()"
-        ui-sref="parser">
-          Parser
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ng-if="vm.auth.isAuthenticated()"
-        ui-sref="recollect">
-          Recollect
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        ng-if="vm.auth.isAuthenticated()"
-        ng-click="vm.auth.logout()">
-          Log Out
-      </button>
-
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ECHOES GUI</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active">
+                    <a ui-sref="home">Home</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ng-if="!vm.auth.isAuthenticated()" ng-click="vm.auth.login()">Log In</a></li>
+                <li ui-sref-active="active">
+                    <a ng-if="vm.auth.isAuthenticated()"
+                       ui-sref="profile">Profile</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ng-if="vm.auth.isAuthenticated()"
+                       ui-sref="analyse">Analyse</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ng-if="vm.auth.isAuthenticated()"
+                       ui-sref="recollect">Recollect</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ng-if="vm.auth.isAuthenticated()"
+                       ng-click="vm.auth.logout()">Log Out</a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
-  </div>
 </nav>

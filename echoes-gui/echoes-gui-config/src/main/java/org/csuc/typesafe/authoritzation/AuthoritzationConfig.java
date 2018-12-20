@@ -12,9 +12,9 @@ public class AuthoritzationConfig extends ConfigBeanFactory{
 
     private static Logger logger = LogManager.getLogger(AuthoritzationConfig.class);
 
-    public static String DOMAIN = ConfigFactory.parseResources("aut0.env").getString("DOMAIN");
-    public static String CLIENT_ID = ConfigFactory.parseResources("aut0.env").getString("CLIENT_ID");
-    public static String CLIENT_SECRET = ConfigFactory.parseResources("aut0.env").getString("CLIENT_SECRET");
+    public static String DOMAIN = ConfigFactory.parseResources("auth0.env").getString("DOMAIN");
+    public static String CLIENT_ID = ConfigFactory.parseResources("auth0.env").getString("CLIENT_ID");
+    public static String CLIENT_SECRET = ConfigFactory.parseResources("auth0.env").getString("CLIENT_SECRET");
 
 
 

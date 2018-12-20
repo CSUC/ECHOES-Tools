@@ -8,6 +8,13 @@ const express = require('express'),
     fs = require('fs'),
     util = require('util');
 
+require('dotenv').config();
+
+if (!process.env.GUI_HOSTNAME || !process.env.GUI_PORT) {
+    throw 'Make sure you have GUI_HOSTNAME, and GUI_PORT in your .env file'
+}
+
+console.log(process.env.GUI_PORT)
 
 app.use('/', express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,7 +22,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 
-app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -26,7 +33,7 @@ app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user +'/id/' + req.params.id
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user +'/id/' + req.params.id
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
@@ -38,7 +45,7 @@ app.get('/rest/api/parser/user/:user/id/:id', function (req, res, next) {
 
 });
 
-app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id/download', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
     };
@@ -48,7 +55,7 @@ app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next)
     var r = request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/download'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user + '/id/' + req.params.id + '/download'
     })
     r.pipe(res);
 
@@ -59,7 +66,7 @@ app.get('/rest/api/parser/user/:user/id/:id/download', function (req, res, next)
 
 });
 
-app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/id/:id/error', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -68,7 +75,7 @@ app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/error'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user + '/id/' + req.params.id + '/error'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
@@ -79,7 +86,7 @@ app.get('/rest/api/parser/user/:user/id/:id/error', function (req, res, next) {
     });
 });
 
-app.get('/rest/api/parser/user/:user', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization
     };
@@ -92,7 +99,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' +req.params.user + '?pagesize=' + pagesize + '&page=' + page
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` +req.params.user + '?pagesize=' + pagesize + '&page=' + page
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -104,7 +111,7 @@ app.get('/rest/api/parser/user/:user', function (req, res, next) {
 
 });
 
-app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, next) {
+app.get('/rest/api/analyse/user/:user/status/aggregation', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization
     };
@@ -114,7 +121,7 @@ app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, ne
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/status/aggregation'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user + '/status/aggregation'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -125,7 +132,7 @@ app.get('/rest/api/parser/user/:user/status/aggregation', function (req, res, ne
     });
 });
 
-app.post('/rest/api/parser/create', function (req, res, next) {
+app.post('/rest/api/analyse/create', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -144,7 +151,7 @@ app.post('/rest/api/parser/create', function (req, res, next) {
     request({
         method: 'POST',
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/create',
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/create`,
         json: formData
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
@@ -156,7 +163,7 @@ app.post('/rest/api/parser/create', function (req, res, next) {
     });
 });
 
-app.delete('/rest/api/parser/user/:user/id/:id/delete', function (req, res, next) {
+app.delete('/rest/api/analyse/user/:user/id/:id/delete', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
         'Authorization': req.headers.authorization
@@ -167,7 +174,7 @@ app.delete('/rest/api/parser/user/:user/id/:id/delete', function (req, res, next
     request({
         method: 'DELETE',
         headers: headers,
-        url: 'http://localhost:8080/rest/parser/user/' + req.params.user + '/id/' + req.params.id + '/delete',
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user + '/id/' + req.params.id + '/delete',
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -194,7 +201,7 @@ app.get('/rest/api/recollect/user/:user', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' +req.params.user + '?pagesize=' + pagesize + '&page=' + page
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` +req.params.user + '?pagesize=' + pagesize + '&page=' + page
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -217,7 +224,7 @@ app.get('/rest/api/recollect/user/:user/id/:id', function (req, res, next) {
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' +req.params.user + '/id/' + req.params.id
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` +req.params.user + '/id/' + req.params.id
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -239,7 +246,7 @@ app.get('/rest/api/recollect/user/:user/status/aggregation', function (req, res,
     request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' + req.params.user + '/status/aggregation'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` + req.params.user + '/status/aggregation'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -264,13 +271,15 @@ app.post('/rest/api/recollect/create', function (req, res, next) {
         from: req.body.from,
         until: req.body.until,
         granularity: req.body.granularity,
+        format: req.body.format,
+        schema: req.body.schema,
         properties: req.body.properties,
     }
 
     request({
         method: 'POST',
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/create',
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/create`,
         json: formData
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
@@ -293,7 +302,7 @@ app.delete('/rest/api/recollect/user/:user/id/:id/delete', function (req, res, n
     request({
         method: 'DELETE',
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' + req.params.user + '/id/' + req.params.id + '/delete',
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` + req.params.user + '/id/' + req.params.id + '/delete',
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -312,7 +321,7 @@ app.post('/rest/api/recollect/user/:user/id/:id/zip', function (req, res, next) 
     request({
         method: 'POST',
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' + req.params.user + '/id/' + req.params.id + '/zip'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` + req.params.user + '/id/' + req.params.id + '/zip'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -333,7 +342,7 @@ app.get('/rest/api/recollect/user/:user/id/:id/download', function (req, res, ne
     var r = request({
         method: "GET",
         headers: headers,
-        url: 'http://localhost:8080/rest/recollect/user/' + req.params.user + '/id/' + req.params.id + '/download'
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` + req.params.user + '/id/' + req.params.id + '/download'
     })
     r.pipe(res);
 
@@ -350,8 +359,8 @@ app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-const hostname = '0.0.0.0';
-const port = 3000;
+const hostname = process.env.GUI_HOSTNAME;
+const port = process.env.GUI_PORT;
 
 const server = app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

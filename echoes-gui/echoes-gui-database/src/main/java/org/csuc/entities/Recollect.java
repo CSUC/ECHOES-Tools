@@ -42,6 +42,12 @@ public class Recollect {
     @Property("granularity")
     private String Granularity;
 
+    @Property("format")
+    private String format;
+
+    @Property("schema")
+    private String schema;
+
     @Property("status")
     private Status status;
 
@@ -175,6 +181,22 @@ public class Recollect {
 
     public void setError(RecollectError error) {
         this.error = error;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 
     @Override

@@ -12,7 +12,7 @@
     <artifactId>echoes-gui-config</artifactId>
 
     <name>echoes-gui-config</name>
-    <version>${echoes.gui.config.version}</version>
+    <version>0.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

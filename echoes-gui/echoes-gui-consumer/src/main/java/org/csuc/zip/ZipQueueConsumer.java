@@ -1,24 +1,26 @@
 package org.csuc.zip;
 
 import com.rabbitmq.client.*;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.csuc.EndPoint;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
 import org.csuc.entities.RecollectLink;
-import org.csuc.utils.recollect.StatusLink;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.csuc.EndPoint;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Time;
+import org.csuc.utils.recollect.StatusLink;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -38,9 +40,11 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
 
     private Logger logger = LogManager.getLogger(ZipQueueConsumer.class);
 
-    private org.csuc.typesafe.server.Application serverConfig = new ServerConfig(null).getConfig();
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private Client client = new Client("localhost", 27017, "echoes");
+    private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
+
     private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     /**
@@ -102,7 +106,7 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
             FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip");
 
             ZipOutputStream zipOut = new ZipOutputStream(fos);
-            File fileToZip = Paths.get(serverConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("set").toString()).toFile();
+            File fileToZip = Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("set").toString()).toFile();
 
             zipFolder(fileToZip, fileToZip.getName(), zipOut);
             zipOut.close();
@@ -111,7 +115,7 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
 
             Files.move(
                     Paths.get(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip"),
-                    Paths.get(serverConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("_id").toString() + ".zip"),
+                    Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("_id").toString() + ".zip"),
                     StandardCopyOption.REPLACE_EXISTING);
 
 

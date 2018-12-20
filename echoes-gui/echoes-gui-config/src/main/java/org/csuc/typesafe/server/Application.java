@@ -1,7 +1,7 @@
 package org.csuc.typesafe.server;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigRenderOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +14,21 @@ import java.nio.file.Paths;
  */
 public class Application {
 
-    private String folder;
+    private Config config;
 
-    public Application() {
+    private String folder;
+    private String host;
+    private int port;
+
+    private MongoDB mongoDB;
+
+    public Application(Config config) {
+        this.config = config;
+        this.mongoDB = new MongoDB(config.getConfig("mongodb"));
     }
 
     public String getFolder() throws IOException {
-        Path path = Paths.get(folder);
+        Path path = Paths.get(config.getString("folder"));
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
@@ -31,29 +39,52 @@ public class Application {
     }
 
     public String getParserFolder(String uuid) throws IOException {
-        Path path = Paths.get(folder + File.separator + "parser" + File.separator + uuid);
+        Path path = Paths.get(getFolder() + File.separator + "analyse" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
     }
 
     public String getRecollectFolder(String uuid) throws IOException {
-        Path path = Paths.get(folder + File.separator + "recollect" + File.separator + uuid);
+        Path path = Paths.get(getFolder() + File.separator + "recollect" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
     }
 
     public String getValidationFolder(String uuid) throws IOException {
-        Path path = Paths.get(folder + File.separator + "validation" + File.separator + uuid);
+        Path path = Paths.get(getFolder() + File.separator + "validation" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
     }
 
+    public String getHost() {
+        return config.getString("host");
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return config.getInt("port");
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public MongoDB getMongoDB() {
+        return mongoDB;
+    }
+
+    public void setMongoDB(MongoDB mongoDB) {
+        this.mongoDB = mongoDB;
+    }
+
     @Override
     public String toString() {
-        JsonAdapter<Application> jsonAdapter = new Moshi.Builder().build().adapter(Application.class);
-        return jsonAdapter.toJson(this);
+        return config.root().render(ConfigRenderOptions.concise());
     }
 }

@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ProducerAndConsumerConfigTest {
 
@@ -25,7 +25,7 @@ public class ProducerAndConsumerConfigTest {
 
         assertEquals(15672, rabbitMQConfig.getPortManagement());
 
-        assertEquals("parser", rabbitMQConfig.getParserQueue());
+        assertEquals("analyse", rabbitMQConfig.getParserQueue());
         assertEquals("recollect", rabbitMQConfig.getRecollectQueue());
         assertEquals("validation", rabbitMQConfig.getValidationQueue());
         assertEquals("zip", rabbitMQConfig.getZipQueue());

@@ -1,15 +1,17 @@
 package org.csuc.service.recollect;
 
 import com.auth0.jwk.JwkException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.csuc.Producer;
 import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.server.Application;
+import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.authorization.Authoritzation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -32,11 +35,11 @@ public class Zip {
 
     private static Logger logger = LogManager.getLogger(Zip.class);
 
-    private Client client = new Client("localhost", 27017, "echoes");
+    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
+    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
-    private RabbitMQConfig config = new ProducerAndConsumerConfig(new File(getClass().getClassLoader().getResource("rabbitmq.defaults.conf").getFile()).toPath()).getRabbitMQConfig();
+    private URL rabbitmqResource = getClass().getClassLoader().getResource("rabbitmq.conf");
+    private RabbitMQConfig config = new ProducerAndConsumerConfig((Objects.isNull(rabbitmqResource)) ? null : new File(rabbitmqResource.getFile()).toPath()).getRabbitMQConfig();
 
     @Context
     private UriInfo uriInfo;
@@ -76,6 +79,9 @@ public class Zip {
         }
 
         try {
+            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
+            RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
+
             Recollect recollect = recollectDAO.getById(id);
 
             HashMap<String, Object> message = new HashMap<>();

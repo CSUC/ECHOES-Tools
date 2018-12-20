@@ -28,11 +28,11 @@
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
-        <Logger name="org.Recollect.Core.cli.Main" level="debug" additivity="true">
+        <Logger name="org.recollect.core.cli.Main" level="debug" additivity="true">
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
-        <Logger name="org.Recollect.Core.Recollect" level="debug" additivity="true">
+        <Logger name="org.recollect.core.Recollect" level="debug" additivity="true">
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 

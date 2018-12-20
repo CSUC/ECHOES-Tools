@@ -25,17 +25,18 @@ public class ServerConfig extends ConfigBeanFactory {
     }
 
     public Application getConfig(){
-        Config defaultConfig = ConfigFactory.parseResources("echoes-gui-server.conf");
+        Config defaultConfig = ConfigFactory.parseResources("echoes-gui-server.default.conf");
         if(Objects.nonNull(filename) && Files.exists(filename)){
             logger.debug("load config {}", filename);
             Config fallbackConfig = ConfigFactory.parseFile(filename.toFile())
                     .withFallback(defaultConfig)
                     .resolve();
-            Application config = create(fallbackConfig.getConfig("echoes-gui-server"), Application.class);
+
+            Application config = new Application(fallbackConfig.getConfig("echoes-gui-server"));
             return config;
         }else{
             logger.debug("load config defaults.conf");
-            Application config = create(defaultConfig.getConfig("echoes-gui-server"), Application.class);
+            Application config = new Application(defaultConfig.getConfig("echoes-gui-server"));
             return config;
         }
     }

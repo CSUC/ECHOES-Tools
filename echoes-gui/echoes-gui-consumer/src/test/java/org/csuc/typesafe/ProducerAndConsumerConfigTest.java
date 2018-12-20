@@ -6,7 +6,7 @@ import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProducerAndConsumerConfigTest {
 
@@ -21,7 +21,7 @@ public class ProducerAndConsumerConfigTest {
         assertEquals("guest", config.getUsername());
         assertEquals("guest", config.getPassword());
         assertEquals(15672, config.getPortManagement());
-        assertEquals("parser", config.getParserQueue());
+        assertEquals("analyse", config.getParserQueue());
         assertEquals("recollect", config.getRecollectQueue());
         assertEquals("validation", config.getValidationQueue());
 
