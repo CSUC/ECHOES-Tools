@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">ECHOES GUI</a>
+            <a class="navbar-brand" ui-sref="home">ECHOES GUI</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -26,7 +26,7 @@
                 </li>
                 <li ui-sref-active="active">
                     <a ng-if="vm.auth.isAuthenticated()"
-                       ui-sref="recollect">Recollect</a>
+                       ui-sref="recollect">Recollect <span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span></a>
                 </li>
                 <li ui-sref-active="active">
                     <a ng-if="vm.auth.isAuthenticated()"

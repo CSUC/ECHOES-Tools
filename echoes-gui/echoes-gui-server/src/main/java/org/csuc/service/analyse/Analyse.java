@@ -187,7 +187,7 @@ public class Analyse {
             message.put("format", ParserFormat.convert(analyseRequest.getFormat()));
             message.put("value", analyse.getValue());
 
-            new Producer(rabbitMQConfig.getParserQueue(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getQueues().getAnalyse(), rabbitMQConfig).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

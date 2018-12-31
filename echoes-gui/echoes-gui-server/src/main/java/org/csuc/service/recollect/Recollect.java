@@ -204,7 +204,7 @@ public class Recollect {
             message.put("properties", recollect.getProperties());
 
 
-            new Producer(rabbitMQConfig.getRecollectQueue(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getQueues().getRecollect(), rabbitMQConfig).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

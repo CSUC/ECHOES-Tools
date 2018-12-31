@@ -1,22 +1,49 @@
 {
   "apps": [
     {
-      "name": "Auth0-Server",
+      "name": "ECHOES-GUI",
       "cwd": "${project.parent.basedir}/echoes-gui/echoes-gui-client",
       "script": "./server.js"
     },
     {
-      "name": "Auth0 API",
-      "cwd": "${project.parent.basedir}/echoes-gui/echoes-gui-client",
-      "script": "./api.js"
-    },
-    {
-      "name": "RabbitMQ-Consumer",
+      "name": "RabbitMQ-Consumer-Analyse",
       "cwd": "${project.parent.basedir}/",
       "script": "/usr/bin/java",
       "args": [
         "-jar",
-        "bin/echoes-gui-consumer-${echoes.gui.consumer.version}-shaded.jar"
+        "bin/echoes-gui-consumer-analyse-${echoes.gui.consumer.analyse.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "RabbitMQ-Consumer-Recollect",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-recollect-${echoes.gui.consumer.recollect.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "RabbitMQ-Consumer-Zip",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-zip-${echoes.gui.consumer.zip.version}-shaded.jar"
       ],
       "env": {
       },

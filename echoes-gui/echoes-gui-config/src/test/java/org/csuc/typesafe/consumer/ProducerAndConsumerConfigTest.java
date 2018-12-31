@@ -25,10 +25,10 @@ public class ProducerAndConsumerConfigTest {
 
         assertEquals(15672, rabbitMQConfig.getPortManagement());
 
-        assertEquals("analyse", rabbitMQConfig.getParserQueue());
-        assertEquals("recollect", rabbitMQConfig.getRecollectQueue());
-        assertEquals("validation", rabbitMQConfig.getValidationQueue());
-        assertEquals("zip", rabbitMQConfig.getZipQueue());
+        assertEquals("analyse", rabbitMQConfig.getQueues().getAnalyse());
+        assertEquals("recollect", rabbitMQConfig.getQueues().getRecollect());
+        assertEquals("validation", rabbitMQConfig.getQueues().getValidation());
+        assertEquals("zip", rabbitMQConfig.getQueues().getZip());
 
         logger.info(rabbitMQConfig.toString());
     }

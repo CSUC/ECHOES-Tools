@@ -90,7 +90,7 @@ public class Zip {
             message.put("set", recollect.getSet());
 
 
-            new Producer(rabbitMQConfig.getZipQueue(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getQueues().getZip(), rabbitMQConfig).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(message).type(APPLICATION_JSON.toString()).build();
         } catch (Exception e) {
