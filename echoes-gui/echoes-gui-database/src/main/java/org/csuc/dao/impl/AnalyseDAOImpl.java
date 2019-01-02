@@ -19,10 +19,13 @@ import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static org.mongodb.morphia.aggregation.Group.grouping;
 
 
@@ -360,6 +363,128 @@ public class AnalyseDAOImpl extends BasicDAO<Analyse, ObjectId> implements Analy
 
         logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", AnalyseDAOImpl.class.getSimpleName(), status, user);
         return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastMonth(Status status) throws Exception {
+        if(Objects.isNull(status))  throw new Exception();
+
+        Query<Analyse> query = createQuery();
+
+        LocalDateTime earlier = LocalDateTime.now().minusMonths(1);
+        LocalDateTime start = earlier.with(firstDayOfMonth());
+        LocalDateTime finish = earlier.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", AnalyseDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastMonth(Status status, String user) throws Exception {
+        if(Objects.isNull(status))  throw new Exception();
+
+        Query<Analyse> query = createQuery();
+
+        LocalDateTime earlier = LocalDateTime.now().minusMonths(1);
+        LocalDateTime start = earlier.with(firstDayOfMonth());
+        LocalDateTime finish = earlier.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish),
+                query.criteria("user").equal(user)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", AnalyseDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusMonth(Status status) throws Exception {
+        if(Objects.isNull(status)) throw new Exception();
+
+        Query<Analyse> query = createQuery();
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.with(firstDayOfMonth());
+        LocalDateTime finish = now.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish)
+        );
+
+        logger.debug("[{}]\t[getStatusMonth] - status: {}", AnalyseDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusMonth(Status status, String user) throws Exception {
+        if(Objects.isNull(status) || Objects.isNull(user))  throw new Exception();
+
+        Query<Analyse> query = createQuery();
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.with(firstDayOfMonth());
+        LocalDateTime finish = now.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish),
+                query.criteria("user").equal(user)
+        );
+
+        logger.debug("[{}]\t[getStatusMonth] - status: {}\tuser: {}", AnalyseDAOImpl.class.getSimpleName(), status, user);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastYear(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastYear(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusYear(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusYear(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDay(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDay(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusDay(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusDay(Status status, String user) throws Exception {
+        return 0;
     }
 
     @Override

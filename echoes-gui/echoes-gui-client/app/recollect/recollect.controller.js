@@ -202,5 +202,63 @@
                 });
         };
 
+        $scope.send = function (data) {
+            var dailog =
+                ngDialog.open({
+                    template: 'loader.tpl.html',
+                    width: '60%',
+                    data: vm,
+                    controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
+                        $log.info(vm.profile.sub)
+
+                        $scope.options = {
+                            endpoints: [
+                                "http://blazegraph.pre.csuc.cat/namespace/kb/sparql",
+                                "http://blazegraph.test.csuc.cat/namespace/kb/sparql",
+                                "http://localhost:19999/bigdata/namespace/kb/sparql",
+                                "http://localhost:19999/bigdata/namespace/test/sparql",
+				"http://localhost:19999/bigdata/namespace/test2/sparql"
+			    ],
+                            types: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
+                        }
+
+                        $scope.model = {};
+
+                        $scope.model.dataset = data._id;
+                        $scope.model.type = data.format;
+
+                        $scope.submitForm = function (isValid) {
+                            if (isValid) {
+                                var data = {
+                                    'sparqlEndpoint': $scope.model.endpoint,
+                                    'contentType': $scope.model.type,
+                                    'contextUri' : $scope.model.context,
+                                    "uuid": $scope.model.dataset,
+                                    'user': vm.profile.sub
+                                };
+
+                                $log.info(data);
+
+                                restApi.createLoader({
+                                    user: vm.profile.sub,
+                                    endpoint: $scope.model.endpoint,
+                                    contentType: $scope.model.type,
+                                    contextUri : $scope.model.context,
+                                    uuid: $scope.model.dataset,
+                                }).then(function (_data) {
+                                    $log.info(_data);
+                                    ngDialog.close();
+                                    $state.go($state.current, {}, {reload: true});
+                                }).catch(function (_data) {
+                                    $log.info(_data);
+                                    //$state.go("404");
+                                });
+
+                            }
+                        };
+                    }]
+                });
+        };
+
     }
 })();

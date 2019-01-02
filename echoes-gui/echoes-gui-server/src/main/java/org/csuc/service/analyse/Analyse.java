@@ -8,11 +8,11 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
-import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.AnalyseErrorDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.entities.AnalyseError;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
@@ -28,6 +28,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +50,7 @@ public class Analyse {
     private Application applicationConfig;
 
     @Inject
-    private RabbitMQConfig rabbitMQConfig;
+    private Queues rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -187,7 +188,7 @@ public class Analyse {
             message.put("format", ParserFormat.convert(analyseRequest.getFormat()));
             message.put("value", analyse.getValue());
 
-            new Producer(rabbitMQConfig.getQueues().getAnalyse(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getAnalyse()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
@@ -233,6 +234,8 @@ public class Analyse {
             WriteResult writeResult = analyseDAO.deleteById(id);
 
             logger.debug(writeResult);
+
+            Files.deleteIfExists(Paths.get(applicationConfig.getParserFolder(id)));
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
@@ -325,8 +328,9 @@ public class Analyse {
         }
 
         try {
-            ParserErrorDAO parserErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
-            AnalyseError parser = parserErrorDAO.getByReference(id);
+            AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
+
+            AnalyseError parser = analyseErrorDAO.getByReference(id);
 
             if(Objects.isNull(parser))
                 return Response.status(Response.Status.BAD_REQUEST).build();

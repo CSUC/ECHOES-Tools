@@ -134,6 +134,12 @@
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-osgi</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>3.9.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.csuc</groupId>
 			<artifactId>echoes-hdfs</artifactId>

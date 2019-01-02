@@ -1,6 +1,7 @@
 package org.csuc.echoes.gui.consumer.analyse;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,13 +12,12 @@ import org.csuc.analyse.core.strategy.sax.Sax;
 import org.csuc.analyse.core.strategy.xslt.Xslt;
 import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
-import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.AnalyseErrorDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.echoes.gui.consumer.analyse.utils.Time;
 import org.csuc.entities.Analyse;
 import org.csuc.entities.AnalyseError;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Status;
@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,16 +49,15 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
     private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
 
     private AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
-    private ParserErrorDAO parserErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
+    private AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
 
     /**
-     * @param endpointName
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public AnalyseQueueConsumer(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        super(endpointName, typesafeRabbitMQ);
+    public AnalyseQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        super(typesafeRabbitMQ);
     }
 
     @Override
@@ -157,7 +155,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
             analyse = analyseDAO.getById(map.get("_id").toString());
             analyse.setStatus(Status.END);
-            analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
             analyseDAO.insert(analyse);
 
@@ -169,7 +167,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
             if (Objects.nonNull(analyse)) {
                 analyse.setStatus(Status.ERROR);
-                analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
+                analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
                 AnalyseError analyseError = new AnalyseError();
 
@@ -177,7 +175,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
                 analyseError.setAnalyse(analyse);
 
                 analyseDAO.save(analyse);
-                parserErrorDAO.save(analyseError);
+                analyseErrorDAO.save(analyseError);
             }
 
             try {
@@ -193,7 +191,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
         try {
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
-            channel.basicQos(1, false); // Per consumer limit
+            channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
             //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {

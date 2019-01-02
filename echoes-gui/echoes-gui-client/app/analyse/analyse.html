@@ -7,13 +7,13 @@
             <div class="panel panel-default" ng-show="vm.data._size > 0">
                 <div class="panel-heading"><h3>Statistics</h3></div>
                 <div class="panel-body">
-                    <canvas class="chart chart-doughnut visible-lg visible-md" chart-data="vm.chart.data"
-                            chart-labels="vm.chart.labels"
-                            chart-options="vm.chart.options" chart-colors="vm.chart.colors" height="75%"></canvas>
-
-                    <canvas class="chart chart-doughnut hidden-lg hidden-md" chart-data="vm.chart.data"
-                            chart-labels="vm.chart.labels"
-                            chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
+                                chart-labels="vm.chart.labels"
+                                chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
                                     {{data.value}}
                                 </td>
                                 <td title="'timestamp'">
-                                    {{data.timestamp}}
+                                    {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
                                 </td>
                                 <td title="'remove'">
                                     <a ng-click="remove(data._id)">

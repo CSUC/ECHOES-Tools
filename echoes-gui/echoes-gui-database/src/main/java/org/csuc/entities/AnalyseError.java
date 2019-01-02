@@ -2,8 +2,10 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.mongodb.morphia.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -54,7 +56,12 @@ public class AnalyseError {
 
     @Override
     public String toString() {
-        JsonAdapter<AnalyseError> jsonAdapter = new Moshi.Builder().build().adapter(AnalyseError.class);
+        JsonAdapter<AnalyseError> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(AnalyseError.class);
+
         return jsonAdapter.toJson(this);
     }
 }

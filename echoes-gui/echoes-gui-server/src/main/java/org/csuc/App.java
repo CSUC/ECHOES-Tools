@@ -4,7 +4,7 @@ import org.csuc.client.Client;
 import org.csuc.service.injection.ApplicationBinderFactory;
 import org.csuc.service.injection.ClientBinderFactory;
 import org.csuc.service.injection.RabbitMQBinderFactory;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
@@ -54,7 +54,7 @@ public class App {
                         .register(new AbstractBinder() {
                             @Override
                             protected void configure() {
-                                bindFactory(RabbitMQBinderFactory.class).to(RabbitMQConfig.class).in(Singleton.class);
+                                bindFactory(RabbitMQBinderFactory.class).to(Queues.class).in(Singleton.class);
                             }
                         });
 

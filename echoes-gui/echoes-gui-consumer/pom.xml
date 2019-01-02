@@ -17,6 +17,7 @@
         <module>echoes-gui-consumer-analyse</module>
         <module>echoes-gui-consumer-recollect</module>
         <module>echoes-gui-consumer-zip</module>
+        <module>echoes-gui-consumer-loader</module>
     </modules>
 
     <dependencyManagement>

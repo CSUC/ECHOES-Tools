@@ -5,6 +5,7 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.csuc.utils.Status;
 import org.csuc.utils.parser.ParserFormat;
 import org.csuc.utils.parser.ParserMethod;
@@ -27,7 +28,7 @@ public class Analyse {
     private String _id;
 
     @Property("timestamp")
-    private String timestamp = LocalDateTime.now().toString();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Property("type")
     private ParserType type;
@@ -63,11 +64,11 @@ public class Analyse {
         this._id = _id;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -129,7 +130,12 @@ public class Analyse {
 
     @Override
     public String toString() {
-        JsonAdapter<Analyse> jsonAdapter = new Moshi.Builder().build().adapter(Analyse.class);
+        JsonAdapter<Analyse> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(Analyse.class);
+
         return jsonAdapter.toJson(this);
     }
 }

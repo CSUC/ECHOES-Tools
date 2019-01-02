@@ -8,7 +8,7 @@ import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.authorization.Authoritzation;
 
@@ -40,7 +40,7 @@ public class Zip {
     private Application applicationConfig;
 
     @Inject
-    private RabbitMQConfig rabbitMQConfig;
+    private Queues rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -90,7 +90,7 @@ public class Zip {
             message.put("set", recollect.getSet());
 
 
-            new Producer(rabbitMQConfig.getQueues().getZip(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getZip()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(message).type(APPLICATION_JSON.toString()).build();
         } catch (Exception e) {

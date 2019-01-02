@@ -2,9 +2,11 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.csuc.utils.recollect.StatusLink;
 import org.mongodb.morphia.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -44,7 +46,12 @@ public class RecollectLink {
 
     @Override
     public String toString() {
-        JsonAdapter<RecollectLink> jsonAdapter = new Moshi.Builder().build().adapter(RecollectLink.class);
+        JsonAdapter<RecollectLink> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(RecollectLink.class);
+
         return jsonAdapter.toJson(this);
     }
 }

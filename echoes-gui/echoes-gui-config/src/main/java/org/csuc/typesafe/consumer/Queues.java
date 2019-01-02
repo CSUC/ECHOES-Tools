@@ -1,56 +1,63 @@
 package org.csuc.typesafe.consumer;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
+import com.typesafe.config.Config;
 
 /**
  * @author amartinez
  */
 public class Queues {
 
-    private String analyse;
-    private String recollect;
-    private String validation;
-    private String zip;
+    private Config analyse;
+    private Config recollect;
+    private Config validation;
+    private Config zip;
+    private Config loader;
 
-    public Queues() {
+    public Queues(Config config) {
+        analyse = config.getConfig("analyse");
+        recollect = config.getConfig("recollect");
+        validation = config.getConfig("validation");
+        zip = config.getConfig("zip");
+        loader = config.getConfig("loader");
     }
 
-    public String getAnalyse() {
+    public Config getAnalyse() {
         return analyse;
     }
 
-    public void setAnalyse(String analyse) {
+    public void setAnalyse(Config analyse) {
         this.analyse = analyse;
     }
 
-    public String getRecollect() {
+    public Config getRecollect() {
         return recollect;
     }
 
-    public void setRecollect(String recollect) {
+    public void setRecollect(Config recollect) {
         this.recollect = recollect;
     }
 
-    public String getValidation() {
+    public Config getValidation() {
         return validation;
     }
 
-    public void setValidation(String validation) {
+    public void setValidation(Config validation) {
         this.validation = validation;
     }
 
-    public String getZip() {
+    public Config getZip() {
         return zip;
     }
 
-    public void setZip(String zip) {
+    public void setZip(Config zip) {
         this.zip = zip;
     }
 
-    @Override
-    public String toString() {
-        JsonAdapter<Queues> jsonAdapter = new Moshi.Builder().build().adapter(Queues.class);
-        return jsonAdapter.toJson(this);
+    public Config getLoader() {
+        return loader;
+    }
+
+    public void setLoader(Config loader) {
+        this.loader = loader;
     }
 }

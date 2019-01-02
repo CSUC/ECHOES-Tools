@@ -8,7 +8,7 @@ import org.mongodb.morphia.dao.DAO;
 /**
  * @author amartinez
  */
-public interface ParserErrorDAO extends DAO<AnalyseError, ObjectId> {
+public interface AnalyseErrorDAO extends DAO<AnalyseError, ObjectId> {
 
     AnalyseError getByReference(Analyse analyse) throws Exception;
 

@@ -1,6 +1,7 @@
 package org.csuc.echoes.gui.consumer.recollect;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
 import io.reactivex.Observable;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
@@ -11,11 +12,9 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
-import org.csuc.echoes.gui.consumer.recollect.EndPoint;
 import org.csuc.echoes.gui.consumer.recollect.utils.Time;
 import org.csuc.entities.RecollectError;
 import org.csuc.entities.RecollectLink;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
@@ -29,10 +28,8 @@ import org.recollect.core.client.OAIClient;
 import org.recollect.core.download.Download;
 import org.recollect.core.download.FactoryDownload;
 import org.recollect.core.parameters.ListRecordsParameters;
-import org.recollect.core.util.Garbage;
-import org.recollect.core.util.Granularity;
-import org.recollect.core.util.TimeUtils;
-import org.recollect.core.util.UTCDateProvider;
+import org.recollect.core.parameters.Parameters;
+import org.recollect.core.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +38,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,13 +63,12 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
 
     /**
-     * @param endpointName
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public RecollectQueueConsumer(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        super(endpointName, typesafeRabbitMQ);
+    public RecollectQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        super(typesafeRabbitMQ);
     }
 
     @Override
@@ -128,8 +123,8 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
                 listRecordsParameters.withSetSpec(recollect.getSet());
 
-//                if (Objects.nonNull(recollect.getResumptionToken()))
-//                    listRecordsParameters.withgetResumptionToken(recollect.getResumptionToken());
+                recollect.setSize(recollectOAI.size(Parameters.parameters().withVerb(Verb.Type.ListRecords).include(listRecordsParameters).toUrl(oaiClient.getURL())));
+                recollectDAO.insert(recollect);
 
                 if (Objects.nonNull(recollect.getFrom())) {
                     UTCDateProvider dateProvider = new UTCDateProvider();
@@ -173,16 +168,19 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     appendError(recollect, e.toString());
                                 },
                                 () -> {
-                                    recollect = recollectDAO.getById(map.get("_id").toString());
-                                    recollect.setStatus(Status.END);
-                                    recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+                                    //recollect = recollectDAO.getById(map.get("_id").toString());
 
-                                    RecollectLink recollectLink = new RecollectLink();
-                                    recollectLink.setStatusLink(StatusLink.NULL);
-                                    recollect.setLink(recollectLink);
+                                    if(!recollect.getStatus().equals(Status.ERROR)){
+                                        recollect.setStatus(Status.END);
+                                        recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
-                                    recollectDAO.getDatastore().save(recollectLink);
-                                    recollectDAO.insert(recollect);
+                                        RecollectLink recollectLink = new RecollectLink();
+                                        recollectLink.setStatusLink(StatusLink.NULL);
+                                        recollect.setLink(recollectLink);
+
+                                        recollectDAO.getDatastore().save(recollectLink);
+                                        recollectDAO.insert(recollect);
+                                    }
 
                                     logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
                                 }
@@ -272,7 +270,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
     private void appendError(org.csuc.entities.Recollect recollect, String e) {
         if (Objects.nonNull(recollect)) {
             recollect.setStatus(Status.ERROR);
-            recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
             RecollectError recollectError = new RecollectError();
 
@@ -290,7 +288,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
         try {
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
-            channel.basicQos(1, false); // Per consumer limit
+            channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
             //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {

@@ -1,17 +1,16 @@
 package org.csuc.echoes.gui.consumer.zip;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
-import org.csuc.echoes.gui.consumer.zip.EndPoint;
 import org.csuc.echoes.gui.consumer.zip.utils.Time;
 import org.csuc.entities.Recollect;
 import org.csuc.entities.RecollectLink;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.recollect.StatusLink;
@@ -53,8 +52,8 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
      * @throws IOException
      * @throws TimeoutException
      */
-    public ZipQueueConsumer(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        super(endpointName, typesafeRabbitMQ);
+    public ZipQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        super(typesafeRabbitMQ);
     }
 
     @Override
@@ -183,7 +182,7 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
         try {
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
-            channel.basicQos(1, false); // Per consumer limit
+            channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
             //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
