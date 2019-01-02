@@ -7,19 +7,16 @@ import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.entities.Analyse;
-import org.csuc.typesafe.server.Application;
-import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.parser.ParserFormat;
 import org.csuc.utils.response.ResponseEchoes;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.File;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,8 +36,8 @@ public class Format {
     @Context
     private HttpServletRequest servletRequest;
 
-    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
-    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
+    @Inject
+    private Client client;
 
     @GET
     @Path("/user/{user}/format/{format}")
@@ -84,10 +81,8 @@ public class Format {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
-        AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
-
         try {
+            AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
             List<Analyse> queryResults = analyseDAO.getByFormat(parserFormat, user, page, pagesize);
 
             double count = new Long(analyseDAO.countByFormat(parserFormat, user)).doubleValue();
@@ -103,5 +98,4 @@ public class Format {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
 }

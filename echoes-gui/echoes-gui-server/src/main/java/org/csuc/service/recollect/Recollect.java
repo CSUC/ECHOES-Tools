@@ -9,20 +9,18 @@ import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
-import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
-import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.response.ResponseEchoes;
 import org.mongodb.morphia.Key;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +36,14 @@ public class Recollect {
 
     private static Logger logger = LogManager.getLogger(Recollect.class);
 
-    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
-    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
+    @Inject
+    private Client client;
 
-    private URL rabbitmqResource = getClass().getClassLoader().getResource("rabbitmq.conf");
-    private RabbitMQConfig config = new ProducerAndConsumerConfig((Objects.isNull(rabbitmqResource)) ? null : new File(rabbitmqResource.getFile()).toPath()).getRabbitMQConfig();
+    @Inject
+    private Application applicationConfig;
+
+    @Inject
+    private RabbitMQConfig rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -82,7 +83,6 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
             org.csuc.entities.Recollect recollect = recollectDAO.getById(id);
@@ -126,9 +126,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
             List<org.csuc.entities.Recollect> queryResults = recollectDAO.getByUser(user, page, pagesize, "-timestamp");
 
             double count = new Long(recollectDAO.countByUser(user)).doubleValue();
@@ -170,9 +168,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
             org.csuc.entities.Recollect recollect = new org.csuc.entities.Recollect();
 
             logger.info(recollectRequest.toString());
@@ -208,7 +204,7 @@ public class Recollect {
             message.put("properties", recollect.getProperties());
 
 
-            new Producer(config.getRecollectQueue(), config).sendMessage(message);
+            new Producer(rabbitMQConfig.getQueues().getRecollect(), rabbitMQConfig).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
@@ -249,9 +245,7 @@ public class Recollect {
         }
 
         try {
-            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
             WriteResult writeResult = recollectDAO.deleteById(id);
 
             logger.debug(writeResult);

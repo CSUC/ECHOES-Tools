@@ -1,5 +1,10 @@
 package org.csuc;
 
+import org.csuc.client.Client;
+import org.csuc.service.injection.ApplicationBinderFactory;
+import org.csuc.service.injection.ClientBinderFactory;
+import org.csuc.service.injection.RabbitMQBinderFactory;
+import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
@@ -8,9 +13,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import javax.inject.Singleton;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -31,7 +38,25 @@ public class App {
         final ResourceConfig application =
                 new ResourceConfig()
                         .packages("org.csuc.service")
-                        .register(JacksonFeature.class);
+                        .register(JacksonFeature.class)
+                        .register(new AbstractBinder() {
+                            @Override
+                            protected void configure() {
+                                bindFactory(ClientBinderFactory.class).to(Client.class).in(Singleton.class);
+                            }
+                        })
+                        .register(new AbstractBinder() {
+                            @Override
+                            protected void configure() {
+                                bindFactory(ApplicationBinderFactory.class).to(Application.class).in(Singleton.class);
+                            }
+                        })
+                        .register(new AbstractBinder() {
+                            @Override
+                            protected void configure() {
+                                bindFactory(RabbitMQBinderFactory.class).to(RabbitMQConfig.class).in(Singleton.class);
+                            }
+                        });
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");

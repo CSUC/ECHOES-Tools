@@ -8,19 +8,16 @@ import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
 import org.csuc.entities.Recollect;
-import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
 import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
-import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.authorization.Authoritzation;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -35,11 +32,15 @@ public class Zip {
 
     private static Logger logger = LogManager.getLogger(Zip.class);
 
-    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
-    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
 
-    private URL rabbitmqResource = getClass().getClassLoader().getResource("rabbitmq.conf");
-    private RabbitMQConfig config = new ProducerAndConsumerConfig((Objects.isNull(rabbitmqResource)) ? null : new File(rabbitmqResource.getFile()).toPath()).getRabbitMQConfig();
+    @Inject
+    private Client client;
+
+    @Inject
+    private Application applicationConfig;
+
+    @Inject
+    private RabbitMQConfig rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -79,9 +80,7 @@ public class Zip {
         }
 
         try {
-            Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(),applicationConfig.getMongoDB().getDatabase());
             RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
-
             Recollect recollect = recollectDAO.getById(id);
 
             HashMap<String, Object> message = new HashMap<>();
@@ -91,7 +90,7 @@ public class Zip {
             message.put("set", recollect.getSet());
 
 
-            new Producer(config.getZipQueue(), config).sendMessage(message);
+            new Producer(rabbitMQConfig.getQueues().getZip(), rabbitMQConfig).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(message).type(APPLICATION_JSON.toString()).build();
         } catch (Exception e) {

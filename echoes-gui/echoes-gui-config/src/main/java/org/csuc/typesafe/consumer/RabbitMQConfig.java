@@ -2,6 +2,7 @@ package org.csuc.typesafe.consumer;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import com.typesafe.config.Config;
 
 /**
  * @author amartinez
@@ -13,10 +14,7 @@ public class RabbitMQConfig {
     private String username;
     private String password;
     private int portManagement;
-    private String parserQueue;
-    private String recollectQueue;
-    private String validationQueue;
-    private String zipQueue;
+    private Queues queues;
 
     public RabbitMQConfig() {
     }
@@ -61,36 +59,12 @@ public class RabbitMQConfig {
         this.portManagement = portManagement;
     }
 
-    public String getParserQueue() {
-        return parserQueue;
+    public Queues getQueues() {
+        return queues;
     }
 
-    public void setParserQueue(String parserQueue) {
-        this.parserQueue = parserQueue;
-    }
-
-    public String getRecollectQueue() {
-        return recollectQueue;
-    }
-
-    public void setRecollectQueue(String recollectQueue) {
-        this.recollectQueue = recollectQueue;
-    }
-
-    public String getValidationQueue() {
-        return validationQueue;
-    }
-
-    public void setValidationQueue(String validationQueue) {
-        this.validationQueue = validationQueue;
-    }
-
-    public String getZipQueue() {
-        return zipQueue;
-    }
-
-    public void setZipQueue(String zipQueue) {
-        this.zipQueue = zipQueue;
+    public void setQueues(Queues queues) {
+        this.queues = queues;
     }
 
     @Override
