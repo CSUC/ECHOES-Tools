@@ -22,6 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -249,6 +250,8 @@ public class Recollect {
             WriteResult writeResult = recollectDAO.deleteById(id);
 
             logger.debug(writeResult);
+
+            Files.deleteIfExists(Paths.get(applicationConfig.getRecollectFolder(id)));
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

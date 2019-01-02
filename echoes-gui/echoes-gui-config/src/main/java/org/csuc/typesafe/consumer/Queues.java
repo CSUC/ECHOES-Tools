@@ -12,6 +12,7 @@ public class Queues {
     private String recollect;
     private String validation;
     private String zip;
+    private String loader;
 
     public Queues() {
     }
@@ -46,6 +47,14 @@ public class Queues {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public String getLoader() {
+        return loader;
+    }
+
+    public void setLoader(String loader) {
+        this.loader = loader;
     }
 
     @Override

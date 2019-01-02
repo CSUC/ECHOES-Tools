@@ -32,7 +32,8 @@
                 url: '/',
                 controller: 'HomeController',
                 templateUrl: 'app/home/home.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
             })
             .state('profile', {
                 url: '/profile',
@@ -103,6 +104,28 @@
                 controller: 'ValidationController',
                 templateUrl: 'app/validation/validation.html',
                 controllerAs: 'vm',
+                onEnter: checkAuthentication
+            })
+            .state('loader', {
+                url: '/loader',
+                controller: 'LoaderController',
+                templateUrl: 'app/loader/loader.html',
+                controllerAs: 'vm',
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
+                },
+                onEnter: checkAuthentication
+            })
+            .state('loader-detail', {
+                url: '/loader/:_id',
+                controller: 'LoaderControllerDetail',
+                templateUrl: 'app/loader/loader.detail.html',
+                controllerAs: 'vm',
+                params:{
+                    data: null
+                },
                 onEnter: checkAuthentication
             })
             .state('404', {

@@ -7,12 +7,13 @@
             <div class="panel panel-default" ng-show="vm.data._size > 0">
                 <div class="panel-heading"><h3>Statistics</h3></div>
                 <div class="panel-body">
-                    <canvas class="chart chart-doughnut visible-lg visible-md" chart-data="vm.chart.data"
-                            chart-labels="vm.chart.labels"
-                            chart-options="vm.chart.options" chart-colors="vm.chart.colors" height="75%"></canvas>
-                    <canvas class="chart chart-doughnut hidden-lg hidden-md" chart-data="vm.chart.data"
-                            chart-labels="vm.chart.labels"
-                            chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
+                                chart-labels="vm.chart.labels"
+                                chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
 
@@ -51,11 +52,16 @@
                                     {{data.metadataPrefix}}
                                 </td>
                                 <td title="'timestamp'">
-                                    {{data.timestamp}}
+                                    {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
                                 </td>
                                 <td title="'remove'">
                                     <a ng-click="remove(data._id)">
                                         <span class="glyphicon glyphicon-remove text-danger"></span>
+                                    </a>
+                                </td>
+                                <td title="'loader'">
+                                    <a ng-click="send(data)" ng-if="data.status == 'END'">
+                                        <span class="glyphicon glyphicon-send"></span>
                                     </a>
                                 </td>
                             </tr>
@@ -151,6 +157,48 @@
                    value="Remove">
             <input type="submit" class="btn btn-primary addnew pull-right" value="Add New" ng-click="addNew()">
 
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+</script>
+
+<script type="text/ng-template" id="loader.tpl.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">{{ngDialogData.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+            <!-- SPARQL ENDPOINT -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.endpoint.$invalid && userForm.endpoint.$pristine }">
+                <label>SPARQL ENDPOINT*</label>
+                <select name="endpoint" class="form-control" ng-model="model.endpoint"
+                        ng-options="value as value for (key, value) in options.endpoints" required></select>
+                <p ng-show="userForm.endpoint.$invalid && userForm.endpoint.$error.required" class="help-block">endpoint is
+                    required.</p>
+            </div>
+
+            <!-- Data -->
+            <div class="form-group">
+                <label>Data</label>
+                {{model.dataset}}
+            </div>
+
+            <!-- ContentType -->
+            <div class="form-group">
+                <label>Content-Type</label>
+                {{model.type}}
+            </div>
+
+            <!-- Context URI -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.context.$pristine
+             || userForm.context.$invalid || userForm.context.$invalid && userForm.context.$dirty}">
+                <label>Context-URI*</label>
+                <input type="text" name="context" class="form-control" ng-model="model.context" required>
+                <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">context-uri is
+                    required.</p>
+            </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
 

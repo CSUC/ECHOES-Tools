@@ -14,11 +14,19 @@
     <link rel="stylesheet" ; href="node_modules/ng-dialog/css/ngDialog.min.css">
     <link rel="stylesheet" ; href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
 
+
+
     <style>
         .btn-disabled,
         .btn-disabled[disabled] {
             cursor: default !important;
             pointer-events: none;
+        }
+        
+        @media (min-width: 768px) {
+            .chartcsuc {
+                height: 75% !important;
+            }
         }
 
     </style>
@@ -49,6 +57,8 @@
 <script type="text/javascript" src="app/recollect/recollect.controller.js"></script>
 <script type="text/javascript" src="app/recollect/recollect.controller.detail.js"></script>
 <script type="text/javascript" src="app/validation/validation.controller.js"></script>
+<script type="text/javascript" src="app/loader/loader.controller.js"></script>
+<script type="text/javascript" src="app/loader/loader.controller.detail.js"></script>
 <script type="text/javascript" src="app/ping/ping.controller.js"></script>
 <script type="text/javascript" src="app/callback/callback.controller.js"></script>
 <script type="text/javascript" src="app/auth/auth.service.js"></script>

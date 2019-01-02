@@ -11,7 +11,7 @@ import org.csuc.analyse.core.strategy.sax.Sax;
 import org.csuc.analyse.core.strategy.xslt.Xslt;
 import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
-import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.AnalyseErrorDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.echoes.gui.consumer.analyse.utils.Time;
@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
     private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
 
     private AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
-    private ParserErrorDAO parserErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
+    private AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
 
     /**
      * @param endpointName
@@ -157,7 +156,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
             analyse = analyseDAO.getById(map.get("_id").toString());
             analyse.setStatus(Status.END);
-            analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
             analyseDAO.insert(analyse);
 
@@ -169,7 +168,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
             if (Objects.nonNull(analyse)) {
                 analyse.setStatus(Status.ERROR);
-                analyse.setDuration(Time.duration(LocalDateTime.parse(analyse.getTimestamp()), DateTimeFormatter.ISO_TIME));
+                analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
                 AnalyseError analyseError = new AnalyseError();
 
@@ -177,7 +176,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
                 analyseError.setAnalyse(analyse);
 
                 analyseDAO.save(analyse);
-                parserErrorDAO.save(analyseError);
+                analyseErrorDAO.save(analyseError);
             }
 
             try {

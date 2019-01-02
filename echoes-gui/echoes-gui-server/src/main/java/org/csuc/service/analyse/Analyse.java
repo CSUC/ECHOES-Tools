@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
-import org.csuc.dao.ParserErrorDAO;
+import org.csuc.dao.AnalyseErrorDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.entities.AnalyseError;
@@ -28,6 +28,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -234,6 +235,8 @@ public class Analyse {
 
             logger.debug(writeResult);
 
+            Files.deleteIfExists(Paths.get(applicationConfig.getParserFolder(id)));
+
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             logger.error(e);
@@ -325,8 +328,9 @@ public class Analyse {
         }
 
         try {
-            ParserErrorDAO parserErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
-            AnalyseError parser = parserErrorDAO.getByReference(id);
+            AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
+
+            AnalyseError parser = analyseErrorDAO.getByReference(id);
 
             if(Objects.isNull(parser))
                 return Response.status(Response.Status.BAD_REQUEST).build();

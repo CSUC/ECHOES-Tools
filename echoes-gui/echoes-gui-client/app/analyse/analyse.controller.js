@@ -23,6 +23,8 @@
         vm.page = $stateParams.page;
         vm.count = $stateParams.count;
 
+
+
         if (authService.getCachedProfile()) {
             vm.profile = authService.getCachedProfile();
             run(vm.page, vm.count);
@@ -55,7 +57,7 @@
                     vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
-                $state.go("404");
+                //$state.go("404");
             });
 
             restApi.getAnalyseStatusAggregation({
@@ -64,7 +66,7 @@
                 vm.chart = echoesChart.getAggregationDoughnut(_data.data)
             }).catch(function (_data) {
                 console.log(_data)
-                $state.go("404");
+                //$state.go("404");
             })
         }
 
@@ -86,7 +88,7 @@
                         return d.data._embedded;
                     }).catch(function (_data) {
                         $log.info(_data);
-                        $state.go("404");
+                        //$state.go("404");
                     });
                 }
             });
@@ -106,7 +108,7 @@
                 $state.go($state.current, {}, {reload: true});
             }).catch(function (_data) {
                 $log.info(_data);
-                $state.go("404");
+                //$state.go("404");
             });
         }
 
@@ -152,7 +154,7 @@
                                     $state.go($state.current, {}, {reload: true});
                                 }).catch(function (_data) {
                                     $log.info(_data);
-                                    $state.go("404");
+                                    //$state.go("404");
                                 });
                             }
                         };

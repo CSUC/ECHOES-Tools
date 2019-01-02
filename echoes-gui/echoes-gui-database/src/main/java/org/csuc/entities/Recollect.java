@@ -2,6 +2,7 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.csuc.utils.Status;
 import org.mongodb.morphia.annotations.*;
 
@@ -22,7 +23,7 @@ public class Recollect {
     private String _id;
 
     @Property("timestamp")
-    private String timestamp = LocalDateTime.now().toString();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Property("host")
     private String host;
@@ -57,6 +58,12 @@ public class Recollect {
     @Property("duration")
     private String duration;
 
+    @Property("size")
+    private int size;
+
+    @Property("download")
+    private int download;
+
     @Embedded("properties")
     private Map<String, String> properties;
 
@@ -79,11 +86,11 @@ public class Recollect {
         this._id = _id;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -199,9 +206,30 @@ public class Recollect {
         this.schema = schema;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getDownload() {
+        return download;
+    }
+
+    public void setDownload(int download) {
+        this.download = download;
+    }
+
     @Override
     public String toString() {
-        JsonAdapter<Recollect> jsonAdapter = new Moshi.Builder().build().adapter(Recollect.class);
+        JsonAdapter<Recollect> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(Recollect.class);
+
         return jsonAdapter.toJson(this);
     }
 }

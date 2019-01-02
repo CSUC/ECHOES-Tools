@@ -2,6 +2,7 @@ package org.recollect.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.deserialize.JaxbUnmarshal;
 import org.junit.Before;
 import org.junit.Test;
 import org.openarchives.oai._2.IdentifyType;
@@ -13,6 +14,8 @@ import org.recollect.core.client.HttpOAIClient;
 import org.recollect.core.client.OAIClient;
 import org.recollect.core.parameters.ListRecordsParameters;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -87,7 +90,12 @@ public class RecollectTest {
     }
 
     @Test
-    public void listSets() {
+    public void listSets() throws MalformedURLException {
+        String url = "https://webservices.picturae.com/a2a/b3d793d4-f737-11e5-903e-60f81db16928?verb=ListRecords&metadataPrefix=oai_a2a&set=t11_a";
+        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(new URL(url), new Class[]{OAIPMHtype.class});
+        OAIPMHtype oaipmHtype = (OAIPMHtype) jaxbUnmarshal.getObject();
+
+        System.out.print(oaipmHtype.getListRecords().getResumptionToken().getCompleteListSize().intValueExact());
     }
 
 }

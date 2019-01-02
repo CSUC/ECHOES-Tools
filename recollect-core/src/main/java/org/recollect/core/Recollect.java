@@ -3,12 +3,10 @@
  */
 package org.recollect.core;
 
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import org.recollect.core.client.OAIClient;
 import org.recollect.core.util.ItemIterator;
@@ -157,6 +155,33 @@ public class Recollect {
     public boolean isOAI() throws MalformedURLException {
         jaxbUnmarshal = new JaxbUnmarshal(new URL(client.getURL()), new Class[]{OAIPMHtype.class});
         return jaxbUnmarshal.isValidating();
+    }
+
+    public boolean isOAI(String url) throws MalformedURLException {
+        jaxbUnmarshal = new JaxbUnmarshal(new URL(url), new Class[]{OAIPMHtype.class});
+        return jaxbUnmarshal.isValidating();
+    }
+
+    public int size() throws MalformedURLException {
+        if(isOAI()){
+            return Optional.ofNullable(((OAIPMHtype) jaxbUnmarshal.getObject()).getListRecords())
+                    .map(ListRecordsType::getResumptionToken)
+                    .map(ResumptionTokenType::getCompleteListSize)
+                    .map(BigInteger::intValueExact)
+                    .orElse(0);
+        }
+        return 0;
+    }
+
+    public int size(String url) throws MalformedURLException {
+        if(isOAI(url)){
+            return Optional.ofNullable(((OAIPMHtype) jaxbUnmarshal.getObject()).getListRecords())
+                    .map(ListRecordsType::getResumptionToken)
+                    .map(ResumptionTokenType::getCompleteListSize)
+                    .map(BigInteger::intValueExact)
+                    .orElse(0);
+        }
+        return 0;
     }
 
     public List<String> gethandleEventErrors(){

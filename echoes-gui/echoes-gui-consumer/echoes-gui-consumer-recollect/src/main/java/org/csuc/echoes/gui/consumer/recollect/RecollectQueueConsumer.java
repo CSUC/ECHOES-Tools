@@ -29,10 +29,8 @@ import org.recollect.core.client.OAIClient;
 import org.recollect.core.download.Download;
 import org.recollect.core.download.FactoryDownload;
 import org.recollect.core.parameters.ListRecordsParameters;
-import org.recollect.core.util.Garbage;
-import org.recollect.core.util.Granularity;
-import org.recollect.core.util.TimeUtils;
-import org.recollect.core.util.UTCDateProvider;
+import org.recollect.core.parameters.Parameters;
+import org.recollect.core.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -128,8 +126,8 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
                 listRecordsParameters.withSetSpec(recollect.getSet());
 
-//                if (Objects.nonNull(recollect.getResumptionToken()))
-//                    listRecordsParameters.withgetResumptionToken(recollect.getResumptionToken());
+                recollect.setSize(recollectOAI.size(Parameters.parameters().withVerb(Verb.Type.ListRecords).include(listRecordsParameters).toUrl(oaiClient.getURL())));
+                recollectDAO.insert(recollect);
 
                 if (Objects.nonNull(recollect.getFrom())) {
                     UTCDateProvider dateProvider = new UTCDateProvider();
@@ -173,16 +171,19 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     appendError(recollect, e.toString());
                                 },
                                 () -> {
-                                    recollect = recollectDAO.getById(map.get("_id").toString());
-                                    recollect.setStatus(Status.END);
-                                    recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+                                    //recollect = recollectDAO.getById(map.get("_id").toString());
 
-                                    RecollectLink recollectLink = new RecollectLink();
-                                    recollectLink.setStatusLink(StatusLink.NULL);
-                                    recollect.setLink(recollectLink);
+                                    if(!recollect.getStatus().equals(Status.ERROR)){
+                                        recollect.setStatus(Status.END);
+                                        recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
-                                    recollectDAO.getDatastore().save(recollectLink);
-                                    recollectDAO.insert(recollect);
+                                        RecollectLink recollectLink = new RecollectLink();
+                                        recollectLink.setStatusLink(StatusLink.NULL);
+                                        recollect.setLink(recollectLink);
+
+                                        recollectDAO.getDatastore().save(recollectLink);
+                                        recollectDAO.insert(recollect);
+                                    }
 
                                     logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
                                 }
@@ -272,7 +273,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
     private void appendError(org.csuc.entities.Recollect recollect, String e) {
         if (Objects.nonNull(recollect)) {
             recollect.setStatus(Status.ERROR);
-            recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
+            recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
             RecollectError recollectError = new RecollectError();
 
