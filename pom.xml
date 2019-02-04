@@ -215,7 +215,7 @@
 		<saxon.he.version>9.9.0-1</saxon.he.version>
 		<commons.lang3.version>3.8.1</commons.lang3.version>
 		<commons.io.version>2.6</commons.io.version>
-		<jackson.core.dataformat.xml.version>2.9.7</jackson.core.dataformat.xml.version>
+		<jackson.core.dataformat.xml.version>2.9.8</jackson.core.dataformat.xml.version>
 		<jackson.core.annotations.version>2.9.7</jackson.core.annotations.version>
 		<jackson.core.version>2.9.7</jackson.core.version>
 		<jackson.core.databind.version>2.9.7</jackson.core.databind.version>
