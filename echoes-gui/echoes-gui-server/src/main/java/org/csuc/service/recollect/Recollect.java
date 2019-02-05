@@ -9,7 +9,7 @@ import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
@@ -44,7 +44,7 @@ public class Recollect {
     private Application applicationConfig;
 
     @Inject
-    private RabbitMQConfig rabbitMQConfig;
+    private Queues rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -205,7 +205,7 @@ public class Recollect {
             message.put("properties", recollect.getProperties());
 
 
-            new Producer(rabbitMQConfig.getQueues().getRecollect(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getRecollect()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

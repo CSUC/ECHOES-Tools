@@ -1,9 +1,9 @@
 package org.csuc;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -25,18 +25,17 @@ public abstract class EndPoint{
 
     /**
      *
-     * @param endpointName
      * @throws IOException
      * @throws TimeoutException
      */
-    public EndPoint(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        this.endPointName = endpointName;
+    public EndPoint(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        this.endPointName = typesafeRabbitMQ.getString("endpoint");
         factory = new ConnectionFactory();
 
-        factory.setHost(typesafeRabbitMQ.getHost());
-        factory.setPort(typesafeRabbitMQ.getPort());
-        factory.setUsername(typesafeRabbitMQ.getUsername());
-        factory.setPassword(typesafeRabbitMQ.getPassword());
+        factory.setHost(typesafeRabbitMQ.getString("host"));
+        factory.setPort(typesafeRabbitMQ.getInt("port"));
+        factory.setUsername(typesafeRabbitMQ.getString("username"));
+        factory.setPassword(typesafeRabbitMQ.getString("password"));
         factory.setConnectionTimeout(0);
         factory.setRequestedHeartbeat(0);
         // Configure automatic reconnections
@@ -60,7 +59,11 @@ public abstract class EndPoint{
         channel = connection.createChannel();
 
         channel.basicRecover();
-        channel.queueDeclare(endpointName, false, false, false, null);
+        channel.queueDeclare(endPointName,
+                typesafeRabbitMQ.getBoolean("durable"),
+                typesafeRabbitMQ.getBoolean("exclusive"),
+                typesafeRabbitMQ.getBoolean("autoDelete"),
+                typesafeRabbitMQ.getIsNull("arguments") ? null : typesafeRabbitMQ.getObject("arguments").unwrapped());
 
     }
 

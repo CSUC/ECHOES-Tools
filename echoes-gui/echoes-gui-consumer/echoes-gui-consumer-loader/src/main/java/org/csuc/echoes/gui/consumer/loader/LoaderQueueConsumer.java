@@ -1,6 +1,8 @@
 package org.csuc.echoes.gui.consumer.loader;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,7 +22,6 @@ import org.csuc.echoes.gui.consumer.loader.utils.Time;
 import org.csuc.entities.Loader;
 import org.csuc.entities.LoaderDetails;
 import org.csuc.entities.Recollect;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
@@ -57,13 +58,12 @@ public class LoaderQueueConsumer extends EndPoint implements Runnable, Consumer 
     private Loader loader = null;
 
     /**
-     * @param endpointName
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public LoaderQueueConsumer(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        super(endpointName, typesafeRabbitMQ);
+    public LoaderQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        super(typesafeRabbitMQ);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class LoaderQueueConsumer extends EndPoint implements Runnable, Consumer 
                             HttpEntity resEntity = response.getEntity();
 
                             if (resEntity != null) {
-                                LoaderDetails loaderDetails = new LoaderDetails();
+                                LoaderDetails loaderDetails = new LoaderDetails(FilenameUtils.getBaseName(f.getFileName().toString()));
                                 loaderDetails.setLoader(loader);
                                 loaderDetails.setStatus(response.getStatusLine().getStatusCode());
                                 loaderDetails.setMessage(EntityUtils.toString(resEntity));
@@ -197,7 +197,7 @@ public class LoaderQueueConsumer extends EndPoint implements Runnable, Consumer 
         try {
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
-            channel.basicQos(1, false); // Per consumer limit
+            channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
             //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {

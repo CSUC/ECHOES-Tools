@@ -7,11 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
 import org.csuc.dao.LoaderDAO;
-import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.LoaderDAOImpl;
-import org.csuc.dao.impl.RecollectDAOImpl;
-import org.csuc.entities.Recollect;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
@@ -48,7 +45,7 @@ public class Loader {
     private Application applicationConfig;
 
     @Inject
-    private RabbitMQConfig rabbitMQConfig;
+    private Queues rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -181,7 +178,7 @@ public class Loader {
             message.put("contextUri", loader.getContextUri());
             message.put("uuid", loader.getUuid());
 
-            new Producer(rabbitMQConfig.getQueues().getLoader(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getLoader()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

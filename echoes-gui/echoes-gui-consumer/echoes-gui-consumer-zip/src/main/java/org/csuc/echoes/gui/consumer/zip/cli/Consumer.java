@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.echoes.gui.consumer.zip.ZipQueueConsumer;
 import org.csuc.echoes.gui.consumer.zip.ZipScheduled;
 import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -36,12 +36,12 @@ public class Consumer {
         }
 
         URL applicationResource = Consumer.class.getClassLoader().getResource("rabbitmq.conf");
-        RabbitMQConfig rabbitMQConfig = new ProducerAndConsumerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getRabbitMQConfig();
+        Queues rabbitMQConfig = new ProducerAndConsumerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getRabbitMQConfig();
 
         logger.info(rabbitMQConfig);
 
         try {
-            ZipQueueConsumer zipQueueConsumer = new ZipQueueConsumer(rabbitMQConfig.getQueues().getZip(), rabbitMQConfig);
+            ZipQueueConsumer zipQueueConsumer = new ZipQueueConsumer(rabbitMQConfig.getZip());
             ZipScheduled zipScheduled = new ZipScheduled();
 
             Stream.of(zipQueueConsumer, zipScheduled).forEach(consumer-> new Thread(consumer).start());

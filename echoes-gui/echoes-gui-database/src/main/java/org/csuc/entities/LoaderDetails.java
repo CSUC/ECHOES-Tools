@@ -34,6 +34,10 @@ public class LoaderDetails {
         this._id = UUID.randomUUID().toString();
     }
 
+    public LoaderDetails(String uuid) {
+        this._id = uuid;
+    }
+
     public String get_id() {
         return _id;
     }

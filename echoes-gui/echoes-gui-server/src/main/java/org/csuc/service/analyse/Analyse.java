@@ -12,7 +12,7 @@ import org.csuc.dao.AnalyseErrorDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.entities.AnalyseError;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
@@ -50,7 +50,7 @@ public class Analyse {
     private Application applicationConfig;
 
     @Inject
-    private RabbitMQConfig rabbitMQConfig;
+    private Queues rabbitMQConfig;
 
     @Context
     private UriInfo uriInfo;
@@ -188,7 +188,7 @@ public class Analyse {
             message.put("format", ParserFormat.convert(analyseRequest.getFormat()));
             message.put("value", analyse.getValue());
 
-            new Producer(rabbitMQConfig.getQueues().getAnalyse(), rabbitMQConfig).sendMessage(message);
+            new Producer(rabbitMQConfig.getAnalyse()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

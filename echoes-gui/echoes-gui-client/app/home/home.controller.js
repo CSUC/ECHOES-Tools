@@ -60,7 +60,6 @@
             var result = [];
             var recollect = [];
             var analyse = [];
-            var labels = [];
 
             restApi.getDashboardRecollect({
                 user: vm.profile.sub
@@ -78,14 +77,17 @@
             }).then(function (_data) {
                 angular.forEach(_data.data, function(value, key){
                     analyse.push(value)
-                    labels.push(key);
                 });
                 result.push(analyse);
             }).catch(function (_data) {
                 $log.error(_data);
             });
 
-            $scope.labels = labels;
+	        const currentMonthDates = new Array(moment().daysInMonth()).fill(null).map((x, i) => moment().startOf('month').add(i, 'days').format("DD"));
+
+            vm.activity = moment().locale("en").format('MMMM') + " Activity"
+
+            $scope.labels = currentMonthDates;
             $scope.series = ['Analyse', 'Recollect'];
             $scope.data = [
                 analyse,
@@ -96,7 +98,14 @@
 
             $scope.options = {
                 legend: {
-                    display: true,
+                    display: true
+                },
+                animation: {
+                    easing: "easeInExpo"
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
                 },
                 showLines:true,
                 responsive: true,
@@ -104,14 +113,17 @@
                     yAxes: [
                         {
                             id: 'y-axis-1',
-                            type: 'linear',
+			                type: 'linear',
                             display: true,
                             position: 'left',
                             gridLines: false,
                             ticks: {
                                 suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
                                 // OR //
-                                beginAtZero: true   // minimum value will be 0.
+                                beginAtZero: true,   // minimum value will be 0.
+                                callback: function(val) {
+                                    return Number.isInteger(val) ? val : null;
+                                }
                             }
                         }
                     ],

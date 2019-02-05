@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.echoes.gui.consumer.loader.LoaderQueueConsumer;
 import org.csuc.typesafe.consumer.ProducerAndConsumerConfig;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
+import org.csuc.typesafe.consumer.Queues;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -35,12 +35,12 @@ public class Consumer {
         }
 
         URL applicationResource = Consumer.class.getClassLoader().getResource("rabbitmq.conf");
-        RabbitMQConfig rabbitMQConfig = new ProducerAndConsumerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getRabbitMQConfig();
+        Queues rabbitMQConfig = new ProducerAndConsumerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getRabbitMQConfig();
 
         logger.info(rabbitMQConfig);
 
         try {
-            LoaderQueueConsumer analyseQueueConsumer = new LoaderQueueConsumer(rabbitMQConfig.getQueues().getLoader(), rabbitMQConfig);
+            LoaderQueueConsumer analyseQueueConsumer = new LoaderQueueConsumer(rabbitMQConfig.getLoader());
             Stream.of(analyseQueueConsumer).forEach(consumer-> new Thread(consumer).start());
         } catch (IOException | TimeoutException e) {
             logger.error(e);

@@ -1,6 +1,7 @@
 package org.csuc.echoes.gui.consumer.analyse;
 
 import com.rabbitmq.client.*;
+import com.typesafe.config.Config;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,6 @@ import org.csuc.dao.impl.AnalyseErrorDAOImpl;
 import org.csuc.echoes.gui.consumer.analyse.utils.Time;
 import org.csuc.entities.Analyse;
 import org.csuc.entities.AnalyseError;
-import org.csuc.typesafe.consumer.RabbitMQConfig;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Status;
@@ -52,13 +52,12 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
     private AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(AnalyseError.class, client.getDatastore());
 
     /**
-     * @param endpointName
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public AnalyseQueueConsumer(String endpointName, RabbitMQConfig typesafeRabbitMQ) throws IOException, TimeoutException {
-        super(endpointName, typesafeRabbitMQ);
+    public AnalyseQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+        super(typesafeRabbitMQ);
     }
 
     @Override
@@ -192,7 +191,7 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
         try {
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
-            channel.basicQos(1, false); // Per consumer limit
+            channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
             //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {

@@ -59,7 +59,7 @@ public class DashboardDAOImpl implements DashboardDAO {
         q1
                 .and(
                         q1.criteria("user").equal(user),
-                        q1.criteria("status").equal(Status.END),
+                        //q1.criteria("status").equal(Status.END),
                         q1.criteria("timestamp").greaterThanOrEq(localDate.with(firstDayOfMonth())),
                         q1.criteria("timestamp").lessThanOrEq(localDate.with(lastDayOfMonth())));
 
@@ -103,7 +103,7 @@ public class DashboardDAOImpl implements DashboardDAO {
         q1
                 .and(
                         q1.criteria("user").equal(user),
-                        q1.criteria("status").equal(Status.END),
+                        //q1.criteria("status").equal(Status.END),
                         q1.criteria("timestamp").greaterThanOrEq(localDate.with(firstDayOfMonth())),
                         q1.criteria("timestamp").lessThanOrEq(localDate.with(lastDayOfMonth())));
 

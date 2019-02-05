@@ -213,12 +213,8 @@
 
                         $scope.options = {
                             endpoints: [
-                                "http://blazegraph.pre.csuc.cat/namespace/kb/sparql",
-                                "http://blazegraph.test.csuc.cat/namespace/kb/sparql",
-                                "http://localhost:19999/bigdata/namespace/kb/sparql",
-                                "http://localhost:19999/bigdata/namespace/test/sparql",
-				"http://localhost:19999/bigdata/namespace/test2/sparql"
-			    ],
+                                "http://blazegraph.test.csuc.cat/namespace/test/sparql"
+			                ],
                             types: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
                         }
 
