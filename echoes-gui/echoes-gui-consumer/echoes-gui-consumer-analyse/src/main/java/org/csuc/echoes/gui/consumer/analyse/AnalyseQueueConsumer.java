@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -87,103 +88,106 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
-        Analyse analyse = null;
-        try {
-            Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
+        threadPool.submit(() -> {
+            Analyse analyse = null;
+            try {
+                Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
 
-            logger.info("[x] Received '{}'", map);
+                logger.info("[x] Received '{}'", map);
 
-            analyse = analyseDAO.getById(map.get("_id").toString());
-            analyse.setStatus(Status.PROGRESS);
-            analyseDAO.insert(analyse);
 
-            Parser factory = null;
+                analyse = analyseDAO.getById(map.get("_id").toString());
+                analyse.setStatus(Status.PROGRESS);
+                analyseDAO.insert(analyse);
 
-            if (map.get("type").equals(ParserType.OAI)) {
-                if (ParserMethod.DOM4J.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserOAI(new Dom4j()));
-                }
-                if (ParserMethod.SAX.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
-                }
-                if (ParserMethod.DOM.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
-                }
-                if (ParserMethod.XSLT.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
-                }
-                factory.execute(new URL(map.get("value").toString()));
-            } else if (map.get("type").equals(ParserType.URL)) {
-                if (ParserMethod.DOM4J.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserURL(new Dom4j()));
-                }
-                if (ParserMethod.SAX.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserURL(new Sax()));
-                }
-                if (ParserMethod.DOM.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserURL(new Dom()));
-                }
-                if (ParserMethod.XSLT.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
-                }
-                factory.execute(new URL(map.get("value").toString()));
-            } else if (map.get("type").equals(ParserType.FILE)) {
-                if (ParserMethod.DOM4J.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
-                }
-                if (ParserMethod.SAX.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
-                }
-                if (ParserMethod.DOM.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
-                }
-                if (ParserMethod.XSLT.equals(map.get("method"))) {
-                    factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));
-                }
-                factory.execute(map.get("value").toString());
-            }
+                Parser factory = null;
 
-            if (Objects.nonNull(factory)) {
-                if (Objects.equals(map.get("format"), ParserFormat.JSON)) {
-                    factory.JSON(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
-                } else if (Objects.equals(map.get("format"), ParserFormat.XML)) {
-                    factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.xml").toFile()));
-                } else {
-                    factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
+                if (map.get("type").equals(ParserType.OAI)) {
+                    if (ParserMethod.DOM4J.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserOAI(new Dom4j()));
+                    }
+                    if (ParserMethod.SAX.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
+                    }
+                    if (ParserMethod.DOM.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
+                    }
+                    if (ParserMethod.XSLT.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
+                    }
+                    factory.execute(new URL(map.get("value").toString()));
+                } else if (map.get("type").equals(ParserType.URL)) {
+                    if (ParserMethod.DOM4J.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserURL(new Dom4j()));
+                    }
+                    if (ParserMethod.SAX.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserURL(new Sax()));
+                    }
+                    if (ParserMethod.DOM.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserURL(new Dom()));
+                    }
+                    if (ParserMethod.XSLT.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
+                    }
+                    factory.execute(new URL(map.get("value").toString()));
+                } else if (map.get("type").equals(ParserType.FILE)) {
+                    if (ParserMethod.DOM4J.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
+                    }
+                    if (ParserMethod.SAX.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
+                    }
+                    if (ParserMethod.DOM.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
+                    }
+                    if (ParserMethod.XSLT.equals(map.get("method"))) {
+                        factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));
+                    }
+                    factory.execute(map.get("value").toString());
                 }
-            }
 
-            analyse = analyseDAO.getById(map.get("_id").toString());
-            analyse.setStatus(Status.END);
-            analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
+                if (Objects.nonNull(factory)) {
+                    if (Objects.equals(map.get("format"), ParserFormat.JSON)) {
+                        factory.JSON(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
+                    } else if (Objects.equals(map.get("format"), ParserFormat.XML)) {
+                        factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.xml").toFile()));
+                    } else {
+                        factory.XML(new FileOutputStream(Paths.get(applicationConfig.getParserFolder(File.separator + map.get("_id").toString()) + File.separator + "result.json").toFile()));
+                    }
+                }
 
-            analyseDAO.insert(analyse);
-
-            logger.info(String.format("[x] Consumed '%s\t%s'", map, analyse.getDuration()));
-
-            channel.basicAck(envelope.getDeliveryTag(), false);
-        } catch (Exception e) {
-            logger.error(e);
-
-            if (Objects.nonNull(analyse)) {
-                analyse.setStatus(Status.ERROR);
+                analyse = analyseDAO.getById(map.get("_id").toString());
+                analyse.setStatus(Status.END);
                 analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
-                AnalyseError analyseError = new AnalyseError();
+                analyseDAO.insert(analyse);
 
-                analyseError.setException(e.toString());
-                analyseError.setAnalyse(analyse);
+                logger.info(String.format("[x] Consumed '%s\t%s'", map, analyse.getDuration()));
 
-                analyseDAO.save(analyse);
-                analyseErrorDAO.save(analyseError);
-            }
-
-            try {
                 channel.basicAck(envelope.getDeliveryTag(), false);
-            } catch (IOException e1) {
+            } catch (Exception e) {
                 logger.error(e);
+
+                if (Objects.nonNull(analyse)) {
+                    analyse.setStatus(Status.ERROR);
+                    analyse.setDuration(Time.duration(analyse.getTimestamp(), DateTimeFormatter.ISO_TIME));
+
+                    AnalyseError analyseError = new AnalyseError();
+
+                    analyseError.setException(e.toString());
+                    analyseError.setAnalyse(analyse);
+
+                    analyseDAO.save(analyse);
+                    analyseErrorDAO.save(analyseError);
+                }
+
+                try {
+                    channel.basicReject(envelope.getDeliveryTag(), false);
+                } catch (IOException e1) {
+                    logger.error(e);
+                }
             }
-        }
+        });
     }
 
     @Override
@@ -192,7 +196,6 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
             // Add a recoverable listener (when broken connections are recovered).
             // Given the way the RabbitMQ factory is configured, the channel should be "recoverable".
             channel.basicQos(typesafeRabbitMQ.getInt("Qos"), false); // Per consumer limit
-            //channel.basicQos(1, true);  // Per channel limit
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
             logger.error(e);

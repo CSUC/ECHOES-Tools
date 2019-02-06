@@ -23,6 +23,7 @@ import javax.ws.rs.core.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -251,7 +252,11 @@ public class Recollect {
 
             logger.debug(writeResult);
 
-            Files.deleteIfExists(Paths.get(applicationConfig.getRecollectFolder(id)));
+            Files.walk(Paths.get(applicationConfig.getRecollectFolder(id)))
+                    .sorted(Comparator.reverseOrder())
+                    .map(java.nio.file.Path::toFile)
+                    .peek(logger::debug)
+                    .forEach(File::delete);
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

@@ -7,11 +7,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2.StatusType;
+import org.recollect.core.util.ItemIterator;
+import org.recollect.core.util.StreamUtils;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBIntrospector;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.recollect.core.util.StreamUtils.asStream;
 
@@ -22,18 +27,21 @@ public class FactoryDownload {
 
     private static Logger logger = LogManager.getLogger(FactoryDownload.class);
 
-    public static Observable<Download> createDownloadIterator(Iterator<?> iteratorTypes, SchemaType schemaType) {
+    public static Observable<Download> createDownloadIterator(ItemIterator<?> iteratorTypes, SchemaType schemaType) {
         Observable<Download> observable = Observable.create(emitter -> {
                 if (Objects.nonNull(iteratorTypes)) {
-                    asStream(iteratorTypes).parallel().forEach(record-> {
+                    StreamUtils.asStream(iteratorTypes).parallel().filter(Objects::nonNull).forEach(record->{
+//                    Stream.generate(iteratorTypes::next).parallel().forEach(record-> {
 //                    iteratorTypes.forEachRemaining(record -> {
-                        if (Objects.nonNull(record)) {
+//                        if (Objects.nonNull(record)) {
                             if(record instanceof RecordType){
                                 RecordType cast = (RecordType) record;
                                 getRecord(cast, schemaType, emitter);
                             }
-                        }
+//                        }
                     });
+                    if(!iteratorTypes.getException().isEmpty())
+                        throw new Exception(iteratorTypes.getException().stream().collect(Collectors.joining()));
                 }
                 emitter.onComplete();
         });

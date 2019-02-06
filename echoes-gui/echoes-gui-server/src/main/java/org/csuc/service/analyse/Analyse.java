@@ -29,6 +29,7 @@ import javax.ws.rs.core.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -231,11 +232,18 @@ public class Analyse {
 
         try {
             AnalyseDAO analyseDAO = new AnalyseDAOImpl(org.csuc.entities.Analyse.class, client.getDatastore());
-            WriteResult writeResult = analyseDAO.deleteById(id);
+            AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(org.csuc.entities.AnalyseError.class, client.getDatastore());
 
+            analyseErrorDAO.deleteByReference(analyseDAO.getById(id));
+
+            WriteResult writeResult = analyseDAO.deleteById(id);
             logger.debug(writeResult);
 
-            Files.deleteIfExists(Paths.get(applicationConfig.getParserFolder(id)));
+            Files.walk(Paths.get(applicationConfig.getParserFolder(id)))
+                    .sorted(Comparator.reverseOrder())
+                    .map(java.nio.file.Path::toFile)
+                    .peek(logger::debug)
+                    .forEach(File::delete);
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {

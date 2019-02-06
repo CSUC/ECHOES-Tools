@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -23,6 +24,8 @@ public abstract class EndPoint{
     protected String endPointName;
 
     protected Config typesafeRabbitMQ;
+
+    protected ExecutorService threadPool;
 
 
     /**
@@ -41,6 +44,7 @@ public abstract class EndPoint{
         factory.setPassword(typesafeRabbitMQ.getString("password"));
         factory.setConnectionTimeout(0);
         factory.setRequestedHeartbeat(0);
+        factory.setRequestedChannelMax(0);
         // Configure automatic reconnections
         factory.setAutomaticRecoveryEnabled(true);
 
@@ -49,15 +53,12 @@ public abstract class EndPoint{
 
         // Exchanges and so on should be redeclared if necessary
         factory.setTopologyRecoveryEnabled(true);
-        ExecutorService es = Executors.newFixedThreadPool(4);
-        connection = factory.newConnection(es);
 
-        connection.addShutdownListener(new ShutdownListener() {
-            @Override
-            public void shutdownCompleted(ShutdownSignalException cause) {
-                logger.error("shutdown signal received", cause);
-            }
-        });
+        threadPool = Executors.newFixedThreadPool(typesafeRabbitMQ.getInt("Qos"));
+
+        connection = factory.newConnection(threadPool);
+
+        connection.addShutdownListener(cause -> logger.error("shutdown signal received", cause));
 
         channel = connection.createChannel();
 

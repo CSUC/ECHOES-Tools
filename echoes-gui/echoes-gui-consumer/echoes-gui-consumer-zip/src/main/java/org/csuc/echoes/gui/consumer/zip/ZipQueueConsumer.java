@@ -47,7 +47,6 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
     private RecollectDAO recollectDAO = new RecollectDAOImpl(org.csuc.entities.Recollect.class, client.getDatastore());
 
     /**
-     * @param endpointName
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
@@ -83,74 +82,76 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
-        Recollect recollect = null;
-        try {
-            LocalDateTime inici = LocalDateTime.now();
-            Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
-            logger.info("[x] Received '{}'", map);
-
-            recollect = recollectDAO.getById(map.get("_id").toString());
-
-            if(Objects.nonNull(recollect)){
-                RecollectLink recollectLink = recollect.getLink();
-                recollectLink.setStatusLink(StatusLink.PROGRESS);
-
-                recollect.setLink(recollectLink);
-
-                recollectDAO.getDatastore().save(recollectLink);
-                recollectDAO.save(recollect);
-            }
-
-
-            FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip");
-
-            ZipOutputStream zipOut = new ZipOutputStream(fos);
-            File fileToZip = Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("set").toString()).toFile();
-
-            zipFolder(fileToZip, fileToZip.getName(), zipOut);
-            zipOut.close();
-            fos.close();
-
-
-            Files.move(
-                    Paths.get(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip"),
-                    Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("_id").toString() + ".zip"),
-                    StandardCopyOption.REPLACE_EXISTING);
-
-
-
-            if(Objects.nonNull(recollect)){
-                RecollectLink recollectLink = recollect.getLink();
-                recollectLink.setStatusLink(StatusLink.GENERATE);
-
-                recollect.setLink(recollectLink);
-
-                recollectDAO.getDatastore().save(recollectLink);
-                recollectDAO.save(recollect);
-            }
-
-            logger.info(String.format("[x] Consumed '%s\t%s'", map, Time.duration(inici, DateTimeFormatter.ISO_TIME)));
-
-            channel.basicAck(envelope.getDeliveryTag(), false);
-        } catch (Exception e) {
-            logger.error(e);
-
-            if(Objects.nonNull(recollect)){
-                RecollectLink recollectLink = recollect.getLink();
-                recollectLink.setStatusLink(StatusLink.NULL);
-
-                recollect.setLink(recollectLink);
-
-                recollectDAO.getDatastore().save(recollectLink);
-                recollectDAO.save(recollect);
-            }
-
+        threadPool.submit(()->{
+            Recollect recollect = null;
             try {
+                LocalDateTime inici = LocalDateTime.now();
+                Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
+                logger.info("[x] Received '{}'", map);
+
+                recollect = recollectDAO.getById(map.get("_id").toString());
+
+                if(Objects.nonNull(recollect)){
+                    RecollectLink recollectLink = recollect.getLink();
+                    recollectLink.setStatusLink(StatusLink.PROGRESS);
+
+                    recollect.setLink(recollectLink);
+
+                    recollectDAO.getDatastore().save(recollectLink);
+                    recollectDAO.save(recollect);
+                }
+
+
+                FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip");
+
+                ZipOutputStream zipOut = new ZipOutputStream(fos);
+                File fileToZip = Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("set").toString()).toFile();
+
+                zipFolder(fileToZip, fileToZip.getName(), zipOut);
+                zipOut.close();
+                fos.close();
+
+
+                Files.move(
+                        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip"),
+                        Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("_id").toString() + ".zip"),
+                        StandardCopyOption.REPLACE_EXISTING);
+
+
+
+                if(Objects.nonNull(recollect)){
+                    RecollectLink recollectLink = recollect.getLink();
+                    recollectLink.setStatusLink(StatusLink.GENERATE);
+
+                    recollect.setLink(recollectLink);
+
+                    recollectDAO.getDatastore().save(recollectLink);
+                    recollectDAO.save(recollect);
+                }
+
+                logger.info(String.format("[x] Consumed '%s\t%s'", map, Time.duration(inici, DateTimeFormatter.ISO_TIME)));
+
                 channel.basicAck(envelope.getDeliveryTag(), false);
-            } catch (IOException e1) {
+            } catch (Exception e) {
                 logger.error(e);
+
+                if(Objects.nonNull(recollect)){
+                    RecollectLink recollectLink = recollect.getLink();
+                    recollectLink.setStatusLink(StatusLink.NULL);
+
+                    recollect.setLink(recollectLink);
+
+                    recollectDAO.getDatastore().save(recollectLink);
+                    recollectDAO.save(recollect);
+                }
+
+                try {
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                } catch (IOException e1) {
+                    logger.error(e);
+                }
             }
-        }
+        });
     }
 
 

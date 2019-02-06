@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
 import org.csuc.dao.RecollectDAO;
 import org.csuc.dao.impl.RecollectDAOImpl;
+import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.echoes.gui.consumer.recollect.utils.Time;
 import org.csuc.entities.RecollectError;
 import org.csuc.entities.RecollectLink;
@@ -20,7 +21,9 @@ import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
 import org.csuc.utils.Status;
 import org.csuc.utils.recollect.StatusLink;
+import org.openarchives.oai._2.ListRecordsType;
 import org.openarchives.oai._2.OAIPMHtype;
+import org.openarchives.oai._2.ResumptionTokenType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 import org.recollect.core.Recollect;
 import org.recollect.core.client.HttpOAIClient;
@@ -31,8 +34,11 @@ import org.recollect.core.parameters.ListRecordsParameters;
 import org.recollect.core.parameters.Parameters;
 import org.recollect.core.util.*;
 
+import javax.xml.bind.JAXBIntrospector;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,6 +48,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -98,79 +105,79 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
+        threadPool.submit(()->{
+            try {
+                Instant inici = Instant.now();
 
-        try {
-            Instant inici = Instant.now();
+                Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
 
-            Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
+                logger.info("[x] Received '{}'", map);
 
-            logger.info("[x] Received '{}'", map);
+                recollect = recollectDAO.getById(map.get("_id").toString());
 
-            recollect = recollectDAO.getById(map.get("_id").toString());
+                logger.info(recollect);
 
-            logger.info(recollect);
-
-            recollect.setStatus(Status.PROGRESS);
-            recollectDAO.insert(recollect);
-
-            //Recollect
-            AtomicInteger batch = new AtomicInteger(0);
-            OAIClient oaiClient = new HttpOAIClient(recollect.getHost());
-            Recollect recollectOAI = new Recollect(oaiClient);
-
-            if (recollectOAI.isOAI()) {
-                ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
-                listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
-                listRecordsParameters.withSetSpec(recollect.getSet());
-
-                recollect.setSize(recollectOAI.size(Parameters.parameters().withVerb(Verb.Type.ListRecords).include(listRecordsParameters).toUrl(oaiClient.getURL())));
+                recollect.setStatus(Status.PROGRESS);
                 recollectDAO.insert(recollect);
 
-                if (Objects.nonNull(recollect.getFrom())) {
-                    UTCDateProvider dateProvider = new UTCDateProvider();
+                //Recollect
+                AtomicInteger batch = new AtomicInteger(0);
+                OAIClient oaiClient = new HttpOAIClient(recollect.getHost());
+                Recollect recollectOAI = new Recollect(oaiClient);
+
+                if (recollectOAI.isOAI()) {
+                    ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
+                    listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
+                    listRecordsParameters.withSetSpec(recollect.getSet());
+
+                    recollect.setSize(size(Parameters.parameters().withVerb(Verb.Type.ListRecords).include(listRecordsParameters).toUrl(oaiClient.getURL())));
+                    recollectDAO.insert(recollect);
+
+                    if (Objects.nonNull(recollect.getFrom())) {
+                        UTCDateProvider dateProvider = new UTCDateProvider();
+                        if (Objects.nonNull(recollect.getGranularity()))
+                            listRecordsParameters
+                                    .withFrom(dateProvider.parse(recollect.getFrom(), Granularity.fromRepresentation(recollect.getGranularity())));
+                        else
+                            listRecordsParameters.withFrom(dateProvider.parse(recollect.getFrom()));
+                    }
                     if (Objects.nonNull(recollect.getGranularity()))
-                        listRecordsParameters
-                                .withFrom(dateProvider.parse(recollect.getFrom(), Granularity.fromRepresentation(recollect.getGranularity())));
-                    else
-                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getFrom()));
-                }
-                if (Objects.nonNull(recollect.getGranularity()))
-                    listRecordsParameters.withGranularity(recollect.getGranularity());
-                if (Objects.nonNull(recollect.getUntil())) {
-                    UTCDateProvider dateProvider = new UTCDateProvider();
-                    if (Objects.nonNull(recollect.getGranularity()))
-                        listRecordsParameters
-                                .withUntil(dateProvider.parse(recollect.getUntil(), Granularity.fromRepresentation(recollect.getGranularity())));
-                    else
-                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getUntil()));
-                }
+                        listRecordsParameters.withGranularity(recollect.getGranularity());
+                    if (Objects.nonNull(recollect.getUntil())) {
+                        UTCDateProvider dateProvider = new UTCDateProvider();
+                        if (Objects.nonNull(recollect.getGranularity()))
+                            listRecordsParameters
+                                    .withUntil(dateProvider.parse(recollect.getUntil(), Granularity.fromRepresentation(recollect.getGranularity())));
+                        else
+                            listRecordsParameters.withFrom(dateProvider.parse(recollect.getUntil()));
+                    }
 
-                Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
+                    Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class};
 
-                Observable<Download> observable =
-                        FactoryDownload.createDownloadIterator(
-                                recollectOAI.listRecords(listRecordsParameters, classType), SchemaType.convert(recollect.getSchema())
-                        );
-                Path path = Files.createDirectories(Paths.get(applicationConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
+                    Observable<Download> observable =
+                            FactoryDownload.createDownloadIterator(
+                                    recollectOAI.listRecords(listRecordsParameters, classType), SchemaType.convert(recollect.getSchema())
+                            );
+                    Path path = Files.createDirectories(Paths.get(applicationConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
 
-                logger.info(path);
+                    logger.info(path);
 
-                observable
-                        .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-                        .subscribe(
-                                (Download l) -> {
-                                    if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(path, recollect.getProperties(), FormatType.convert(recollect.getFormat()));
-                                },
-                                e -> {
-                                    logger.error("Error: " + e);
-                                    appendError(recollect, e.toString());
-                                },
-                                () -> {
-                                    //recollect = recollectDAO.getById(map.get("_id").toString());
+                    observable
+                            .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                            .subscribe(
+                                    (Download l) -> {
+                                        if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
+                                        logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                                        l.execute(path, recollect.getProperties(), FormatType.convert(recollect.getFormat()));
+                                    },
+                                    e -> {
+                                        logger.error("Error: " + e);
+                                        appendError(recollect, e.toString());
+                                    },
+                                    () -> {
+                                        //recollect = recollectDAO.getById(map.get("_id").toString());
 
-                                    if(!recollect.getStatus().equals(Status.ERROR)){
+                                        //if(!recollect.getStatus().equals(Status.ERROR)){
                                         recollect.setStatus(Status.END);
                                         recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
@@ -178,98 +185,45 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                         recollectLink.setStatusLink(StatusLink.NULL);
                                         recollect.setLink(recollectLink);
 
+                                        recollect.setDownload(
+                                                Math.toIntExact(Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
+                                                        .filter(Files::isRegularFile)
+                                                        .filter(f-> f.toString().endsWith(String.format(".%s", FormatType.convert(recollect.getFormat()).extensions().stream().findFirst().get())))
+                                                        .count())
+                                        );
+
                                         recollectDAO.getDatastore().save(recollectLink);
                                         recollectDAO.insert(recollect);
+                                        // }
+
+                                        logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
                                     }
+                            );
+                    Thread.sleep(3000);
+                } else {
+                    logger.error(recollectOAI.gethandleEventErrors());
+                    appendError(recollect, recollectOAI.gethandleEventErrors().toString());
+                }
 
-                                    logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
-                                }
-                        );
-//                ListRecordsParameters listRecordsParameters = new ListRecordsParameters();
-//                listRecordsParameters.withMetadataPrefix(recollect.getMetadataPrefix());
-//                listRecordsParameters.withSetSpec(recollect.getSet());
-//
-//                if (Objects.nonNull(recollect.getFrom())) {
-//                    UTCDateProvider dateProvider = new UTCDateProvider();
-//                    if (Objects.nonNull(recollect.getGranularity()))
-//                        listRecordsParameters
-//                                .withFrom(dateProvider.parse(recollect.getFrom(), Granularity.fromRepresentation(recollect.getGranularity())));
-//                    else
-//                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getFrom()));
-//                }
-//                if (Objects.nonNull(recollect.getGranularity()))
-//                    listRecordsParameters.withGranularity(recollect.getGranularity());
-//
-//                if (Objects.nonNull(recollect.getUntil())) {
-//                    UTCDateProvider dateProvider = new UTCDateProvider();
-//                    if (Objects.nonNull(recollect.getGranularity()))
-//                        listRecordsParameters
-//                                .withUntil(dateProvider.parse(recollect.getUntil(), Granularity.fromRepresentation(recollect.getGranularity())));
-//                    else
-//                        listRecordsParameters.withFrom(dateProvider.parse(recollect.getUntil()));
-//                }
-//
-//                Iterator iteratorRecordType = recollectOAI.listRecords(listRecordsParameters, new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class});
-//
-//                Observable<Download> observable = FactoryDownload.createDownloadIterator(iteratorRecordType, null);
-//
-//                Path path = Files.createDirectories(Paths.get(applicationConfig.getRecollectFolder(File.separator + map.get("_id").toString()) + File.separator + listRecordsParameters.getSetSpec()));
-//
-//                org.csuc.entities.Recollect finalRecollect = recollect;
-//                org.csuc.entities.Recollect finalRecollect1 = recollect;
-//
-//                observable
-//                        .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                        .groupBy(i -> batch.getAndIncrement() % 4)
-//                        .flatMap(g -> g.observeOn(Schedulers.io()))
-//                        .observeOn(Schedulers.io())
-//                        .subscribe(
-//                                (Download l) -> {
-//                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-//                                    l.execute(path, finalRecollect.getProperties());
-//                                },
-//                                e -> {
-//                                    appendError(finalRecollect1, e.toString());
-//                                    logger.error("Error: " + e);
-//                                },
-//                                () -> {
-//                                    recollect = recollectDAO.getById(map.get("_id").toString());
-//                                    recollect.setStatus(Status.END);
-//                                    recollect.setDuration(Time.duration(LocalDateTime.parse(recollect.getTimestamp()), DateTimeFormatter.ISO_TIME));
-//
-//                                    RecollectLink recollectLink = new RecollectLink();
-//                                    recollectLink.setStatusLink(StatusLink.NULL);
-//                                    recollect.setLink(recollectLink);
-//
-//                                    recollectDAO.getDatastore().save(recollectLink);
-//                                    recollectDAO.insert(recollect);
-//
-//                                    logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
-//                                }
-//                        );
-                Thread.sleep(3000);
-            } else {
-                logger.error(recollectOAI.gethandleEventErrors());
-                appendError(recollect, recollectOAI.gethandleEventErrors().toString());
-            }
+                logger.info(String.format("[x] Consumed '%s\t%s'", map, recollect.getDuration()));
 
-            logger.info(String.format("[x] Consumed '%s\t%s'", map, recollect.getDuration()));
-
-            channel.basicAck(envelope.getDeliveryTag(), false);
-        } catch (Exception e) {
-            logger.error(e);
-            appendError(recollect, e.toString());
-            try {
                 channel.basicAck(envelope.getDeliveryTag(), false);
-            } catch (IOException e1) {
+            } catch (Exception e) {
                 logger.error(e);
+                try {
+                    appendError(recollect, e.toString());
+
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                } catch (IOException e1) {
+                    logger.error(e);
+                }
             }
-        }
+        });
     }
 
-    private void appendError(org.csuc.entities.Recollect recollect, String e) {
+    private void appendError(org.csuc.entities.Recollect recollect, String e) throws IOException {
         if (Objects.nonNull(recollect)) {
-            recollect.setStatus(Status.ERROR);
+            recollect.setStatus(Status.END);
             recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
             RecollectError recollectError = new RecollectError();
@@ -277,6 +231,17 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
             recollectError.setException(e);
 
             recollect.setError(recollectError);
+
+            RecollectLink recollectLink = new RecollectLink();
+            recollectLink.setStatusLink(StatusLink.NULL);
+            recollect.setLink(recollectLink);
+
+            recollect.setDownload(
+                    Math.toIntExact(Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
+                            .filter(Files::isRegularFile)
+                            .filter(f-> f.toString().endsWith(String.format(".%s", FormatType.convert(recollect.getFormat()).extensions().stream().findFirst().get())))
+                            .count())
+            );
 
             recollectDAO.getDatastore().save(recollectError);
             recollectDAO.save(recollect);
@@ -293,6 +258,21 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
             channel.basicConsume(endPointName, false, this);
         } catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
             logger.error(e);
+        }
+    }
+
+    private int size(String value){
+        try {
+            OAIPMHtype oaipmHtype  = (OAIPMHtype) JAXBIntrospector.getValue(new JaxbUnmarshal(new URL(value), new Class[]{OAIPMHtype.class}).getObject());
+
+            return
+                    Optional.ofNullable(oaipmHtype.getListRecords())
+                            .map(ListRecordsType::getResumptionToken)
+                            .map(ResumptionTokenType::getCompleteListSize)
+                            .map(BigInteger::intValueExact)
+                            .orElse(0);
+        } catch (MalformedURLException e) {
+            return 0;
         }
     }
 }

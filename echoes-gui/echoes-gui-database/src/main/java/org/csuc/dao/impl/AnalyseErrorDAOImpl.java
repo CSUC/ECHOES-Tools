@@ -1,5 +1,6 @@
 package org.csuc.dao.impl;
 
+import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -8,7 +9,8 @@ import org.csuc.entities.Analyse;
 import org.csuc.entities.AnalyseError;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
-import org.mongodb.morphia.query.Query;
+
+import java.util.Objects;
 
 /**
  * @author amartinez
@@ -30,12 +32,39 @@ public class AnalyseErrorDAOImpl extends BasicDAO<AnalyseError, ObjectId> implem
     @Override
     public AnalyseError getByReference(String objectId) throws Exception {
         logger.debug("[{}]\t[getByReference] - objectId: {}", AnalyseErrorDAOImpl.class.getSimpleName(), objectId);
-
         Analyse analyse = getDatastore().createQuery(Analyse.class).field("_id").equal(objectId).get();
-        Query<AnalyseError> query = createQuery();
-        query.criteria("analyse-id").equals(getDatastore().getKey(analyse));
+        return find(createQuery().field("analyse-id").equal(analyse)).get();
+    }
 
-        return find(query).get();
+    @Override
+    public WriteResult deleteByReference(String objectId) throws Exception {
+        if(Objects.isNull(objectId))    throw new Exception();
+        Analyse analyse = getDatastore().createQuery(Analyse.class).field("_id").equal(objectId).get();
+
+        return deleteByReference(analyse);
+    }
+
+    @Override
+    public WriteResult deleteByReference(Analyse analyse) throws Exception {
+        if(Objects.isNull(analyse))    throw new Exception();
+        WriteResult writeResult = delete(find(createQuery().field("analyse-id").equal(analyse)).get());
+        if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteByReference] - analyse: {}", AnalyseErrorDAOImpl.class.getSimpleName(), analyse);
+        return writeResult;
+    }
+
+    @Override
+    public WriteResult deleteById(String objectId) throws Exception {
+        if(Objects.isNull(objectId))    throw new Exception();
+
+        AnalyseError analyseError = createQuery().field("_id").equal(objectId).get();
+
+        WriteResult writeResult =  delete(analyseError);
+        if(Objects.isNull(writeResult))    throw new Exception();
+
+        logger.debug("[{}]\t[deleteById] - objectId: {}", AnalyseErrorDAOImpl.class.getSimpleName(), objectId);
+        return writeResult;
     }
 
 }

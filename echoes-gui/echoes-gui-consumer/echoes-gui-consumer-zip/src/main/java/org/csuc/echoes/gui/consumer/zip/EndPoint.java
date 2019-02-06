@@ -24,6 +24,8 @@ public abstract class EndPoint {
 
     protected Config typesafeRabbitMQ;
 
+    protected ExecutorService threadPool;
+
     /**
      *
      * @throws IOException
@@ -48,8 +50,8 @@ public abstract class EndPoint {
 
         // Exchanges and so on should be redeclared if necessary
         factory.setTopologyRecoveryEnabled(true);
-        ExecutorService es = Executors.newFixedThreadPool(4);
-        connection = factory.newConnection(es);
+        threadPool = Executors.newFixedThreadPool(typesafeRabbitMQ.getInt("Qos"));
+        connection = factory.newConnection(threadPool);
 
         connection.addShutdownListener(new ShutdownListener() {
             @Override

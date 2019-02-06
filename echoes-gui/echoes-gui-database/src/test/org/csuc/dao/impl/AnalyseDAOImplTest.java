@@ -17,8 +17,6 @@ public class AnalyseDAOImplTest {
 
 //        System.out.println("getStatusMonth END: " + analyseDAO.getStatusMonth(Status.END, "github|32936334"));
 //        System.out.println("getStatusLastMonth END: " + analyseDAO.getStatusLastMonth(Status.END, "github|32936334"));
-
-        System.out.println(analyseError.getByReference("bcd493a0-1094-4415-8b79-9ebc445fd251"));
     }
 
 }

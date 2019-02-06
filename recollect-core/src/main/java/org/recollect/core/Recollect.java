@@ -115,15 +115,10 @@ public class Recollect {
      * @return
      * @throws Exception
      */
-    public Iterator<RecordType> listRecords (ListRecordsParameters parameters, Class<?>[] classType) throws Exception {
+    public ItemIterator<RecordType> listRecords (ListRecordsParameters parameters, Class<?>[] classType) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListRecords verb requires the metadataPrefix");
-        try {
-            return new ItemIterator(new ListRecordHandler(client, parameters, classType));
-        }catch (Exception e){
-            exceptionList.add(e);
-            return null;
-        }
+        return new ItemIterator(new ListRecordHandler(client, parameters, classType));
     }
 
     /**
@@ -132,7 +127,7 @@ public class Recollect {
      * @return
      * @throws Exception
      */
-    public Iterator<HeaderType> listIdentifiers (ListIdentifiersParameters parameters) throws Exception {
+    public ItemIterator<HeaderType> listIdentifiers (ListIdentifiersParameters parameters) throws Exception {
         if (!parameters.areValid())
         	throw new Exception("ListIdentifiers verb requires the metadataPrefix");
         try{
@@ -143,7 +138,7 @@ public class Recollect {
         }
     }
 
-    public Iterator<SetType> listSets () {
+    public ItemIterator<SetType> listSets () {
         try {
             return new ItemIterator(new ListSetsHandler(client));
         }catch (Exception e){

@@ -93,103 +93,104 @@ public class LoaderQueueConsumer extends EndPoint implements Runnable, Consumer 
 
     @Override
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
+        threadPool.submit(() -> {
+            try {
+                Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
 
-        try {
-            Map<?, ?> map = (HashMap<?, ?>) SerializationUtils.deserialize(bytes);
+                logger.info("[x] Received '{}'", map);
 
-            logger.info("[x] Received '{}'", map);
-
-            loader = loaderDAO.getById(map.get("_id").toString());
-            loader.setStatus(Status.PROGRESS);
+                loader = loaderDAO.getById(map.get("_id").toString());
+                loader.setStatus(Status.PROGRESS);
 
 
-            Recollect recollect = recollectDAO.getById(map.get("uuid").toString());
+                Recollect recollect = recollectDAO.getById(map.get("uuid").toString());
 
-            loader.setSize(
-                    Math.toIntExact(Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
-                            .filter(Files::isRegularFile).count())
-            );
+                loader.setSize(
+                        Math.toIntExact(Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
+                                .filter(Files::isRegularFile).count())
+                );
 
-            loaderDAO.insert(loader);
+                loaderDAO.insert(loader);
 
-            Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
-                    .filter(Files::isRegularFile)
-                    .parallel()
-                    .forEach((Path f) -> {
-                        CloseableHttpClient httpclient = HttpClients.createDefault();
+                Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s/%s", recollect.get_id(), recollect.getSet()))))
+                        .filter(Files::isRegularFile)
+                        .parallel()
+                        .forEach((Path f) -> {
+                            CloseableHttpClient httpclient = HttpClients.createDefault();
 
-                        HttpPost httppost;
-                        if(Objects.nonNull(loader.getContextUri()))
-                            httppost = new HttpPost(String.format("%s?context-uri=%s", loader.getEndpoint(), loader.getContextUri()));
-                        else
-                            httppost = new HttpPost(loader.getEndpoint());
+                            HttpPost httppost;
+                            if(Objects.nonNull(loader.getContextUri()))
+                                httppost = new HttpPost(String.format("%s?context-uri=%s", loader.getEndpoint(), loader.getContextUri()));
+                            else
+                                httppost = new HttpPost(loader.getEndpoint());
 
-                        httppost.addHeader("content-type", FormatType.convert(loader.getContentType()).lang().getContentType().getContentType());
+                            httppost.addHeader("content-type", FormatType.convert(loader.getContentType()).lang().getContentType().getContentType());
 
-                        FileEntity entity = new FileEntity(f.toFile());
+                            FileEntity entity = new FileEntity(f.toFile());
 
-                        httppost.setEntity(entity);
+                            httppost.setEntity(entity);
 
-                        try {
-                            HttpResponse response = httpclient.execute(httppost);
-                            HttpEntity resEntity = response.getEntity();
+                            try {
+                                HttpResponse response = httpclient.execute(httppost);
+                                HttpEntity resEntity = response.getEntity();
 
-                            if (resEntity != null) {
-                                LoaderDetails loaderDetails = new LoaderDetails(FilenameUtils.getBaseName(f.getFileName().toString()));
+                                if (resEntity != null) {
+                                    LoaderDetails loaderDetails = new LoaderDetails(FilenameUtils.getBaseName(f.getFileName().toString()));
+                                    loaderDetails.setLoader(loader);
+                                    loaderDetails.setStatus(response.getStatusLine().getStatusCode());
+                                    loaderDetails.setMessage(EntityUtils.toString(resEntity));
+
+                                    loaderDAO.getDatastore().save(loaderDetails);
+                                    //logger.info(response.getStatusLine().getStatusCode() + " " + EntityUtils.toString(resEntity));
+                                }
+                                httpclient.close();
+
+                            } catch (IOException e) {
+                                //logger.error(String.format("%s %s\n%s", "ERROR", f, e));
+                                LoaderDetails loaderDetails = new LoaderDetails();
                                 loaderDetails.setLoader(loader);
-                                loaderDetails.setStatus(response.getStatusLine().getStatusCode());
-                                loaderDetails.setMessage(EntityUtils.toString(resEntity));
+                                loaderDetails.setStatus(-1);
+                                loaderDetails.setMessage(e.toString());
 
                                 loaderDAO.getDatastore().save(loaderDetails);
-                               //logger.info(response.getStatusLine().getStatusCode() + " " + EntityUtils.toString(resEntity));
                             }
-                            httpclient.close();
+                        });
 
-                        } catch (IOException e) {
-                            //logger.error(String.format("%s %s\n%s", "ERROR", f, e));
-                            LoaderDetails loaderDetails = new LoaderDetails();
-                            loaderDetails.setLoader(loader);
-                            loaderDetails.setStatus(-1);
-                            loaderDetails.setMessage(e.toString());
-
-                            loaderDAO.getDatastore().save(loaderDetails);
-                        }
-                    });
-
-            loader = loaderDAO.getById(map.get("_id").toString());
-            loader.setStatus(Status.END);
-            loader.setDuration(Time.duration(loader.getTimestamp(), DateTimeFormatter.ISO_TIME));
-
-
-            Query<LoaderDetails> loaderDetailsQuery = loaderDAO.getDatastore().createQuery(LoaderDetails.class);
-
-            loaderDetailsQuery.and(
-                    loaderDetailsQuery.criteria("loader").equal(loaderDAO.getDatastore().getKey(loader)),
-                    loaderDetailsQuery.criteria("status-code").equal(200)
-            );
-
-            loader.setTotal(Math.toIntExact(loaderDetailsQuery.count()));
-
-            loaderDAO.insert(loader);
-
-            logger.info(String.format("[x] Consumed '%s\t%s'", map, loader.getDuration()));
-
-            channel.basicAck(envelope.getDeliveryTag(), false);
-        } catch (Exception e) {
-            logger.error(e);
-
-            if (Objects.nonNull(loaderDAO)) {
-                loader.setStatus(Status.ERROR);
+                loader = loaderDAO.getById(map.get("_id").toString());
+                loader.setStatus(Status.END);
                 loader.setDuration(Time.duration(loader.getTimestamp(), DateTimeFormatter.ISO_TIME));
-                loaderDAO.save(loader);
-            }
 
-            try {
+
+                Query<LoaderDetails> loaderDetailsQuery = loaderDAO.getDatastore().createQuery(LoaderDetails.class);
+
+                loaderDetailsQuery.and(
+                        loaderDetailsQuery.criteria("loader").equal(loaderDAO.getDatastore().getKey(loader)),
+                        loaderDetailsQuery.criteria("status-code").equal(200)
+                );
+
+                loader.setTotal(Math.toIntExact(loaderDetailsQuery.count()));
+
+                loaderDAO.insert(loader);
+
+                logger.info(String.format("[x] Consumed '%s\t%s'", map, loader.getDuration()));
+
                 channel.basicAck(envelope.getDeliveryTag(), false);
-            } catch (IOException e1) {
+            } catch (Exception e) {
                 logger.error(e);
+
+                if (Objects.nonNull(loaderDAO)) {
+                    loader.setStatus(Status.ERROR);
+                    loader.setDuration(Time.duration(loader.getTimestamp(), DateTimeFormatter.ISO_TIME));
+                    loaderDAO.save(loader);
+                }
+
+                try {
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                } catch (IOException e1) {
+                    logger.error(e);
+                }
             }
-        }
+        });
     }
 
     @Override
