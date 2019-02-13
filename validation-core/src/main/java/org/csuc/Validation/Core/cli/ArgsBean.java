@@ -2,9 +2,7 @@ package org.csuc.Validation.Core.cli;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.*;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 
 import java.io.File;
@@ -31,8 +29,6 @@ public class ArgsBean {
 
     private String charset = StandardCharsets.UTF_8.name();
 
-    //private Path schematron;
-
     private Integer threads = 1;
 
     private Path out;
@@ -44,7 +40,7 @@ public class ArgsBean {
         CmdLineParser parser = new CmdLineParser(this);
 
         try {
-            parser.setUsageWidth(500);
+            parser.getProperties().withUsageWidth(500);
             // parse the arguments.
             parser.parseArgument(args);
 
@@ -105,16 +101,6 @@ public class ArgsBean {
         this.charset = Charset.forName(charset).toString();
     }
 
-//    public Path getSchematron() {
-//        return schematron;
-//    }
-
-//    @Option(name = "-s", aliases = "--schematron", usage = "schmematron", required = false, metaVar = "<Path>")
-//    public void setSchematron(Path schematron) throws FileNotFoundException {
-//        if(Files.notExists(schematron)) throw new FileNotFoundException(MessageFormat.format("{0} File not Found!", schematron));
-//        this.schematron = schematron;
-//    }
-
     public Integer getThreads() {
         return threads;
     }
@@ -148,7 +134,6 @@ public class ArgsBean {
     public void run(){
         logger.info("   Input       :   {}", input);
         logger.info("   Charset     :   {}", charset);
-//        logger.info("   Schematron  :   {}", schematron);
         logger.info("   Threads     :   {}", threads);
     }
 }

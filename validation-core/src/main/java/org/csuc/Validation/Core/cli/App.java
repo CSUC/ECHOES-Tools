@@ -3,11 +3,14 @@ package org.csuc.Validation.Core.cli;
 import eu.europeana.corelib.definitions.jibx.RDF;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.Validation.Core.Validate;
+import org.csuc.Validation.Core.schema.Schema;
+import org.csuc.Validation.Core.schematron.Schematron;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.concurrent.ForkJoinPool;
 
 /**
@@ -35,13 +38,33 @@ public class App {
         }
 
         new ForkJoinPool(bean.getThreads()).submit(() -> {
-            Validate validate = new Validate(bean.getInput(), bean.getCharset(), RDF.class, null);
             try {
-                validate.isValid(bean.getOut());
+                Files.walk(bean.getInput())
+                        .filter(Files::isRegularFile)
+                        .parallel()
+                        .forEach(f->{
+                            try {
+                                Schema schema = new Schema(new FileInputStream(f.toFile()), RDF.class);
+                                if(schema.isValid()){
+                                    Schematron schematron = new Schematron(f.toFile());
+                                    boolean isValidSchematron = schematron.isValid();
+                                    logger.info("{}:    schema:     {}      schematron:     {}", f.getFileName(), schema.isValid(), isValidSchematron);
+                                    if(!isValidSchematron){
+                                        logger.error("\t{}", schematron.getSVRLFailedAssert().toString());
+                                    }
+                                }else{
+                                    logger.info("{}:    schema:     {}", f.getFileName(), schema.isValid());
+                                    if(!schema.isValid()) {
+                                        logger.error("\tMessage:    {}", schema.getError().getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
             } catch (IOException e) {
-                logger.error(e);
+                e.printStackTrace();
             }
-            validate.status();
         }).join();
 	}
 }

@@ -10,5 +10,6 @@ import eu.europeana.corelib.definitions.jibx.*;
  */
 public interface InterfaceCoreClasses<T> {
 
-    T validate(T data);
+    T validate(T data) throws Exception;
+    T validate() throws Exception;
 }

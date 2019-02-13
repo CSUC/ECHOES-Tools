@@ -33,15 +33,13 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.helger/ph-schematron -->
         <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.helger</groupId>
             <artifactId>ph-schematron</artifactId>
             <version>${ph.schematron.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>${org.json.version}</version>
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
@@ -71,6 +69,18 @@
             <groupId>org.csuc</groupId>
             <artifactId>rdf-format</artifactId>
             <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>echoes-gui-database</artifactId>
+            <version>0.0.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.8.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -134,5 +144,4 @@
             </resource>
         </resources>
     </build>
-
 </project>
