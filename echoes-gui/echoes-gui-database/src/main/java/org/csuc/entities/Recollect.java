@@ -67,10 +67,10 @@ public class Recollect {
     @Embedded("properties")
     private Map<String, String> properties;
 
-    @Reference("link")
+    @Reference(value = "link", ignoreMissing = true)
     private RecollectLink link;
 
-    @Reference("error")
+    @Reference(value = "error", ignoreMissing = true)
     private RecollectError error;
 
 
