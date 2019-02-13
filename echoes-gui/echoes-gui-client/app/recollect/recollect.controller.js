@@ -121,17 +121,23 @@
 
                         $scope.options = {
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
-                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
+                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
+                            edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"]
                         }
 
                         $scope.submitForm = function (isValid) {
                             var properties = {};
                             if (isValid) {
+
+                                Object.assign(properties, { edmType : $scope.model.edmType});
+                                Object.assign(properties, { provider : $scope.model.provider});
+
                                 $scope.tableProperties.forEach(function(value, index) {
                                     if(value.key != null && value.value != null){
                                         var k = value.key;
                                         var v = value.value;
-                                        Object.assign(properties, { [k] : v});
+                                        if(!properties.hasOwnProperty([k]))
+                                            Object.assign(properties, { [k] : v});
                                     }
                                 });
 
