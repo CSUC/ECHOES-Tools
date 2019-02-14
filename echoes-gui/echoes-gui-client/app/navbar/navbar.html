@@ -29,8 +29,12 @@
                        ui-sref="loader">Loader</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" ng-if="vm.auth.isAuthenticated()">
+            <ul class="nav navbar-nav navbar-right" ng-if="vm.auth.isAuthenticated()">
+                <a class="navbar-brand" href="#">
+                    <img src="{{vm.auth.getCachedProfile().picture}}" class="img-circle" width="30px" height="30px" alt="">
+                </a>
+
+                <li class="dropdown">
                     <!--<img src="{{vm.profile.picture}}" width="64px" height="64px" />-->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{vm.auth.getCachedProfile().nickname}} <span class="caret"></span></a>
                     <ul class="dropdown-menu">

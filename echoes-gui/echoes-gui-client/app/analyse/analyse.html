@@ -43,17 +43,8 @@
                                        href="/rest/api/analyse/user/{{vm.profile.sub}}/id/{{data._id}}/download">{{data._id}}</a>
                                     <a ui-sref="analyse-detail({_id: '{{data._id}}'})" ng-if="data.status == 'ERROR'">{{data._id}}</a>
                                 </td>
-                                <td title="'format'">
-                                    {{data.format}}
-                                </td>
-                                <td title="'method'">
-                                    {{data.method}}
-                                </td>
-                                <td title="'type'">
-                                    {{data.type}}
-                                </td>
                                 <td title="'input'">
-                                    {{data.value}}
+                                    {{data.value | limitTo: 50}}<span ng-if="data.value.length > 50">...</span>
                                 </td>
                                 <td title="'timestamp'">
                                     {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
