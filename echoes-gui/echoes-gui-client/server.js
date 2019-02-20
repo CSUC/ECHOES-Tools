@@ -163,6 +163,82 @@ app.post('/rest/api/analyse/create', function (req, res, next) {
     });
 });
 
+app.post('/rest/api/quality/create', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    var formData = {
+        dataset: req.body.dataset,
+        format: req.body.format,
+        user: req.body.user
+    }
+
+    request({
+        method: 'POST',
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/create`,
+        json: formData
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202)  res.json(body);
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
+app.delete('/rest/api/quality/user/:user/id/:id/delete', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    request({
+        method: 'DELETE',
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' + req.params.id + '/delete',
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
+app.get('/rest/api/quality/user/:user', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    //console.log(headers)
+
+    var pagesize = req.query.pagesize;
+    var page = req.query.page;
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` +req.params.user + '?pagesize=' + pagesize + '&page=' + page
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202)  res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+
+});
+
 app.delete('/rest/api/analyse/user/:user/id/:id/delete', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',
@@ -236,6 +312,48 @@ app.get('/rest/api/recollect/user/:user/id/:id', function (req, res, next) {
 
 });
 
+app.get('/rest/api/quality/user/:user/id/:id', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` +req.params.user + '/id/' + req.params.id
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+
+});
+
+app.get('/rest/api/quality/user/:user/id/:id/error/:page', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` +req.params.user + '/id/' + req.params.id + '/error/'+ req.params.page + '?pagesize=' + req.query.pagesize
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+
+});
+
 app.get('/rest/api/recollect/user/:user/status/aggregation', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization
@@ -247,6 +365,27 @@ app.get('/rest/api/recollect/user/:user/status/aggregation', function (req, res,
         method: "GET",
         headers: headers,
         url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/recollect/user/` + req.params.user + '/status/aggregation'
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
+app.get('/rest/api/quality/user/:user/status/aggregation', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/status/aggregation'
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 
@@ -513,6 +652,26 @@ app.get('/rest/api/loader/user/:user', function (req, res, next) {
         method: "GET",
         headers: headers,
         url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/loader/user/` +req.params.user + '?pagesize=' + pagesize + '&page=' + page
+    }, function (error, response, body) {
+        //console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+
+});
+
+app.get('/rest/api/loader/user/:user/count', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/loader/user/` +req.params.user + '/count'
     }, function (error, response, body) {
         //console.log(req.method, util.format('%s', response && response.statusCode), req.url);
 

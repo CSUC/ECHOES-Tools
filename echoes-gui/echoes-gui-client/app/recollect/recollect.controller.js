@@ -12,7 +12,7 @@
     function recollect($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                        echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Recollect';
+        vm.title = 'Transformation';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
@@ -208,7 +208,7 @@
                 });
         };
 
-        $scope.send = function (data) {
+        $scope.sendLoader = function (data) {
             var dailog =
                 ngDialog.open({
                     template: 'loader.tpl.html',
@@ -262,5 +262,45 @@
                 });
         };
 
+        $scope.sendQuality = function (data) {
+            var dailog =
+                ngDialog.open({
+                    template: 'quality.tpl.html',
+                    width: '60%',
+                    data: vm,
+                    controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
+                        $log.info(vm.profile.sub)
+
+                        $scope.model = {};
+
+                        $scope.model.dataset = data._id;
+                        $scope.model.type = data.format;
+
+                        $scope.submitForm = function (isValid) {
+                            if (isValid) {
+                                var data = {
+                                    'contentType': $scope.model.type,
+                                    "uuid": $scope.model.dataset,
+                                    'user': vm.profile.sub
+                                };
+
+                                $log.info(data);
+
+                                restApi.createQuality({
+                                    user: vm.profile.sub,
+                                    format: $scope.model.type,
+                                    dataset: $scope.model.dataset,
+                                }).then(function (_data) {
+                                    $log.info(_data);
+                                    ngDialog.close();
+                                    $state.go($state.current, {}, {reload: true});
+                                }).catch(function (_data) {
+                                    $log.info(_data);
+                                });
+                            }
+                        };
+                    }]
+                });
+        };
     }
 })();

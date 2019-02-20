@@ -27,14 +27,17 @@
                     <div class="table-responsive col-xs-12 col-sm-12 col-lg-12">
                         <table ng-table="vm.tableParams" class="table" show-filter="false">
                             <tr ng-repeat="data in $data">
-                                <td title="'status'">
-                            <span ng-if="data.status == 'ERROR'"
-                                  class="glyphicon glyphicon-remove-sign text-danger"></span>
+                                <td title="'job'">
+                                    <span ng-if="data.status == 'ERROR'"
+                                        class="glyphicon glyphicon-remove-sign text-danger"></span>
                                     <span ng-if="data.status == 'END'"
-                                          class="glyphicon glyphicon-ok-sign text-success"></span>
+                                        class="glyphicon glyphicon-ok-sign text-success"></span>
                                     <span ng-if="data.status == 'PROGRESS'"
-                                          class="glyphicon glyphicon-play-circle text-info"></span>
+                                        class="glyphicon glyphicon-play-circle text-info"></span>
                                     <span ng-if="data.status == 'QUEUE'" class="glyphicon glyphicon-hourglass"></span>
+                                </td>
+                                <td title="'status'">
+                                    <i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i>
                                 </td>
                                 <td title="'id'">
                                     <a ui-sref="recollect-detail({_id: '{{data._id}}'})"
@@ -53,8 +56,8 @@
                                         <span class="glyphicon glyphicon-remove text-danger"></span>
                                     </a>
                                 </td>
-                                <td title="'loader'">
-                                    <a ng-click="send(data)" ng-if="data.status == 'END'">
+                                <td title="'quality'">
+                                    <a ng-click="sendQuality(data)" ng-if="data.status == 'END'">
                                         <span class="glyphicon glyphicon-send"></span>
                                     </a>
                                 </td>
@@ -175,44 +178,23 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="loader.tpl.html">
+<script type="text/ng-template" id="quality.tpl.html">
     <div class="modal-header">
-        <h3 class="modal-title text-center">Loader</h3>
+        <h3 class="modal-title text-center">Quality assurance</h3>
     </div>
     <div class="modal-body">
         <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
-            <!-- SPARQL ENDPOINT -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.endpoint.$invalid && userForm.endpoint.$pristine }">
-                <label>SPARQL ENDPOINT*</label>
-                <select name="endpoint" class="form-control" ng-model="model.endpoint"
-                        ng-options="value as value for (key, value) in options.endpoints" required></select>
-                <p ng-show="userForm.endpoint.$invalid && userForm.endpoint.$error.required" class="help-block">endpoint is
-                    required.</p>
-            </div>
-
             <!-- Data -->
             <div class="form-group">
                 <label>Data</label>
                 {{model.dataset}}
             </div>
-
             <!-- ContentType -->
             <div class="form-group">
                 <label>Content-Type</label>
                 {{model.type}}
             </div>
-
-            <!-- Context URI -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.context.$pristine
-             || userForm.context.$invalid || userForm.context.$invalid && userForm.context.$dirty}">
-                <label>Context-URI*</label>
-                <input type="text" name="context" class="form-control" ng-model="model.context" required>
-                <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">context-uri is
-                    required.</p>
-            </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
-
         </form>
     </div>
 </script>

@@ -2,6 +2,7 @@ package org.csuc;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFWriter;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFParser;
 import org.apache.jena.riot.system.ErrorHandlerFactory;
@@ -17,7 +18,12 @@ public class Format {
     public static void format(File file, FormatType formatType, OutputStream outputStream){
         Model model = RDFDataMgr.loadModel(file.toString());
 
-        RDFDataMgr.write(outputStream, model, formatType.lang());
+        RDFWriter writer = model.getWriter(formatType.name());
+        writer.setProperty("blockRules", "propertyAttr");
+        writer.setProperty("allowBadURIs", true);
+
+        writer.write(model, outputStream, null);
+        //RDFDataMgr.write(outputStream, model, formatType.lang());
     }
 
     /**

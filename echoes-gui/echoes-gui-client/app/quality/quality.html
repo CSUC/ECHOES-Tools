@@ -1,0 +1,109 @@
+<div class="container" ng-show="vm.data._size > 0">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default" ng-show="vm.chart">
+        <div class="panel-heading"><h3>Statistics</h3></div>
+        <div class="panel-body">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-8">
+            <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
+                    chart-labels="vm.chart.labels"
+                    chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+          </div>
+          <div class="col-lg-2"></div>
+        </div>
+      </div>
+
+      <div class="panel panel-default profile-area" ng-show="vm.data._size > 0">
+        <div class="panel-heading">
+          <h3>{{vm.title}} <span class="badge badge-light">{{vm.data._size}}</span>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive col-xs-12 col-sm-12 col-lg-12">
+            <table ng-table="vm.tableParams" class="table" show-filter="false">
+              <tr ng-repeat="data in $data">
+                <td title="'job'">
+                                <span ng-if="data.status == 'ERROR'"
+                                      class="glyphicon glyphicon-remove-sign text-danger"></span>
+                  <span ng-if="data.status == 'END'"
+                        class="glyphicon glyphicon-ok-sign text-success"></span>
+                  <span ng-if="data.status == 'PROGRESS'"
+                        class="glyphicon glyphicon-play-circle text-info"></span>
+                  <span ng-if="data.status == 'QUEUE'" class="glyphicon glyphicon-hourglass"></span>
+                </td>
+                <td title="'status'">
+                  <i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i>
+                </td>
+                <td title="'id'">
+                  <a ui-sref="quality-detail({_id: '{{data._id}}'})"
+                     ng-if="data.status == 'END' || data.status == 'ERROR'">{{data._id}}</a>
+                  <a ng-if="data.status != 'END' && data.status != 'ERROR'"
+                     ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
+                </td>
+                <td title="'dataset'">
+                  {{data.data}}
+                </td>
+                <td title="'timestamp'">
+                  {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
+                </td>
+                <td title="'remove'">
+                  <a ng-click="remove(data._id)">
+                    <span class="glyphicon glyphicon-remove text-danger"></span>
+                  </a>
+                </td>
+                <td title="'publish'">
+                  <a ng-click="sendLoader(data)" ng-if="data.status == 'END'">
+                    <span class="glyphicon glyphicon-send"></span>
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="loader.tpl.html">
+  <div class="modal-header">
+    <h3 class="modal-title text-center">Loader</h3>
+  </div>
+  <div class="modal-body">
+    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+      <!-- SPARQL ENDPOINT -->
+      <div class="form-group" ng-class="{ 'has-error' : userForm.endpoint.$invalid && userForm.endpoint.$pristine }">
+        <label>SPARQL ENDPOINT*</label>
+        <select name="endpoint" class="form-control" ng-model="model.endpoint"
+                ng-options="value as value for (key, value) in options.endpoints" required></select>
+        <p ng-show="userForm.endpoint.$invalid && userForm.endpoint.$error.required" class="help-block">endpoint is
+          required.</p>
+      </div>
+
+      <!-- Data -->
+      <div class="form-group">
+        <label>Data</label>
+        {{model.dataset}}
+      </div>
+
+      <!-- ContentType -->
+      <div class="form-group">
+        <label>Content-Type</label>
+        {{model.type}}
+      </div>
+
+      <!-- Context URI -->
+      <div class="form-group" ng-class="{ 'has-error' : userForm.context.$pristine
+             || userForm.context.$invalid || userForm.context.$invalid && userForm.context.$dirty}">
+        <label>Context-URI*</label>
+        <input type="text" name="context" class="form-control" ng-model="model.context" required>
+        <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">context-uri is
+          required.</p>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+  </div>
+</script>

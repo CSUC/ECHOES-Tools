@@ -14,9 +14,9 @@
         }
     }
 
-    navbarController.$inject = ['authService', '$scope'];
+    navbarController.$inject = ['authService'];
 
-    function navbarController(authService, $scope) {
+    function navbarController(authService) {
 
         var vm = this;
         vm.auth = authService;

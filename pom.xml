@@ -16,7 +16,7 @@
 		<module>sparql-loader</module>
 		<module>metadata-schema-definitions</module>
 		<module>recollect-core</module>
-		<module>validation-core</module>
+		<module>quality-assurance-core</module>
 		<module>edm-transformations</module>
 		<module>binding-core</module>
 		<module>echoes-gui</module>

@@ -72,6 +72,19 @@
             });
         };
 
+        data.createQuality = function (_params) {
+            var searchData = restApiService.getNew("createQuality", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                url: searchData.url,
+                data: searchData.object
+            });
+        };
+
         data.deleteAnalyse = function (_params) {
             var searchData = restApiService.getNew("deleteAnalyse", _params);
 
@@ -152,6 +165,19 @@
                 params: searchData.object
             });
         };
+
+        data.qualityById = function (_params) {
+            var searchData = restApiService.getNew("qualityById", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
 
         data.getRecollectStatusAggregation = function (_params) {
             var searchData = restApiService.getNew("getRecollectStatusAggregation", _params);
@@ -290,6 +316,66 @@
             var searchData = restApiService.getNew("getLoaderStatusAggregation", _params);
 
             $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.loaderCountByUser = function (_params) {
+            var searchData = restApiService.getNew("loaderCountByUser", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.getQuality = function (_params) {
+            var searchData = restApiService.getNew("getQuality", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.getQualityStatusAggregation = function (_params) {
+            var searchData = restApiService.getNew("getQualityStatusAggregation", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.deleteQuality = function (_params) {
+            var searchData = restApiService.getNew("deleteQuality", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.qualityErrors = function (_params) {
+            var searchData = restApiService.getNew("qualityErrors", _params);
+
+            $log.info('qualityErrors: ', searchData);
 
             return $http({
                 method: 'GET',

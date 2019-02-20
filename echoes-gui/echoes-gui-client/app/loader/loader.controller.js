@@ -12,7 +12,7 @@
     function loaderController($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                                echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Loader';
+        vm.title = 'Publish';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
