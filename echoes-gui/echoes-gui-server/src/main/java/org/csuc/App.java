@@ -2,7 +2,6 @@ package org.csuc;
 
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
-import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -11,9 +10,11 @@ import org.eclipse.jetty.util.log.Slf4jLog;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import javax.servlet.SessionTrackingMode;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.Objects;
 
 /**
@@ -38,13 +39,11 @@ public class App {
 
         InetSocketAddress inetSocketAddress = new InetSocketAddress(config.getHost(), config.getPort());
         Server jettyServer = new Server(inetSocketAddress);
+
+        context.getSessionHandler()
+                .setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
+
         jettyServer.setHandler(context);
-
-        MongoSessionIdManager idMgr = new MongoSessionIdManager(jettyServer);
-        idMgr.setWorkerName(config.getMongoDB().getOptions().get("workerName").render());
-        idMgr.setScavengePeriod(Long.parseLong(config.getMongoDB().getOptions().get("scavengePeriod").render()));
-
-        jettyServer.setSessionIdManager(idMgr);
 
         ServletHolder jerseyServlet =
                 new ServletHolder(new org.glassfish.jersey.servlet.ServletContainer(application));
