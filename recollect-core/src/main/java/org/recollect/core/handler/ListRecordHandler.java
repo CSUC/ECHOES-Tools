@@ -55,8 +55,9 @@ public class ListRecordHandler implements Source<RecordType> {
 		OAIPMHtype oai = (OAIPMHtype) new JaxbUnmarshal(stream, classType).getObject();
 
 		if (!oai.getError().isEmpty()) {
-			logger.error(oai.getError().stream().map(m-> String.format("[HOST] %s [SET] %s [CODE] %s [VALUE] %s", client.getURL(),
-					parameters.getSet(), m.getCode(), m.getValue())).collect(Collectors.joining(",")));
+			String message = oai.getError().stream().map(m-> String.format("[HOST] %s [SET] %s [CODE] %s [VALUE] %s", client.getURL(),
+					parameters.getSet(), m.getCode(), m.getValue())).collect(Collectors.joining(","));
+			throw new Exception(message);
 		}
 
 		if (Objects.nonNull(oai.getListRecords().getResumptionToken())) {

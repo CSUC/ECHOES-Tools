@@ -32,7 +32,8 @@
                 url: '/',
                 controller: 'HomeController',
                 templateUrl: 'app/home/home.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
             })
             .state('profile', {
                 url: '/profile',
@@ -98,16 +99,65 @@
                 },
                 onEnter: checkAuthentication
             })
-            .state('validation', {
-                url: '/validation',
-                controller: 'ValidationController',
-                templateUrl: 'app/validation/validation.html',
+            .state('quality', {
+                url: '/quality',
+                controller: 'QualityController',
+                templateUrl: 'app/quality/quality.html',
                 controllerAs: 'vm',
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
+                },
+                onEnter: checkAuthentication
+            })
+            .state('quality-detail', {
+                url: '/quality/:_id',
+                controller: 'QualityControllerDetail',
+                templateUrl: 'app/quality/quality.detail.html',
+                controllerAs: 'vm',
+                params: {
+                    data: null
+                },
+                onEnter: checkAuthentication
+            })
+            .state('quality-error', {
+                url: '/quality/:_id/error/:page?pagesize',
+                controller: 'QualityControllerError',
+                templateUrl: 'app/quality/quality.detail.error.html',
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
+            })
+            .state('loader', {
+                url: '/loader',
+                controller: 'LoaderController',
+                templateUrl: 'app/loader/loader.html',
+                controllerAs: 'vm',
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
+                },
+                onEnter: checkAuthentication
+            })
+            .state('loader-detail', {
+                url: '/loader/:_id',
+                controller: 'LoaderControllerDetail',
+                templateUrl: 'app/loader/loader.detail.html',
+                controllerAs: 'vm',
+                params:{
+                    data: null
+                },
                 onEnter: checkAuthentication
             })
             .state('404', {
                 url: "/404",
-                templateUrl: "404.html"
+                templateUrl: "404.html",
+                onEnter: function($timeout, $state) {
+                    $timeout(function () {
+                        $state.go('home');
+                    }, 5000)
+                }
             });
 
         // Initialization for the angular-auth0 library

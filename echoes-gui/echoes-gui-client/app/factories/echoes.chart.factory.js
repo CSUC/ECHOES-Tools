@@ -27,8 +27,9 @@
 
             var options = {
                 legend: {
-                    display: true
+                    display: true,
                 },
+                responsive: true,
                 rotation: -Math.PI,
                 cutoutPercentage: 30,
                 circumference: Math.PI,

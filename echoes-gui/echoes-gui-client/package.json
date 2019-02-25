@@ -42,6 +42,7 @@
     "express-jwt-authz": "^1.0.0",
     "jwks-rsa": "^1.1.1",
     "method-override": "^2.3.10",
+    "moment": "^2.24.0",
     "ng-dialog": "1.4.0",
     "ng-table": "3.0.1",
     "npm-run-all": "^4.0.0",

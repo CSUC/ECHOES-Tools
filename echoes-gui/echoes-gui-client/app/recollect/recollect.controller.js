@@ -12,7 +12,7 @@
     function recollect($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                        echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Recollect';
+        vm.title = 'Transformation';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
@@ -121,17 +121,42 @@
 
                         $scope.options = {
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
-                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
+                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
+                            edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"],
+                            properties: ["dataProvider", "language", "rights"]
+                        }
+
+                        $scope.properties = [
+                            {key:'', value:''},
+                        ];
+
+                        $scope.isAlreadySelected = function(k, $index){
+                            console.log(k)
+                            var isSelected = false;
+                            angular.forEach($scope.properties, function(value, i){
+                                if ($index != i && !isSelected){
+                                    if (value.key == k){
+                                        isSelected = true;
+                                        $scope.options.properties.splice($index, 1);
+                                    }
+                                }
+                            });
+                            return isSelected;
                         }
 
                         $scope.submitForm = function (isValid) {
                             var properties = {};
                             if (isValid) {
-                                $scope.tableProperties.forEach(function(value, index) {
+
+                                Object.assign(properties, { edmType : $scope.model.edmType});
+                                Object.assign(properties, { provider : $scope.model.provider});
+
+                                $scope.properties.forEach(function(value, index) {
                                     if(value.key != null && value.value != null){
                                         var k = value.key;
                                         var v = value.value;
-                                        Object.assign(properties, { [k] : v});
+                                        if(!properties.hasOwnProperty([k]))
+                                            Object.assign(properties, { [k] : v});
                                     }
                                 });
 
@@ -162,45 +187,50 @@
                                 });
                             }
                         };
-
-                        $scope.tableProperties = [
-                            {
-                                'key': null,
-                                'value': null
-                            }];
-
-                        $scope.addNew = function(personalDetail){
-                            $scope.tableProperties.push({
-                                'key': null,
-                                'value':null
-                            });
-                        };
-
-                        $scope.remove = function(){
-                            var newDataList=[];
-                            $scope.selectedAll = false;
-                            angular.forEach($scope.tableProperties, function(selected){
-                                if(!selected.selected){
-                                    newDataList.push(selected);
-                                }
-                            });
-                            $scope.tableProperties = newDataList;
-                        };
-
-                        $scope.checkAll = function () {
-                            if (!$scope.selectedAll) {
-                                $scope.selectedAll = true;
-                            } else {
-                                $scope.selectedAll = false;
-                            }
-                            angular.forEach($scope.tableProperties, function(properties) {
-                                properties.selected = $scope.selectedAll;
-                            });
-                        };
-
                     }]
                 });
         };
 
+        $scope.sendQuality = function (data) {
+            var dailog =
+                ngDialog.open({
+                    template: 'quality.tpl.html',
+                    width: '60%',
+                    data: vm,
+                    controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
+                        $log.info(vm.profile.sub)
+
+
+                        $scope.model = {};
+
+                        $scope.model.dataset = data._id;
+                        $scope.model.type = data.format;
+
+                        $scope.submitForm = function (isValid) {
+                            if (isValid) {
+                                var data = {
+                                    'contentType': $scope.model.type,
+                                    "uuid": $scope.model.dataset,
+                                    'user': vm.profile.sub
+                                };
+
+                                $log.info(data);
+
+                                restApi.createQuality({
+                                    user: vm.profile.sub,
+                                    format: $scope.model.type,
+                                    dataset: $scope.model.dataset,
+                                }).then(function (_data) {
+                                    $log.info(_data);
+                                    ngDialog.close();
+                                    $state.go("quality", {}, {reload: true});
+                                }).catch(function (_data) {
+                                    $log.info(_data);
+                                });
+                            }
+                        };
+                    }]
+                });
+        };
     }
 })();

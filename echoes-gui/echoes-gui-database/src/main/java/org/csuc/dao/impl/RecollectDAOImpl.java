@@ -9,17 +9,26 @@ import org.csuc.dao.RecollectDAO;
 import org.csuc.entities.Recollect;
 import org.csuc.utils.Aggregation;
 import org.csuc.utils.Status;
+import org.csuc.utils.dashboard.AggregationMonth;
+import org.csuc.utils.dashboard.Identifier;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.aggregation.Accumulator;
+import org.mongodb.morphia.aggregation.Group;
+import org.mongodb.morphia.aggregation.Projection;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.LongStream;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static org.mongodb.morphia.aggregation.Group.grouping;
 
 /**
@@ -137,6 +146,243 @@ public class RecollectDAOImpl extends BasicDAO<Recollect, ObjectId> implements R
 
         logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", RecollectDAOImpl.class.getSimpleName(), status, user);
         return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastMonth(Status status) throws Exception {
+        if(Objects.isNull(status))  throw new Exception();
+
+        Query<Recollect> query = createQuery();
+
+        LocalDateTime earlier = LocalDateTime.now().minusMonths(1);
+        LocalDateTime start = earlier.with(firstDayOfMonth());
+        LocalDateTime finish = earlier.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", RecollectDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastMonth(Status status, String user) throws Exception {
+        if(Objects.isNull(status))  throw new Exception();
+
+        Query<Recollect> query = createQuery();
+
+        LocalDateTime earlier = LocalDateTime.now().minusMonths(1);
+        LocalDateTime start = earlier.with(firstDayOfMonth());
+        LocalDateTime finish = earlier.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish),
+                query.criteria("user").equal(user)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", RecollectDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastMonthIncrease(Status status) throws Exception {
+        if(Objects.isNull(status)) throw new Exception();
+
+        AggregationOptions options = AggregationOptions.builder().build();
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime earlier = now.minusMonths(1);
+
+        Query<Recollect> query = createQuery();
+
+        query.and(
+                query.criteria("status").equal(status)
+        );
+
+        Query<Identifier> identifierQuery = getDatastore().createQuery(Identifier.class);
+
+        identifierQuery
+                .disableValidation()
+                .and(
+                        identifierQuery.criteria("_id.year").lessThan(earlier.getYear()),
+                        identifierQuery.criteria("_id.month").lessThan(earlier.getMonthValue())
+                );
+
+        Iterator<AggregationMonth> aggregate = getDatastore().createAggregation(Recollect.class)
+                .match(query)
+                .project(
+                        Projection.projection("month", Projection.projection("$month","timestamp")),
+                        Projection.projection("year", Projection.projection("$year","timestamp"))
+                )
+                .group(
+                        Group.id(
+                                Group.grouping("month"),
+                                Group.grouping("year")
+
+                        ),
+                        grouping("total", Accumulator.accumulator("$sum", 1))
+                )
+                .match(identifierQuery)
+                .aggregate(AggregationMonth.class, AggregationOptions.builder().allowDiskUse(true).batchSize(50).build());
+
+        long result = 0;
+        aggregate.forEachRemaining(a-> LongStream.of(result, a.getTotal()).sum());
+
+        return result;
+    }
+
+    @Override
+    public long getStatusLastMonthIncrease(Status status, String user) throws Exception {
+        if(Objects.isNull(status)) throw new Exception();
+
+        AggregationOptions options = AggregationOptions.builder().build();
+
+        LocalDate now = LocalDate.now();
+        LocalDate earlier = now.minusMonths(1);
+
+        Query<Recollect> query = createQuery();
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("user").equal(user)
+        );
+
+        Query<Identifier> identifierQuery = getDatastore().createQuery(Identifier.class);
+
+        identifierQuery
+                .disableValidation()
+                .and(
+                        identifierQuery.criteria("_id.year").lessThan(earlier.getYear()),
+                        identifierQuery.criteria("_id.month").lessThan(earlier.getMonthValue())
+                );
+
+        Iterator<AggregationMonth> aggregate = getDatastore().createAggregation(Recollect.class)
+                .match(query)
+                .project(
+                        Projection.projection("month", Projection.projection("$month","timestamp")),
+                        Projection.projection("year", Projection.projection("$year","timestamp"))
+                )
+                .group(
+                        Group.id(
+                                Group.grouping("month"),
+                                Group.grouping("year")
+
+                        ),
+                        grouping("total", Accumulator.accumulator("$sum", 1))
+                )
+                .match(identifierQuery)
+                .aggregate(AggregationMonth.class, AggregationOptions.builder().allowDiskUse(true).batchSize(50).build());
+
+        long result = 0;
+        aggregate.forEachRemaining(a-> LongStream.of(result, a.getTotal()).sum());
+
+        return result;
+    }
+
+    @Override
+    public long getStatusMonth(Status status) throws Exception {
+        if(Objects.isNull(status))  throw new Exception();
+
+        Query<Recollect> query = createQuery();
+
+        LocalDate now = LocalDate.now();
+        LocalDate start = now.with(firstDayOfMonth());
+        LocalDate finish = now.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", RecollectDAOImpl.class.getSimpleName(), status);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusMonth(Status status, String user) throws Exception {
+        if(Objects.isNull(status) || Objects.isNull(user))  throw new Exception();
+
+        Query<Recollect> query = createQuery();
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.with(firstDayOfMonth());
+        LocalDateTime finish = now.with(lastDayOfMonth());
+
+        query.and(
+                query.criteria("status").equal(status),
+                query.criteria("timestamp").greaterThanOrEq(start),
+                query.criteria("timestamp").lessThanOrEq(finish),
+                query.criteria("user").equal(user)
+        );
+
+        logger.debug("[{}]\t[countByStatus] - status: {}\tuser: {}", RecollectDAOImpl.class.getSimpleName(), status, user);
+        return find(query).count();
+    }
+
+    @Override
+    public long getStatusLastYear(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastYear(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastYearIncrease(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastYearIncrease(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusYear(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusYear(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDay(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDay(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDayIncrease(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusLastDayIncrease(Status status, String user) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusDay(Status status) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public long getStatusDay(Status status, String user) throws Exception {
+        return 0;
     }
 
     @Override

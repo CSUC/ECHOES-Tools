@@ -24,6 +24,10 @@ import org.purl.dc.elements._1.ElementType;
 
 import javax.xml.bind.JAXBElement;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -212,14 +216,22 @@ public class DC2EDM extends RDF implements EDM {
                             break;
                         }
                         case "rights": {
-                            Rights rights = new Rights();
-                            EuropeanaType.Choice c = new EuropeanaType.Choice();
-                            Resource resource = new Resource();
-                            resource.setResource(elementType.getValue().getValue());
-                            rights.setResource(resource);
-                            rights.setString("");
-                            c.setRights(rights);
-                            provided.getChoiceList().add(c);
+//                            Rights rights = new Rights();
+//                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+//
+//                            if(isUri(elementType.getValue().getValue())){
+//                                Resource resource = new Resource();
+//                                resource.setResource(elementType.getValue().getValue());
+//                                rights.setResource(resource);
+//                                rights.setString("");
+//
+//                                c.setRights(rights);
+//                            }else {
+//                                rights.setString(elementType.getValue().getValue());
+//                                c.setRights(rights);
+//                            }
+//
+//                            provided.getChoiceList().add(c);
                             break;
                         }
                         case "title": {
@@ -239,7 +251,7 @@ public class DC2EDM extends RDF implements EDM {
                             break;
                         }
                         default:
-                            System.err.println("UNKNOW metadataType");
+                            logger.error(String.format("[%s] - ", identifier,"UNKNOW metadataType"));
                             break;
                     }
 
@@ -432,7 +444,7 @@ public class DC2EDM extends RDF implements EDM {
     @Override
     public void creation(FormatType formatType) throws IOException {
         if (!Objects.equals(this, new RDF())){
-            File file = Files.createTempFile(identifier, ".xml").toFile();
+            File file = Files.createTempFile(identifier.replaceAll("[^a-zA-Z0-9.-]", "_"), ".xml").toFile();
             try{
                 JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
                         false, new FileOutputStream(file), RDF.class, -1);
@@ -461,7 +473,7 @@ public class DC2EDM extends RDF implements EDM {
         if (!Objects.equals(this, new RDF())) {
             if (formatType.equals(FormatType.RDFXML)) creation(encoding, alone, outs);
             else {
-                File file = Files.createTempFile(identifier, ".xml").toFile();
+                File file = Files.createTempFile(identifier.replaceAll("[^a-zA-Z0-9.-]", "_"), ".xml").toFile();
                 try {
                     JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
                             false, new FileOutputStream(file), RDF.class, -1);
@@ -505,5 +517,16 @@ public class DC2EDM extends RDF implements EDM {
     @Override
     public void modify(RDF rdf) {
 
+    }
+
+    private boolean isUri(String value){
+        try {
+            new URI(value);
+            new URL(value);
+
+            return true;
+        } catch (URISyntaxException | MalformedURLException e) {
+            return false;
+        }
     }
 }

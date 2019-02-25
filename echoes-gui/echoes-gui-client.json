@@ -1,46 +1,105 @@
 {
-  "apps":[
+  "apps": [
     {
-      "name":"Auth0-Server",
-      "cwd":"${project.parent.basedir}/echoes-gui/echoes-gui-client",
-      "script":"./server.js"
+      "name": "ECHOES-GUI",
+      "cwd": "${project.parent.basedir}/echoes-gui/echoes-gui-client",
+      "script": "./server.js"
     },
     {
-      "name":"Auth0 API",
-      "cwd":"${project.parent.basedir}/echoes-gui/echoes-gui-client",
-      "script":"./api.js"
-    },
-    {
-      "name":"RabbitMQ-Consumer",
-      "cwd":"${project.parent.basedir}/",
-      "script":"/usr/bin/java",
-      "args":[
+      "name": "RabbitMQ-Consumer-Analyse",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
         "-jar",
-        "bin/echoes-gui-consumer-${echoes.gui.consumer.version}.jar"
+        "bin/echoes-gui-consumer-analyse-${echoes.gui.consumer.analyse.version}-shaded.jar"
       ],
-      "env":{
+      "env": {
       },
-      "node_args":[
+      "node_args": [
       ],
-      "log_date_format":"YYYY-MM-DD HH:mm Z",
-      "exec_interpreter":"none",
-      "exec_mode":"fork"
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
     },
     {
-      "name":"Jetty-Server",
-      "cwd":"${project.parent.basedir}/",
-      "script":"/usr/bin/java",
-      "args":[
+      "name": "RabbitMQ-Consumer-Recollect",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-recollect-${echoes.gui.consumer.recollect.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "RabbitMQ-Consumer-Publish",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-publish-${echoes.gui.consumer.publish.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "RabbitMQ-Consumer-Quality-Assurance",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-quality-assurance-${echoes.gui.consumer.quality.assurance.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "RabbitMQ-Consumer-Zip",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
+        "-jar",
+        "bin/echoes-gui-consumer-zip-${echoes.gui.consumer.zip.version}-shaded.jar"
+      ],
+      "env": {
+      },
+      "node_args": [
+      ],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
+    },
+    {
+      "name": "Jetty-Server",
+      "cwd": "${project.parent.basedir}/",
+      "script": "/usr/bin/java",
+      "args": [
         "-jar",
         "bin/echoes-gui-server-${echoes.gui.server.version}.jar"
       ],
-      "env":{
+      "env": {
       },
-      "node_args":[
+      "node_args": [
       ],
-      "log_date_format":"YYYY-MM-DD HH:mm Z",
-      "exec_interpreter":"none",
-      "exec_mode":"fork"
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "none",
+      "exec_mode": "fork"
     }
   ]
 }
