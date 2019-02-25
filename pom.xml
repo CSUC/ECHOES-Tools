@@ -201,7 +201,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<revision>1.4</revision>
+		<revision>1.4.1</revision>
 
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<corelib.edm.definitions.version>2.6.6-SNAPSHOT</corelib.edm.definitions.version>
