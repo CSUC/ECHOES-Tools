@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
-            <artifactId>analyse-core</artifactId>
+            <artifactId>analyse</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>

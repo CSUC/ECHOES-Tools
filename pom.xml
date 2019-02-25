@@ -12,12 +12,12 @@
 	<modules>
 		<module>europeana-parent-pom</module>
 		<module>corelib/corelib-edm-definitions</module>
-		<module>analyse-core</module>
-		<module>sparql-loader</module>
+		<module>analyse</module>
+		<module>publish</module>
 		<module>metadata-schema-definitions</module>
-		<module>recollect-core</module>
+		<module>transformation</module>
 		<module>edm-transformations</module>
-		<module>binding-core</module>
+		<module>binding</module>
 		<module>echoes-gui</module>
 		<module>rdf-format</module>
         <module>echoes-hdfs</module>

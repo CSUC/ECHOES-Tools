@@ -22,12 +22,12 @@
       "exec_mode": "fork"
     },
     {
-      "name": "RabbitMQ-Consumer-Recollect",
+      "name": "RabbitMQ-Consumer-Transformation",
       "cwd": "${project.parent.basedir}/",
       "script": "/usr/bin/java",
       "args": [
         "-jar",
-        "bin/echoes-gui-consumer-recollect-${echoes.gui.consumer.recollect.version}-shaded.jar"
+        "bin/echoes-gui-consumer-transformation-${echoes.gui.consumer.transformation.version}-shaded.jar"
       ],
       "env": {
       },

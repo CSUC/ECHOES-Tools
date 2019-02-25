@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>echoes-gui-consumer-quality-assurance</artifactId>
-
-    <name>echoes-gui-consumer-quality-assurance</name>
+    <artifactId>echoes-gui-consumer-transformation</artifactId>
+    <name>echoes-gui-consumer-transformation</name>
     <version>0.0.2</version>
 
     <properties>
@@ -66,19 +65,7 @@
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
-            <artifactId>binding</artifactId>
-            <version>1.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.europeana.corelib</groupId>
-            <artifactId>corelib-edm-definitions</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.csuc</groupId>
-            <artifactId>rdf-format</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
+            <artifactId>transformation</artifactId>
         </dependency>
     </dependencies>
 
@@ -96,7 +83,7 @@
                     <transformers>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>org.csuc.echoes.gui.consumer.quality.cli.Consumer</mainClass>
+                            <mainClass>org.csuc.echoes.gui.consumer.recollect.cli.Consumer</mainClass>
                         </transformer>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
