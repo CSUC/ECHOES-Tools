@@ -26,7 +26,7 @@ public class ProducerAndConsumerConfigTest {
 
         assertEquals("analyse", rabbitMQConfig.getAnalyse().getString("endpoint"));
         assertEquals("recollect", rabbitMQConfig.getRecollect().getString("endpoint"));
-        assertEquals("validation", rabbitMQConfig.getValidation().getString("endpoint"));
+        assertEquals("quality", rabbitMQConfig.getQuality().getString("endpoint"));
         assertEquals("zip", rabbitMQConfig.getZip().getString("endpoint"));
 
 

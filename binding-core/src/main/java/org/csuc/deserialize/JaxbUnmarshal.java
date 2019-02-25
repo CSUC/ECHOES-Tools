@@ -191,8 +191,8 @@ public class JaxbUnmarshal {
 			u.setEventHandler( vec );
 			u.setSchema(addSchema(classType));
 
-			// turn off the JAXB provider's default validation mechanism to
-			// avoid duplicate validation
+			// turn off the JAXB provider's default quality mechanism to
+			// avoid duplicate quality
 			u.setValidating( false );
 
 			// unmarshal

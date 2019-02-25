@@ -9,14 +9,14 @@ public class Queues {
 
     private Config analyse;
     private Config recollect;
-    private Config validation;
+    private Config quality;
     private Config zip;
     private Config loader;
 
     public Queues(Config config) {
         analyse = config.getConfig("analyse");
         recollect = config.getConfig("recollect");
-        validation = config.getConfig("validation");
+        quality = config.getConfig("quality");
         zip = config.getConfig("zip");
         loader = config.getConfig("loader");
     }
@@ -37,12 +37,12 @@ public class Queues {
         this.recollect = recollect;
     }
 
-    public Config getValidation() {
-        return validation;
+    public Config getQuality() {
+        return quality;
     }
 
-    public void setValidation(Config validation) {
-        this.validation = validation;
+    public void setQuality(Config quality) {
+        this.quality = quality;
     }
 
     public Config getZip() {

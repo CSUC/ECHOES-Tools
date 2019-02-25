@@ -27,8 +27,8 @@
             <appender-ref ref="RollingFile" level="INFO"/>
         </Logger>
 
-        <Logger name="org.eclipse.jetty" level="DEBUG" additivity="true">
-            <appender-ref ref="RollingFile" level="DEBUG"/>
+        <Logger name="org.eclipse.jetty" level="INFO" additivity="true">
+            <appender-ref ref="RollingFile" level="INFO"/>
         </Logger>
 
         <Root level="INFO" additivity="false">

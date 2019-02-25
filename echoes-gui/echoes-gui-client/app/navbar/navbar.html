@@ -22,11 +22,15 @@
                 </li>
                 <li ui-sref-active="active">
                     <a ng-if="vm.auth.isAuthenticated()"
-                       ui-sref="recollect">Recollect <span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span></a>
+                       ui-sref="recollect">Transformation</a>
                 </li>
                 <li ui-sref-active="active">
                     <a ng-if="vm.auth.isAuthenticated()"
-                       ui-sref="loader">Loader</a>
+                       ui-sref="quality">Quality assurance</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ng-if="vm.auth.isAuthenticated()"
+                       ui-sref="loader">Publish</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-if="vm.auth.isAuthenticated()">

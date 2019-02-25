@@ -168,7 +168,7 @@ public class Loader {
 
             Key<org.csuc.entities.Loader> key = loaderDAO.insert(loader);
 
-            logger.debug(key);
+            logger.info(key);
 
             HashMap<String, Object> message = new HashMap<>();
 
@@ -227,6 +227,39 @@ public class Loader {
             Files.deleteIfExists(Paths.get(applicationConfig.getParserFolder(id)));
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/user/{user}/count")
+    @Produces(APPLICATION_JSON + "; charset=utf-8")
+    public Response getLoaderCountByUser(@PathParam("user") String user,
+                                    @HeaderParam("Authorization") String authorization) {
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
+        try {
+            authoritzation.execute();
+        } catch (JwkException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        try {
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
+            Long result = loaderDAO.countByUser(user);
+
+            logger.info(result);
+
+            return Response.status(Response.Status.ACCEPTED).entity(result).build();
         } catch (Exception e) {
             logger.error(e);
             return Response.status(Response.Status.BAD_REQUEST).build();

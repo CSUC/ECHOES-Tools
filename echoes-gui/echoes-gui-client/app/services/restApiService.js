@@ -37,19 +37,39 @@
                         'method', 'type', 'format', 'user', 'value'
                     ]);
                     data.url = this.getApiBaseUrl() + 'analyse/create';
-                    break
+                    break;
                 case "createRecollect":
                     data = this.fillDataInObjectByList(data, _params, [
                         'host', 'set', 'metadataPrefix', 'from', 'until', 'granularity', 'properties', 'user', 'format', 'schema'
                     ]);
                     data.url = this.getApiBaseUrl() + 'recollect/create';
-                    break
+                    break;
+                case "createQuality":
+                    data = this.fillDataInObjectByList(data, _params, [
+                        'dataset', 'format', 'user'
+                    ]);
+                    data.url = this.getApiBaseUrl() + 'quality/create';
+                    break;
+                case "deleteQuality":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id + '/delete';
+                    break;
+                case "getQualityStatusAggregation":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/status/aggregation';
+                    break;
+                case "getQuality":
+                    data = this.fillDataInObjectByList(data, _params, [
+                        'page', 'pagesize'
+                    ]);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user;
+                    break;
                 case "createLoader":
                     data = this.fillDataInObjectByList(data, _params, [
                         'endpoint', 'contentType', 'contextUri', 'uuid', 'user'
                     ]);
                     data.url = this.getApiBaseUrl() + 'loader/create';
-                    break
+                    break;
                 case "deleteAnalyse":
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id + '/delete';
@@ -79,6 +99,14 @@
                 case "recollectById":
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'recollect/user/' + _params.user + '/id/' + _params.id;
+                    break;
+                case "qualityById":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id;
+                    break;
+                case "qualityErrors":
+                    data = this.fillDataInObjectByList(data, _params, ['pagesize']);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id + '/error/' + _params.page;
                     break;
                 case "getRecollectStatusAggregation":
                     data = this.fillDataInObjectByList(data, _params, [
@@ -138,6 +166,10 @@
                 case "getStatusLastDay":
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'dashboard/user/' + _params.user + '/status/' + _params.status + '/lastDay';
+                    break;
+                case "loaderCountByUser":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'loader/user/' + _params.user + '/count';
                     break;
             }
             return data;

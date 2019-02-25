@@ -40,7 +40,7 @@ public class JibxUnMarshall {
 			element = unmarshaller.unmarshalDocument(ins, enc.toString());
 			
 		}catch (JiBXException e) {
-			error = e;			
+			error = e;
 		} 
 	}
 	
