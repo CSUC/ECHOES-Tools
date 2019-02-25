@@ -5,11 +5,11 @@ import com.typesafe.config.Config;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.csuc.analyse.core.factory.*;
-import org.csuc.analyse.core.strategy.dom.Dom;
-import org.csuc.analyse.core.strategy.dom4j.Dom4j;
-import org.csuc.analyse.core.strategy.sax.Sax;
-import org.csuc.analyse.core.strategy.xslt.Xslt;
+import org.csuc.analyse.factory.*;
+import org.csuc.analyse.strategy.dom.Dom;
+import org.csuc.analyse.strategy.dom4j.Dom4j;
+import org.csuc.analyse.strategy.sax.Sax;
+import org.csuc.analyse.strategy.xslt.Xslt;
 import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
 import org.csuc.dao.AnalyseErrorDAO;
@@ -34,7 +34,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
 /**
