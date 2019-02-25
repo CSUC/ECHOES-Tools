@@ -153,7 +153,7 @@
                   }).then(function (_data) {
                     $log.info(_data);
                     ngDialog.close();
-                    $state.go($state.current, {}, {reload: true});
+                    $state.go("loader", {}, {reload: true});
                   }).catch(function (_data) {
                     $log.info(_data);
                     //$state.go("404");
