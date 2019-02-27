@@ -6,6 +6,7 @@ import org.csuc.adapter.LocalDateTimeAdapter;
 import org.mongodb.morphia.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,8 +21,17 @@ public class QualityDetails {
     @Id
     private String _id;
 
+    @Property("isValidSchema")
+    private boolean isValidSchema = false;
+
+    @Property("isValidSchematron")
+    private boolean isValidSchematron = false;
+
     @Embedded
     private Schema schema;
+
+    @Embedded
+    private List<Schematron> schematron;
 
     @Reference("quality")
     private Quality quality;
@@ -52,6 +62,30 @@ public class QualityDetails {
 
     public void setQuality(Quality quality) {
         this.quality = quality;
+    }
+
+    public boolean isValidSchema() {
+        return isValidSchema;
+    }
+
+    public void setValidSchema(boolean validSchema) {
+        isValidSchema = validSchema;
+    }
+
+    public boolean isValidSchematron() {
+        return isValidSchematron;
+    }
+
+    public void setValidSchematron(boolean validSchematron) {
+        isValidSchematron = validSchematron;
+    }
+
+    public List<Schematron> getSchematron() {
+        return schematron;
+    }
+
+    public void setSchematron(List<Schematron> schematron) {
+        this.schematron = schematron;
     }
 
     @Override

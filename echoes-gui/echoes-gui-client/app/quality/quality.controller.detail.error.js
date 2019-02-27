@@ -85,5 +85,24 @@
                 }
             });
         }
+
+
+        vm.schematron = function (data) {
+            ngDialog.open({
+                template: 'schematron.tpl.html',
+                data: data,
+                className: 'ngdialog-theme-default',
+                width: '70%'
+            });
+        }
+
+        vm.schema = function (data) {
+            ngDialog.open({
+                template: 'schema.tpl.html',
+                data: data,
+                className: 'ngdialog-theme-default',
+                width: '70%'
+            });
+        }
     }
 })();

@@ -130,20 +130,6 @@
                             {key:'', value:''},
                         ];
 
-                        $scope.isAlreadySelected = function(k, $index){
-                            console.log(k)
-                            var isSelected = false;
-                            angular.forEach($scope.properties, function(value, i){
-                                if ($index != i && !isSelected){
-                                    if (value.key == k){
-                                        isSelected = true;
-                                        $scope.options.properties.splice($index, 1);
-                                    }
-                                }
-                            });
-                            return isSelected;
-                        }
-
                         $scope.submitForm = function (isValid) {
                             var properties = {};
                             if (isValid) {
@@ -155,7 +141,7 @@
                                     if(value.key != null && value.value != null){
                                         var k = value.key;
                                         var v = value.value;
-                                        if(!properties.hasOwnProperty([k]))
+                                        if(!properties.hasOwnProperty([k]) && ( k != '' || v != ''))
                                             Object.assign(properties, { [k] : v});
                                     }
                                 });
