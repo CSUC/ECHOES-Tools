@@ -176,6 +176,7 @@ public class Analyse {
             analyse.setValue(analyseRequest.getValue());
             analyse.setStatus(Status.QUEUE);
             analyse.setUser(analyseRequest.getUser());
+            analyse.setFilename(analyseRequest.getFilename());
 
             Key<org.csuc.entities.Analyse> key = analyseDAO.insert(analyse);
 
@@ -188,6 +189,7 @@ public class Analyse {
             message.put("type", ParserType.convert(analyseRequest.getType()));
             message.put("format", ParserFormat.convert(analyseRequest.getFormat()));
             message.put("value", analyse.getValue());
+            message.put("filename", analyse.getFilename());
 
             new Producer(rabbitMQConfig.getAnalyse()).sendMessage(message);
 

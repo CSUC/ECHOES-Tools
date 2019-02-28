@@ -11,6 +11,7 @@ public class AnalyseRequest {
     private String format;
     private String user;
     private String value;
+    private String filename;
 
 
     public AnalyseRequest() {
@@ -54,5 +55,13 @@ public class AnalyseRequest {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

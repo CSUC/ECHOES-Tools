@@ -37,7 +37,9 @@
     "chart.js": "2.7.2",
     "cors": "^2.8.1",
     "dotenv": "^4.0.0",
+    "dropzone": "^5.4.0",
     "express": "^4.14.0",
+    "express-fileupload": "^1.1.1-alpha.3",
     "express-jwt": "^5.1.0",
     "express-jwt-authz": "^1.0.0",
     "jwks-rsa": "^1.1.1",
@@ -45,11 +47,13 @@
     "moment": "^2.24.0",
     "ng-dialog": "1.4.0",
     "ng-table": "3.0.1",
+    "ngdropzone": "^2.0.2",
     "npm-run-all": "^4.0.0",
     "particlesjs": "^2.2.3",
     "request": "^2.87.0",
     "requestify": "^0.2.5",
-    "util": "^0.11.0"
+    "util": "^0.11.0",
+    "events": "^3.0.0"
   },
   "devDependencies": {
     "npm-check": "^5.5.2"

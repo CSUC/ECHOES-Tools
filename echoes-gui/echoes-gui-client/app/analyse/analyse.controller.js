@@ -119,8 +119,6 @@
                     width: '60%',
                     data: vm,
                     controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
-                        $log.info(vm.profile.sub)
-
                         $scope.options = {
                             methods: ["sax", "dom4j", "dom", "xslt"],
                             formats: ["xml", "json"],
@@ -136,7 +134,8 @@
                                     'type': $scope.model.type,
                                     'format': $scope.model.format,
                                     'user': vm.profile.sub,
-                                    'value': $scope.model.text
+                                    'filename': ( typeof $scope.model.file === 'undefined' ) ? null : $scope.model.file.name,
+                                    'value': ( typeof $scope.model.text === 'undefined' ) ? $scope.model.file.tempFilePath : $scope.model.text
                                 };
                                 $log.info(data);
 
@@ -145,7 +144,8 @@
                                     method: $scope.model.method,
                                     type: $scope.model.type,
                                     format: $scope.model.format,
-                                    value: $scope.model.text
+                                    filename: ( typeof $scope.model.file === 'undefined' ) ? null : $scope.model.file.name,
+                                    value: ( typeof $scope.model.text === 'undefined' ) ? $scope.model.file.tempFilePath : $scope.model.text
                                 }).then(function (_data) {
                                     $log.info(_data);
 
@@ -158,8 +158,24 @@
                                 });
                             }
                         };
+
+                        $scope.dzCallbacks = {
+                            'addedfile' : function(file){
+                                $log.log('dzCallbacks file added', file);
+                            },
+                            'success': function (file, response) {
+                                $log.log('dzCallbacks success', file, response);
+                                $scope.model.file = response
+                            }
+                        };
+
+
+                        //Apply methods for dropzone
+                        //Visit http://www.dropzonejs.com/#dropzone-methods for more methods
+                        $scope.dzMethods = {};
                     }]
                 });
         };
+
     }
 })();
