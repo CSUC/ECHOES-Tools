@@ -34,7 +34,7 @@
                     break;
                 case "createAnalyse":
                     data = this.fillDataInObjectByList(data, _params, [
-                        'method', 'type', 'format', 'user', 'value'
+                        'method', 'type', 'format', 'user', 'value', 'filename'
                     ]);
                     data.url = this.getApiBaseUrl() + 'analyse/create';
                     break;

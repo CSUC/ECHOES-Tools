@@ -6,7 +6,8 @@ const express = require('express'),
     bodyParser  = require("body-parser"),
     methodOverride = require("method-override"),
     fs = require('fs'),
-    util = require('util');
+    util = require('util'),
+    fileUpload = require('express-fileupload');
 
 require('dotenv').config();
 
@@ -20,6 +21,13 @@ app.use('/', express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : '/tmp/',
+    limits: { fileSize: 50 * 1024 * 1024 },
+    safeFileNames: true,
+    preserveExtension: true
+}));
 
 
 app.get('/rest/api/analyse/user/:user/id/:id', function (req, res, next) {
@@ -145,7 +153,8 @@ app.post('/rest/api/analyse/create', function (req, res, next) {
         type: req.body.type,
         format: req.body.format,
         user: req.body.user,
-        value: req.body.value
+        value: req.body.value,
+        filename: req.body.filename
     }
 
     request({
@@ -768,6 +777,15 @@ app.get('/rest/api/loader/user/:user/getDatasets', function (req, res, next) {
         }
     });
 
+});
+
+app.post('/upload', function(req, res) {
+    if (Object.keys(req.files).length == 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    let dropzone1 = req.files.file;
+    console.log(req.files.file)
+    res.status(200).send(req.files.file)
 });
 
 

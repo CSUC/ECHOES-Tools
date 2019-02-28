@@ -3,7 +3,8 @@
     'use strict';
 
     angular
-        .module('app', ['auth0.auth0', 'ui.bootstrap', 'angular-jwt', 'ui.router', 'angular-uuid', 'ngTable', 'ngDialog', 'ngMessages','chart.js'])
+        .module('app', ['auth0.auth0', 'ui.bootstrap', 'angular-jwt', 'ui.router', 'angular-uuid', 'ngTable', 'ngDialog', 'ngMessages','chart.js',
+        'thatisuday.dropzone'])
         .config(config);
 
     config.$inject = [
@@ -14,7 +15,8 @@
         'angularAuth0Provider',
         'jwtOptionsProvider',
         'ChartJsProvider',
-        'ngDialogProvider'
+        'ngDialogProvider',
+        'dropzoneOpsProvider'
     ];
 
     function config($stateProvider,
@@ -24,7 +26,8 @@
                     angularAuth0Provider,
                     jwtOptionsProvider,
                     ChartJsProvider,
-                    ngDialogProvider
+                    ngDialogProvider,
+                    dropzoneOpsProvider
                     ) {
 
         $stateProvider
@@ -159,6 +162,20 @@
                     }, 5000)
                 }
             });
+
+        dropzoneOpsProvider.setOptions({
+            url: '/upload',
+            maxFiles: '1',
+            maxFilesize: 1024,
+            acceptedFiles: '.xml',
+            addRemoveLinks: true,
+            dictDefaultMessage: 'Click to add or drop XML',
+            dictRemoveFile: 'Remove XML',
+            dictResponseError: 'Could not upload this XML',
+            autoDiscover: false,
+            createImageThumbnails: false,
+            previewTemplate: '<div class="uploaded-image"><span data-dz-name></span> <strong class="dz-size" data-dz-size></strong><div class="dz-error-message" data-dz-errormessage></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div></div>'
+        });
 
         // Initialization for the angular-auth0 library
         angularAuth0Provider.init({
