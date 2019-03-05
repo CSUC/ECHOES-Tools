@@ -1,16 +1,22 @@
 package org.csuc.analyse.factory;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.schedulers.Schedulers;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.strategy.ParserMethod;
 import org.csuc.deserialize.JaxbUnmarshal;
+import org.javatuples.Pair;
 import org.openarchives.oai._2.OAIPMHtype;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -36,14 +42,45 @@ public class ParserOAI implements Parser {
 
     @Override
     public void execute(URL url)  throws Exception {
-        OAIPMHtype OAIPMHtype =
-                (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+        Observable<Pair<ParserMethod, URL>> observable = Observable.create(emitter -> {
+            iterate(null, url, emitter);
 
-        method.parser(url);
-        if (OAIPMHtype.getListRecords().getResumptionToken() != null) {
-            if (!OAIPMHtype.getListRecords().getResumptionToken().getValue().isEmpty()) {
-                logger.info(iter.incrementAndGet() + "\t" + OAIPMHtype.getListRecords().getResumptionToken().getValue());
-                execute(next(url, OAIPMHtype.getListRecords().getResumptionToken().getValue()));
+            emitter.onComplete();
+        });
+
+        AtomicInteger batch = new AtomicInteger(0);
+        observable
+                .doOnNext(i -> logger.info(String.format("#%s   Emiting  %s in %s", iter.incrementAndGet(), i, Thread.currentThread().getName())))
+                .observeOn(Schedulers.io())
+                .subscribe(
+                        (Pair<ParserMethod, URL> l) -> {
+                            logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
+                            l.getValue0().parser(l.getValue1());
+                        },
+                        e -> logger.error("Error: " + e),
+                        () -> logger.info(String.format("Completed "))
+                );
+        Thread.sleep(3000);
+    }
+
+
+    /**
+     *
+     * @param oaipmHtype
+     * @param url
+     * @param emitter
+     * @throws MalformedURLException
+     */
+    private void iterate(OAIPMHtype oaipmHtype, URL url, ObservableEmitter<Pair<ParserMethod, URL>> emitter) throws MalformedURLException {
+        //if(Objects.isNull(oaipmHtype)) {
+        oaipmHtype =
+                    (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+        emitter.onNext(new Pair<>(method, url));
+
+        if (oaipmHtype.getListRecords().getResumptionToken() != null) {
+            if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty()) {
+                //logger.info("{}\t{}", iter.incrementAndGet(), next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()));
+                iterate(oaipmHtype, next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()), emitter);
             }
         }
     }
