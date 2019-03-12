@@ -43,7 +43,7 @@
                                         <i class="fas fa-circle text-muted"></i>
                                     </span>
 
-                                    <span ng-if="data.download > 0 && data.download < data.size && data.status == 'END'">
+                                    <span ng-if="( ( data.download > 0 && data.download < data.size || data.download > 0 &&  data.size == 0) && data.status == 'END')">
                                         <i class="fas fa-circle text-muted"></i>
                                         <i class="fas fa-circle text-muted" ng-style="{'color': 'orange'}"></i>
                                         <i class="fas fa-circle text-muted"></i>
