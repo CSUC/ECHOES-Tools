@@ -95,7 +95,8 @@ public class ArgsBean {
     private String resumptionToken;
 
     @Argument(index = 0, multiValued = true, handler = MapOptionHandler.class,
-            metaVar = "{edmType | provider | rights | language | dataProvider ... }")
+            metaVar = "{edmType | provider | rights | language | dataProvider}",
+            usage = "Example: { edmType=IMAGE,language=ca ... }")
     private Map<String, String> arguments = new HashMap<>();
 
     @Option(name = "-o", aliases = "--out", usage = "out")

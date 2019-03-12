@@ -216,22 +216,22 @@ public class DC2EDM extends RDF implements EDM {
                             break;
                         }
                         case "rights": {
-//                            Rights rights = new Rights();
-//                            EuropeanaType.Choice c = new EuropeanaType.Choice();
-//
-//                            if(isUri(elementType.getValue().getValue())){
-//                                Resource resource = new Resource();
-//                                resource.setResource(elementType.getValue().getValue());
-//                                rights.setResource(resource);
-//                                rights.setString("");
-//
-//                                c.setRights(rights);
-//                            }else {
-//                                rights.setString(elementType.getValue().getValue());
-//                                c.setRights(rights);
-//                            }
-//
-//                            provided.getChoiceList().add(c);
+                            Rights rights = new Rights();
+                            EuropeanaType.Choice c = new EuropeanaType.Choice();
+
+                            if(isUri(elementType.getValue().getValue())){
+                                Resource resource = new Resource();
+                                resource.setResource(elementType.getValue().getValue());
+                                rights.setResource(resource);
+                                rights.setString("");
+
+                                c.setRights(rights);
+                            }else {
+                                rights.setString(elementType.getValue().getValue());
+                                c.setRights(rights);
+                            }
+
+                            provided.getChoiceList().add(c);
                             break;
                         }
                         case "title": {

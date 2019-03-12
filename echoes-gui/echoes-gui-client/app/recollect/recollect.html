@@ -74,7 +74,7 @@
                                 </td>
                                 <td title="'quality'">
                                     <a ng-click="sendQuality(data)" ng-if="data.status == 'END'
-                                     && ( data.download > 0 && data.download < data.size || data.download == data.size && data.download > 0 )">
+                                     && ( data.download > 0 && data.download < data.size || data.download == data.size && data.download > 0 || data.download > 0 &&  data.size == 0 )">
                                         <span class="glyphicon glyphicon-send"></span>
                                     </a>
                                 </td>
