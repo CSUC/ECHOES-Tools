@@ -1,13 +1,13 @@
-package org.csuc.dao.impl;
+package org.csuc.dao.impl.loader;
 
 import com.mongodb.AggregationOptions;
 import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
-import org.csuc.dao.LoaderDAO;
-import org.csuc.entities.Loader;
-import org.csuc.entities.LoaderDetails;
+import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.entities.loader.Loader;
+import org.csuc.entities.loader.LoaderDetails;
 import org.csuc.utils.Aggregation;
 import org.csuc.utils.Status;
 import org.mongodb.morphia.Datastore;
@@ -234,13 +234,14 @@ public class LoaderDAOImpl extends BasicDAO<Loader, ObjectId> implements LoaderD
 
     @Override
     public WriteResult deleteById(String objectId) throws Exception {
-        Query<LoaderDetails> loaderDetailsQuery = getDatastore().createQuery(LoaderDetails.class);
-        loaderDetailsQuery.criteria("loader").equals(getDatastore().getKey(getById(objectId)));
+        Loader loader = getById(objectId);
+        Query<LoaderDetails> query = getDatastore().createQuery(LoaderDetails.class);
 
-        getDatastore().delete(loaderDetailsQuery);
+        query.criteria("loader").equal(loader);
 
-        if(Objects.isNull(objectId))    throw new Exception();
-        WriteResult writeResult = delete(getById(objectId));
+        getDatastore().delete(query);
+
+        WriteResult writeResult = getDatastore().delete(loader);
         if(Objects.isNull(writeResult))    throw new Exception();
 
         logger.debug("[{}]\t[deleteById] - objectId: {}", LoaderDAOImpl.class.getSimpleName(), objectId);

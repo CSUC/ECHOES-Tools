@@ -40,7 +40,9 @@
                 </tr>
                 <tr>
                     <td>Data uuid</td>
-                    <td>{{vm.data.uuid}}</td>
+                    <td>
+                        <a ui-sref="quality-detail({_id:vm.data.uuid})" target="_blank">{{vm.data.uuid}}</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Data size</td>
@@ -49,6 +51,15 @@
                 <tr>
                     <td>Loader size</td>
                     <td>{{vm.data.total}}</td>
+                </tr>
+                <tr>
+                    <td>Loader error-size</td>
+                    <td ng-if="vm.data.size - vm.data.total > 0">
+                        <a ui-sref="loader-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.size - vm.data.total}}</a>
+                    </td>
+                    <td ng-if="vm.data.size - vm.data.total == 0">
+                       0
+                    </td>
                 </tr>
                 </tbody>
             </table>

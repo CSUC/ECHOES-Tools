@@ -21,6 +21,9 @@ public class QualityDetails {
     @Id
     private String _id;
 
+    @Property("value")
+    private String value;
+
     @Property("isValidSchema")
     private boolean isValidSchema = false;
 
@@ -86,6 +89,14 @@ public class QualityDetails {
 
     public void setSchematron(List<Schematron> schematron) {
         this.schematron = schematron;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

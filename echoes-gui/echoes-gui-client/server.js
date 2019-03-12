@@ -363,6 +363,26 @@ app.get('/rest/api/quality/user/:user/id/:id/error/:page', function (req, res, n
 
 });
 
+app.get('/rest/api/loader/user/:user/id/:id/error/:page', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/loader/user/` +req.params.user + '/id/' + req.params.id + '/error/'+ req.params.page + '?pagesize=' + req.query.pagesize
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        else{
+            res.status(400).end();
+        }
+    });
+
+});
+
 app.get('/rest/api/recollect/user/:user/status/aggregation', function (req, res, next) {
     var headers = {
         'Authorization': req.headers.authorization

@@ -57,7 +57,7 @@
                                     <a ui-sref="loader-detail({_id: '{{data._id}}'})" ng-if="data.status == 'END'">{{data._id}}</a>
                                 </td>
                                 <td title="'dataset'">
-                                    {{data.uuid}}
+                                    <a ui-sref="quality-detail({_id: '{{data.uuid}}'})" target="_blank">{{data.uuid}}</a>
                                 </td>
                                 <td title="'timestamp'">
                                     {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}

@@ -10,7 +10,7 @@
 
     function loaderDetail($scope, authService, $stateParams, echoesChart, restApi, $log) {
         var vm = this;
-        vm.title = 'Loader-detail';
+        vm.title = 'Publish-detail';
         vm.auth = authService;
         vm.profile;
         vm._id = $stateParams._id;

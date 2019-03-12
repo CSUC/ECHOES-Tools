@@ -3,6 +3,7 @@ package org.csuc.echoes.gui.consumer.quality;
 import com.rabbitmq.client.*;
 import com.typesafe.config.Config;
 import eu.europeana.corelib.definitions.jibx.RDF;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -127,6 +128,8 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
                                 logger.debug("{}:    schema:     {}", f.getFileName(), schema.isValid());
 
                                 QualityDetails qualityDetails = new QualityDetails();
+
+                                qualityDetails.setValue(FilenameUtils.getName(f.getFileName().toString()));
 
                                 if (!schema.isValid()){
                                     logger.debug("\tMessage:  {}", schema.getError().getMessage());

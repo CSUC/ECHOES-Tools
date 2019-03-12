@@ -58,7 +58,7 @@
                                        ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
                                 </td>
                                 <td title="'dataset'">
-                                    {{data.data}}
+                                    <a ui-sref="recollect-detail({_id: '{{data.data}}'})" target="_blank">{{data.data}}</a>
                                 </td>
                                 <td title="'timestamp'">
                                     {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}

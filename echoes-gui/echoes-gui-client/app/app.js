@@ -153,6 +153,13 @@
                 },
                 onEnter: checkAuthentication
             })
+            .state('loader-error', {
+                url: '/loader/:_id/error/:page?pagesize',
+                controller: 'LoaderControllerError',
+                templateUrl: 'app/loader/loader.detail.error.html',
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
+            })
             .state('404', {
                 url: "/404",
                 templateUrl: "404.html",

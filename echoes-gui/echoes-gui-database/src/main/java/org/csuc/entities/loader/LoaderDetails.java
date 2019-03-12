@@ -1,9 +1,8 @@
-package org.csuc.entities;
+package org.csuc.entities.loader;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import org.csuc.adapter.LocalDateTimeAdapter;
-import org.csuc.utils.Status;
 import org.mongodb.morphia.annotations.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,9 @@ public class LoaderDetails {
 
     @Id
     private String _id;
+
+    @Property("value")
+    private String value;
 
     @Property("status-code")
     private int status;
@@ -68,6 +70,14 @@ public class LoaderDetails {
 
     public void setLoader(Loader loader) {
         this.loader = loader;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -1,9 +1,8 @@
-package org.csuc.dao;
+package org.csuc.dao.loader;
 
 import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;
-import org.csuc.entities.Analyse;
-import org.csuc.entities.Loader;
+import org.csuc.entities.loader.Loader;
 import org.csuc.utils.Aggregation;
 import org.csuc.utils.Status;
 

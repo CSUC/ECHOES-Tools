@@ -1,4 +1,4 @@
-package org.csuc.entities;
+package org.csuc.entities.loader;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;

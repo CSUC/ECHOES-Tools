@@ -4,16 +4,16 @@
 
     angular
         .module('app')
-        .controller('QualityControllerError', qualityError);
+        .controller('LoaderControllerError', loaderControllerError);
 
-    qualityError.$inject = ['$scope', 'authService', 'uuid', 'NgTableParams', '$http', '$log', '$stateParams', '$interval',
+    loaderControllerError.$inject = ['$scope', 'authService', 'uuid', 'NgTableParams', '$http', '$log', '$stateParams', '$interval',
         'echoesChart', 'restApi', 'ngDialog', '$state', '$timeout'];
 
-    function qualityError($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
+    function loaderControllerError($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                           echoesChart, restApi, ngDialog, $state) {
         var vm = this;
 
-        vm.title = 'Quality-detail-error';
+        vm.title = 'Publish-detail-error';
         vm.auth = authService;
 
         vm.data;
@@ -39,7 +39,7 @@
         }
 
         function run() {
-            restApi.qualityErrors({
+            restApi.loaderErrors({
                 user: vm.profile.sub,
                 id: vm._id,
                 page: vm.page,
@@ -71,7 +71,7 @@
                     vm.page = params.page();
                     vm.count = params.count();
 
-                    return restApi.qualityErrors({
+                    return restApi.loaderErrors({
                         id: vm._id,
                         user: vm.profile.sub,
                         pagesize: vm.count,
@@ -81,27 +81,8 @@
                     }).catch(function (_data) {
                         $log.info(_data);
                     })
-                        .finally(function () { $state.go("quality-error", {_id: vm._id, page: vm.page, pagesize: vm.count}); });
+                        .finally(function () { $state.go("loader-error", {_id: vm._id, page: vm.page, pagesize: vm.count}); });
                 }
-            });
-        }
-
-
-        vm.schematron = function (data) {
-            ngDialog.open({
-                template: 'schematron.tpl.html',
-                data: data,
-                className: 'ngdialog-theme-default',
-                width: '70%'
-            });
-        }
-
-        vm.schema = function (data) {
-            ngDialog.open({
-                template: 'schema.tpl.html',
-                data: data,
-                className: 'ngdialog-theme-default',
-                width: '70%'
             });
         }
     }

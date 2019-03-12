@@ -14,13 +14,13 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
-import org.csuc.dao.LoaderDAO;
-import org.csuc.dao.impl.LoaderDAOImpl;
+import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.dao.impl.loader.LoaderDAOImpl;
 import org.csuc.dao.impl.quality.QualityDAOImpl;
 import org.csuc.dao.quality.QualityDAO;
 import org.csuc.echoes.gui.consumer.publish.utils.Time;
-import org.csuc.entities.Loader;
-import org.csuc.entities.LoaderDetails;
+import org.csuc.entities.loader.Loader;
+import org.csuc.entities.loader.LoaderDetails;
 import org.csuc.entities.quality.Quality;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
@@ -136,7 +136,9 @@ public class PublishQueueConsumer extends EndPoint implements Runnable, Consumer
                                 HttpEntity resEntity = response.getEntity();
 
                                 if (resEntity != null) {
-                                    LoaderDetails loaderDetails = new LoaderDetails(FilenameUtils.getBaseName(f.getFileName().toString()));
+                                    LoaderDetails loaderDetails = new LoaderDetails();
+
+                                    loaderDetails.setValue(FilenameUtils.getName(f.getFileName().toString()));
                                     loaderDetails.setLoader(loader);
                                     loaderDetails.setStatus(response.getStatusLine().getStatusCode());
                                     loaderDetails.setMessage(EntityUtils.toString(resEntity));
