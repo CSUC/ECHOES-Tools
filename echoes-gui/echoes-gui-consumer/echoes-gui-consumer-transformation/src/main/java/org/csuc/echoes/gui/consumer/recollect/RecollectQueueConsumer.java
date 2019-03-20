@@ -3,6 +3,7 @@ package org.csuc.echoes.gui.consumer.recollect;
 import com.rabbitmq.client.*;
 import com.typesafe.config.Config;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
 import org.EDM.Transformations.formats.utils.SchemaType;
@@ -57,7 +58,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class RecollectQueueConsumer extends EndPoint implements Runnable, Consumer {
 
-    private Logger logger = LogManager.getLogger(RecollectQueueConsumer.class);
+    private static Logger logger = LogManager.getLogger(RecollectQueueConsumer.class);
 
     private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
     private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
@@ -162,13 +163,20 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
 
                     logger.info(path);
 
+                    int coreCount = Runtime.getRuntime().availableProcessors();
+                    AtomicInteger assigner = new AtomicInteger(0);
+
                     observable
                             .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
+                            .groupBy(i -> assigner.incrementAndGet() % coreCount)
+                            .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                    .map(i2 -> intenseCalculation(i2, path, recollect.getProperties(), FormatType.convert(recollect.getFormat())))
+                            )
                             .subscribe(
                                     (Download l) -> {
                                         if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
                                         logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                        l.execute(path, recollect.getProperties(), FormatType.convert(recollect.getFormat()));
+                                        //l.execute(path, recollect.getProperties(), FormatType.convert(recollect.getFormat()));
                                     },
                                     e -> {
                                         logger.error("Error: " + e);
@@ -219,6 +227,14 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 }
             }
         });
+    }
+
+    public static <T> T intenseCalculation(T value, Path dest, Map<String, String> arguments, FormatType formatType) throws Exception {
+        logger.info("Calculating in {} value {}", Thread.currentThread().getName(), value);
+
+        ((Download) value).execute(dest, arguments, formatType);
+
+        return value;
     }
 
     private void appendError(org.csuc.entities.Recollect recollect, String e) throws IOException {
