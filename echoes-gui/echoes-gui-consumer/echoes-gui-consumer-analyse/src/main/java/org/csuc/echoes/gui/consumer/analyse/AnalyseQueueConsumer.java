@@ -6,7 +6,6 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.factory.*;
-import org.csuc.analyse.strategy.dom.Dom;
 import org.csuc.analyse.strategy.dom4j.Dom4j;
 import org.csuc.analyse.strategy.sax.Sax;
 import org.csuc.analyse.strategy.xslt.Xslt;
@@ -110,9 +109,6 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
                     if (ParserMethod.SAX.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
                     }
-                    if (ParserMethod.DOM.equals(map.get("method"))) {
-                        factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
-                    }
                     if (ParserMethod.XSLT.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
                     }
@@ -124,9 +120,6 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
                     if (ParserMethod.SAX.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserURL(new Sax()));
                     }
-                    if (ParserMethod.DOM.equals(map.get("method"))) {
-                        factory = FactoryParser.createFactory(new ParserURL(new Dom()));
-                    }
                     if (ParserMethod.XSLT.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
                     }
@@ -137,9 +130,6 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
                     }
                     if (ParserMethod.SAX.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
-                    }
-                    if (ParserMethod.DOM.equals(map.get("method"))) {
-                        factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
                     }
                     if (ParserMethod.XSLT.equals(map.get("method"))) {
                         factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));

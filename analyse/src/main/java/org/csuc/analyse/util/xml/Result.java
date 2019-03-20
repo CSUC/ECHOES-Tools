@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Objects;
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonRootName("result")
 @JsonPropertyOrder({"node_result","namespace_result"})
-public class Result {
+public class Result implements Serializable {
 
     @XmlElement(name="node_result")
     private NodeResult node;

@@ -120,7 +120,7 @@
                     data: vm,
                     controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
                         $scope.options = {
-                            methods: ["sax", "dom4j", "dom", "xslt"],
+                            methods: ["sax", "dom4j", "xslt"],
                             formats: ["xml", "json"],
                             types: ["oai", "url", "file"]
                         }

@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.analyse.factory.*;
-import org.csuc.analyse.strategy.dom.Dom;
 import org.csuc.analyse.strategy.dom4j.Dom4j;
 import org.csuc.analyse.strategy.sax.Sax;
 import org.csuc.analyse.strategy.xslt.Xslt;
@@ -70,9 +69,6 @@ public class App {
                 if(MethodType.SAX.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserOAI(new Sax()));
                 }
-                if(MethodType.DOM.equals(bean.getMethod())){
-                    factory = FactoryParser.createFactory(new ParserOAI(new Dom()));
-                }
                 if(MethodType.XSLT.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserOAI(new Xslt()));
                 }
@@ -84,9 +80,6 @@ public class App {
                 if(MethodType.SAX.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserURL(new Sax()));
                 }
-                if(MethodType.DOM.equals(bean.getMethod())){
-                    factory = FactoryParser.createFactory(new ParserURL(new Dom()));
-                }
                 if(MethodType.XSLT.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserURL(new Xslt()));
                 }
@@ -97,9 +90,6 @@ public class App {
                 }
                 if(MethodType.SAX.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserFILE(new Sax()));
-                }
-                if(MethodType.DOM.equals(bean.getMethod())){
-                    factory = FactoryParser.createFactory(new ParserFILE(new Dom()));
                 }
                 if(MethodType.XSLT.equals(bean.getMethod())){
                     factory = FactoryParser.createFactory(new ParserFILE(new Xslt()));

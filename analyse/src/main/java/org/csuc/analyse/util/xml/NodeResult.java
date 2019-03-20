@@ -2,25 +2,27 @@ package org.csuc.analyse.util.xml;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author amartinez
  */
 
-public class NodeResult{
+public class NodeResult implements Serializable {
 
-    private List<Node> node;
+    private CopyOnWriteArrayList<Node> node;
 
     @JsonGetter("node")
-    public List<Node> getNode() {
-        if(Objects.isNull(node)) node = new ArrayList<>();
+    public CopyOnWriteArrayList<Node> getNode() {
+        if(Objects.isNull(node)) node = new CopyOnWriteArrayList<>();
         return node;
     }
 
-    public void setNode(List<Node> node) {
+    public void setNode(CopyOnWriteArrayList<Node> node) {
         this.node = node;
     }
 }

@@ -9,8 +9,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -22,9 +21,9 @@ public class FragmentContentHandler extends DefaultHandler{
 	
 	private static Logger logger = LogManager.getLogger(FragmentContentHandler.class.getName());
 			
-	private Map<String,String> mapValues = new HashMap<>();
-	private Map<String,String> namespaces = new HashMap<>();
-    private Map<String, AtomicInteger> mapCount = new HashMap<>();
+	private ConcurrentHashMap<String,String> mapValues = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String,String> namespaces = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, AtomicInteger> mapCount = new ConcurrentHashMap<>();
 	
 	private String resumptionTokenValue = null;
 	private String qName = null; 
@@ -167,31 +166,31 @@ public class FragmentContentHandler extends DefaultHandler{
 		logger.error(e);
 	}
 
-    public Map<String, AtomicInteger> getMapCount() {
-        return mapCount;
-    }
-
-    private void setMapCount(Map<String, AtomicInteger> mapCount) {
-        this.mapCount = mapCount;
-    }
-
-	public Map<String, String> getMapValues() {
+	public ConcurrentHashMap<String, String> getMapValues() {
 		return mapValues;
 	}
 
-	public Map<String, String> getNamespaces() {
-		return namespaces;
-	}
-
-	private void setMapValues(Map<String, String> mapValues) {
+	public void setMapValues(ConcurrentHashMap<String, String> mapValues) {
 		this.mapValues = mapValues;
 	}
 
-    private void setNamespaces(Map<String, String> namespaces) {
+	public ConcurrentHashMap<String, String> getNamespaces() {
+		return namespaces;
+	}
+
+	public void setNamespaces(ConcurrentHashMap<String, String> namespaces) {
 		this.namespaces = namespaces;
 	}
 
-    private String getResumptionTokenValue() {
+	public ConcurrentHashMap<String, AtomicInteger> getMapCount() {
+		return mapCount;
+	}
+
+	public void setMapCount(ConcurrentHashMap<String, AtomicInteger> mapCount) {
+		this.mapCount = mapCount;
+	}
+
+	private String getResumptionTokenValue() {
 		return resumptionTokenValue;
 	}
 

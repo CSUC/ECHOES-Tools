@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
+import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -36,26 +35,30 @@ public class ParserOAI implements Parser {
     }
 
     @Override
-    public void execute(String fileOrPath) throws Exception {
+    public synchronized void execute(String fileOrPath) throws Exception {
         throw new IllegalArgumentException("execute fileOrPath is not valid for ParserFile!");
     }
 
     @Override
-    public void execute(URL url)  throws Exception {
+    public synchronized void execute(URL url)  throws Exception {
         Observable<Pair<ParserMethod, URL>> observable = Observable.create(emitter -> {
-            iterate(null, url, emitter);
+            iterate(url, emitter);
 
             emitter.onComplete();
         });
 
-        AtomicInteger batch = new AtomicInteger(0);
+        AtomicInteger assigner = new AtomicInteger(0);
+        int coreCount = Runtime.getRuntime().availableProcessors();
+
         observable
-                .doOnNext(i -> logger.info(String.format("#%s   Emiting  %s in %s", iter.incrementAndGet(), i, Thread.currentThread().getName())))
-                .observeOn(Schedulers.io())
+                .doOnNext(i -> logger.info(String.format("#%s   Emiting  %s in %s", iter.incrementAndGet(), i.getValue0(), Thread.currentThread().getName())))
+                .groupBy(i -> assigner.incrementAndGet() % coreCount)
+                .flatMap(grp -> grp.observeOn(Schedulers.io())
+                        .map(i2 -> intenseCalculation(i2))
+                )
                 .subscribe(
                         (Pair<ParserMethod, URL> l) -> {
-                            logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                            l.getValue0().parser(l.getValue1());
+                            logger.info("#{} Received in {} value {}", iter.incrementAndGet(), Thread.currentThread().getName(), l.getValue0());
                         },
                         e -> logger.error("Error: " + e),
                         () -> logger.info(String.format("Completed "))
@@ -63,45 +66,48 @@ public class ParserOAI implements Parser {
         Thread.sleep(3000);
     }
 
+    public static <T> T intenseCalculation(T value) throws Exception {
+        logger.info("Calculating {} {} on thread {}", ((Pair<ParserMethod, URL>) value).getValue0(), LocalTime.now(), Thread.currentThread().getName());
+
+        ((Pair<ParserMethod, URL>) value).getValue0().parser(((Pair<ParserMethod, URL>) value).getValue1());
+
+        return value;
+    }
 
     /**
      *
-     * @param oaipmHtype
      * @param url
      * @param emitter
      * @throws MalformedURLException
      */
-    private void iterate(OAIPMHtype oaipmHtype, URL url, ObservableEmitter<Pair<ParserMethod, URL>> emitter) throws MalformedURLException {
-        //if(Objects.isNull(oaipmHtype)) {
-        oaipmHtype =
+    private void iterate(URL url, ObservableEmitter<Pair<ParserMethod, URL>> emitter) throws MalformedURLException {
+        OAIPMHtype oaipmHtype =
                     (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+
         emitter.onNext(new Pair<>(method, url));
 
-        if (oaipmHtype.getListRecords().getResumptionToken() != null) {
-            if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty()) {
-                //logger.info("{}\t{}", iter.incrementAndGet(), next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()));
-                iterate(oaipmHtype, next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()), emitter);
-            }
-        }
+        if (oaipmHtype.getListRecords().getResumptionToken() != null)
+            if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty())
+                iterate(next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()), emitter);
     }
 
     @Override
-    public void XML(OutputStream outs) {
+    public synchronized void XML(OutputStream outs) {
         method.createXML(outs);
     }
 
     @Override
-    public void HDFS_XML(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException{
+    public synchronized void HDFS_XML(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException{
         method.createHDFS_XML(fileSystem, dest);
     }
 
     @Override
-    public void JSON(OutputStream outs) {
+    public synchronized void JSON(OutputStream outs) {
         method.createJSON(outs);
     }
 
     @Override
-    public void HDFS_JSON(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException {
+    public synchronized void HDFS_JSON(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException {
         method.createHDFS_JSON(fileSystem, dest);
     }
 
