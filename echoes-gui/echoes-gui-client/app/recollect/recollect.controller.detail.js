@@ -4,13 +4,14 @@
 
     angular
         .module('app')
-        .controller('RecollectControllerDetail', recollectDetail);
+        .controller('RecollectControllerDetail', recollectDetail)
+        .filter('na');
 
     recollectDetail.$inject = ['$scope', 'authService', '$stateParams', 'echoesChart', 'restApi', '$log', '$window', '$interval'];
 
     function recollectDetail($scope, authService, $stateParams, echoesChart, restApi, $log, $window, $interval) {
         var vm = this;
-        vm.title = 'Recollect-detail';
+        vm.title = 'Transformation-detail';
         vm.auth = authService;
         vm.profile;
         vm._id = $stateParams._id;
@@ -61,6 +62,5 @@
         $interval(function () {
             run();
         }, 10000);
-
     }
 })();

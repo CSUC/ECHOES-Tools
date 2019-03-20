@@ -3,6 +3,7 @@ package org.csuc.echoes.gui.consumer.quality;
 import com.rabbitmq.client.*;
 import com.typesafe.config.Config;
 import eu.europeana.corelib.definitions.jibx.RDF;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.csuc.dao.impl.quality.QualityDAOImpl;
 import org.csuc.dao.impl.quality.QualityDetailsDAOImpl;
 import org.csuc.dao.quality.QualityDAO;
 import org.csuc.dao.quality.QualityDetailsDAO;
+import org.csuc.echoes.gui.consumer.quality.schematron.Schematron;
 import org.csuc.echoes.gui.consumer.quality.utils.FileUtils;
 import org.csuc.echoes.gui.consumer.quality.utils.Time;
 import org.csuc.echoes.gui.consumer.quality.schema.Schema;
@@ -22,10 +24,7 @@ import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
 import org.csuc.utils.Status;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 /**
  * @author amartinez
@@ -111,7 +111,7 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
                         .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
                         .parallel()
                         .forEach((Path f) -> {
-                            logger.info(f);
+                            logger.debug(f);
                             try {
                                 Schema schema;
                                 Path temporal = null;
@@ -125,16 +125,35 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
                                 }else
                                     schema = new Schema(new FileInputStream(f.toFile()), RDF.class);
 
-                                logger.info("{}:    schema:     {}", f.getFileName(), schema.isValid());
-                                if (!schema.isValid()){
-                                    logger.error("\tMessage:  {}", schema.getError().getMessage());
-                                    QualityDetails qualityDetails = new QualityDetails();
-                                    qualityDetails.setQuality(quality);
+                                logger.debug("{}:    schema:     {}", f.getFileName(), schema.isValid());
 
+                                QualityDetails qualityDetails = new QualityDetails();
+
+                                qualityDetails.setValue(FilenameUtils.getName(f.getFileName().toString()));
+
+                                if (!schema.isValid()){
+                                    logger.debug("\tMessage:  {}", schema.getError().getMessage());
+
+                                    qualityDetails.setQuality(quality);
                                     qualityDetails.setSchema(new org.csuc.entities.quality.Schema(schema.getError().getMessage()));
 
-                                    qualityDAO.getDatastore().save(qualityDetails);
-                                }else   FileUtils.copy(f, Paths.get(applicationConfig.getQualityFolder((String) map.get("_id"))));
+                                }else {
+                                    qualityDetails.setValidSchema(true);
+
+                                    if(Schematron.isValid(f.toFile())) {
+                                        FileUtils.copy(f, Paths.get(applicationConfig.getQualityFolder((String) map.get("_id"))));
+                                        qualityDetails.setValidSchematron(true);
+                                    }else {
+                                        qualityDetails.setSchematron(
+                                                Schematron.getSVRLFailedAssert(f.toFile())
+                                                        .stream()
+                                                        .map(m-> new org.csuc.entities.quality.Schematron(m.getTest(), m.getText()))
+                                                        .collect(Collectors.toList())
+                                        );
+                                        qualityDetails.setQuality(quality);
+                                    }
+                                }
+                                qualityDAO.getDatastore().save(qualityDetails);
 
                                 if(Objects.nonNull(temporal))   temporal.toFile().delete();
                             } catch (Exception e) {

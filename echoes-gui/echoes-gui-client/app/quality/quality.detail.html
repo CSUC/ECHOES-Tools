@@ -18,7 +18,7 @@
         </tr>
         <tr ng-show="vm.data.data">
             <td>Dataset</td>
-            <td>{{vm.data.data}}</td>
+            <td><a ui-sref="recollect-detail({_id:vm.data.data})" target="_blank">{{vm.data.data}}</a></td>
         </tr>
         <tr  ng-show="vm.data.status">
             <td>status</td>
@@ -36,7 +36,7 @@
             <td>quality-size</td>
             <td>{{vm.data.qualitySize}}</td>
         </tr>
-        <tr ng-show="vm.data.duration">
+        <tr ng-show="vm.data.errorSize">
             <td>error-size</td>
             <td ng-if="vm.data.errorSize > 0">
                 <a ui-sref="quality-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.errorSize}}</a>

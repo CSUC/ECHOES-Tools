@@ -77,7 +77,8 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
         query.and(
                 query.criteria("quality").equal(quality),
                 query.or(
-                        query.criteria("schema").notEqual(null)
+                        query.criteria("schema").notEqual(null),
+                        query.criteria("schematron").notEqual(null)
                 )
         );
 
@@ -101,7 +102,8 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
         query.and(
                 query.criteria("quality").equal(quality),
                 query.or(
-                        query.criteria("schema").notEqual(null)
+                        query.criteria("schema").notEqual(null),
+                        query.criteria("schematron").notEqual(null)
                 )
         );
 

@@ -1,6 +1,7 @@
 package org.transformation.cli;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
 import org.apache.logging.log4j.LogManager;
@@ -210,7 +211,7 @@ public class Main {
                 observable
                         .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                        .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                        .observeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) -> {
                                     if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
@@ -227,7 +228,7 @@ public class Main {
                     observable
                             .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                            .observeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
@@ -241,7 +242,7 @@ public class Main {
                     observable
                             .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                            .observeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
@@ -337,7 +338,7 @@ public class Main {
                 observable
                         .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                        .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                        .observeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
                         .subscribe(
                                 (Download l) -> {
                                     if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
@@ -354,7 +355,7 @@ public class Main {
                     observable
                             .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                            .observeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
@@ -368,7 +369,7 @@ public class Main {
                     observable
                             .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
 //                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-//                            .observeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();

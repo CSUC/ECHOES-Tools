@@ -3,18 +3,15 @@
     <Appenders>
         <!-- All -->
         <RollingFile name="RollingFile"
-                     fileName="${echoes.path}/logs/${project.name}-${date:yyyy-MM-dd}.log"
-                     filePattern="${echoes.path}/logs/rotate/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
-                     ignoreExceptions="false">
+                     fileName="${echoes.path}/logs/${artifactId}.log"
+                     filePattern="${echoes.path}/logs/rotate/${artifactId}-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
                     DEBUG=blue} - %msg%n
                 </Pattern>
             </PatternLayout>
             <Policies>
-                <OnStartupTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
-                <TimeBasedTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingFile>
         <!-- Console -->

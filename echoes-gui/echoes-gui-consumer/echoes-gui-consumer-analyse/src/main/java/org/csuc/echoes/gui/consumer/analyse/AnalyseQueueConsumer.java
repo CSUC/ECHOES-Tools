@@ -97,6 +97,8 @@ public class AnalyseQueueConsumer extends EndPoint implements Runnable, Consumer
 
                 analyse = analyseDAO.getById(map.get("_id").toString());
                 analyse.setStatus(Status.PROGRESS);
+                analyse.setFilename(Objects.nonNull(map.get("filename")) ? map.get("filename").toString() : null);
+
                 analyseDAO.insert(analyse);
 
                 Parser factory = null;

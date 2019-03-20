@@ -4,14 +4,14 @@
     <parent>
         <artifactId>echoes-gui</artifactId>
         <groupId>org.csuc</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-consumer</artifactId>
     <packaging>pom</packaging>
     <name>echoes-gui-consumer</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <modules>
         <module>echoes-gui-consumer-analyse</module>
@@ -60,7 +60,7 @@
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>echoes-gui-config</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
@@ -72,7 +72,7 @@
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>echoes-gui-database</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
@@ -101,107 +101,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--<dependencies>-->
-        <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-iostreams</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-api</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-core</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.rabbitmq</groupId>-->
-            <!--<artifactId>amqp-client</artifactId>-->
-            <!--<version>${amqp.client.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.csuc</groupId>-->
-            <!--<artifactId>analyse-core</artifactId>-->
-            <!--<version>1.3.2</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.csuc</groupId>-->
-            <!--<artifactId>recollect-core</artifactId>-->
-            <!--<version>1.3.5</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.csuc</groupId>-->
-            <!--<artifactId>echoes-gui-database</artifactId>-->
-            <!--<version>0.0.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.csuc</groupId>-->
-            <!--<artifactId>echoes-gui-config</artifactId>-->
-            <!--<version>0.0.1</version>-->
-        <!--</dependency>-->
-    <!--</dependencies>-->
-
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-shade-plugin</artifactId>-->
-                <!--<version>3.2.0</version>-->
-                <!--<configuration>-->
-                    <!--<shadedArtifactAttached>true</shadedArtifactAttached>-->
-                    <!--<createDependencyReducedPom>false</createDependencyReducedPom>-->
-                    <!--<outputDirectory>../../bin</outputDirectory>-->
-                    <!--<finalName>${project.name}-${project.version}</finalName>-->
-                    <!--<transformers>-->
-                        <!--<transformer-->
-                                <!--implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-                            <!--<mainClass>org.csuc.cli.Consumer</mainClass>-->
-                        <!--</transformer>-->
-                        <!--<transformer-->
-                                <!--implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>-->
-                        <!--<transformer-->
-                                <!--implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>-->
-                        <!--<transformer-->
-                                <!--implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">-->
-                            <!--<addHeader>false</addHeader>-->
-                        <!--</transformer>-->
-                        <!--/-->
-                    <!--</transformers>-->
-                    <!--<filters>-->
-                        <!--<filter>-->
-                            <!--<artifact>*:*</artifact>-->
-                            <!--<excludes>-->
-                                <!--&lt;!&ndash; Some jars are signed but shading breaks that.-->
-                                     <!--Don't include signing files.-->
-                                <!--&ndash;&gt;-->
-                                <!--<exclude>META-INF/*.SF</exclude>-->
-                                <!--<exclude>META-INF/*.DSA</exclude>-->
-                                <!--<exclude>META-INF/*.RSA</exclude>-->
-                            <!--</excludes>-->
-                        <!--</filter>-->
-                    <!--</filters>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>package</phase>-->
-                        <!--&lt;!&ndash;<phase /><!- - Switch off &ndash;&gt;-->
-                        <!--<goals>-->
-                            <!--<goal>shade</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-        <!--<resources>-->
-            <!--<resource>-->
-                <!--<directory>src/main/resources</directory>-->
-                <!--<filtering>true</filtering>-->
-            <!--</resource>-->
-        <!--</resources>-->
-    <!--</build>-->
 </project>

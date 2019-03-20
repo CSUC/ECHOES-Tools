@@ -33,7 +33,23 @@
                                     <span ng-if="data.status == 'QUEUE'" class="glyphicon glyphicon-hourglass"></span>
                                 </td>
                                 <td title="'status'">
-                                    <i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i>
+                                    <span ng-if="data.total == 0 && data.status == 'END'">
+                                        <i class="fas fa-circle text-muted" ng-style="{'color': 'red'}"></i>
+                                        <i class="fas fa-circle text-muted"></i>
+                                        <i class="fas fa-circle text-muted"></i>
+                                    </span>
+
+                                    <span ng-if="data.total > 0 && data.total < data.size && data.status == 'END'">
+                                        <i class="fas fa-circle text-muted"></i>
+                                        <i class="fas fa-circle text-muted" ng-style="{'color': 'orange'}"></i>
+                                        <i class="fas fa-circle text-muted"></i>
+                                    </span>
+
+                                    <span ng-if="data.total == data.size && data.total > 0 && data.status == 'END'">
+                                        <i class="fas fa-circle text-muted"></i>
+                                        <i class="fas fa-circle text-muted"></i>
+                                        <i class="fas fa-circle text-muted" ng-style="{'color': 'green'}"></i>
+                                    </span>
                                 </td>
                                 <td title="'id'">
                                     <a ng-if="data.status != 'END' && data.status != 'ERROR'"
@@ -41,7 +57,7 @@
                                     <a ui-sref="loader-detail({_id: '{{data._id}}'})" ng-if="data.status == 'END'">{{data._id}}</a>
                                 </td>
                                 <td title="'dataset'">
-                                    {{data.uuid}}
+                                    <a ui-sref="quality-detail({_id: '{{data.uuid}}'})" target="_blank">{{data.uuid}}</a>
                                 </td>
                                 <td title="'timestamp'">
                                     {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}

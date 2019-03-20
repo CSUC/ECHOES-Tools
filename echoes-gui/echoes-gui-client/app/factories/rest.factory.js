@@ -384,6 +384,18 @@
             });
         };
 
+        data.loaderErrors = function (_params) {
+            var searchData = restApiService.getNew("loaderErrors", _params);
+
+            $log.info('loaderErrors: ', searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
         //
 
         return data;

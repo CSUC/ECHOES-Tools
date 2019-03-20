@@ -38,7 +38,7 @@ public class ParserFILE implements Parser {
         if (Objects.nonNull(path) && Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
             Files.walk(path)
                     .filter(Files::isRegularFile)
-                    .filter(f -> f.toString().endsWith(".xml"))
+//                    .filter(f -> f.toString().endsWith(".xml"))
                     .forEach(f -> {
                         logger.info(String.format("%s file: %s", iter.incrementAndGet(), f.getFileName()));
                         try {

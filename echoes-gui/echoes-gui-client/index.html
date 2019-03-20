@@ -15,9 +15,14 @@
     <link rel="stylesheet" ; href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
-
+    <link rel="stylesheet" ; href="node_modules/dropzone/dist/dropzone.css">
+    <link rel="stylesheet" ; href="node_modules/dropzone/dist/basic.css">
+    <link rel="stylesheet" ; href="node_modules/ngdropzone/dist/ng-dropzone.min.css">
 
     <style>
+        .dropzone {
+            background-color: transparent;
+        }
         .btn-disabled,
         .btn-disabled[disabled] {
             cursor: default !important;
@@ -28,6 +33,16 @@
             .chartcsuc {
                 height: 75% !important;
             }
+        }
+
+        hr {
+            height: 4px;
+            margin-left: 15px;
+            margin-bottom:-3px;
+        }
+
+        .hr-primary{
+            background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(189, 195, 199, 1), rgba(0,0,0,0));
         }
 
     </style>
@@ -48,6 +63,11 @@
 <script type="text/javascript" src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="node_modules/angular-auth0/dist/angular-auth0.js"></script>
 <script type="text/javascript" src="node_modules/angular-jwt/dist/angular-jwt.js"></script>
+
+<script src="node_modules/dropzone/dist/dropzone.js"></script>
+<script src="node_modules/ngdropzone/dist/ng-dropzone.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+
 <script type="text/javascript" src="app/app.js"></script>
 <script type="text/javascript" src="app/app.run.js"></script>
 <script type="text/javascript" src="app/navbar/navbar.directive.js"></script>
@@ -62,6 +82,7 @@
 <script type="text/javascript" src="app/quality/quality.controller.detail.error.js"></script>
 <script type="text/javascript" src="app/loader/loader.controller.js"></script>
 <script type="text/javascript" src="app/loader/loader.controller.detail.js"></script>
+<script type="text/javascript" src="app/loader/loader.controller.detail.error.js"></script>
 <script type="text/javascript" src="app/ping/ping.controller.js"></script>
 <script type="text/javascript" src="app/callback/callback.controller.js"></script>
 <script type="text/javascript" src="app/auth/auth.service.js"></script>
@@ -69,6 +90,8 @@
 <script type="text/javascript" src="app/factories/rest.factory.js"></script>
 <script type="text/javascript" src="app/factories/echoes.chart.factory.js"></script>
 <script type="text/javascript" src="app/services/restApiService.js"></script>
+
+<script type="text/javascript" src="app/filters/filters.js"></script>
 
 <script type="text/javascript" src="node_modules/angular-uuid/angular-uuid.js"></script>
 <script type="text/javascript" src="node_modules/ng-table/bundles/ng-table.js"></script>
@@ -86,5 +109,9 @@
 <script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 
 <script type="text/javascript" src="node_modules/particlesjs/dist/particles.min.js"></script>
+
+<script>
+    Dropzone.autoDiscover = false;
+</script>
 </body>
 </html>

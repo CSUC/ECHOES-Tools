@@ -39,6 +39,9 @@ public class Analyse {
     @Property("value")
     private String value;
 
+    @Property("filename")
+    private String filename;
+
     @Property("status")
     private Status status;
 
@@ -126,6 +129,14 @@ public class Analyse {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @Override

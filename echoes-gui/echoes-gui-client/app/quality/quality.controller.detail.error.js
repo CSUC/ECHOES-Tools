@@ -13,7 +13,7 @@
                           echoesChart, restApi, ngDialog, $state) {
         var vm = this;
 
-        vm.title = 'Quality-detail-Error';
+        vm.title = 'Quality-detail-error';
         vm.auth = authService;
 
         vm.data;
@@ -83,6 +83,25 @@
                     })
                         .finally(function () { $state.go("quality-error", {_id: vm._id, page: vm.page, pagesize: vm.count}); });
                 }
+            });
+        }
+
+
+        vm.schematron = function (data) {
+            ngDialog.open({
+                template: 'schematron.tpl.html',
+                data: data,
+                className: 'ngdialog-theme-default',
+                width: '70%'
+            });
+        }
+
+        vm.schema = function (data) {
+            ngDialog.open({
+                template: 'schema.tpl.html',
+                data: data,
+                className: 'ngdialog-theme-default',
+                width: '70%'
             });
         }
     }

@@ -34,7 +34,7 @@
                     break;
                 case "createAnalyse":
                     data = this.fillDataInObjectByList(data, _params, [
-                        'method', 'type', 'format', 'user', 'value'
+                        'method', 'type', 'format', 'user', 'value', 'filename'
                     ]);
                     data.url = this.getApiBaseUrl() + 'analyse/create';
                     break;
@@ -107,6 +107,10 @@
                 case "qualityErrors":
                     data = this.fillDataInObjectByList(data, _params, ['pagesize']);
                     data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id + '/error/' + _params.page;
+                    break;
+                case "loaderErrors":
+                    data = this.fillDataInObjectByList(data, _params, ['pagesize']);
+                    data.url = this.getApiBaseUrl() + 'loader/user/' + _params.user + '/id/' + _params.id + '/error/' + _params.page;
                     break;
                 case "getRecollectStatusAggregation":
                     data = this.fillDataInObjectByList(data, _params, [

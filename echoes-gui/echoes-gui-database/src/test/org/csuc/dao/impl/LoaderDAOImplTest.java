@@ -1,14 +1,11 @@
 package org.csuc.dao.impl;
 
 import org.csuc.client.Client;
-import org.csuc.dao.AnalyseDAO;
-import org.csuc.dao.LoaderDAO;
-import org.csuc.entities.Analyse;
-import org.csuc.entities.Loader;
+import org.csuc.dao.impl.loader.LoaderDAOImpl;
+import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.entities.loader.Loader;
 import org.csuc.utils.Status;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class LoaderDAOImplTest {
 

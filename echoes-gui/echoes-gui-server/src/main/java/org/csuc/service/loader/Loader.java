@@ -6,8 +6,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
-import org.csuc.dao.LoaderDAO;
-import org.csuc.dao.impl.LoaderDAOImpl;
+import org.csuc.dao.impl.loader.LoaderDetailsDAOImpl;
+import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.dao.impl.loader.LoaderDAOImpl;
+import org.csuc.dao.loader.LoaderDetailsDAO;
+import org.csuc.entities.loader.LoaderDetails;
 import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
@@ -85,8 +88,8 @@ public class Loader {
         }
 
         try {
-            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
-            org.csuc.entities.Loader loader = loaderDAO.getById(id);
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.loader.Loader.class, client.getDatastore());
+            org.csuc.entities.loader.Loader loader = loaderDAO.getById(id);
 
             if(!Objects.equals(user, loader.getUser())) return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -122,8 +125,8 @@ public class Loader {
         }
 
         try {
-            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
-            List<org.csuc.entities.Loader> queryResults = loaderDAO.getByUser(user, page, pagesize, "-timestamp");
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.loader.Loader.class, client.getDatastore());
+            List<org.csuc.entities.loader.Loader> queryResults = loaderDAO.getByUser(user, page, pagesize, "-timestamp");
 
             double count = new Long(loaderDAO.countByUser(user)).doubleValue();
 
@@ -139,6 +142,58 @@ public class Loader {
         }
     }
 
+
+    @GET
+    @Path("/user/{user}/id/{id}/error/{page}")
+    @Produces(APPLICATION_JSON + "; charset=utf-8")
+    public Response getQualityErrorById(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @PathParam("page") int page,
+            @DefaultValue("50") @QueryParam("pagesize") int pagesize,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
+        try {
+            authoritzation.execute();
+        } catch (JwkException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        try {
+            LoaderDetailsDAO loaderDetailsDAO = new LoaderDetailsDAOImpl(LoaderDetails.class, client.getDatastore());
+
+            List<LoaderDetails> queryResults = loaderDetailsDAO.getErrorsById(id, page, pagesize, null);
+
+            double count = new Long(loaderDetailsDAO.countErrorsById(id)).doubleValue();
+
+            ResponseEchoes response =
+                    new ResponseEchoes(user, (int) count, (int) Math.ceil(count / new Long(pagesize).doubleValue()), queryResults.size(), queryResults);
+
+            logger.info(response);
+
+            return Response.status(Response.Status.ACCEPTED).entity(response).type(APPLICATION_JSON).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 
     @POST
     @Path("/create")
@@ -156,8 +211,8 @@ public class Loader {
 
 
         try {
-            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
-            org.csuc.entities.Loader loader = new org.csuc.entities.Loader();
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.loader.Loader.class, client.getDatastore());
+            org.csuc.entities.loader.Loader loader = new org.csuc.entities.loader.Loader();
 
             loader.setEndpoint(loaderRequest.getEndpoint());
             loader.setContentType(loaderRequest.getContentType());
@@ -166,7 +221,7 @@ public class Loader {
             loader.setUuid(loaderRequest.getUuid());
             loader.setStatus(Status.QUEUE);
 
-            Key<org.csuc.entities.Loader> key = loaderDAO.insert(loader);
+            Key<org.csuc.entities.loader.Loader> key = loaderDAO.insert(loader);
 
             logger.info(key);
 
@@ -219,12 +274,10 @@ public class Loader {
         }
 
         try {
-            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.loader.Loader.class, client.getDatastore());
             WriteResult writeResult = loaderDAO.deleteById(id);
 
             logger.debug(writeResult);
-
-            Files.deleteIfExists(Paths.get(applicationConfig.getParserFolder(id)));
 
             return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
@@ -254,7 +307,7 @@ public class Loader {
         }
 
         try {
-            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.Loader.class, client.getDatastore());
+            LoaderDAO loaderDAO = new LoaderDAOImpl(org.csuc.entities.loader.Loader.class, client.getDatastore());
             Long result = loaderDAO.countByUser(user);
 
             logger.info(result);
