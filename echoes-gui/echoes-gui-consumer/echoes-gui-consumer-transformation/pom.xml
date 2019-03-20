@@ -5,13 +5,13 @@
     <parent>
         <artifactId>echoes-gui-consumer</artifactId>
         <groupId>org.csuc</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-consumer-transformation</artifactId>
     <name>echoes-gui-consumer-transformation</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
