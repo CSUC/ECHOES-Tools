@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row">
+        <a ui-sref="loader" ui-sref-opts="{reload:true}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back </a>
+        <h2>{{vm.title}}</h2>
+
+        <div class="col-xs-12">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>{{vm.data._id}}</td>
+                </tr>
+                <tr>
+                    <td>duration</td>
+                    <td>{{vm.data.duration}}</td>
+                </tr>
+                <tr>
+                    <td>Sparql EndPoint</td>
+                    <td>{{vm.data.endpoint}}</td>
+                </tr>
+                <tr>
+                    <td>Content Type</td>
+                    <td>{{vm.data.contentType}}</td>
+                </tr>
+                <tr>
+                    <td>Context Uri</td>
+                    <td>{{vm.data.contextUri}}</td>
+                </tr>
+                <tr>
+                    <td>timestamp</td>
+                    <td>{{vm.data.timestamp}}</td>
+                </tr>
+                <tr>
+                    <td>status</td>
+                    <td>{{vm.data.status}}</td>
+                </tr>
+                <tr>
+                    <td>user</td>
+                    <td>{{vm.profile.nickname}}</td>
+                </tr>
+                <tr>
+                    <td>Data uuid</td>
+                    <td>
+                        <a ui-sref="quality-detail({_id:vm.data.uuid})" target="_blank">{{vm.data.uuid}}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Data size</td>
+                    <td>{{vm.data.size}}</td>
+                </tr>
+                <tr>
+                    <td>Loader size</td>
+                    <td>{{vm.data.total}}</td>
+                </tr>
+                <tr>
+                    <td>Loader error-size</td>
+                    <td ng-if="vm.data.size - vm.data.total > 0">
+                        <a ui-sref="loader-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.size - vm.data.total}}</a>
+                    </td>
+                    <td ng-if="vm.data.size - vm.data.total == 0">
+                       0
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--<uib-accordion>-->
+                <!--<div uib-accordion-group class="panel-default" heading="Exception">-->
+                    <!--<pre>{{vm.data | json : spacing}}</pre>-->
+                <!--</div>-->
+
+            <!--</uib-accordion>-->
+        </div>
+    </div>
+</div>

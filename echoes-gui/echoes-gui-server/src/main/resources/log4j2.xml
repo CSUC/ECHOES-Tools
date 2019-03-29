@@ -3,9 +3,8 @@
     <Appenders>
         <!-- All -->
         <RollingFile name="RollingFile"
-                     fileName="${echoes.path}/logs/${artifactId}-${date:yyyy-MM-dd}.log"
-                     filePattern="${echoes.path}/logs/rotate/${artifactId}-%d{yyyy-MM-dd}-%i.log.gz"
-                     ignoreExceptions="false">
+                     fileName="${echoes.path}/logs/${artifactId}.log"
+                     filePattern="${echoes.path}/logs/rotate/${artifactId}/${artifactId}-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
                     DEBUG=blue} - %msg%n
@@ -13,7 +12,6 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="100 KB" />
             </Policies>
         </RollingFile>
         <!-- Console -->
@@ -27,8 +25,8 @@
             <appender-ref ref="RollingFile" level="INFO"/>
         </Logger>
 
-        <Logger name="org.eclipse.jetty" level="DEBUG" additivity="true">
-            <appender-ref ref="RollingFile" level="DEBUG"/>
+        <Logger name="org.eclipse.jetty" level="INFO" additivity="true">
+            <appender-ref ref="RollingFile" level="INFO"/>
         </Logger>
 
         <Root level="INFO" additivity="false">

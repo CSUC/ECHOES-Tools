@@ -24,6 +24,10 @@
             <td>metadataPrefix</td>
             <td>{{vm.data.metadataPrefix}}</td>
         </tr>
+        <tr ng-show="vm.data.format">
+            <td>format</td>
+            <td>{{vm.data.format}}</td>
+        </tr>
         <tr ng-show="vm.data.from">
             <td>from</td>
             <td>{{vm.data.from}}</td>
@@ -47,6 +51,14 @@
         <tr ng-show="vm.data.duration">
             <td>duration</td>
             <td>{{vm.data.duration}}</td>
+        </tr>
+        <tr>
+            <td>dataset-size</td>
+            <td>{{vm.data.size | na }}</td>
+        </tr>
+        <tr>
+            <td>dataset-download</td>
+            <td>{{vm.data.download}}</td>
         </tr>
         <tr  ng-show="vm.data.properties">
             <td>properties</td>
@@ -72,7 +84,7 @@
     </table>
     <uib-accordion ng-show="vm.data.error">
         <div uib-accordion-group class="panel-default" heading="Exception">
-            <pre>{{vm.data.error | json : spacing}}</pre>
+            <pre>{{vm.data.error.exception}}</pre>
         </div>
 
     </uib-accordion>

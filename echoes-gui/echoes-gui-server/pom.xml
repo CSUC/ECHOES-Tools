@@ -5,13 +5,13 @@
     <parent>
         <artifactId>echoes-gui</artifactId>
         <groupId>org.csuc</groupId>
-        <version>0.0.1</version>
+        <version>0.0.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-server</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 
     <packaging>jar</packaging>
     <name>echoes-gui-server</name>
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-database</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -136,7 +136,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-producer</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
 
         <dependency>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-config</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->

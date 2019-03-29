@@ -2,8 +2,10 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.mongodb.morphia.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -43,7 +45,12 @@ public class RecollectError {
 
     @Override
     public String toString() {
-        JsonAdapter<RecollectError> jsonAdapter = new Moshi.Builder().build().adapter(RecollectError.class);
+        JsonAdapter<RecollectError> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(RecollectError.class);
+
         return jsonAdapter.toJson(this);
     }
 }

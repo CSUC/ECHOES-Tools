@@ -23,19 +23,17 @@ public class ProducerAndConsumerConfig extends ConfigBeanFactory {
         this.filename = filename;
     }
 
-    public RabbitMQConfig getRabbitMQConfig(){
+    public Queues getRabbitMQConfig(){
         Config defaultConfig = ConfigFactory.parseResources("rabbitmq.defaults.conf");
         if(Objects.nonNull(filename) && Files.exists(filename)){
             logger.debug("load config {}", filename);
             Config fallbackConfig = ConfigFactory.parseFile(filename.toFile())
                     .withFallback(defaultConfig)
                     .resolve();
-            RabbitMQConfig config = create(fallbackConfig.getConfig("rabbitmq"), RabbitMQConfig.class);
-            return config;
+            return new Queues(fallbackConfig.getConfig("rabbitmq.queues"));
         }else{
             logger.debug("load config defaults.conf");
-            RabbitMQConfig config = create(defaultConfig.getConfig("rabbitmq"), RabbitMQConfig.class);
-            return config;
+            return new Queues(defaultConfig.getConfig("rabbitmq.queues"));
         }
     }
 

@@ -1,0 +1,53 @@
+<div class="container">
+    <a ui-sref="quality-detail({_id:'{{vm._id}}'})"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back </a>
+    <h2>{{vm.title}} <span class="badge badge-light">{{vm.data._size}}</span></h2>
+
+    <div class="table-responsive col-xs-12 col-sm-12 col-lg-12">
+        <table ng-table="vm.tableParams" class="table" show-filter="false">
+            <tr ng-repeat="data in $data">
+                <td title="'name'">
+                    {{data.value}}
+                </td>
+                <td title="'schema'">
+                    <i ng-if="data.validSchema" class="glyphicon glyphicon-ok text-success"></i>
+                    <a ng-if="!data.validSchema && data.schema" href ng-click="vm.schema(data.schema)"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                </td>
+                <td title="'schematron'">
+                    <i ng-if="data.validSchematron" class="glyphicon glyphicon-ok text-success"></i>
+                    <i ng-if="!data.validSchematron && !data.validSchema" class="glyphicon glyphicon-minus"></i>
+                    <a ng-if="!data.validSchematron && data.schematron" href ng-click="vm.schematron(data.schematron)"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="schema.tpl.html">
+    <div class="modal-header">
+    	<h3 class="modal-title text-center">1 ERROR</h3>
+    </div>	
+    <div class="modal-body">
+        <div class="row col-xs-18 col-centered col-min">
+            <span>{{ngDialogData.message}}</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="schematron.tpl.html">
+    <div class="modal-header">
+    <h3 class="modal-title text-center">{{ngDialogData.length}} ERRORS</h3>
+  </div>
+    <div class="modal-body">
+        <div class="row col-xs-18 col-centered col-min">
+            <ul ng-repeat="d in ngDialogData">
+                <li>
+                    <strong>Test: </strong><span>{{d.test}}</span>
+                </li>
+                <li>
+                    <strong>Message: </strong><span>{{d.message}}</span>
+                </li>
+                <hr class="hr-primary" ng-show="! $last">
+            </ul>
+        </div>
+    </div>
+</script>

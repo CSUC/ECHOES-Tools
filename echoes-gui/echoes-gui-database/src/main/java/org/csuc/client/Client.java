@@ -6,6 +6,7 @@ package org.csuc.client;
 import com.mongodb.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.utils.LocalDateTimeConverter;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -54,6 +55,7 @@ public class Client {
             this.morphia = new Morphia();
             this.morphia.getMapper().getOptions().setStoreNulls(true);
             this.morphia.getMapper().getOptions().setStoreEmpties(true);
+            this.morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
@@ -95,6 +97,7 @@ public class Client {
             this.morphia = new Morphia();
             this.morphia.getMapper().getOptions().setStoreNulls(true);
             this.morphia.getMapper().getOptions().setStoreEmpties(true);
+            this.morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
@@ -128,6 +131,7 @@ public class Client {
             this.morphia = new Morphia();
             this.morphia.getMapper().getOptions().setStoreNulls(true);
             this.morphia.getMapper().getOptions().setStoreEmpties(true);
+            this.morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
@@ -158,6 +162,7 @@ public class Client {
             this.morphia = new Morphia();
             this.morphia.getMapper().getOptions().setStoreNulls(true);
             this.morphia.getMapper().getOptions().setStoreEmpties(true);
+            this.morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
 
             this.datastore = morphia.createDatastore(mongo, this.database);
 
