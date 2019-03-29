@@ -16,7 +16,7 @@
                 </tr>
                 <tr>
                     <td>Sparql EndPoint</td>
-                    <td>{{vm.data.endpoint}}</td>
+                    <td><a target="_blank" href="http://blazegraph.test.csuc.cat/yasgui/#query=select+*+where+%7B+GRAPH+{{ '<'+ vm.data.contextUri + '>' | urlencode}}+%7B+%3Fs+%3Fp+%3Fo+%7D+%7D+LIMIT+10&contentTypeConstruct=text%2Fturtle&contentTypeSelect=application%2Fsparql-results%2Bxml&endpoint={{vm.data.endpoint | urlencode}}&requestMethod=POST&tabTitle={{ vm.data._id | urlencode}}&headers=%7B%7D&outputFormat=table">{{vm.data.endpoint}}</a></td>
                 </tr>
                 <tr>
                     <td>Content Type</td>

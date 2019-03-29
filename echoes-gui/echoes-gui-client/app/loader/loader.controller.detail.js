@@ -4,7 +4,8 @@
 
     angular
         .module('app')
-        .controller('LoaderControllerDetail', loaderDetail);
+        .controller('LoaderControllerDetail', loaderDetail)
+        .filter('urlencode');
 
     loaderDetail.$inject = ['$scope', 'authService', '$stateParams', 'echoesChart', 'restApi', '$log'];
 
