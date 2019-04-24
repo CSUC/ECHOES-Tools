@@ -173,6 +173,7 @@
         dropzoneOpsProvider.setOptions({
             url: '/upload',
             maxFiles: '1',
+            timeout: 100000,
             maxFilesize: 1024,
             acceptedFiles: '.xml',
             addRemoveLinks: true,
