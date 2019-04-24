@@ -30,7 +30,7 @@ public class Sax implements ParserMethod {
     private Logger logger = LogManager.getLogger(Sax.class);
 
     private FragmentContentHandler contentHandler;
-    private SAXParser parser;
+    protected static SAXParser parser;
 
     public Sax() throws Exception{
         logger.debug(String.format("Method: %s", getClass().getSimpleName()));
@@ -45,17 +45,17 @@ public class Sax implements ParserMethod {
     }
 
     @Override
-    public void parser(String fileOrPath) throws Exception {
+    public synchronized void parser(String fileOrPath) throws Exception {
         parser.parse(new FileInputStream(fileOrPath), contentHandler);
     }
 
     @Override
-    public void parser(URL url) throws Exception{
+    public synchronized void parser(URL url) throws Exception{
         parser.parse(url.toString(), contentHandler);
     }
 
     @Override
-    public void createXML(OutputStream outs) {
+    public synchronized void createXML(OutputStream outs) {
         try {
             JAXBContext jc = JAXBContext.newInstance(Result.class);
 
@@ -68,7 +68,7 @@ public class Sax implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException {
+    public synchronized void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException {
         StringWriter stringWriter = new StringWriter();
 
         try {
@@ -85,7 +85,7 @@ public class Sax implements ParserMethod {
     }
 
     @Override
-    public void createJSON(OutputStream outs) {
+    public synchronized void createJSON(OutputStream outs) {
         try {
             new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValue(outs, createObject());
         } catch (IOException e) {
@@ -94,7 +94,7 @@ public class Sax implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_JSON(FileSystem fileSystem, Path dest) {
+    public synchronized void createHDFS_JSON(FileSystem fileSystem, Path dest) {
         try {
             ByteArrayInputStream byteArrayInputStream =
                     new ByteArrayInputStream(

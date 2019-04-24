@@ -18,7 +18,7 @@ import javax.xml.bind.Marshaller;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,11 +27,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Dom4j implements ParserMethod {
 
     private Logger logger = LogManager.getLogger(Dom4j.class);
-    private SAXReader reader;
 
-    private Map<String, String> values = new HashMap<>();
-    private Map<String, AtomicInteger> count = new HashMap<>();
-    private Map<String, String> namespace = new HashMap<>();
+    protected static SAXReader reader;
+
+    private ConcurrentHashMap<String, String> values = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, AtomicInteger> count = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, String> namespace = new ConcurrentHashMap<>();
 
     private AtomicInteger iterNamespaces = new AtomicInteger(0);
 
@@ -71,19 +72,19 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void parser(String fileOrPath) throws Exception {
+    public synchronized void parser(String fileOrPath) throws Exception {
         Document document = reader.read(new FileInputStream(fileOrPath));
         treeWalk(document);
     }
 
     @Override
-    public void parser(URL url) throws Exception {
+    public synchronized void parser(URL url) throws Exception {
         Document document = reader.read(url);
         treeWalk(document);
     }
 
     @Override
-    public void createXML(OutputStream outs) {
+    public synchronized void createXML(OutputStream outs) {
         try {
             JAXBContext jc = JAXBContext.newInstance(Result.class);
 
@@ -96,7 +97,7 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException {
+    public synchronized void createHDFS_XML(FileSystem fileSystem, Path dest) throws IOException {
         StringWriter stringWriter = new StringWriter();
 
         try {
@@ -113,7 +114,7 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void createJSON(OutputStream outs) {
+    public synchronized void createJSON(OutputStream outs) {
         try {
             new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValue(outs, createObject());
         } catch (IOException e) {
@@ -122,7 +123,7 @@ public class Dom4j implements ParserMethod {
     }
 
     @Override
-    public void createHDFS_JSON(FileSystem fileSystem, Path dest) {
+    public synchronized void createHDFS_JSON(FileSystem fileSystem, Path dest) {
         try {
             ByteArrayInputStream byteArrayInputStream =
                     new ByteArrayInputStream(

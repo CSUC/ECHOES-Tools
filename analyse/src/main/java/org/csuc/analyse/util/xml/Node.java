@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.Serializable;
 
 /**
  * @author amartinez
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Node {
+public class Node implements Serializable {
 
     @XmlAttribute(name="name")
     private  String name;

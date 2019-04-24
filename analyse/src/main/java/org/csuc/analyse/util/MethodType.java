@@ -7,7 +7,6 @@ public enum MethodType {
 
     SAX("sax"),
     DOM4J("dom4j"),
-    DOM("dom"),
     XSLT("xslt");
 
     private final String value;

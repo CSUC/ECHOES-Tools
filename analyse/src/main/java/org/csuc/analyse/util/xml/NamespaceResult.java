@@ -1,22 +1,24 @@
 package org.csuc.analyse.util.xml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author amartinez
  */
-public class NamespaceResult {
+public class NamespaceResult implements Serializable {
 
-    private List<Namespace> namespaces;
+    private CopyOnWriteArrayList<Namespace> namespaces;
 
-    public List<Namespace> getNamespaces() {
-        if(Objects.isNull(namespaces)) namespaces = new ArrayList<>();
+    public CopyOnWriteArrayList<Namespace> getNamespaces() {
+        if(Objects.isNull(namespaces)) namespaces = new CopyOnWriteArrayList<>();
         return namespaces;
     }
 
-    public void setNamespaces(List<Namespace> namespaces) {
+    public void setNamespaces(CopyOnWriteArrayList<Namespace> namespaces) {
         this.namespaces = namespaces;
     }
 }

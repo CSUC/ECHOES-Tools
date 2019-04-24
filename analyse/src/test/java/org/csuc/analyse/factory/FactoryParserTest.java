@@ -2,7 +2,6 @@ package org.csuc.analyse.factory;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
-import org.csuc.analyse.strategy.dom.Dom;
 import org.csuc.analyse.strategy.dom4j.Dom4j;
 import org.csuc.analyse.strategy.sax.Sax;
 import org.csuc.analyse.strategy.xslt.Xslt;
@@ -51,22 +50,6 @@ public class FactoryParserTest {
     @Test
     public void testParserFILEDom4j() throws Exception {
         Parser parser = FactoryParser.createFactory(new ParserFILE(new Dom4j()));
-        parser.execute(xml.getPath());
-        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
-        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
-    }
-
-    @Test
-    public void testParserURLDOM() throws Exception {
-        Parser parser = FactoryParser.createFactory(new ParserURL(new Dom()));
-        parser.execute(new URL(url));
-        parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
-        parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
-    }
-
-    @Test
-    public void testParserFILEDOM() throws Exception {
-        Parser parser = FactoryParser.createFactory(new ParserFILE(new Dom()));
         parser.execute(xml.getPath());
         parser.XML(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
         parser.JSON(IoBuilder.forLogger(FactoryParserTest.class).setLevel(Level.INFO).buildOutputStream());
