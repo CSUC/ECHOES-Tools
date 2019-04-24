@@ -1,6 +1,7 @@
 package org.csuc.service.quality;
 
 import com.auth0.jwk.JwkException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
@@ -22,10 +23,10 @@ import org.mongodb.morphia.Key;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -339,4 +340,64 @@ public class Quality {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    @GET
+    @Path("/user/{user}/id/{id}/{filename}/download")
+    @Produces({MediaType.APPLICATION_FORM_URLENCODED, MediaType.MULTIPART_FORM_DATA})
+    public Response download(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @PathParam("filename") String filename,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        try {
+
+            java.nio.file.Path result =
+                    Files.walk(Paths.get(applicationConfig.getRecollectFolder(id)))
+                    .filter(Files::isRegularFile)
+                    .filter(f-> Objects.equals( f.getFileName().toString(), filename))
+                    .findFirst().orElse(null);
+
+            //java.nio.file.Path result = Paths.get(String.format("%s/%s", applicationConfig.getRecollectFolder(id), filename));
+
+            if(Files.notExists(result))
+                return Response.status(Response.Status.NOT_FOUND).build();
+
+            String extension = FilenameUtils.getExtension(result.getFileName().toString());
+
+            StreamingOutput fileStream = outputStream -> {
+                try{
+                    byte[] data = Files.readAllBytes(result);
+                    outputStream.write(data);
+                    outputStream.flush();
+                }catch (Exception e){
+                    throw new WebApplicationException("File Not Found !!");
+                }
+            };
+            return Response
+                    .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
+                    .header("content-disposition","attachment; filename = " + filename)
+                    .build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
 }

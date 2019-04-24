@@ -70,8 +70,6 @@ app.get('/rest/api/analyse/user/:user/id/:id/download', function (req, res, next
     r.on('response', function (resp) {
         console.log(req.method, util.format('%s', resp && resp.statusCode), req.url);
     });
-
-
 });
 
 app.get('/rest/api/analyse/user/:user/id/:id/error', function (req, res, next) {
@@ -198,6 +196,25 @@ app.post('/rest/api/quality/create', function (req, res, next) {
         else{
             res.status(400).end();
         }
+    });
+});
+
+app.get('/rest/api/quality/user/:user/id/:id/:filename/download', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+    };
+
+    // console.log(headers)
+
+    var r = request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' + req.params.id + '/' + req.params.filename + '/download'
+    })
+    r.pipe(res);
+
+    r.on('response', function (resp) {
+        console.log(req.method, util.format('%s', resp && resp.statusCode), req.url);
     });
 });
 
@@ -381,6 +398,25 @@ app.get('/rest/api/loader/user/:user/id/:id/error/:page', function (req, res, ne
         }
     });
 
+});
+
+app.get('/rest/api/loader/user/:user/id/:id/:filename/download', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+    };
+
+    // console.log(headers)
+
+    var r = request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/loader/user/` + req.params.user + '/id/' + req.params.id + '/' + req.params.filename + '/download'
+    })
+    r.pipe(res);
+
+    r.on('response', function (resp) {
+        console.log(req.method, util.format('%s', resp && resp.statusCode), req.url);
+    });
 });
 
 app.get('/rest/api/recollect/user/:user/status/aggregation', function (req, res, next) {
