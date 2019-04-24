@@ -111,6 +111,9 @@
         $scope.clickToOpen = function () {
             var dailog =
                 ngDialog.open({
+                    closeByDocument: false, // to prevent popup close by clicking outside
+                    closeByEscape: false,   // to prevent popup close by ESC key
+                    closeByNavigation : true, // to close popup on state navigation
                     template: 'recollect.tpl.html',
                     width: '60%',
                     data: vm,
@@ -180,6 +183,9 @@
         $scope.sendQuality = function (data) {
             var dailog =
                 ngDialog.open({
+                    closeByDocument: false, // to prevent popup close by clicking outside
+                    closeByEscape: false,   // to prevent popup close by ESC key
+                    closeByNavigation : true, // to close popup on state navigation
                     template: 'quality.tpl.html',
                     width: '60%',
                     data: vm,
