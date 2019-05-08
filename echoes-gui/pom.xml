@@ -78,11 +78,6 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang3.version}</version>
             </dependency>
-            <dependency>
-                <groupId>eu.europeana.corelib</groupId>
-                <artifactId>corelib-edm-definitions</artifactId>
-                <version>${corelib.edm.definitions.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

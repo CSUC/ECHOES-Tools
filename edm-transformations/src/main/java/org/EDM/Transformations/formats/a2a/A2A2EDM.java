@@ -197,7 +197,7 @@ public class A2A2EDM extends RDF implements EDM {
                                 .toString());
                         placeOfBirth.setResource(resourcePlaceOfBirth);
                         placeOfBirth.setString("");
-                        a.setPlaceOfBirth(placeOfBirth);
+                        a.getPlaceOfBirthList().add(placeOfBirth);
                 });
 
                 Optional.ofNullable(person.getBirthDate()).filter((CtTransDate f) -> Objects.nonNull(f.getYear())

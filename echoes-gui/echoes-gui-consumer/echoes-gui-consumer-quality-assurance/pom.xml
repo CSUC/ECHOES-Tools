@@ -71,10 +71,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>eu.europeana.corelib</groupId>
-            <artifactId>corelib-edm-definitions</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>rdf-format</artifactId>
             <version>0.0.1</version>

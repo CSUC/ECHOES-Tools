@@ -10,8 +10,6 @@
 	<name>Echoes-Tools</name>
 
 	<modules>
-		<module>europeana-parent-pom</module>
-		<module>corelib/corelib-edm-definitions</module>
 		<module>analyse</module>
 		<module>publish</module>
 		<module>metadata-schema-definitions</module>
@@ -87,11 +85,6 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-iostreams</artifactId>
 				<version>${log4j2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>eu.europeana.corelib</groupId>
-				<artifactId>corelib-edm-definitions</artifactId>
-				<version>${corelib.edm.definitions.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
@@ -204,7 +197,6 @@
 		<revision>1.5</revision>
 
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
-		<corelib.edm.definitions.version>2.6.6-SNAPSHOT</corelib.edm.definitions.version>
 
 		<jersey.version>2.27</jersey.version>
 		<cobertura.maven.plugin>2.7</cobertura.maven.plugin>

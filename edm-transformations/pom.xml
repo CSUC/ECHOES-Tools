@@ -52,10 +52,6 @@
             <artifactId>metadata-schema-definitions-memorix</artifactId>
             <version>1.1</version>
         </dependency>
-		<dependency>
-			<groupId>eu.europeana.corelib</groupId>
-			<artifactId>corelib-edm-definitions</artifactId>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
