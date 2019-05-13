@@ -4,10 +4,12 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.core.HDFS;
 import org.csuc.deserialize.JaxbUnmarshal;
+import org.csuc.util.FormatType;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.openarchives.oai._2.*;
@@ -34,8 +36,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -208,15 +212,18 @@ public class Main {
             if(bean.isHdfs()){
                 HDFS hdfs = new HDFS(bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome());
 
+                AtomicInteger assigner = new AtomicInteger(0);
+
                 observable
-                        .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                        .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                        .observeOn(Schedulers.io())
+                        .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                        .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                        .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                .map(i2 -> intenseCalculation(i2, hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(MessageFormat.format("recollect/{0}/{1}", uuid, bean.getIdentifier())), bean.getArguments(), bean.getFormat()))
+                        )
                         .subscribe(
                                 (Download l) -> {
                                     if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(MessageFormat.format("recollect/{0}/{1}", uuid, bean.getIdentifier())), bean.getArguments(), bean.getFormat());
+                                    logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                 },
                                 e -> logger.error("Error: " + e),
                                 () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
@@ -225,29 +232,36 @@ public class Main {
                 if (Objects.nonNull(bean.getOut())) {
                     pathWithSetSpec = Files.createDirectories(Paths.get(MessageFormat.format("{0}/{1}", bean.getOut(), uuid)));
 
+                    AtomicInteger assigner = new AtomicInteger(0);
+
                     observable
-                            .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                            .observeOn(Schedulers.io())
+                            .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                            .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                            .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                    .map(i2 -> intenseCalculation(i2, pathWithSetSpec, bean.getArguments(), bean.getFormat()))
+                            )
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                        logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                        l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
+                                        logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                     },
                                     e -> logger.error("Error: " + e),
                                     () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
                             );
                 } else {
+
+                    AtomicInteger assigner = new AtomicInteger(0);
+
                     observable
-                            .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                            .observeOn(Schedulers.io())
+                            .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                            .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                            .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                    .map(i2 -> intenseCalculation(i2, bean.getArguments(), bean.getFormat()))
+                            )
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                        logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                        l.execute(bean.getArguments(), bean.getFormat());
+                                        logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                     },
                                     e -> logger.error("Error: " + e),
                                     () -> logger.info(String.format("Completed %s: %s", timeRecord, TimeUtils.duration(timeRecord, DateTimeFormatter.ISO_TIME)))
@@ -335,15 +349,18 @@ public class Main {
             if(bean.isHdfs()){
                 HDFS hdfs = new HDFS(bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome());
 
+                AtomicInteger assigner = new AtomicInteger(0);
+
                 observable
-                        .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                        .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                        .observeOn(Schedulers.io())
+                        .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                        .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                        .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                .map(i2 -> intenseCalculation(i2, hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(MessageFormat.format("recollect/{0}/{1}", uuid, s)), bean.getArguments(), bean.getFormat()))
+                        )
                         .subscribe(
                                 (Download l) -> {
                                     if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                    logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                    l.execute(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(MessageFormat.format("recollect/{0}/{1}", uuid, s)), bean.getArguments(), bean.getFormat());
+                                    logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                 },
                                 e -> logger.error("Error: " + e),
                                 () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
@@ -352,29 +369,35 @@ public class Main {
                 if (Objects.nonNull(bean.getOut())) {
                     pathWithSetSpec = Files.createDirectories(Paths.get(MessageFormat.format("{0}/{1}/{2}", bean.getOut(), uuid, listRecordsParameters.getSetSpec())));
 
+                    AtomicInteger assigner = new AtomicInteger(0);
+
                     observable
-                            .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                            .observeOn(Schedulers.io())
+                            .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                            .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                            .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                    .map(i2 -> intenseCalculation(i2, pathWithSetSpec, bean.getArguments(), bean.getFormat()))
+                            )
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                        logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                        l.execute(pathWithSetSpec, bean.getArguments(), bean.getFormat());
+                                        logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                     },
                                     e -> logger.error("Error: " + e),
                                     () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
                             );
                 } else {
+                    AtomicInteger assigner = new AtomicInteger(0);
+
                     observable
-                            .doOnNext(i -> logger.info(String.format("Emiting  %s in %s", i, Thread.currentThread().getName())))
-//                            .delay(10, TimeUnit.MILLISECONDS, Schedulers.trampoline())
-                            .observeOn(Schedulers.io())
+                            .doOnNext(i -> logger.info("Emiting  {} in {}", i, Thread.currentThread().getName()))
+                            .groupBy(i -> assigner.incrementAndGet() % bean.getThreads())
+                            .flatMap(grp -> grp.observeOn(Schedulers.io())
+                                    .map(i2 -> intenseCalculation(i2, bean.getArguments(), bean.getFormat()))
+                            )
                             .subscribe(
                                     (Download l) -> {
                                         if((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
-                                        logger.info(String.format("Received in %s value %s", Thread.currentThread().getName(), l));
-                                        l.execute(bean.getArguments(), bean.getFormat());
+                                        logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                                     },
                                     e -> logger.error("Error: " + e),
                                     () -> logger.info(String.format("Completed %s: %s", s, TimeUtils.duration(timeSet, DateTimeFormatter.ISO_TIME)))
@@ -388,4 +411,27 @@ public class Main {
         //Garbage.gc();
     }
 
+    public static <T> T intenseCalculation(T value, FileSystem fileSystem, org.apache.hadoop.fs.Path dest, Map<String, String> arguments, FormatType formatType) throws Exception {
+        logger.info("Calculating in {} value {}", Thread.currentThread().getName(), value);
+
+        ((Download) value).execute(fileSystem, dest, arguments, formatType);
+
+        return value;
+    }
+
+    public static <T> T intenseCalculation(T value, Map<String, String> arguments, FormatType formatType) throws Exception {
+        logger.info("Calculating in {} value {}", Thread.currentThread().getName(), value);
+
+        ((Download) value).execute(arguments, formatType);
+
+        return value;
+    }
+
+    public static <T> T intenseCalculation(T value, Path dest, Map<String, String> arguments, FormatType formatType) throws Exception {
+        logger.info("Calculating in {} value {}", Thread.currentThread().getName(), value);
+
+        ((Download) value).execute(dest, arguments, formatType);
+
+        return value;
+    }
 }
