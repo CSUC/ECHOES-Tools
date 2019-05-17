@@ -11,11 +11,15 @@ import org.transformation.util.Verb;
 import org.transformation.util.URLEncoder;
 import org.apache.commons.lang3.StringUtils;
 
+import static java.net.URLDecoder.decode;
+import static java.util.stream.Collectors.toList;
 import static org.transformation.util.URLEncoder.encode;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 
 public class Parameters {
@@ -92,6 +96,58 @@ public class Parameters {
         if (metadataPrefix != null) string.add("metadataPrefix=" + encode(metadataPrefix));
         if (resumptionToken != null) string.add("resumptionToken=" + encode(resumptionToken));
         return baseUrl + "?" + StringUtils.join(string, URLEncoder.SEPARATOR);
+    }
+
+    public void parserUrl(String input) throws MalformedURLException {
+        URL url = new URL(input);
+
+        List<AbstractMap.SimpleEntry<String, String>> list =
+                Pattern.compile("&").splitAsStream(url.getQuery())
+                        .map(s -> Arrays.copyOf(s.split("="), 2))
+                        .map(o -> new AbstractMap.SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
+                        .collect(toList());
+
+        list.forEach(stringStringSimpleEntry -> {
+            if(stringStringSimpleEntry.getKey().equals("verb")){
+                withVerb(Verb.Type.fromValue(stringStringSimpleEntry.getValue()));
+            }
+            //metadataPrefix;
+            if(stringStringSimpleEntry.getKey().equals("metadataPrefix")){
+                withMetadataPrefix(stringStringSimpleEntry.getValue());
+            }
+            //set;
+            if(stringStringSimpleEntry.getKey().equals("set")){
+                withSet(stringStringSimpleEntry.getValue());
+            }
+            //granularity;
+            if(stringStringSimpleEntry.getKey().equals("granularity")){
+                withGranularity(stringStringSimpleEntry.getValue());
+            }
+            //from;
+            if(stringStringSimpleEntry.getKey().equals("from")){
+                try {
+                    withFrom(formatter.parse(stringStringSimpleEntry.getValue(), granularity()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            //until;
+            if(stringStringSimpleEntry.getKey().equals("until")){
+                try {
+                    withUntil(formatter.parse(stringStringSimpleEntry.getValue(), granularity()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            //identifier;
+            if(stringStringSimpleEntry.getKey().equals("identifier")){
+                identifier(stringStringSimpleEntry.getValue());
+            }
+            //resumptionToken;
+            if(stringStringSimpleEntry.getKey().equals("resumptionToken")){
+                withResumptionToken(stringStringSimpleEntry.getValue());
+            }
+        });
     }
 
     /**

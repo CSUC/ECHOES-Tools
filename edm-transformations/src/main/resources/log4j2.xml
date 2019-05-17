@@ -21,18 +21,7 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.EDM.Transformations.deserialize" level="debug"
-			additivity="true">
-			<appender-ref ref="RollingFile" level="info" />
-		</Logger>
-
-		<Logger name="org.EDM.Transformations.formats" level="debug"
-			additivity="true">
-			<appender-ref ref="RollingFile" level="info" />
-		</Logger>
-
-		<Logger name="org.EDM.Transformations.serialize" level="debug"
-			additivity="true">
+		<Logger name="org.edm.transformations.formats" level="debug" additivity="true">
 			<appender-ref ref="RollingFile" level="info" />
 		</Logger>
 

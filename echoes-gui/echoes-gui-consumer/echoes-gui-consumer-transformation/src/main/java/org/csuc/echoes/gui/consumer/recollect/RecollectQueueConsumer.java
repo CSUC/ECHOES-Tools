@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
-import org.EDM.Transformations.formats.utils.SchemaType;
+import org.edm.transformations.formats.utils.SchemaType;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

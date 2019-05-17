@@ -3,13 +3,7 @@ package org.transformation.download;
 import isbn._1_931666_22_9.Ead;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
-import org.EDM.Transformations.formats.EDM;
-import org.EDM.Transformations.formats.a2a.A2A2EDM;
-import org.EDM.Transformations.formats.dc.DC2EDM;
-import org.EDM.Transformations.formats.ead.EAD2EDM;
-import org.EDM.Transformations.formats.memorix.MEMORIX2EDM;
-import org.EDM.Transformations.formats.utils.SchemaType;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.core.HDFS;
 import org.csuc.util.FormatType;
+import org.edm.transformations.formats.EDM;
+import org.edm.transformations.formats.a2a.A2A2EDM;
+import org.edm.transformations.formats.dc.DC2EDM;
+import org.edm.transformations.formats.ead.EAD2EDM;
+import org.edm.transformations.formats.memorix.MEMORIX2EDM;
+import org.edm.transformations.formats.utils.SchemaType;
 import org.openarchives.oai._2.RecordType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
@@ -49,6 +49,9 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Map<String, String> properties) throws Exception {
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
         EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
@@ -60,6 +63,9 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Map<String, String> properties, FormatType formatType) throws Exception {
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
         EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
@@ -71,8 +77,19 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Path outs, Map<String, String> properties) throws Exception {
-        Path filename = Paths.get(outs + File.separator
-                + StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + ".rdf");
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
+        Path filename = Paths.get(
+                String.format("%s/%s.rdf",
+                    outs,
+                    RegExUtils.replaceAll(
+                            record.getHeader().getIdentifier(),
+                            "[^a-zA-Z0-9.-]",
+                            "_"
+                    )
+                )
+            );
 
         if (Files.exists(outs, LinkOption.NOFOLLOW_LINKS)) {
             EDM edm = getMetadataSchema(new FileOutputStream(filename.toFile()), properties);
@@ -87,11 +104,22 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(Path outs, Map<String, String> properties, FormatType formatType) throws Exception {
-        Path filename = Paths.get(outs + File.separator
-                + StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + "." + formatType.extensions().stream().findFirst().get());
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
+        Path filename = Paths.get(
+                String.format("%s/%s.%s",
+                        outs,
+                        RegExUtils.replaceAll(
+                                record.getHeader().getIdentifier(),
+                                "[^a-zA-Z0-9.-]",
+                                "_"
+                        ),
+                        formatType.extensions().stream().findFirst().get()
+                )
+        );
 
         if (Files.exists(outs, LinkOption.NOFOLLOW_LINKS)) {
-
             EDM edm = getMetadataSchema(new FileOutputStream(filename.toFile()), properties);
 
             if (Objects.nonNull(edm)){
@@ -105,7 +133,16 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(FileSystem fileSystem, org.apache.hadoop.fs.Path dest, Map<String, String> properties) throws Exception {
-        String filename = StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + ".rdf";
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
+        String filename = String.format("%s.rdf",
+                RegExUtils.replaceAll(
+                        record.getHeader().getIdentifier(),
+                        "[^a-zA-Z0-9.-]",
+                        "_"
+                )
+        );
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -125,7 +162,17 @@ public class Jaxb implements Download {
 
     @Override
     public void execute(FileSystem fileSystem, org.apache.hadoop.fs.Path dest, Map<String, String> properties, FormatType formatType) throws Exception {
-        String filename = StringUtils.replaceAll(record.getHeader().getIdentifier(), "[^a-zA-Z0-9.-]", "_") + "." + formatType.extensions().stream().findFirst().get();
+        if (!Objects.equals(schemaType.getType(), object.getClass()))
+            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
+
+        String filename = String.format("%s.%s",
+                RegExUtils.replaceAll(
+                        record.getHeader().getIdentifier(),
+                        "[^a-zA-Z0-9.-]",
+                        "_"
+                ),
+                formatType.extensions().stream().findFirst().get()
+        );
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

@@ -2,7 +2,7 @@ package org.transformation.download;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import org.EDM.Transformations.formats.utils.SchemaType;
+import org.edm.transformations.formats.utils.SchemaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openarchives.oai._2.RecordType;
@@ -24,18 +24,19 @@ public class FactoryDownload {
 
     private static Logger logger = LogManager.getLogger(FactoryDownload.class);
 
+
+
+
+
+
     public static Observable<Download> createDownloadIterator(ItemIterator<?> iteratorTypes, SchemaType schemaType) {
         Observable<Download> observable = Observable.create(emitter -> {
                 if (Objects.nonNull(iteratorTypes)) {
                     StreamUtils.asStream(iteratorTypes).parallel().filter(Objects::nonNull).forEach(record->{
-//                    Stream.generate(iteratorTypes::next).parallel().forEach(record-> {
-//                    iteratorTypes.forEachRemaining(record -> {
-//                        if (Objects.nonNull(record)) {
                             if(record instanceof RecordType){
                                 RecordType cast = (RecordType) record;
                                 getRecord(cast, schemaType, emitter);
                             }
-//                        }
                     });
                     if(!iteratorTypes.getException().isEmpty())
                         throw new Exception(iteratorTypes.getException().stream().collect(Collectors.joining()));
@@ -45,22 +46,7 @@ public class FactoryDownload {
        return observable;
     }
 
-    /**
-     *
-     * @param record
-     */
-    public static Observable<Download> createDownloadRecordType(RecordType record, SchemaType schemaType) {
-        Observable<Download> observable = Observable.create(emitter -> {
-            if (Objects.nonNull(record)) {
-                getRecord(record, schemaType, emitter);
-            }
-            emitter.onComplete();
-        });
-
-       return observable;
-    }
-
-    /**
+       /**
      *
      * @param object
      * @param schemaType

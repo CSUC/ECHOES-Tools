@@ -13,13 +13,14 @@ import org.csuc.typesafe.HDFSConfig;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.text.MessageFormat;
 
 /**
  * @author amartinez
  */
-public class HDFS {
+public class HDFS implements Serializable {
 
     private static Logger logger = LogManager.getLogger(HDFS.class);
 
@@ -72,6 +73,9 @@ public class HDFS {
         //Copy file from local to HDFS
         IOUtils.copyBytes(inputStream, outputStream, 4096, true);
 
+        IOUtils.closeStream(inputStream);
+        IOUtils.closeStream(outputStream);
+
         logger.info(MessageFormat.format("End Write file into hdfs: {0}/{1}", System.getProperty("hadoop.home.dir"), dest));
     }
 
@@ -82,7 +86,9 @@ public class HDFS {
 
         //Classical input stream usage
         IOUtils.copyBytes(inputStream, outputStream, 512, false);
-        inputStream.close();
+
+        IOUtils.closeStream(inputStream);
+        IOUtils.closeStream(outputStream);
     }
 
     public static void delete(FileSystem fileSystem, Path source) throws IOException {

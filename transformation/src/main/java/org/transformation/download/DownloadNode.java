@@ -1,6 +1,6 @@
 package org.transformation.download;
 
-import org.EDM.Transformations.formats.xslt.XSLTTransformations;
+import org.edm.transformations.formats.xslt.XSLTTransformations;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.Level;
