@@ -59,7 +59,7 @@ public class Main {
         try {
             Transformation transformation = null;
             
-            if (bean.getType().equals(EnumTypes.OAI))   transformation = new TransformationOai(new URL(bean.getInput()), classType, bean.getThreads());
+            if (bean.getType().equals(EnumTypes.OAI))   transformation = new TransformationOai(new URL(bean.getInput()), classType, bean.getThreads(), 15000);
             else if (bean.getType().equals(EnumTypes.URL))  transformation = new TransformationUrl(new URL(bean.getInput()), classType);
             else if (bean.getType().equals(EnumTypes.FILE)) transformation = new TransformationFile(Paths.get(bean.getInput()), classType);
 

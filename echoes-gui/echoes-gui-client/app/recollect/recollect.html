@@ -61,8 +61,11 @@
                                     <a ng-if="data.status != 'END' && data.status != 'ERROR'"
                                        ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
                                 </td>
-                                <td title="'host'">
-                                    {{data.host | limitTo: 50}}<span ng-if="data.host.length > 50">...</span>
+                                <td title="'input'" ng-if="data.type != 'FILE'">
+                                    {{data.input | limitTo: 50}}<span ng-if="data.input.length > 50">...</span>
+                                </td>
+                                <td title="'filename'" ng-if="data.type == 'FILE'">
+                                    {{data.filename}}
                                 </td>
                                 <td title="'timestamp'">
                                     {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
@@ -93,28 +96,34 @@
     </div>
     <div class="modal-body">
         <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
-            <!-- HOST -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.host.$pristine
-             || userForm.host.$invalid && userForm.host.$error.pattern || userForm.host.$invalid && userForm.host.$dirty}">
-                <label>host*</label>
-                <input type="text" name="host" class="form-control" ng-model="model.host" required
-                       ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/">
-                <p ng-show="userForm.host.$invalid && userForm.host.$error.required" class="help-block">host is
+            <!-- Type -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.type.$invalid && userForm.type.$pristine}">
+                <label>Type*</label>
+                <select name="type" class="form-control" ng-model="model.type"
+                        ng-options="value for value in options.types" required></select>
+                <p ng-show="userForm.type.$invalid && userForm.type.$error.required" class="help-block">type is
                     required.</p>
-                <p ng-show="userForm.host.$invalid && userForm.host.$error.pattern" class="help-block">host not valid
+            </div>
+
+            <!-- VALUE -->
+            <div ng-if="model.type == 'oai' || model.type == 'url'" class="form-group" ng-class="{ 'has-error' : userForm.input.$pristine
+             || userForm.input.$invalid && userForm.input.$error.pattern || userForm.input.$invalid && userForm.input.$dirty}">
+                <label>Input*</label>
+                <input type="text" name="input" class="form-control" ng-model="model.input" required
+                       ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/">
+                <p ng-show="userForm.input.$invalid && userForm.input.$error.required" class="help-block">Input is
+                    required.</p>
+                <p ng-show="userForm.input.$invalid && userForm.input.$error.pattern" class="help-block">Input not valid
                     url.</p>
             </div>
 
-            <!-- metadataPrefix -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.metadataPrefix.$pristine
-             || userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.pattern || userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$dirty}">
-                <label>metadataPrefix*</label>
-                <input type="text" name="metadataPrefix" class="form-control" ng-model="model.metadataPrefix" required
-                       ng-pattern="/^\w+/">
-                <p ng-show="userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.required"
-                   class="help-block">metadataPrefix is required.</p>
-                <p ng-show="userForm.metadataPrefix.$invalid && userForm.metadataPrefix.$error.pattern"
-                   class="help-block">metadataPrefix not valid url.</p>
+            <!-- FILE -->
+            <div ng-if="model.type == 'file'" class="form-group" ng-class="{ 'has-error' : userForm.file.$invalid && userForm.file.$pristine}">
+                <label>File*</label>
+                <div id="dropzone1" class="dropzone" options="dzOptions" callbacks="dzCallbacks" ng-dropzone></div>
+                <input type="hidden" name="file" class="form-control" ng-model="model.file" required>
+                <p ng-show="userForm.file.$invalid && userForm.file.$error.required" class="help-block">File is
+                    required.</p>
             </div>
 
             <!-- schema -->
@@ -125,21 +134,13 @@
                 <p ng-show="userForm.schema.$invalid && userForm.schema.$error.required" class="help-block">schema is
                     required.</p>
             </div>
+
             <!-- format -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.format.$invalid && userForm.format.$pristine }">
                 <label>Format*</label>
                 <select name="format" class="form-control" ng-model="model.format"
                         ng-options="value for value in options.format" required></select>
                 <p ng-show="userForm.format.$invalid && userForm.format.$error.required" class="help-block">format is
-                    required.</p>
-            </div>
-
-            <!-- set -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.set.$pristine
-             || userForm.set.$invalid && userForm.set.$error.pattern || userForm.set.$invalid && userForm.set.$dirty}">
-                <label>set*</label>
-                <input type="text" name="set" class="form-control" ng-model="model.set" required>
-                <p ng-show="userForm.set.$invalid && userForm.set.$error.required" class="help-block">set is
                     required.</p>
             </div>
 

@@ -87,8 +87,6 @@ public class Zip {
 
             message.put("_id", id);
             message.put("user", user);
-            message.put("set", recollect.getSet());
-
 
             new Producer(rabbitMQConfig.getZip()).sendMessage(message);
 

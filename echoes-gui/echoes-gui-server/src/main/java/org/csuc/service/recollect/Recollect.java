@@ -13,6 +13,7 @@ import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.Status;
 import org.csuc.utils.authorization.Authoritzation;
+import org.csuc.utils.recollect.TransformationType;
 import org.csuc.utils.response.ResponseEchoes;
 import org.mongodb.morphia.Key;
 
@@ -150,8 +151,7 @@ public class Recollect {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(RecollectRequest recollectRequest, @HeaderParam("Authorization") String authorization) {
 
-        if (Objects.isNull(recollectRequest.getHost()) || Objects.isNull(recollectRequest.getSet())
-                || Objects.isNull(recollectRequest.getSet()) || Objects.isNull(recollectRequest.getUser()) || Objects.isNull(recollectRequest.getMetadataPrefix())) {
+        if (Objects.isNull(recollectRequest.getInput()) || Objects.isNull(recollectRequest.getUser()) ) {
             throw new WebApplicationException(
                     Response.status(Response.Status.BAD_REQUEST)
                             .entity("invalid form")
@@ -175,16 +175,13 @@ public class Recollect {
 
             logger.info(recollectRequest.toString());
 
-            recollect.setHost(recollectRequest.getHost());
-            recollect.setSet(recollectRequest.getSet());
-            recollect.setMetadataPrefix(recollectRequest.getMetadataPrefix());
-            if(Objects.nonNull(recollectRequest.getFrom())) recollect.setFrom(recollectRequest.getFrom());
-            if(Objects.nonNull(recollectRequest.getUntil())) recollect.setUntil(recollectRequest.getUntil());
-            if(Objects.nonNull(recollectRequest.getGranularity())) recollect.setGranularity(recollectRequest.getGranularity());
+            recollect.setInput(recollectRequest.getInput());
+            recollect.setType(TransformationType.convert(recollectRequest.getType()));
             if(Objects.nonNull(recollectRequest.getProperties())) recollect.setProperties(recollectRequest.getProperties());
             recollect.setUser(recollectRequest.getUser());
             recollect.setFormat(recollectRequest.getFormat());
             recollect.setSchema(recollectRequest.getSchema());
+            recollect.setFilename(recollectRequest.getFilename());
 
             recollect.setStatus(Status.QUEUE);
 
@@ -195,14 +192,9 @@ public class Recollect {
             HashMap<String, Object> message = new HashMap<>();
 
             message.put("_id", recollect.get_id());
-            message.put("host", recollect.getHost());
-            message.put("set", recollect.getSet());
-            message.put("metadataPrefix", recollect.getMetadataPrefix());
-            message.put("from", recollect.getFrom());
-            message.put("until", recollect.getUntil());
+            message.put("input", recollect.getInput());
             message.put("format", recollect.getFormat());
             message.put("schema", recollect.getSchema());
-            message.put("granularity", recollect.getGranularity());
             message.put("properties", recollect.getProperties());
 
 

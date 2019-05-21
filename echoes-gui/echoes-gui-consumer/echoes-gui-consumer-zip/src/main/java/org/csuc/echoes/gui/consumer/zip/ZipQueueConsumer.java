@@ -105,7 +105,7 @@ public class ZipQueueConsumer extends EndPoint implements Runnable, Consumer {
                 FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + map.get("_id").toString() + ".zip");
 
                 ZipOutputStream zipOut = new ZipOutputStream(fos);
-                File fileToZip = Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString()) + File.separator + map.get("set").toString()).toFile();
+                File fileToZip = Paths.get(applicationConfig.getRecollectFolder(map.get("_id").toString())).toFile();
 
                 zipFolder(fileToZip, fileToZip.getName(), zipOut);
                 zipOut.close();

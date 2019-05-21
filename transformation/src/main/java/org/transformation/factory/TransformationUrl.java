@@ -23,9 +23,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class TransformationUrl implements Transformation {
 
@@ -33,6 +31,8 @@ public class TransformationUrl implements Transformation {
 
     private Class<?>[] classType;
     private URL input;
+
+    private List<Throwable> throwables = new ArrayList<>();
 
     public TransformationUrl(URL input, Class<?>[] classType) {
         this.classType = classType;
@@ -69,6 +69,7 @@ public class TransformationUrl implements Transformation {
                 edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), formatType);
             }
         } catch (Exception e) {
+            throwables.add(e);
             logger.error(e.getMessage());
         }
     }
@@ -105,6 +106,7 @@ public class TransformationUrl implements Transformation {
                 edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename), formatType);
             }
         } catch (Exception e) {
+            throwables.add(e);
             logger.error(e.getMessage());
         }
     }
@@ -149,7 +151,13 @@ public class TransformationUrl implements Transformation {
                 HDFS.write(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(path, filename), inputStream, true);
             }
         } catch (Exception e) {
+            throwables.add(e);
             logger.error(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Throwable> getExceptions() {
+        return throwables.isEmpty() ? null : throwables;
     }
 }
