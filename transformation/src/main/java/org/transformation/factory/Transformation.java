@@ -6,9 +6,10 @@ import org.edm.transformations.formats.utils.SchemaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
-public interface Transformation {
+public interface Transformation  {
 
     void console(SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException;
 
@@ -16,4 +17,5 @@ public interface Transformation {
 
     void hdfs(String hdfsuri, String hdfuser, String hdfshome, org.apache.hadoop.fs.Path path, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException, URISyntaxException;
 
+    List<Throwable> getExceptions();
 }

@@ -25,9 +25,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TransformationOai implements Transformation {
@@ -39,16 +37,20 @@ public class TransformationOai implements Transformation {
     private Class<?>[] classType;
     private URL input;
     private int threads = Runtime.getRuntime().availableProcessors();
+    private int buffer = 15000;
+
+    private List<Throwable> throwables = new ArrayList<>();
 
     public TransformationOai(URL input, Class<?>[] classType) {
         this.classType = classType;
         this.input = input;
     }
 
-    public TransformationOai(URL input, Class<?>[] classType, int threads) {
+    public TransformationOai(URL input, Class<?>[] classType, int threads, int buffer) {
         this.classType = classType;
         this.input = input;
         this.threads = threads;
+        this.buffer = buffer;
     }
 
     @Override
@@ -71,10 +73,13 @@ public class TransformationOai implements Transformation {
                 )
                 .subscribe(
                         (Download l) -> {
-                            if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
+                            if ((batch.incrementAndGet() % buffer) == 0) Garbage.gc();
                             logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                         },
-                        e -> logger.error("Error: " + e.getMessage()),
+                        e -> {
+                            logger.error("Error: " + e.getMessage());
+                            throwables.add(e);
+                        },
                         () -> logger.info(String.format("Completed %s %s", input, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)))
                 );
     }
@@ -100,10 +105,13 @@ public class TransformationOai implements Transformation {
                 )
                 .subscribe(
                         (Download l) -> {
-                            if ((batch.incrementAndGet() % 25000) == 0) Garbage.gc();
+                            if ((batch.incrementAndGet() % buffer) == 0) Garbage.gc();
                             logger.info("Received in {} value {}", Thread.currentThread().getName(), l);
                         },
-                        e -> logger.error("Error: " + e),
+                        e -> {
+                            logger.error("Error: " + e);
+                            throwables.add(e);
+                        },
                         () -> logger.info(String.format("Completed %s %s", input, TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)))
                 );
 
@@ -116,7 +124,12 @@ public class TransformationOai implements Transformation {
 
         String uuid = UUID.randomUUID().toString();
 
-        iterateHDFS(input, fileSystem, path, schemaType, arguments, formatType);
+        iterate(input, fileSystem, path, schemaType, arguments, formatType);
+    }
+
+    @Override
+    public List<Throwable> getExceptions() {
+        return throwables.isEmpty() ? null : throwables;
     }
 
     /**
@@ -192,13 +205,50 @@ public class TransformationOai implements Transformation {
 
                 } catch (Exception e) {
                     logger.error(e.getMessage());
+                    throwables.add(e);
+                }
+            });
+
+            if (oaipmHtype.getListRecords().getResumptionToken() != null)
+                if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty())
+                    iterate(next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()), emitter, schemaType);
+        }
+    }
+
+    private void iterate(URL url,  Path path, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws MalformedURLException, URISyntaxException {
+        OAIPMHtype oaipmHtype = (OAIPMHtype) new JaxbUnmarshal(url, classType).getObject();
+
+        if (Objects.nonNull(oaipmHtype)) {
+            oaipmHtype.getListRecords().getRecord().stream().parallel().forEach(recordType -> {
+                try {
+                    if (!Objects.equals(StatusType.DELETED, recordType.getHeader().getStatus())) {
+                        if (!Objects.equals(schemaType.getType(), JAXBIntrospector.getValue(recordType.getMetadata().getAny()).getClass()))
+                            throw new Exception(String.format("recordType \"%s\" is not a %s valid schema", recordType.getHeader().getIdentifier(), schemaType.getType()));
+
+                        intenseCalculation(
+                                new Jaxb(recordType, JAXBIntrospector.getValue(recordType.getMetadata().getAny()), schemaType),
+                                path,
+                                arguments,
+                                formatType
+                        );
+                    } else
+                        logger.debug("{} - {}", recordType.getHeader().getIdentifier(), recordType.getHeader().getStatus());
+
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    throwables.add(e);
                 }
 
             });
 
             if (oaipmHtype.getListRecords().getResumptionToken() != null)
                 if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty())
-                    iterate(next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()), emitter, schemaType);
+                    iterate(
+                            next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()),
+                            path,
+                            schemaType,
+                            arguments,
+                            formatType);
         }
     }
 
@@ -212,7 +262,7 @@ public class TransformationOai implements Transformation {
      * @throws MalformedURLException
      * @throws URISyntaxException
      */
-    private void iterateHDFS(URL url, FileSystem fileSystem, org.apache.hadoop.fs.Path path, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws MalformedURLException, URISyntaxException {
+    private void iterate(URL url, FileSystem fileSystem, org.apache.hadoop.fs.Path path, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws MalformedURLException, URISyntaxException {
         OAIPMHtype oaipmHtype = (OAIPMHtype) new JaxbUnmarshal(url, classType).getObject();
 
         if (Objects.nonNull(oaipmHtype)) {
@@ -234,13 +284,13 @@ public class TransformationOai implements Transformation {
 
                 } catch (Exception e) {
                     logger.error(e.getMessage());
+                    throwables.add(e);
                 }
-
             });
 
             if (oaipmHtype.getListRecords().getResumptionToken() != null)
                 if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty())
-                    iterateHDFS(
+                    iterate(
                             next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()),
                             fileSystem,
                             path,

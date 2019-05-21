@@ -43,7 +43,7 @@
                 vm.chart = echoesChart.getAggregationDoughnut(_data.data)
             }).catch(function (_data) {
                 console.log(_data)
-                $window.location.href = "/404.html";
+                // $window.location.href = "/404.html";
             })
 
             restApi.getRecollect({
@@ -58,7 +58,7 @@
                     vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
-                $window.location.href = "/404.html";
+                // $window.location.href = "/404.html";
             });
         }
 
@@ -83,7 +83,7 @@
                     }).catch(function (_data) {
                         $log.info(_data);
                         $defer.reject();
-                        $window.location.href = "/404.html";
+                        //$window.location.href = "/404.html";
                     });
                 }
             });
@@ -126,8 +126,9 @@
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
                             format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
                             edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"],
-                            properties: ["dataProvider", "language", "rights"]
-                        }
+                            properties: ["dataProvider", "language", "rights"],
+                            types: ["oai", "url", "file"]
+                        };
 
                         $scope.properties = [
                             {key:'', value:''},
@@ -150,16 +151,13 @@
                                 });
 
                                 var data = {
-                                    'host': $scope.model.host,
-                                    'set': $scope.model.set,
-                                    'metadataPrefix': $scope.model.metadataPrefix,
-                                    'from': vm.profile.from,
-                                    'until': $scope.model.until,
-                                    'granularity': $scope.model.granularity,
                                     'format': $scope.model.format,
+                                    'type': $scope.model.type,
                                     'schema': $scope.model.schema,
                                     'properties': properties,
-                                    'user': vm.profile.sub
+                                    'user': vm.profile.sub,
+                                    'filename': ( typeof $scope.model.file === 'undefined' ) ? null : $scope.model.file.name,
+                                    'input': ( typeof $scope.model.input === 'undefined' ) ? $scope.model.file.tempFilePath : $scope.model.input
                                 };
 
                                 $log.info(data);
@@ -172,10 +170,25 @@
                                     $state.go($state.current, {}, {reload : true});
                                 }).catch(function (_data) {
                                     $log.info(_data);
-                                    $window.location.href = "/404.html";
+                                    // $window.location.href = "/404.html";
                                 });
                             }
                         };
+
+                        $scope.dzCallbacks = {
+                            'addedfile' : function(file){
+                                $log.log('dzCallbacks file added', file);
+                            },
+                            'success': function (file, response) {
+                                $log.log('dzCallbacks success', file, response);
+                                $scope.model.file = response
+                            }
+                        };
+
+
+                        //Apply methods for dropzone
+                        //Visit http://www.dropzonejs.com/#dropzone-methods for more methods
+                        $scope.dzMethods = {};
                     }]
                 });
         };

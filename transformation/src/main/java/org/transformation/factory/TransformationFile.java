@@ -21,14 +21,14 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class TransformationFile implements Transformation {
 
     private Class<?>[] classType;
     private Path input;
+
+    private List<Throwable> throwables = new ArrayList<>();
 
     public TransformationFile(Path input, Class<?>[] classType) {
         this.classType = classType;
@@ -68,7 +68,8 @@ public class TransformationFile implements Transformation {
                             edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), formatType);
                         }
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        throwables.add(e);
+//                        throw new RuntimeException(e);
                     }
                 });
     }
@@ -108,7 +109,8 @@ public class TransformationFile implements Transformation {
                             edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename), formatType);
                         }
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        throwables.add(e);
+//                        throw new RuntimeException(e);
                     }
                 });
     }
@@ -156,8 +158,14 @@ public class TransformationFile implements Transformation {
                             HDFS.write(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(path, filename), inputStream, true);
                         }
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        throwables.add(e);
+//                        throw new RuntimeException(e);
                     }
                 });
+    }
+
+    @Override
+    public List<Throwable> getExceptions() {
+        return throwables.isEmpty() ? null : throwables;
     }
 }

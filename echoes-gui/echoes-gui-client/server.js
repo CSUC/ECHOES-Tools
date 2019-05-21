@@ -468,16 +468,13 @@ app.post('/rest/api/recollect/create', function (req, res, next) {
     };
 
     var formData = {
-        host: req.body.host,
-        set: req.body.set,
-        metadataPrefix: req.body.metadataPrefix,
+        input: req.body.input,
         user: req.body.user,
-        from: req.body.from,
-        until: req.body.until,
-        granularity: req.body.granularity,
+        type: req.body.type,
         format: req.body.format,
         schema: req.body.schema,
         properties: req.body.properties,
+        filename: req.body.filename
     }
 
     request({

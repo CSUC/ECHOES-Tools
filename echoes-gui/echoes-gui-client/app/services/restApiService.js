@@ -40,7 +40,7 @@
                     break;
                 case "createRecollect":
                     data = this.fillDataInObjectByList(data, _params, [
-                        'host', 'set', 'metadataPrefix', 'from', 'until', 'granularity', 'properties', 'user', 'format', 'schema'
+                        'input', 'properties', 'type', 'filename', 'user', 'format', 'schema'
                     ]);
                     data.url = this.getApiBaseUrl() + 'recollect/create';
                     break;
