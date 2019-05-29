@@ -4,6 +4,8 @@ import isbn._1_931666_22_9.Ead;
 import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.core.HDFS;
 import org.csuc.deserialize.JaxbUnmarshal;
@@ -24,6 +26,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class TransformationFile implements Transformation {
+
+    private Logger logger = LogManager.getLogger(getClass());
 
     private Class<?>[] classType;
     private Path input;
