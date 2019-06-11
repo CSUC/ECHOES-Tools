@@ -6,12 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.typesafe.HDFSConfig;
 import org.csuc.util.FormatType;
+import org.javatuples.Pair;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 import org.kohsuke.args4j.spi.MapOptionHandler;
+import org.kohsuke.args4j.spi.StringArrayOptionHandler;
 import org.transformation.util.EnumTypes;
 
 import java.io.FileNotFoundException;
@@ -23,10 +25,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author amartinez
@@ -77,6 +78,15 @@ public class ArgsBean {
             usage = "Example: { edmType=IMAGE,language=ca ... }")
     private Map<String, String> arguments = new HashMap<>();
 
+
+    @Option(name = "--providedCHO", handler = StringArrayOptionHandler.class,
+            metaVar = "{edmType | provider | rights | language | dataProvider}",
+            usage = "Example: { edmType=IMAGE,language=ca ... }")
+    private String[] providedCHOProperties = new String[]{};
+
+    @Option(name = "--override-meatadata", usage= "override values metadata")
+    private Path override;
+
     private String job = UUID.randomUUID().toString();
 
     public ArgsBean(String[] args) {
@@ -95,6 +105,8 @@ public class ArgsBean {
             }
 
             this.run();
+
+            promptEnterKey();
         } catch (CmdLineException e) {
             if (this.help) {
                 System.err.println("Usage: ");
@@ -233,6 +245,33 @@ public class ArgsBean {
         this.arguments = arguments;
     }
 
+    public Map<String, List<String>> getProvidedCHOProperties() {
+        return Stream.of(providedCHOProperties).map(m-> {
+            String[] result = m.split("=");
+            if(result.length == 2)  return new Pair<>(result[0], result[1]);
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.groupingBy(Pair::getValue0, Collectors.mapping(Pair::getValue1, Collectors.toList())));
+    }
+
+    public void setProvidedCHOProperties(String[] providedCHOProperties) {
+        this.providedCHOProperties = providedCHOProperties;
+    }
+
+    public Path getOverride() {
+        return override;
+    }
+
+    public void setOverride(Path override) throws FileExistsException {
+        if (!Files.exists(override)) throw new FileExistsException(String.format("File \"%s\" not exist!", override));
+        this.override = override;
+    }
+
+    private static void promptEnterKey() {
+        System.out.println("Press \"ENTER\" to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
     public void run() throws IOException {
         logger.info("   Type                    :   {}", type);
         logger.info("   Schema                  :   {}", schema);
@@ -248,5 +287,7 @@ public class ArgsBean {
         logger.info("   Log Properties          :   {}", log);
         logger.info("   Threads                 :   {}", threads);
         logger.info("   Edm properties          :   {}", arguments);
+        logger.info("   ProvidedCHO properties  :   {}", getProvidedCHOProperties());
+        logger.info("   Override metadata       :   {}", override);
     }
 }
