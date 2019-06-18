@@ -6,15 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
-import org.csuc.dao.impl.quality.QualityDAOImpl;
-import org.csuc.dao.impl.quality.QualityDetailsDAOImpl;
-import org.csuc.dao.quality.QualityDAO;
-import org.csuc.dao.quality.QualityDetailsDAO;
-import org.csuc.entities.quality.QualityDetails;
+import org.csuc.dao.QualityDetailsDAO;
+import org.csuc.dao.entity.QualityDetails;
+import org.csuc.dao.entity.Status;
+import org.csuc.dao.impl.QualityDAOImpl;
+import org.csuc.dao.impl.QualityDetailsDAOImpl;
+import org.csuc.dao.QualityDAO;
 import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
-import org.csuc.utils.Aggregation;
-import org.csuc.utils.Status;
 import org.csuc.utils.StreamUtils;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.response.ResponseEchoes;
@@ -24,7 +23,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -91,8 +89,8 @@ public class Quality {
         }
 
         try {
-            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.entities.quality.Quality.class, client.getDatastore());
-            org.csuc.entities.quality.Quality quality = qualityDAO.getById(id);
+            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.dao.entity.Quality.class, client.getDatastore());
+            org.csuc.dao.entity.Quality quality = qualityDAO.getById(id);
 
             if(!Objects.equals(user, quality.getUser())) return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -132,8 +130,8 @@ public class Quality {
         try {
             logger.info(user);
 
-            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.entities.quality.Quality.class, client.getDatastore());
-            List<org.csuc.entities.quality.Quality> queryResults = qualityDAO.getByUser(user, page, pagesize, "-timestamp");
+            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.dao.entity.Quality.class, client.getDatastore());
+            List<org.csuc.dao.entity.Quality> queryResults = qualityDAO.getByUser(user, page, pagesize, "-timestamp");
 
             double count = new Long(qualityDAO.countByUser(user)).doubleValue();
 
@@ -223,15 +221,15 @@ public class Quality {
         }
 
         try {
-            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.entities.quality.Quality.class, client.getDatastore());
-            org.csuc.entities.quality.Quality quality = new org.csuc.entities.quality.Quality();
+            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.dao.entity.Quality.class, client.getDatastore());
+            org.csuc.dao.entity.Quality quality = new org.csuc.dao.entity.Quality();
 
             quality.setContentType(qualityRequest.getFormat());
             quality.setStatus(Status.QUEUE);
             quality.setUser(qualityRequest.getUser());
             quality.setData(qualityRequest.getDataset());
 
-            Key<org.csuc.entities.quality.Quality> key = qualityDAO.insert(quality);
+            Key<org.csuc.dao.entity.Quality> key = qualityDAO.insert(quality);
 
             logger.debug(key);
 
@@ -327,10 +325,10 @@ public class Quality {
         }
 
         try {
-            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.entities.quality.Quality.class, client.getDatastore());
+            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.dao.entity.Quality.class, client.getDatastore());
 
-            Supplier<Iterator<Aggregation>> i  = ()-> qualityDAO.getStatusAggregation(user);
-            List<Aggregation> result = StreamUtils.asStream(i.get()).collect(toList());
+            Supplier<Iterator<org.csuc.dao.entity.Aggregation>> i  = ()-> qualityDAO.getStatusAggregation(user);
+            List<org.csuc.dao.entity.Aggregation> result = StreamUtils.asStream(i.get()).collect(toList());
 
             logger.debug(result);
 

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.csuc.dao.entity.Aggregation;
 import org.csuc.dao.entity.Quality;
-import org.csuc.dao.quality.QualityDAO;
+import org.csuc.dao.QualityDAO;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.aggregation.Accumulator;

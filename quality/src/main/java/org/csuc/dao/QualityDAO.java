@@ -1,4 +1,4 @@
-package org.csuc.dao.quality;
+package org.csuc.dao;
 
 import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;

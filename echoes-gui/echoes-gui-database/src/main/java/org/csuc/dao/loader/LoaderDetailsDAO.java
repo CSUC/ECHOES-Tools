@@ -3,7 +3,6 @@ package org.csuc.dao.loader;
 import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;
 import org.csuc.entities.loader.LoaderDetails;
-import org.csuc.entities.quality.QualityDetails;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.DAO;
 
