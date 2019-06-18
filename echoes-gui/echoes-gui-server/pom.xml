@@ -192,6 +192,11 @@
             <artifactId>jetty-nosql</artifactId>
             <version>9.3.25.v20180904</version>
         </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>quality</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

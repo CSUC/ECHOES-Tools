@@ -56,6 +56,10 @@ public class QualityDetails {
         this.input = input;
     }
 
+    public QualityDetails() {
+        this._id = UUID.randomUUID().toString();
+    }
+
     public String get_id() {
         return _id;
     }

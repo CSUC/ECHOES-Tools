@@ -14,14 +14,14 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
-import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.dao.entity.Quality;
+import org.csuc.dao.impl.QualityDAOImpl;
 import org.csuc.dao.impl.loader.LoaderDAOImpl;
-import org.csuc.dao.impl.quality.QualityDAOImpl;
-import org.csuc.dao.quality.QualityDAO;
+import org.csuc.dao.loader.LoaderDAO;
+import org.csuc.dao.QualityDAO;
 import org.csuc.echoes.gui.consumer.publish.utils.Time;
 import org.csuc.entities.loader.Loader;
 import org.csuc.entities.loader.LoaderDetails;
-import org.csuc.entities.quality.Quality;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
@@ -53,7 +53,7 @@ public class PublishQueueConsumer extends EndPoint implements Runnable, Consumer
     private Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
 
     private LoaderDAO loaderDAO = new LoaderDAOImpl(Loader.class, client.getDatastore());
-    private QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.entities.quality.Quality.class, client.getDatastore());
+    private QualityDAO qualityDAO = new QualityDAOImpl(Quality.class, client.getDatastore());
 
     private Loader loader = null;
 
