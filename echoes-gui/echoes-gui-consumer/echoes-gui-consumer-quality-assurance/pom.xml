@@ -81,6 +81,11 @@
             <artifactId>ph-schematron</artifactId>
             <version>5.0.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>quality</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

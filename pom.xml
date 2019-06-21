@@ -15,6 +15,7 @@
 		<module>metadata-schema-definitions</module>
 		<module>transformation</module>
 		<module>edm-transformations</module>
+		<module>quality</module>
 		<module>binding</module>
 		<module>echoes-gui</module>
 		<module>rdf-format</module>
@@ -194,7 +195,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<revision>1.5</revision>
+		<revision>1.6</revision>
 
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 

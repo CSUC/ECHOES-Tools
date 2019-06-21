@@ -49,6 +49,7 @@ public class DC2EDM extends RDF implements EDM {
     private Set<String> identifiers;
     private Set<String> dates;
     private Set<String> subjects;
+    private Set<String> isShownAt;
 
     public DC2EDM(String identifier, OaiDcType dcType, Map<String, String> properties) {
         this.identifier = identifier;
@@ -157,6 +158,8 @@ public class DC2EDM extends RDF implements EDM {
                             break;
                         }
                         case "identifier": {
+                            getIsShownAt().add(elementType.getValue().getValue());
+
                             Identifier id = new Identifier();
                             id.setString(elementType.getValue().getValue());
                             EuropeanaType.Choice c = new EuropeanaType.Choice();
@@ -254,15 +257,35 @@ public class DC2EDM extends RDF implements EDM {
                             logger.error(String.format("[%s] - ", identifier,"UNKNOW metadataType"));
                             break;
                     }
+                }
+            });
 
-                    Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
-                        if (Objects.nonNull(EdmType.convert(edmType))) {
-                            Type2 t = new Type2();
-                            t.setType(EdmType.convert(edmType));
+            Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("language")).ifPresent((String l) -> {
+                boolean findAny =
+                        provided.getChoiceList().stream()
+                                .map(m-> m.getLanguage())
+                                .filter(Objects::nonNull)
+                                .filter(f-> !Objects.equals(f.getString(), l)).findAny().isPresent();
 
-                            provided.setType(t);
-                        }
-                    });
+                if(!findAny){
+                    if (Objects.nonNull(LanguageCodes.convert(l))) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Language language = new Language();
+                        language.setString(LanguageCodes.convert(l).xmlValue());
+
+                        c.setLanguage(language);
+                        provided.getChoiceList().add(c);
+                    }
+                }
+            });
+
+            Optional.ofNullable(properties).map((Map<String, String> m) -> m.get("edmType")).ifPresent((String edmType) -> {
+                if (Objects.nonNull(EdmType.convert(edmType))) {
+                    Type2 t = new Type2();
+                    t.setType(EdmType.convert(edmType));
+
+                    provided.setType(t);
                 }
             });
 
@@ -390,6 +413,14 @@ public class DC2EDM extends RDF implements EDM {
                 aggregation.getIntermediateProviderList().add(intermediate);
             });
 
+
+            getIsShownAt().stream().filter(this::isUri).findAny().ifPresent(s ->{
+                IsShownAt isShownAt = new IsShownAt();
+                isShownAt.setResource(s);
+
+                aggregation.setIsShownAt(isShownAt);
+            });
+
             getIdentifiers().forEach((String id) -> {
                 HasView hasView = new HasView();
                 hasView.setResource(id);
@@ -417,6 +448,11 @@ public class DC2EDM extends RDF implements EDM {
     private Set<String> getSubjects() {
         if(Objects.isNull(subjects)) subjects = new HashSet<>();
         return subjects;
+    }
+
+    public Set<String> getIsShownAt() {
+        if(Objects.isNull(isShownAt)) isShownAt = new HashSet<>();
+        return isShownAt;
     }
 
     @Override
