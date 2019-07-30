@@ -26,18 +26,29 @@
             });
         }
 
-
         function run(){
+            restApi.getAnalyseById({
+                user: vm.profile.sub,
+                id: vm._id,
+            }).then(function (_d) {
+                $log.info(_d);
+                vm.data = _d.data;
+            }).catch(function (_d) {
+                $log.info(_d);
+                // $state.go("404");
+            });
+
             restApi.getAnalyseError({
                 user: vm.profile.sub,
                 id: vm._id,
             }).then(function (_d) {
                 $log.info(_d);
 
-                vm.data = _d.data;
+                if(angular.equals(_d.status, 200))
+                    vm.exception = _d.data.exception;
             }).catch(function (_d) {
                 $log.info(_d);
-                $state.go("404");
+                // $state.go("404");
             });
         }
     }

@@ -85,9 +85,9 @@ app.get('/rest/api/analyse/user/:user/id/:id/error', function (req, res, next) {
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
-        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        if(response && response.statusCode == 202 ) res.json(JSON.parse(body));
         else{
-            res.status(400).end();
+            res.status(response.statusCode).end();
         }
     });
 });
@@ -165,7 +165,7 @@ app.post('/rest/api/analyse/create', function (req, res, next) {
 
         if(response && response.statusCode == 202)  res.json(body);
         else{
-            res.status(400).end();
+            res.status(response.statusCode).end();
         }
     });
 });

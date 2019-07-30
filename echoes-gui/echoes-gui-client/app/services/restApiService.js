@@ -28,6 +28,10 @@
                     ]);
                     data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user;
                     break;
+                case "getAnalyseById":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id;
+                    break;
                 case "getAnalyseError":
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id + '/error';

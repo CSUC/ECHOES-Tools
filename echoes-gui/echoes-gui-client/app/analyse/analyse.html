@@ -40,11 +40,8 @@
                                     <!--<i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i>-->
                                 <!--</td>-->
                                 <td title="'id'">
-                                    <a ng-if="data.status != 'ERROR'"
-                                       ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }"
-                                       target="_self"
-                                       href="/rest/api/analyse/user/{{vm.profile.sub}}/id/{{data._id}}/download">{{data._id}}</a>
-                                    <a ui-sref="analyse-detail({_id: '{{data._id}}'})" ng-if="data.status == 'ERROR'">{{data._id}}</a>
+                                    <a ui-sref="analyse-detail({_id: '{{data._id}}'})"
+                                       ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
                                 </td>
                                 <td title="'input'" ng-if="data.type != 'FILE'">
                                     {{data.value | limitTo: 50}}<span ng-if="data.value.length > 50">...</span>
