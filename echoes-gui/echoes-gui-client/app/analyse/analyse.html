@@ -7,9 +7,13 @@
             <div class="panel panel-default" ng-show="vm.data._size > 0">
                 <div class="panel-heading"><h3>Statistics</h3></div>
                 <div class="panel-body">
-                    <canvas id="doughnut" class="chart chart-doughnut" chart-data="vm.chart.data"
-                            chart-labels="vm.chart.labels"
-                            chart-options="vm.chart.options" chart-colors="vm.chart.colors" height="50%"></canvas>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
+                                chart-labels="vm.chart.labels"
+                                chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
 
@@ -20,10 +24,10 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive col-12 col-sm-12 col-lg-12">
+                    <div class="table-responsive col-xs-12 col-sm-12 col-lg-12">
                         <table ng-table="vm.tableParams" class="table" show-filter="false">
                             <tr ng-repeat="data in $data">
-                                <td title="'status'">
+                                <td title="'job'">
                                 <span ng-if="data.status == 'ERROR'"
                                       class="glyphicon glyphicon-remove-sign text-danger"></span>
                                     <span ng-if="data.status == 'END'"
@@ -32,27 +36,21 @@
                                           class="glyphicon glyphicon-play-circle text-info"></span>
                                     <span ng-if="data.status == 'QUEUE'" class="glyphicon glyphicon-hourglass"></span>
                                 </td>
+                                <!--<td title="'status'">-->
+                                    <!--<i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i><i class="fas fa-circle text-muted"></i>-->
+                                <!--</td>-->
                                 <td title="'id'">
-                                    <a ng-if="data.status != 'ERROR'"
-                                       ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }"
-                                       target="_self"
-                                       href="/rest/api/analyse/user/{{vm.profile.sub}}/id/{{data._id}}/download">{{data._id}}</a>
-                                    <a ui-sref="analyse-detail({_id: '{{data._id}}'})" ng-if="data.status == 'ERROR'">{{data._id}}</a>
+                                    <a ui-sref="analyse-detail({_id: '{{data._id}}'})"
+                                       ng-class="{'btn disabled' : data.status != 'END' && data.status != 'ERROR' }">{{data._id}}</a>
                                 </td>
-                                <td title="'format'">
-                                    {{data.format}}
+                                <td title="'input'" ng-if="data.type != 'FILE'">
+                                    {{data.value | limitTo: 50}}<span ng-if="data.value.length > 50">...</span>
                                 </td>
-                                <td title="'method'">
-                                    {{data.method}}
-                                </td>
-                                <td title="'type'">
-                                    {{data.type}}
-                                </td>
-                                <td title="'input'">
-                                    {{data.value}}
+                                <td title="'filename'" ng-if="data.type == 'FILE'">
+                                    {{data.filename}}
                                 </td>
                                 <td title="'timestamp'">
-                                    {{data.timestamp}}
+                                    {{data.timestamp.year}}-{{data.timestamp.monthValue}}-{{data.timestamp.dayOfMonth}}
                                 </td>
                                 <td title="'remove'">
                                     <a ng-click="remove(data._id)">
@@ -92,6 +90,15 @@
                     required.</p>
             </div>
 
+            <!-- FILE -->
+            <div ng-if="model.type == 'file'" class="form-group" ng-class="{ 'has-error' : userForm.file.$invalid && userForm.file.$pristine}">
+                <label>File*</label>
+                <div id="dropzone1" class="dropzone" options="dzOptions" callbacks="dzCallbacks" ng-dropzone></div>
+                <input type="hidden" name="file" class="form-control" ng-model="model.file" required>
+                <p ng-show="userForm.file.$invalid && userForm.file.$error.required" class="help-block">File is
+                    required.</p>
+            </div>
+
             <!-- Format -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.format.$invalid && userForm.format.$pristine }">
                 <label>Format*</label>
@@ -102,7 +109,7 @@
             </div>
 
             <!-- VALUE -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.text.$pristine
+            <div ng-if="model.type == 'oai' || model.type == 'url'" class="form-group" ng-class="{ 'has-error' : userForm.text.$pristine
              || userForm.text.$invalid && userForm.text.$error.pattern || userForm.text.$invalid && userForm.text.$dirty}">
                 <label>Input*</label>
                 <input type="text" name="text" class="form-control" ng-model="model.text" required
@@ -112,9 +119,7 @@
                 <p ng-show="userForm.text.$invalid && userForm.text.$error.pattern" class="help-block">Input not valid
                     url.</p>
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
-
         </form>
     </div>
 </script>

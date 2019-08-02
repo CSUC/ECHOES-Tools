@@ -8,6 +8,7 @@ import org.csuc.utils.Status;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.DAO;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,28 @@ public interface RecollectDAO extends DAO<Recollect, ObjectId> {
     List<Recollect> getByStatus(Status status, String user, int offset, int limit) throws Exception;
     long countByStatus(Status status) throws Exception;
     long countByStatus(Status status, String user) throws Exception;
+
+
+    long getStatusLastMonth(Status status) throws Exception;
+    long getStatusLastMonth(Status status, String user) throws Exception;
+    long getStatusLastMonthIncrease(Status status) throws Exception;
+    long getStatusLastMonthIncrease(Status status, String user) throws Exception;
+    long getStatusMonth(Status status) throws Exception;
+    long getStatusMonth(Status status, String user) throws Exception;
+
+    long getStatusLastYear(Status status) throws Exception;
+    long getStatusLastYear(Status status, String user) throws Exception;
+    long getStatusLastYearIncrease(Status status) throws Exception;
+    long getStatusLastYearIncrease(Status status, String user) throws Exception;
+    long getStatusYear(Status status) throws Exception;
+    long getStatusYear(Status status, String user) throws Exception;
+
+    long getStatusLastDay(Status status) throws Exception;
+    long getStatusLastDay(Status status, String user) throws Exception;
+    long getStatusLastDayIncrease(Status status) throws Exception;
+    long getStatusLastDayIncrease(Status status, String user) throws Exception;
+    long getStatusDay(Status status) throws Exception;
+    long getStatusDay(Status status, String user) throws Exception;
 
     Iterator<Aggregation> getStatusAggregation();
     Iterator<Aggregation> getStatusAggregation(String user);

@@ -3,7 +3,8 @@
     'use strict';
 
     angular
-        .module('app', ['auth0.auth0', 'ui.bootstrap', 'angular-jwt', 'ui.router', 'angular-uuid', 'ngTable', 'ngDialog', 'ngMessages','chart.js'])
+        .module('app', ['auth0.auth0', 'ui.bootstrap', 'angular-jwt', 'ui.router', 'angular-uuid', 'ngTable', 'ngDialog', 'ngMessages','chart.js',
+        'thatisuday.dropzone'])
         .config(config);
 
     config.$inject = [
@@ -14,7 +15,8 @@
         'angularAuth0Provider',
         'jwtOptionsProvider',
         'ChartJsProvider',
-        'ngDialogProvider'
+        'ngDialogProvider',
+        'dropzoneOpsProvider'
     ];
 
     function config($stateProvider,
@@ -24,7 +26,8 @@
                     angularAuth0Provider,
                     jwtOptionsProvider,
                     ChartJsProvider,
-                    ngDialogProvider
+                    ngDialogProvider,
+                    dropzoneOpsProvider
                     ) {
 
         $stateProvider
@@ -32,7 +35,8 @@
                 url: '/',
                 controller: 'HomeController',
                 templateUrl: 'app/home/home.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
             })
             .state('profile', {
                 url: '/profile',
@@ -98,17 +102,88 @@
                 },
                 onEnter: checkAuthentication
             })
-            .state('validation', {
-                url: '/validation',
-                controller: 'ValidationController',
-                templateUrl: 'app/validation/validation.html',
+            .state('quality', {
+                url: '/quality',
+                controller: 'QualityController',
+                templateUrl: 'app/quality/quality.html',
+                controllerAs: 'vm',
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
+                },
+                onEnter: checkAuthentication
+            })
+            .state('quality-detail', {
+                url: '/quality/:_id',
+                controller: 'QualityControllerDetail',
+                templateUrl: 'app/quality/quality.detail.html',
+                controllerAs: 'vm',
+                params: {
+                    data: null
+                },
+                onEnter: checkAuthentication
+            })
+            .state('quality-error', {
+                url: '/quality/:_id/error/:page?pagesize',
+                controller: 'QualityControllerError',
+                templateUrl: 'app/quality/quality.detail.error.html',
+                controllerAs: 'vm',
+                onEnter: checkAuthentication
+            })
+            .state('loader', {
+                url: '/loader',
+                controller: 'LoaderController',
+                templateUrl: 'app/loader/loader.html',
+                controllerAs: 'vm',
+                params: {
+                    profile: null,
+                    page: 1,
+                    count: 10
+                },
+                onEnter: checkAuthentication
+            })
+            .state('loader-detail', {
+                url: '/loader/:_id',
+                controller: 'LoaderControllerDetail',
+                templateUrl: 'app/loader/loader.detail.html',
+                controllerAs: 'vm',
+                params:{
+                    data: null
+                },
+                onEnter: checkAuthentication
+            })
+            .state('loader-error', {
+                url: '/loader/:_id/error/:page?pagesize',
+                controller: 'LoaderControllerError',
+                templateUrl: 'app/loader/loader.detail.error.html',
                 controllerAs: 'vm',
                 onEnter: checkAuthentication
             })
             .state('404', {
                 url: "/404",
-                templateUrl: "404.html"
+                templateUrl: "404.html",
+                onEnter: function($timeout, $state) {
+                    $timeout(function () {
+                        $state.go('home');
+                    }, 5000)
+                }
             });
+
+        dropzoneOpsProvider.setOptions({
+            url: '/upload',
+            maxFiles: '1',
+            timeout: 100000,
+            maxFilesize: 1024,
+            acceptedFiles: '.xml',
+            addRemoveLinks: true,
+            dictDefaultMessage: 'Click to add or drop XML',
+            dictRemoveFile: 'Remove XML',
+            dictResponseError: 'Could not upload this XML',
+            autoDiscover: false,
+            createImageThumbnails: false,
+            previewTemplate: '<div class="uploaded-image"><span data-dz-name></span> <strong class="dz-size" data-dz-size></strong><div class="dz-error-message" data-dz-errormessage></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div></div>'
+        });
 
         // Initialization for the angular-auth0 library
         angularAuth0Provider.init({

@@ -7,8 +7,7 @@ cache:
 jdk:
 - oraclejdk8
 before_install:
-- git submodule update --init --recursive
-- export TRAVIS_WORKER_MAX_LOG_LENGTH=40000000
+  - mvn validate
 script: mvn install -q -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 notifications:
   email:

@@ -12,7 +12,7 @@
     function recollect($scope, authService, uuid, NgTableParams, $http, $log, $stateParams, $interval,
                        echoesChart, restApi, ngDialog, $state) {
         var vm = this;
-        vm.title = 'Recollect';
+        vm.title = 'Transformation';
         vm.auth = authService;
         vm.data;
         vm.tableParams;
@@ -43,7 +43,7 @@
                 vm.chart = echoesChart.getAggregationDoughnut(_data.data)
             }).catch(function (_data) {
                 console.log(_data)
-                $window.location.href = "/404.html";
+                // $window.location.href = "/404.html";
             })
 
             restApi.getRecollect({
@@ -58,7 +58,7 @@
                     vm.tableParams = ngTableParams(vm.data, _count)
             }).catch(function (_data) {
                 $log.info(_data);
-                $window.location.href = "/404.html";
+                // $window.location.href = "/404.html";
             });
         }
 
@@ -83,7 +83,7 @@
                     }).catch(function (_data) {
                         $log.info(_data);
                         $defer.reject();
-                        $window.location.href = "/404.html";
+                        //$window.location.href = "/404.html";
                     });
                 }
             });
@@ -111,6 +111,9 @@
         $scope.clickToOpen = function () {
             var dailog =
                 ngDialog.open({
+                    closeByDocument: false, // to prevent popup close by clicking outside
+                    closeByEscape: false,   // to prevent popup close by ESC key
+                    closeByNavigation : true, // to close popup on state navigation
                     template: 'recollect.tpl.html',
                     width: '60%',
                     data: vm,
@@ -121,31 +124,40 @@
 
                         $scope.options = {
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
-                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
-                        }
+                            format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
+                            edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"],
+                            properties: ["dataProvider", "language", "rights"],
+                            types: ["oai", "url", "file"]
+                        };
+
+                        $scope.properties = [
+                            {key:'', value:''},
+                        ];
 
                         $scope.submitForm = function (isValid) {
                             var properties = {};
                             if (isValid) {
-                                $scope.tableProperties.forEach(function(value, index) {
+
+                                Object.assign(properties, { edmType : $scope.model.edmType});
+                                Object.assign(properties, { provider : $scope.model.provider});
+
+                                $scope.properties.forEach(function(value, index) {
                                     if(value.key != null && value.value != null){
                                         var k = value.key;
                                         var v = value.value;
-                                        Object.assign(properties, { [k] : v});
+                                        if(!properties.hasOwnProperty([k]) && ( k != '' || v != ''))
+                                            Object.assign(properties, { [k] : v});
                                     }
                                 });
 
                                 var data = {
-                                    'host': $scope.model.host,
-                                    'set': $scope.model.set,
-                                    'metadataPrefix': $scope.model.metadataPrefix,
-                                    'from': vm.profile.from,
-                                    'until': $scope.model.until,
-                                    'granularity': $scope.model.granularity,
                                     'format': $scope.model.format,
+                                    'type': $scope.model.type,
                                     'schema': $scope.model.schema,
                                     'properties': properties,
-                                    'user': vm.profile.sub
+                                    'user': vm.profile.sub,
+                                    'filename': ( typeof $scope.model.file === 'undefined' ) ? null : $scope.model.file.name,
+                                    'input': ( typeof $scope.model.input === 'undefined' ) ? $scope.model.file.tempFilePath : $scope.model.input
                                 };
 
                                 $log.info(data);
@@ -158,49 +170,72 @@
                                     $state.go($state.current, {}, {reload : true});
                                 }).catch(function (_data) {
                                     $log.info(_data);
-                                    $window.location.href = "/404.html";
+                                    // $window.location.href = "/404.html";
                                 });
                             }
                         };
 
-                        $scope.tableProperties = [
-                            {
-                                'key': null,
-                                'value': null
-                            }];
-
-                        $scope.addNew = function(personalDetail){
-                            $scope.tableProperties.push({
-                                'key': null,
-                                'value':null
-                            });
-                        };
-
-                        $scope.remove = function(){
-                            var newDataList=[];
-                            $scope.selectedAll = false;
-                            angular.forEach($scope.tableProperties, function(selected){
-                                if(!selected.selected){
-                                    newDataList.push(selected);
-                                }
-                            });
-                            $scope.tableProperties = newDataList;
-                        };
-
-                        $scope.checkAll = function () {
-                            if (!$scope.selectedAll) {
-                                $scope.selectedAll = true;
-                            } else {
-                                $scope.selectedAll = false;
+                        $scope.dzCallbacks = {
+                            'addedfile' : function(file){
+                                $log.log('dzCallbacks file added', file);
+                            },
+                            'success': function (file, response) {
+                                $log.log('dzCallbacks success', file, response);
+                                $scope.model.file = response
                             }
-                            angular.forEach($scope.tableProperties, function(properties) {
-                                properties.selected = $scope.selectedAll;
-                            });
                         };
 
+
+                        //Apply methods for dropzone
+                        //Visit http://www.dropzonejs.com/#dropzone-methods for more methods
+                        $scope.dzMethods = {};
                     }]
                 });
         };
 
+        $scope.sendQuality = function (data) {
+            var dailog =
+                ngDialog.open({
+                    closeByDocument: false, // to prevent popup close by clicking outside
+                    closeByEscape: false,   // to prevent popup close by ESC key
+                    closeByNavigation : true, // to close popup on state navigation
+                    template: 'quality.tpl.html',
+                    width: '60%',
+                    data: vm,
+                    controller: ['$scope', '$state', '$log', function ($scope, $state, $log) {
+                        $log.info(vm.profile.sub)
+
+
+                        $scope.model = {};
+
+                        $scope.model.dataset = data._id;
+                        $scope.model.type = data.format;
+
+                        $scope.submitForm = function (isValid) {
+                            if (isValid) {
+                                var data = {
+                                    'contentType': $scope.model.type,
+                                    "uuid": $scope.model.dataset,
+                                    'user': vm.profile.sub
+                                };
+
+                                $log.info(data);
+
+                                restApi.createQuality({
+                                    user: vm.profile.sub,
+                                    format: $scope.model.type,
+                                    dataset: $scope.model.dataset,
+                                }).then(function (_data) {
+                                    $log.info(_data);
+                                    ngDialog.close();
+                                    $state.go("quality", {}, {reload: true});
+                                }).catch(function (_data) {
+                                    $log.info(_data);
+                                });
+                            }
+                        };
+                    }]
+                });
+        };
     }
 })();

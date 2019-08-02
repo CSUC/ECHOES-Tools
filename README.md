@@ -22,5 +22,8 @@ Donwload submodules corelib and europeana-parent-pom
 git submodule update --init --recursive
 ```
 ```
-mvn clean install -DskipTests
+mvn validate
+```
+```
+mvn install -DskipTests
 ```

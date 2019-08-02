@@ -18,9 +18,9 @@ public enum FormatType {
     NQUADS(Lang.NQUADS, Lang.NQUADS.getFileExtensions()),
     TRIG(Lang.TRIG, Lang.TRIG.getFileExtensions()),
     RDFTHRIFT(Lang.RDFTHRIFT, Lang.RDFTHRIFT.getFileExtensions()),
-    TRIX(Lang.TRIX, Lang.TRIX.getFileExtensions()),
-    CSV(Lang.CSV, Lang.CSV.getFileExtensions()),
-    TSV(Lang.TSV, Lang.TSV.getFileExtensions());
+    TRIX(Lang.TRIX, Lang.TRIX.getFileExtensions());
+//    CSV(Lang.CSV, Lang.CSV.getFileExtensions()),
+//    TSV(Lang.TSV, Lang.TSV.getFileExtensions());
 
     private final Lang lang;
     private final List<String> extensions;

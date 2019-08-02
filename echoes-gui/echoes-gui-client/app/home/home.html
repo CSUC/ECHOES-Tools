@@ -6,4 +6,88 @@
             </h4>
         </div>
     </div>
+    <div class="container" ng-if="vm.auth.isAuthenticated()">
+        <div class="page-header col-12 col-sm-12 col-lg-12">
+            <h1 class="page-title">
+                Dashboard
+            </h1>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-lg-2 hidden-xs hidden-sm hidden-md"></div>
+        <div class="col-xs-6 col-sm-6 col-lg-2">
+            <div class="thumbnail">
+                <div class="caption p-3 text-center">
+                    <div ng-if="vm.increase_end < 0" class="text-right text-danger" ng-model="vm.increase_end">
+                         {{vm.increase_end}}%
+                        <i class="glyphicon glyphicon-chevron-down text-danger"></i>
+                    </div>
+                    <div ng-if="vm.increase_end >= 0" class="text-right text-success" ng-model="vm.increase_end">
+                        {{vm.increase_end}}%
+                        <i class="glyphicon glyphicon-chevron-up text-success"></i>
+                    </div>
+                    <div class="h1 m-0" ng-model="vm.end">{{vm.end}}</div>
+                    <div class="text-muted mb-4">END</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-lg-2">
+            <div class="thumbnail">
+                <div class="caption p-3 text-center">
+                    <div ng-if="vm.increase_error < 0" class="text-right text-danger" ng-model="vm.increase_error">
+                        {{vm.increase_error}}%
+                        <i class="glyphicon glyphicon-chevron-down text-danger"></i>
+                    </div>
+                    <div ng-if="vm.increase_error >= 0" class="text-right text-success" ng-model="vm.increase_error">
+                        {{vm.increase_error}}%
+                        <i class="glyphicon glyphicon-chevron-up text-success"></i>
+                    </div>
+                    <div class="h1 m-0" ng-model="vm.error">{{vm.error}}</div>
+                    <div class="text-muted mb-4">ERROR</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-lg-2">
+            <div class="thumbnail">
+                <div class="caption p-3 text-center">
+                    <div ng-if="vm.increase_queue < 0" class="text-right text-danger">
+                        {{vm.increase_queue}}%
+                        <i class="glyphicon glyphicon-chevron-down text-danger"></i>
+                    </div>
+                    <div ng-if="vm.increase_queue >= 0" class="text-right text-success">
+                        {{vm.increase_queue}}%
+                        <i class="glyphicon glyphicon-chevron-up text-success"></i>
+                    </div>
+                    <div class="h1 m-0" ng-model="vm.queue">{{vm.queue}}</div>
+                    <div class="text-muted mb-4">QUEUE</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-lg-2">
+            <div class="thumbnail">
+                <div class="caption p-3 text-center">
+                    <div ng-if="vm.increase_progress < 0" class="text-right text-danger">
+                        {{vm.increase_progress}}%
+                        <i class="glyphicon glyphicon-chevron-down text-danger"></i>
+                    </div>
+                    <div ng-if="vm.increase_progress >= 0" class="text-right text-success">
+                        {{vm.increase_progress}}%
+                        <i class="glyphicon glyphicon-chevron-up text-success"></i>
+                    </div>
+                    <div class="h1 m-0" ng-model="vm.progress">{{vm.progress}}</div>
+                    <div class="text-muted mb-4">PROGRESS</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-lg-2 hidden-xs hidden-sm hidden-md"></div>
+        <div class="page-header col-12 col-sm-12 col-lg-12">
+            <h1 class="page-title">
+                {{vm.activity}}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12 ">
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-series="series" chart-options="options"
+                    height="75%" chart-colors="colors">
+            </canvas>
+        </div>
+    </div>
 </div>
