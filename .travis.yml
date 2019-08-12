@@ -1,11 +1,12 @@
 language: java
 services: mongodb
 sudo: false
+dist: xenial
 cache:
   directories:
   - $HOME/.m2
 jdk:
-- oraclejdk8
+- openjdk8
 before_install:
   - mvn validate
 script: mvn install -q -DskipTests=true -Dmaven.javadoc.skip=true -B -V
