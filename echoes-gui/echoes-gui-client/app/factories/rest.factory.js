@@ -21,6 +21,18 @@
             });
         };
 
+        data.getAnalyseById = function (_params) {
+            var searchData = restApiService.getNew("getAnalyseById", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
         data.getAnalyseError = function (_params) {
             var searchData = restApiService.getNew("getAnalyseError", _params);
 

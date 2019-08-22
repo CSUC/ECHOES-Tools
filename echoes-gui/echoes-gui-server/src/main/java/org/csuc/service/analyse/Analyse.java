@@ -62,7 +62,7 @@ public class Analyse {
     @GET
     @Path("/user/{user}/id/{id}")
     @Produces(APPLICATION_JSON + "; charset=utf-8")
-    public Response getParserById(
+    public Response getAnalyseById(
             @PathParam("user") String user,
             @PathParam("id") String id,
             @HeaderParam("Authorization") String authorization) {
@@ -343,7 +343,7 @@ public class Analyse {
             AnalyseError parser = analyseErrorDAO.getByReference(id);
 
             if(Objects.isNull(parser))
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Response.Status.NO_CONTENT).build();
 
             logger.debug(parser);
 
