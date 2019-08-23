@@ -59,6 +59,21 @@ public interface AnalyseDAO extends DAO<Analyse, ObjectId> {
     long countByStatus(Status status) throws Exception;
     long countByStatus(Status status, String user) throws Exception;
 
+    long getStatusLastMonth(Status status) throws Exception;
+    long getStatusLastMonth(Status status, String user) throws Exception;
+    long getStatusMonth(Status status) throws Exception;
+    long getStatusMonth(Status status, String user) throws Exception;
+
+    long getStatusLastYear(Status status) throws Exception;
+    long getStatusLastYear(Status status, String user) throws Exception;
+    long getStatusYear(Status status) throws Exception;
+    long getStatusYear(Status status, String user) throws Exception;
+
+    long getStatusLastDay(Status status) throws Exception;
+    long getStatusLastDay(Status status, String user) throws Exception;
+    long getStatusDay(Status status) throws Exception;
+    long getStatusDay(Status status, String user) throws Exception;
+
     Iterator<Aggregation> getStatusAggregation();
     Iterator<Aggregation> getStatusAggregation(String user);
 

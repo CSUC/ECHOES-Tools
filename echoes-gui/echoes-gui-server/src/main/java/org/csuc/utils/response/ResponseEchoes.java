@@ -3,7 +3,9 @@ package org.csuc.utils.response;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -71,9 +73,12 @@ public class ResponseEchoes {
 
     @Override
     public String toString() {
-        JsonAdapter<ResponseEchoes> jsonAdapter = new Moshi.Builder().build().adapter(ResponseEchoes.class);
+        JsonAdapter<ResponseEchoes> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(ResponseEchoes.class);
 
-        //JsonAdapter<ResponseEchoes<T>> jsonAdapter = new Moshi.Builder().build().adapter(ResponseEchoes.class);
         return jsonAdapter.toJson(this);
     }
 }

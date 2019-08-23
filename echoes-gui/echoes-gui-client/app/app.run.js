@@ -11,7 +11,13 @@
   function run(authService) {
     // Handle the authentication
     // result in the hash
-    authService.handleAuthentication();
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      authService.renewTokens();
+    } else {
+      // Handle the authentication
+      // result in the hash
+      authService.handleAuthentication();
+    }
   }
 
 })();

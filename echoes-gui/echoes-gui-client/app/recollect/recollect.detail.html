@@ -12,29 +12,23 @@
             <td>timestamp</td>
             <td>{{vm.data.timestamp}}</td>
         </tr>
-        <tr  ng-show="vm.data.host">
-            <td>host</td>
-            <td>{{vm.data.host}}</td>
+        <tr  ng-show="vm.data.input">
+            <td>input</td>
+            <td ng-if="vm.data.type != 'FILE'">{{vm.data.input}}</td>
+            <td ng-if="vm.data.type == 'FILE'">{{vm.data.filename}}</td>
         </tr>
-        <tr ng-show="vm.data.set">
-            <td>set</td>
-            <td>{{vm.data.set}}</td>
+
+        <tr ng-show="vm.data.type">
+            <td>type</td>
+            <td>{{vm.data.type}}</td>
         </tr>
-        <tr ng-show="vm.data.metadataPrefix">
-            <td>metadataPrefix</td>
-            <td>{{vm.data.metadataPrefix}}</td>
+        <tr ng-show="vm.data.schema">
+            <td>schema</td>
+            <td>{{vm.data.schema}}</td>
         </tr>
-        <tr ng-show="vm.data.from">
-            <td>from</td>
-            <td>{{vm.data.from}}</td>
-        </tr>
-        <tr  ng-show="vm.data.until">
-            <td>until</td>
-            <td>{{vm.data.until}}</td>
-        </tr>
-        <tr  ng-show="vm.data.granularity">
-            <td>granularity</td>
-            <td>{{vm.data.granularity}}</td>
+        <tr ng-show="vm.data.format">
+            <td>format</td>
+            <td>{{vm.data.format}}</td>
         </tr>
         <tr  ng-show="vm.data.status">
             <td>status</td>
@@ -47,6 +41,14 @@
         <tr ng-show="vm.data.duration">
             <td>duration</td>
             <td>{{vm.data.duration}}</td>
+        </tr>
+        <tr>
+            <td>dataset-size</td>
+            <td>{{vm.data.size | na }}</td>
+        </tr>
+        <tr>
+            <td>dataset-download</td>
+            <td>{{vm.data.download}}</td>
         </tr>
         <tr  ng-show="vm.data.properties">
             <td>properties</td>
@@ -72,7 +74,7 @@
     </table>
     <uib-accordion ng-show="vm.data.error">
         <div uib-accordion-group class="panel-default" heading="Exception">
-            <pre>{{vm.data.error | json : spacing}}</pre>
+            <pre>{{vm.data.error.exception}}</pre>
         </div>
 
     </uib-accordion>

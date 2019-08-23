@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+    <Appenders>
+        <!-- All -->
+        <RollingFile name="RollingFile"
+                     fileName="${echoes.path}/logs/${artifactId}.log"
+                     filePattern="${echoes.path}/logs/rotate/${artifactId}/${artifactId}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green,
+                    DEBUG=blue} - %msg%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <!-- Console -->
+        <Console name="Console">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.transformation.download" level="debug" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.factory" level="debug" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.cli.Main" level="debug" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.Recollect" level="debug" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.client" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.deserialize" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.handler" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.io" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.parameters" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.serialize" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.typesafe" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.util" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.transformation.XMLtoDspaceArchiveFormatPackager" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.edm.transformations" level="info" additivity="false">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Logger name="org.apache.http" level="info" additivity="true">
+            <appender-ref ref="RollingFile" level="info"/>
+        </Logger>
+
+        <Root level="info" additivity="true">
+            <appender-ref ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

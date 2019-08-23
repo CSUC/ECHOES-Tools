@@ -271,7 +271,7 @@ typings/
 .env
 auth0-variables.js
 aut0.env
-
+auth0.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

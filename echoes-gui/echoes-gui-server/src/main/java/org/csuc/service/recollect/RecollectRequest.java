@@ -7,14 +7,11 @@ import java.util.Map;
  */
 public class RecollectRequest {
 
-    private String host;
-    private String set;
-    private String metadataPrefix;
-    private String until;
-    private String from;
-    private String granularity;
+    private String input;
     private String format;
     private String schema;
+    private String type;
+    private String filename;
     private Map<String, String> properties;
     private String user;
 
@@ -22,68 +19,12 @@ public class RecollectRequest {
     public RecollectRequest() {
     }
 
-    public String getHost() {
-        return host;
+    public String getInput() {
+        return input;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getSet() {
-        return set;
-    }
-
-    public void setSet(String set) {
-        this.set = set;
-    }
-
-    public String getMetadataPrefix() {
-        return metadataPrefix;
-    }
-
-    public void setMetadataPrefix(String metadataPrefix) {
-        this.metadataPrefix = metadataPrefix;
-    }
-
-    public String getUntil() {
-        return until;
-    }
-
-    public void setUntil(String until) {
-        this.until = until;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getGranularity() {
-        return granularity;
-    }
-
-    public void setGranularity(String granularity) {
-        this.granularity = granularity;
-    }
-
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<String, String> properties) {
-        this.properties = properties;
+    public void setInput(String input) {
+        this.input = input;
     }
 
     public String getFormat() {
@@ -100,5 +41,37 @@ public class RecollectRequest {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

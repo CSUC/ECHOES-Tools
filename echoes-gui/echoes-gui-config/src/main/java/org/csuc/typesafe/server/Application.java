@@ -46,14 +46,14 @@ public class Application {
     }
 
     public String getRecollectFolder(String uuid) throws IOException {
-        Path path = Paths.get(getFolder() + File.separator + "recollect" + File.separator + uuid);
+        Path path = Paths.get(getFolder() + File.separator + "transformation" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();
     }
 
-    public String getValidationFolder(String uuid) throws IOException {
-        Path path = Paths.get(getFolder() + File.separator + "validation" + File.separator + uuid);
+    public String getQualityFolder(String uuid) throws IOException {
+        Path path = Paths.get(getFolder() + File.separator + "quality" + File.separator + uuid);
         if(!Files.exists(path))
             Files.createDirectories(path);
         return path.toString();

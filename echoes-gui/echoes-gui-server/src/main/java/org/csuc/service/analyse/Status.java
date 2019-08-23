@@ -7,21 +7,18 @@ import org.csuc.client.Client;
 import org.csuc.dao.AnalyseDAO;
 import org.csuc.dao.impl.AnalyseDAOImpl;
 import org.csuc.entities.Analyse;
-import org.csuc.typesafe.server.Application;
-import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.utils.Aggregation;
 import org.csuc.utils.StreamUtils;
 import org.csuc.utils.authorization.Authoritzation;
 import org.csuc.utils.response.ResponseEchoes;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.File;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -44,8 +41,8 @@ public class Status {
     @Context
     private HttpServletRequest servletRequest;
 
-    private URL applicationResource = getClass().getClassLoader().getResource("echoes-gui-server.conf");
-    private Application applicationConfig = new ServerConfig((Objects.isNull(applicationResource)) ? null : new File(applicationResource.getFile()).toPath()).getConfig();
+    @Inject
+    private Client client;
 
     @GET
     @Path("/user/{user}/status/{status}")
@@ -71,9 +68,6 @@ public class Status {
                             .build()
             );
         }
-        Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
-        AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
-
         org.csuc.utils.Status parserStatus = org.csuc.utils.Status.convert(status);
 
         if (Objects.isNull(parserStatus)) {
@@ -92,6 +86,7 @@ public class Status {
         }
 
         try {
+            AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
             List<Analyse> queryResults = analyseDAO.getByStatus(parserStatus, user, page, pagesize);
 
             double count = new Long(analyseDAO.countByStatus(parserStatus, user)).doubleValue();
@@ -129,9 +124,8 @@ public class Status {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Client client = new Client(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase());
-        AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
         try {
+            AnalyseDAO analyseDAO = new AnalyseDAOImpl(Analyse.class, client.getDatastore());
             Supplier<Iterator<Aggregation>> i  = ()-> analyseDAO.getStatusAggregation(user);
             List<Aggregation> result = StreamUtils.asStream(i.get()).collect(toList());
 
@@ -143,5 +137,4 @@ public class Status {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
 }

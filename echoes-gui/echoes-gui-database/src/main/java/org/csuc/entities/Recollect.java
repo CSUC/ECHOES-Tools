@@ -2,7 +2,9 @@ package org.csuc.entities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.LocalDateTimeAdapter;
 import org.csuc.utils.Status;
+import org.csuc.utils.recollect.TransformationType;
 import org.mongodb.morphia.annotations.*;
 
 import java.time.LocalDateTime;
@@ -22,25 +24,16 @@ public class Recollect {
     private String _id;
 
     @Property("timestamp")
-    private String timestamp = LocalDateTime.now().toString();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
-    @Property("host")
-    private String host;
+    @Property("type")
+    private TransformationType type;
 
-    @Property("set")
-    private String set;
+    @Property("input")
+    private String input;
 
-    @Property("metadataPrefix")
-    private String metadataPrefix;
-
-    @Property("from")
-    private String from;
-
-    @Property("until")
-    private String until;
-
-    @Property("granularity")
-    private String Granularity;
+    @Property("filename")
+    private String filename;
 
     @Property("format")
     private String format;
@@ -57,13 +50,19 @@ public class Recollect {
     @Property("duration")
     private String duration;
 
+    @Property("size")
+    private int size;
+
+    @Property("download")
+    private int download;
+
     @Embedded("properties")
     private Map<String, String> properties;
 
-    @Reference("link")
+    @Reference(value = "link", ignoreMissing = true)
     private RecollectLink link;
 
-    @Reference("error")
+    @Reference(value = "error", ignoreMissing = true)
     private RecollectError error;
 
 
@@ -79,52 +78,44 @@ public class Recollect {
         this._id = _id;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    public String getHost() {
-        return host;
+    public TransformationType getType() {
+        return type;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setType(TransformationType type) {
+        this.type = type;
     }
 
-    public String getSet() {
-        return set;
+    public String getInput() {
+        return input;
     }
 
-    public void setSet(String set) {
-        this.set = set;
+    public void setInput(String input) {
+        this.input = input;
     }
 
-    public String getMetadataPrefix() {
-        return metadataPrefix;
+    public String getFormat() {
+        return format;
     }
 
-    public void setMetadataPrefix(String metadataPrefix) {
-        this.metadataPrefix = metadataPrefix;
+    public void setFormat(String format) {
+        this.format = format;
     }
 
-    public String getFrom() {
-        return from;
+    public String getSchema() {
+        return schema;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getUntil() {
-        return until;
-    }
-
-    public void setUntil(String until) {
-        this.until = until;
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 
     public Status getStatus() {
@@ -151,20 +142,28 @@ public class Recollect {
         this.duration = duration;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getDownload() {
+        return download;
+    }
+
+    public void setDownload(int download) {
+        this.download = download;
+    }
+
     public Map<String, String> getProperties() {
         return properties;
     }
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
-    }
-
-    public String getGranularity() {
-        return Granularity;
-    }
-
-    public void setGranularity(String granularity) {
-        Granularity = granularity;
     }
 
     public RecollectLink getLink() {
@@ -183,25 +182,22 @@ public class Recollect {
         this.error = error;
     }
 
-    public String getFormat() {
-        return format;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getSchema() {
-        return schema;
-    }
-
-    public void setSchema(String schema) {
-        this.schema = schema;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @Override
     public String toString() {
-        JsonAdapter<Recollect> jsonAdapter = new Moshi.Builder().build().adapter(Recollect.class);
+        JsonAdapter<Recollect> jsonAdapter =
+                new Moshi.Builder()
+                        .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .build()
+                        .adapter(Recollect.class);
+
         return jsonAdapter.toJson(this);
     }
 }

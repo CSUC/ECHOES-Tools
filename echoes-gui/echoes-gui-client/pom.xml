@@ -5,12 +5,12 @@
     <parent>
         <artifactId>echoes-gui</artifactId>
         <groupId>org.csuc</groupId>
-        <version>0.0.1</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-client</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <build>
