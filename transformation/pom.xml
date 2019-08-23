@@ -16,7 +16,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<rxjava2.version>2.1.7</rxjava2.version>
+		<rxjava2.version>2.2.11</rxjava2.version>
 	</properties>
 	<dependencies>
 		<dependency>
