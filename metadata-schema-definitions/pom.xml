@@ -25,4 +25,19 @@
 		<module>metadata-schema-definitions-memorix</module>
     </modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.14.0</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/build-helper-maven-plugin -->
+			<dependency>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
