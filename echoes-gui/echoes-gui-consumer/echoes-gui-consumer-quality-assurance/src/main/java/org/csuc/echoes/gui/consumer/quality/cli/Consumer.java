@@ -40,7 +40,7 @@ public class Consumer {
         logger.info(rabbitMQConfig);
 
         try {
-            QualityAssuranceQueueConsumer analyseQueueConsumer = new QualityAssuranceQueueConsumer(rabbitMQConfig.getQuality());
+            QualityAssuranceQueueConsumer analyseQueueConsumer = new QualityAssuranceQueueConsumer(rabbitMQConfig.getQuality(), bean.getQualityFile());
             Stream.of(analyseQueueConsumer).forEach(consumer-> new Thread(consumer).start());
         } catch (IOException | TimeoutException e) {
             logger.error(e);

@@ -2,25 +2,22 @@ package org.csuc.dao.entity.edm;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import eu.europeana.corelib.definitions.jibx.PlaceType;
+import eu.europeana.corelib.definitions.jibx.TimeSpanType;
 import org.csuc.dao.entity.Error;
 import org.mongodb.morphia.annotations.Embedded;
 
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author amartinez
- */
-public class Place {
+public class TimeSpan {
 
     @Embedded("errorList")
     private Set<Error> errorList = new HashSet<>();
 
     @Embedded("data")
-    private PlaceType data = new PlaceType();
+    private TimeSpanType data = new TimeSpanType();
 
-    public Place() {
+    public TimeSpan() {
     }
 
     public Set<Error> getErrorList() {
@@ -31,17 +28,17 @@ public class Place {
         this.errorList = errorList;
     }
 
-    public PlaceType getData() {
+    public TimeSpanType getData() {
         return data;
     }
 
-    public void setData(PlaceType data) {
+    public void setData(TimeSpanType data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        JsonAdapter<Place> jsonAdapter = new Moshi.Builder().build().adapter(Place.class);
+        JsonAdapter<TimeSpan> jsonAdapter = new Moshi.Builder().build().adapter(TimeSpan.class);
         return jsonAdapter.toJson(this);
     }
 }

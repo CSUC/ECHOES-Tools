@@ -1,6 +1,11 @@
 package org.csuc.dao.entity;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import org.csuc.util.EntityType;
 import org.csuc.util.LevelQuality;
+import org.csuc.util.MetadataType;
+import org.csuc.util.QualityType;
 import org.mongodb.morphia.annotations.Property;
 
 /**
@@ -9,33 +14,36 @@ import org.mongodb.morphia.annotations.Property;
 public class Error {
 
     @Property("type")
-    protected String type;
+    private EntityType type;
 
     @Property("metadata")
-    protected String metadata;
+    private String metadata;
 
     @Property("validation-type")
-    protected String validationType;
+    private QualityType validationType;
 
     @Property("message")
-    protected String message;
+    private String message;
 
     @Property("level")
-    protected LevelQuality levelQuality;
+    private LevelQuality levelQuality;
 
-    public Error(String type, String metadata, String validationType, String message, LevelQuality levelQuality) {
+    public Error(EntityType type, MetadataType metadata, QualityType validationType, String message, LevelQuality levelQuality) {
         this.type = type;
-        this.metadata = metadata;
+        this.metadata = metadata.getType();
         this.validationType = validationType;
         this.message = message;
         this.levelQuality = levelQuality;
     }
 
-    public String getType() {
+    public Error() {
+    }
+
+    public EntityType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EntityType type) {
         this.type = type;
     }
 
@@ -55,11 +63,11 @@ public class Error {
         this.message = message;
     }
 
-    public String getValidationType() {
+    public QualityType getValidationType() {
         return validationType;
     }
 
-    public void setValidationType(String validationType) {
+    public void setValidationType(QualityType validationType) {
         this.validationType = validationType;
     }
 
@@ -69,5 +77,11 @@ public class Error {
 
     public void setLevelQuality(LevelQuality levelQuality) {
         this.levelQuality = levelQuality;
+    }
+
+    @Override
+    public String toString() {
+        JsonAdapter<Error> jsonAdapter = new Moshi.Builder().build().adapter(Error.class);
+        return jsonAdapter.toJson(this);
     }
 }
