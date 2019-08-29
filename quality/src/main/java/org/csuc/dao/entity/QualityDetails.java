@@ -22,10 +22,10 @@ import java.util.UUID;
 public class QualityDetails {
 
     @Id
-    protected String _id;
+    private String _id;
 
     @Property("input")
-    protected String input;
+    private String input;
 
     @Property("isValidSchema")
     private boolean isValidSchema = false;

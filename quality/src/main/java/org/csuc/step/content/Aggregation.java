@@ -27,19 +27,23 @@ public class Aggregation {
         if (aboutType(aggregationType.getAbout())) aggregation.getData().setAbout(aggregationType.getAbout());
 
         //edm:aggregatedCHO
-        try {
-            resourceType(aggregationType.getAggregatedCHO());
-            aggregation.getData().setAggregatedCHO(aggregationType.getAggregatedCHO());
-        } catch (Exception e) {
-            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_aggregatedCHO, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:aggregatedCHO\".level"))));
+        if(Objects.nonNull(aggregationType.getAggregatedCHO())){
+            try {
+                resourceType(aggregationType.getAggregatedCHO());
+                aggregation.getData().setAggregatedCHO(aggregationType.getAggregatedCHO());
+            } catch (Exception e) {
+                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_aggregatedCHO, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:aggregatedCHO\".level"))));
+            }
         }
 
         //edm:dataProvider
-        try {
-            resourceOrLiteralType(aggregationType.getDataProvider());
-            aggregation.getData().setDataProvider(aggregationType.getDataProvider());
-        } catch (Exception e) {
-            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_dataProvider, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:dataProvider\".level"))));
+        if(Objects.nonNull(aggregationType.getDataProvider())){
+            try {
+                resourceOrLiteralType(aggregationType.getDataProvider());
+                aggregation.getData().setDataProvider(aggregationType.getDataProvider());
+            } catch (Exception e) {
+                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_dataProvider, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:dataProvider\".level"))));
+            }
         }
 
         //edm:provider
@@ -67,28 +71,34 @@ public class Aggregation {
         });
 
         //edm:isShownAt
-        try {
-            resourceType(aggregationType.getIsShownAt());
-            aggregation.getData().setIsShownAt(aggregationType.getIsShownAt());
-        } catch (Exception e) {
-            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_isShownAt, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isShownAt\".level"))));
+        if(Objects.nonNull(aggregationType.getIsShownAt())){
+            try {
+                resourceType(aggregationType.getIsShownAt());
+                aggregation.getData().setIsShownAt(aggregationType.getIsShownAt());
+            } catch (Exception e) {
+                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_isShownAt, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isShownAt\".level"))));
+            }
         }
 
         //edm:object
-        try {
-            resourceType(aggregationType.getObject());
-            aggregation.getData().setObject(aggregationType.getObject());
-        } catch (Exception e) {
-            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_object, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isShownAt\".level"))));
+        if(Objects.nonNull(aggregationType.getObject())){
+            try {
+                resourceType(aggregationType.getObject());
+                aggregation.getData().setObject(aggregationType.getObject());
+            } catch (Exception e) {
+                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_object, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isShownAt\".level"))));
+            }
         }
 
         //edm:rights
-        try {
-            resourceType(aggregationType.getRights());
-            //UriType()
-            aggregation.getData().setRights(aggregationType.getRights());
-        } catch (Exception e) {
-            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+        if(Objects.nonNull(aggregationType.getRights())){
+            try {
+                resourceType(aggregationType.getRights());
+                //UriType()
+                aggregation.getData().setRights(aggregationType.getRights());
+            } catch (Exception e) {
+                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+            }
         }
 
         //edm:intermediateProvider

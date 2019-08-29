@@ -28,5 +28,4 @@ public interface QualityDetailsDAO extends DAO<QualityDetails, ObjectId> {
     List<QualityDetails> getErrorsById(String objectId, int offset, int limit, String orderby) throws Exception;
 
     long countErrorsById(String objectId) throws Exception;
-
 }

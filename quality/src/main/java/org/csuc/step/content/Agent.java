@@ -91,27 +91,33 @@ public class Agent {
         });
 
         //rdaGr2:dateOfBirth
-        try {
-            literalType(agentType.getDateOfBirth());
-            agent.getData().setDateOfBirth(agentType.getDateOfBirth());
-        } catch (Exception e) {
-            agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_dateOfBirth, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:dateOfBirth\".level"))));
+        if(Objects.nonNull(agentType.getDateOfBirth())){
+            try {
+                literalType(agentType.getDateOfBirth());
+                agent.getData().setDateOfBirth(agentType.getDateOfBirth());
+            } catch (Exception e) {
+                agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_dateOfBirth, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:dateOfBirth\".level"))));
+            }
         }
 
         //rdaGr2:dateOfDeath
-        try {
-            literalType(agentType.getDateOfDeath());
-            agent.getData().setDateOfDeath(agentType.getDateOfDeath());
-        } catch (Exception e) {
-            agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_dateOfDeath, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:dateOfDeath\".level"))));
+        if(Objects.nonNull(agentType.getDateOfDeath())){
+            try {
+                literalType(agentType.getDateOfDeath());
+                agent.getData().setDateOfDeath(agentType.getDateOfDeath());
+            } catch (Exception e) {
+                agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_dateOfDeath, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:dateOfDeath\".level"))));
+            }
         }
 
         //rdaGr2:gender
-        try {
-            literalType(agentType.getGender());
-            agent.getData().setGender(agentType.getGender());
-        } catch (Exception e) {
-            agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_gender, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:gender\".level"))));
+        if(Objects.nonNull(agentType.getGender())){
+            try {
+                literalType(agentType.getGender());
+                agent.getData().setGender(agentType.getGender());
+            } catch (Exception e) {
+                agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdaGr2_gender, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"rdaGr2:gender\".level"))));
+            }
         }
 
         //rdaGr2:placeOfBirth

@@ -9,6 +9,8 @@ import org.csuc.util.MetadataType;
 import org.csuc.util.QualityType;
 
 import java.text.MessageFormat;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.csuc.util.DataType.*;
 
@@ -24,6 +26,8 @@ public class ProvidedCHO {
         org.csuc.dao.entity.edm.ProvidedCHO provided = new org.csuc.dao.entity.edm.ProvidedCHO();
 
         if (aboutType(providedCHOType.getAbout())) provided.getData().setAbout(providedCHOType.getAbout());
+
+        provided.getData().setType(providedCHOType.getType());
 
         providedCHOType.getChoiceList().forEach(choice -> {
             //dc:contributor
@@ -203,7 +207,6 @@ public class ProvidedCHO {
                     provided.getErrorList().add(new Error(EntityType.ProvidedCHO, MetadataType.dc_title, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:title\".level"))));
                 }
             }
-
             //dc:type
             if (choice.ifType()) {
                 try {
@@ -213,6 +216,23 @@ public class ProvidedCHO {
                     provided.getErrorList().add(new Error(EntityType.ProvidedCHO, MetadataType.dc_type, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:type\".level"))));
                 }
             }
+        });
+
+        // edm:isRelatedTo
+        Optional.ofNullable(providedCHOType.getIsRelatedToList()).ifPresent(relatedTos -> {
+            provided.getData().setIsRelatedToList(
+                    relatedTos.stream()
+                            .map(m -> {
+                                try {
+                                    resourceType(m);
+                                    return m;
+                                } catch (Exception e) {
+                                    provided.getErrorList().add(new Error(EntityType.ProvidedCHO, MetadataType.edm_isRelatedTo, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isRelatedTo\".level"))));
+                                    return null;
+                                }
+                            })
+                            .collect(Collectors.toList())
+            );
         });
 
         return provided;
