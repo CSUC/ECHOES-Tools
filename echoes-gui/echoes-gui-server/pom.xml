@@ -161,7 +161,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>jwks-rsa</artifactId>
-            <version>0.5.0</version>
+            <version>0.8.3</version>
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
