@@ -74,12 +74,14 @@ public class WebResource {
         });
 
         //edm:rights
-        try {
-            resourceType(webResourceType.getRights());
-            //UriType()
-            webResource.getData().setRights(webResourceType.getRights());
-        } catch (Exception e) {
-            webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+        if(Objects.nonNull(webResourceType.getRights())){
+            try {
+                resourceType(webResourceType.getRights());
+                //UriType()
+                webResource.getData().setRights(webResourceType.getRights());
+            } catch (Exception e) {
+                webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+            }
         }
 
         return webResource;

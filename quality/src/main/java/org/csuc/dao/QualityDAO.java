@@ -27,7 +27,6 @@ public interface QualityDAO extends DAO<Quality, ObjectId> {
     /*****************************************************insert*****************************************************/
     Key<Quality> insert(Quality quality) throws Exception;
 
-
     Iterator<Aggregation> getStatusAggregation();
 
     Iterator<Aggregation> getStatusAggregation(String user);
