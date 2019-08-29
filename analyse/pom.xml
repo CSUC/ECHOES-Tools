@@ -17,7 +17,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<rxjava2.version>2.2.12</rxjava2.version>
 		<dom4j.version>1.6.1</dom4j.version>
 	</properties>
 
@@ -103,7 +102,6 @@
 		<dependency>
 			<groupId>io.reactivex.rxjava2</groupId>
 			<artifactId>rxjava</artifactId>
-			<version>${rxjava2.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
 		<dependency>

@@ -186,11 +186,16 @@
 				<artifactId>moshi</artifactId>
 				<version>${moshi.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.rabbitmq</groupId>
 				<artifactId>amqp-client</artifactId>
 				<version>${amqp.client.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
+			<dependency>
+				<groupId>io.reactivex.rxjava2</groupId>
+				<artifactId>rxjava</artifactId>
+				<version>${rxjava2.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -216,6 +221,7 @@
 		<moshi.version>1.8.0</moshi.version>
 		<amqp.client.version>5.7.3</amqp.client.version>
 		<org.apache.jena.version>3.9.0</org.apache.jena.version>
+		<rxjava2.version>2.2.12</rxjava2.version>
 
 		<echoes.path>/tmp/echoes</echoes.path>
 
