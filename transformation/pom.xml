@@ -15,8 +15,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<rxjava2.version>2.1.7</rxjava2.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -118,7 +116,6 @@
 		<dependency>
 			<groupId>io.reactivex.rxjava2</groupId>
 			<artifactId>rxjava</artifactId>
-			<version>${rxjava2.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/args4j/args4j -->
 		<dependency>
