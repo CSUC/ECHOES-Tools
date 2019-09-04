@@ -39,12 +39,16 @@
         <tr ng-show="vm.data.errorSize">
             <td>error-size</td>
             <td ng-if="vm.data.errorSize > 0">
-                <a ui-sref="quality-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.errorSize}}</a>
+                <a ui-sref="quality-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.errorSize}}</a> - <a href="{{downloadReport()}}"> Download report</a>
             </td>
             <td ng-if="vm.data.errorSize == 0">
                 {{vm.data.errorSize}}
             </td>
         </tr>
+        <tr ng-show="vm.data.errorSize">
+            <td>create-report</td>
+            {{vm.data.errorSize}}
+        </td>
         </tbody>
     </table>
     <uib-accordion ng-show="vm.data.error">

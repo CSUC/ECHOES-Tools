@@ -199,6 +199,64 @@ app.post('/rest/api/quality/create', function (req, res, next) {
     });
 });
 
+app.post('/rest/api/quality/create-report', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    var formData = {
+        dataset: req.body.dataset,
+        format: req.body.format,
+        user: req.body.user
+    }
+//user
+    request({
+        method: 'POST',
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' +  req.params.id +  `/create-report`,
+        json: formData
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202)  res.json(body);
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
+app.post('/rest/api/quality/download-report', function (req, res, next) {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers.authorization
+    };
+
+    // console.log(headers)
+
+    var formData = {
+        dataset: req.body.dataset,
+        format: req.body.format,
+        user: req.body.user
+    }
+//user
+    request({
+        method: 'POST',
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' +  req.params.id +  `/download-report`,
+        json: formData
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202)  res.json(body);
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
 app.get('/rest/api/quality/user/:user/id/:id/:filename/download', function (req, res, next) {
     var headers = {
         'Content-Type': 'application/json',

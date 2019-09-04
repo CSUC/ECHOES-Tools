@@ -13,6 +13,7 @@ import org.csuc.dao.entity.QualityDetails;
 import org.csuc.dao.entity.Status;
 import org.csuc.dao.impl.QualityDAOImpl;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
+import org.csuc.poi.Report;
 import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.StreamUtils;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -244,6 +246,99 @@ public class Quality {
             new Producer(rabbitMQConfig.getQuality()).sendMessage(message);
 
             return Response.status(Response.Status.ACCEPTED).entity(key).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @POST
+    @Path("/user/{user}/id/{id}/create-report")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response createReport(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
+        try {
+            authoritzation.execute();
+        } catch (JwkException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        try {
+            Report report = new Report(client.getDatastore());
+
+            report.create(id);
+
+            return Response.status(Response.Status.ACCEPTED).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/user/{user}/id/{id}/download-report")
+    @Produces({MediaType.APPLICATION_FORM_URLENCODED, MediaType.MULTIPART_FORM_DATA})
+    public Response downloadReport(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        try {
+            if(Files.notExists(Paths.get(String.format("/tmp/%s", id)))){
+                new Report(client.getDatastore()).create(id);
+            }
+
+            File file = new File(String.format("/tmp/%s", id));
+
+            StreamingOutput fileStream = outputStream -> {
+                try{
+                    byte[] data = Files.readAllBytes(file.toPath());
+                    outputStream.write(data);
+                    outputStream.flush();
+                }catch (Exception e){
+                    throw new WebApplicationException("File Not Found !!");
+                }
+            };
+            return Response
+                    .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
+                    .header("content-disposition","attachment; filename = " + id + ".xlsx")
+                    .build();
         } catch (Exception e) {
             logger.error(e);
             return Response.status(Response.Status.BAD_REQUEST).build();

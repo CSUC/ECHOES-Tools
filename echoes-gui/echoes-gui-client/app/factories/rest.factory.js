@@ -395,6 +395,30 @@
             });
         };
 
+        data.createQualityReports = function (_params) {
+            var searchData = restApiService.getNew("createQualityReports", _params);
+
+            $log.info('createQualityReports: ', searchData);
+
+            return $http({
+                method: 'POST',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.downloadQualityReport = function (_params) {
+            var searchData = restApiService.getNew("downloadQualityReport", _params);
+
+            $log.info('downloadQualityReport: ', searchData);
+
+            return $http({
+                method: 'POST',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
         data.loaderErrors = function (_params) {
             var searchData = restApiService.getNew("loaderErrors", _params);
 

@@ -48,5 +48,16 @@
             run();
         }, 10000);
 
+
+        vm.downloadReport = function () {
+            restApi.downloadQualityReport({
+                user: vm.profile.sub,
+                id: vm._id,
+            }).then(function (_data) {
+                $log.info(_data);
+            }).catch(function (_data) {
+                $log.info(_data);
+            })
+        }
     }
 })();
