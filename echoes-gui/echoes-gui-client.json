@@ -59,7 +59,9 @@
       "script": "/usr/bin/java",
       "args": [
         "-jar",
-        "bin/echoes-gui-consumer-quality-assurance-${echoes.gui.consumer.quality.assurance.version}-shaded.jar"
+        "bin/echoes-gui-consumer-quality-assurance-${echoes.gui.consumer.quality.assurance.version}-shaded.jar",
+        "--quality-config",
+        "${echoes.quality.config.file}"
       ],
       "env": {
       },

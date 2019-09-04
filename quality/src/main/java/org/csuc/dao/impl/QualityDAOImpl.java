@@ -1,18 +1,22 @@
 package org.csuc.dao.impl;
 
 import com.mongodb.AggregationOptions;
+import com.mongodb.DBRef;
 import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
+import org.csuc.dao.QualityDAO;
 import org.csuc.dao.entity.Aggregation;
 import org.csuc.dao.entity.Quality;
-import org.csuc.dao.QualityDAO;
+import org.csuc.dao.entity.QualityDetails;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.aggregation.Accumulator;
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.FindOptions;
+import org.mongodb.morphia.query.Query;
 
 import java.util.Iterator;
 import java.util.List;
@@ -84,6 +88,10 @@ public class QualityDAOImpl extends BasicDAO<Quality, ObjectId> implements Quali
         if (Objects.isNull(objectId)) throw new Exception();
         WriteResult writeResult = delete(getById(objectId));
         if (Objects.isNull(writeResult)) throw new Exception();
+
+        Query<QualityDetails> qualityDetailsQuery = getDatastore().createQuery(QualityDetails.class);
+        qualityDetailsQuery .criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId));
+        getDatastore().delete(qualityDetailsQuery);
 
         logger.debug("[{}]\t[deleteById] - objectId: {}", QualityDAOImpl.class.getSimpleName(), objectId);
         return writeResult;

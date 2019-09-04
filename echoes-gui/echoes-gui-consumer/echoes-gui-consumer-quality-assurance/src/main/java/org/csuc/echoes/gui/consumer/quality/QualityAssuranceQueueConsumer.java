@@ -15,6 +15,7 @@ import org.csuc.dao.impl.QualityDAOImpl;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
 import org.csuc.echoes.gui.consumer.quality.utils.Time;
 import org.csuc.format.Datastore;
+import org.csuc.step.Content;
 import org.csuc.step.Schema;
 import org.csuc.step.Schematron;
 import org.csuc.typesafe.server.Application;
@@ -52,13 +53,16 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
 
     private Quality quality = null;
 
+    private Path qualityFile;
+
     /**
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public QualityAssuranceQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
+    public QualityAssuranceQueueConsumer(Config typesafeRabbitMQ, Path qualityFile) throws IOException, TimeoutException {
         super(typesafeRabbitMQ);
+        this.qualityFile = qualityFile;
     }
 
     @Override
@@ -108,64 +112,9 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
                 org.csuc.quality.Quality q =
                         new org.csuc.quality.Quality(
                                 new Datastore(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase(), quality,
-                                        new Schema(new Schematron(null))));
+                                        new Schema(new Schematron(new Content(qualityFile)))));
 
                 q.getFormatInterface().execute(Paths.get(applicationConfig.getRecollectFolder(String.format("%s", quality.getData()))));
-
-//                Files.walk(Paths.get(applicationConfig.getRecollectFolder(String.format("%s", quality.getData()))))
-//                        .filter(Files::isRegularFile)
-//                        .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
-//                        .parallel()
-//                        .forEach((Path f) -> {
-//                            logger.debug(f);
-//                            try {
-//                                Schema schema;
-//                                Path temporal = null;
-//
-//                                if(!Objects.equals(FormatType.RDFXML, FormatType.convert(quality.getContentType()))){
-//                                    temporal  = Files.createTempFile("quality_", ".rdf");
-//
-//                                    Format.format(f.toFile(), FormatType.RDFXML, new FileOutputStream(temporal.toFile()));
-//
-//                                    schema = new Schema(new FileInputStream(temporal.toFile()), RDF.class);
-//                                }else
-//                                    schema = new Schema(new FileInputStream(f.toFile()), RDF.class);
-//
-//                                logger.debug("{}:    schema:     {}", f.getFileName(), schema.isValid());
-//
-//                                QualityDetails qualityDetails = new QualityDetails();
-//
-//                                qualityDetails.setValue(FilenameUtils.getName(f.getFileName().toString()));
-//
-//                                if (!schema.isValid()){
-//                                    logger.debug("\tMessage:  {}", schema.getError().getMessage());
-//
-//                                    qualityDetails.setQuality(quality);
-//                                    qualityDetails.setSchema(new org.csuc.entities.quality.Schema(schema.getError().getMessage()));
-//
-//                                }else {
-//                                    qualityDetails.setValidSchema(true);
-//
-//                                    if(Schematron.isValid(f.toFile())) {
-//                                        FileUtils.copy(f, Paths.get(applicationConfig.getQualityFolder((String) map.get("_id"))));
-//                                        qualityDetails.setValidSchematron(true);
-//                                    }else {
-//                                        qualityDetails.setSchematron(
-//                                                Schematron.getSVRLFailedAssert(f.toFile())
-//                                                        .stream()
-//                                                        .map(m-> new org.csuc.entities.quality.Schematron(m.getTest(), m.getText()))
-//                                                        .collect(Collectors.toList())
-//                                        );
-//                                        qualityDetails.setQuality(quality);
-//                                    }
-//                                }
-//                                qualityDAO.getDatastore().save(qualityDetails);
-//
-//                                if(Objects.nonNull(temporal))   temporal.toFile().delete();
-//                            } catch (Exception e) {
-//                                logger.error(e);
-//                            }
-//                        });
 
                 Query<QualityDetails> query = qualityDetailsDAO.createQuery();
                 query.and(

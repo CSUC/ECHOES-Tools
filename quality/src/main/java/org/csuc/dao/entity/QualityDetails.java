@@ -2,10 +2,12 @@ package org.csuc.dao.entity;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.BigIntegerAdapter;
 import org.csuc.adapter.LocalDateTimeAdapter;
 import org.csuc.dao.entity.edm.Edm;
 import org.mongodb.morphia.annotations.*;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,10 +22,10 @@ import java.util.UUID;
 public class QualityDetails {
 
     @Id
-    protected String _id;
+    private String _id;
 
     @Property("input")
-    protected String input;
+    private String input;
 
     @Property("isValidSchema")
     private boolean isValidSchema = false;
@@ -137,6 +139,7 @@ public class QualityDetails {
         JsonAdapter<QualityDetails> jsonAdapter =
                 new Moshi.Builder()
                         .add(LocalDateTime.class, new LocalDateTimeAdapter().nullSafe())
+                        .add(BigInteger.class, new BigIntegerAdapter().nullSafe())
                         .build()
                         .adapter(QualityDetails.class);
 

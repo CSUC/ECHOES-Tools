@@ -378,9 +378,8 @@
             $log.info(searchData);
 
             return $http({
-                method: 'GET',
-                url: searchData.url,
-                params: searchData.object
+                method: 'DELETE',
+                url: searchData.url
             });
         };
 

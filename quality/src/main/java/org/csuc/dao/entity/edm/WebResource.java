@@ -2,25 +2,24 @@ package org.csuc.dao.entity.edm;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import eu.europeana.corelib.definitions.jibx.PlaceType;
+import eu.europeana.corelib.definitions.jibx.WebResourceType;
+import org.csuc.adapter.BigIntegerAdapter;
 import org.csuc.dao.entity.Error;
 import org.mongodb.morphia.annotations.Embedded;
 
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author amartinez
- */
-public class Place {
+public class WebResource {
 
     @Embedded("errorList")
     private Set<Error> errorList = new HashSet<>();
 
     @Embedded("data")
-    private PlaceType data = new PlaceType();
+    private WebResourceType data = new WebResourceType();
 
-    public Place() {
+    public WebResource() {
     }
 
     public Set<Error> getErrorList() {
@@ -31,17 +30,22 @@ public class Place {
         this.errorList = errorList;
     }
 
-    public PlaceType getData() {
+    public WebResourceType getData() {
         return data;
     }
 
-    public void setData(PlaceType data) {
+    public void setData(WebResourceType data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        JsonAdapter<Place> jsonAdapter = new Moshi.Builder().build().adapter(Place.class);
+        JsonAdapter<WebResource> jsonAdapter =
+                new Moshi.Builder()
+                        .add(BigInteger.class, new BigIntegerAdapter().nullSafe())
+                        .add(Object.class)
+                        .build().adapter(WebResource.class);
+
         return jsonAdapter.toJson(this);
     }
 }

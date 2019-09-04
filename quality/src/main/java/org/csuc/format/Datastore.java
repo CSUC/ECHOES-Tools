@@ -36,6 +36,8 @@ public class Datastore implements FormatInterface {
         MongoClient mongo = new MongoClient(host, port);
 
         datastore = morphia.createDatastore(mongo, database);
+        datastore.ensureIndexes();
+
         qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, datastore);
 
         this.quality = quality;

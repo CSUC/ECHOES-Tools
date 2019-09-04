@@ -97,19 +97,19 @@
       run(vm.page, vm.count)
     }, 10000);
 
-    // $scope.remove = function (id) {
-    //   restApi.deleteQuality({
-    //     user: vm.profile.sub,
-    //     id: id
-    //   }).then(function (_data) {
-    //     $log.info(_data);
-    //
-    //     $state.go($state.current, {}, {reload: true});
-    //   }).catch(function (_data) {
-    //     $log.info(_data);
-    //     // $state.go("404");
-    //   });
-    // }
+    $scope.remove = function (id) {
+      restApi.deleteQuality({
+        user: vm.profile.sub,
+        id: id
+      }).then(function (_data) {
+        $log.info(_data);
+
+        $state.go($state.current, {}, {reload: true});
+      }).catch(function (_data) {
+        $log.info(_data);
+        // $state.go("404");
+      });
+    };
 
     $scope.sendLoader = function (data) {
       var dailog =

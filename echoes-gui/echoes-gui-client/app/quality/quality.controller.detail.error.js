@@ -104,5 +104,14 @@
                 width: '70%'
             });
         }
+
+        vm.content = function (data) {
+            ngDialog.open({
+                template: 'content.tpl.html',
+                data: data,
+                className: 'ngdialog-theme-default',
+                width: '70%'
+            });
+        }
     }
 })();

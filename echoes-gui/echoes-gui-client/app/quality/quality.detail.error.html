@@ -19,8 +19,8 @@
                 </td>
                 <td title="'content'" class="text-center">
                     <i ng-if="data.isValidContent" class="glyphicon glyphicon-ok text-success"></i>
-                    <i ng-if="!data.isValidContent" class="glyphicon glyphicon-minus"></i>
-                    <a ng-if="!data.isValidContent && data.content" href ng-click="vm.content(data.content)"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                    <i ng-if="!data.isValidContent && !data.validSchematron && !data.validSchema" class="glyphicon glyphicon-minus"></i>
+                    <a ng-if="!data.isValidContent && data.edm" href ng-click="vm.content(data.edm)"><i class="glyphicon glyphicon-remove text-danger"></i></a>
                 </td>
             </tr>
         </table>
@@ -52,6 +52,24 @@
                     <strong>Message: </strong><span>{{d.message}}</span>
                 </li>
                 <hr class="hr-primary" ng-show="! $last">
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="content.tpl.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">{{ngDialogData.length}} ERRORS</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row col-xs-18 col-centered col-min">
+            <ul ng-repeat="content in ngDialogData">
+                <ul ng-repeat="type in content" ng-if="type.errorList.length > 0">
+                    <li ng-repeat="e in type.errorList">
+                        {{e | json}}
+                    </li>
+                </ul>
+                <hr class="hr-primary" ng-show="! $last" ng-if="type.errorList.length > 0">
             </ul>
         </div>
     </div>

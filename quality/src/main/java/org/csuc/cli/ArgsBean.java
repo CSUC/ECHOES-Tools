@@ -193,7 +193,7 @@ public class ArgsBean {
             logger.info("   QualityFile host                 :   {}", host);
             logger.info("   QualityFile port                 :   {}", port);
             logger.info("   QualityFile name                 :   {}", name);
-        }else if (Objects.nonNull(out))
+        } else if (Objects.nonNull(out))
             logger.info("   out                          :   {}", getOut());
     }
 }
