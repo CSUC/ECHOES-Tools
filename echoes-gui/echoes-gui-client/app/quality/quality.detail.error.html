@@ -63,31 +63,20 @@
     </div>
     <div class="modal-body">
         <div class="row col-xs-18 col-centered col-min">
-            <ul ng-repeat="content in ngDialogData">
-                <ul ng-repeat="type in content" ng-if="type.errorList.length > 0">
-                    <li ng-repeat="e in type.errorList">
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td><strong>Type</strong></td>
-                                <td><strong>Metadata</strong></td>
-                                <td><strong>Validation Type</strong></td>
-                                <td><strong>Message</strong></td>
-                                <td><strong>Level</strong></td>
-                            </tr>
-                            <tr>
-                                <td>{{ e.type }}</td>
-                                <td>{{ e.metadata }}</td>
-                                <td>{{ e.validationType }}</td>
-                                <td>{{ e.message }}</td>
-                                <td>{{ e.levelQuality }}</td>
+            <ul class="list-group">
+                <div ng-repeat="content in ngDialogData">
 
-                            </tr>
-                            </tbody>
-                        </table>
-                    </li>
-                </ul>
-                <hr class="hr-primary" ng-show="! $last" ng-if="type.errorList.length > 0">
+                    <div ng-repeat="type in content" ng-if="type.errorList.length > 0">
+                        <li ng-repeat="e in type.errorList" class="list-group-item">
+                            <p><strong>Type</strong>: {{ e.type }}</p>
+                            <p><strong>Metadata</strong> {{ e.metadata }}</p>
+                            <p><strong>Validation Type</strong> {{ e.validationType }}</p>
+                            <p><strong>Message</strong> {{ e.message }}</p>
+                            <p><strong>Level</strong> {{ e.levelQuality }}</p>
+                        </li>
+                    </div>
+                    <hr class="hr-primary" ng-show="! $last" ng-if="type.errorList.length > 0">
+                </div>
             </ul>
         </div>
     </div>
