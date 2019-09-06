@@ -413,7 +413,7 @@
             $log.info('downloadQualityReport: ', searchData);
 
             return $http({
-                method: 'POST',
+                method: 'GET',
                 url: searchData.url,
                 params: searchData.object
             });

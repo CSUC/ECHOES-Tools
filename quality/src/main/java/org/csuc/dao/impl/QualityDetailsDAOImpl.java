@@ -5,6 +5,7 @@ import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
+import org.csuc.dao.QualityDAO;
 import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.Quality;
 import org.csuc.dao.entity.QualityDetails;

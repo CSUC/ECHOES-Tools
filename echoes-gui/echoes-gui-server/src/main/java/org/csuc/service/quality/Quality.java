@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -319,22 +318,23 @@ public class Quality {
             );
         }
 
+        logger.info("[download-report] - {}", id);
+
         try {
-            if(Files.notExists(Paths.get(String.format("/tmp/%s", id)))){
+            if(Files.notExists(Paths.get(String.format("/tmp/%s.xlsx", id)))){
                 new Report(client.getDatastore()).create(id);
             }
 
-            File file = new File(String.format("/tmp/%s", id));
-
             StreamingOutput fileStream = outputStream -> {
                 try{
-                    byte[] data = Files.readAllBytes(file.toPath());
+                    byte[] data = Files.readAllBytes(Paths.get(String.format("/tmp/%s.xlsx", id)));
                     outputStream.write(data);
                     outputStream.flush();
                 }catch (Exception e){
                     throw new WebApplicationException("File Not Found !!");
                 }
             };
+
             return Response
                     .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
                     .header("content-disposition","attachment; filename = " + id + ".xlsx")

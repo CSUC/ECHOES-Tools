@@ -1,8 +1,8 @@
 package org.csuc.poi;
 
 import com.mongodb.MongoClient;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -53,6 +53,8 @@ public class Report {
      * @param objectId
      */
     public void create(String objectId) {
+        logger.info("[Report] - {}", objectId);
+
         try {
             if (qualityDetailsDAO.countErrorsById(objectId) > 0) {
                 //STEP1
