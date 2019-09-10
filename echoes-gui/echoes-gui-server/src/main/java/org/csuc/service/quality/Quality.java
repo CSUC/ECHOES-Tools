@@ -296,7 +296,7 @@ public class Quality {
 
     @GET
     @Path("/user/{user}/id/{id}/download-report")
-    @Produces({MediaType.APPLICATION_FORM_URLENCODED, MediaType.MULTIPART_FORM_DATA})
+    @Produces({"application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", MediaType.APPLICATION_OCTET_STREAM})
     public Response downloadReport(
             @PathParam("user") String user,
             @PathParam("id") String id,
@@ -324,20 +324,9 @@ public class Quality {
             if(Files.notExists(Paths.get(String.format("/tmp/%s.xlsx", id)))){
                 new Report(client.getDatastore()).create(id);
             }
-
-            StreamingOutput fileStream = outputStream -> {
-                try{
-                    byte[] data = Files.readAllBytes(Paths.get(String.format("/tmp/%s.xlsx", id)));
-                    outputStream.write(data);
-                    outputStream.flush();
-                }catch (Exception e){
-                    throw new WebApplicationException("File Not Found !!");
-                }
-            };
-
-            return Response
-                    .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
-                    .header("content-disposition","attachment; filename = " + id + ".xlsx")
+            return Response.status(200)
+                    .entity(Paths.get(String.format("/tmp/%s.xlsx", id)).toFile())
+                    .header("Content-Disposition", "attachment; filename=" + id + ".xlsx")
                     .build();
         } catch (Exception e) {
             logger.error(e);
