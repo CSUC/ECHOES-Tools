@@ -20,9 +20,7 @@ import org.csuc.step.Schema;
 import org.csuc.step.Schematron;
 import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
-import org.csuc.util.FileUtils;
 import org.csuc.util.FormatType;
-import org.mongodb.morphia.query.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,29 +114,31 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
 
                 q.getFormatInterface().execute(Paths.get(applicationConfig.getRecollectFolder(String.format("%s", quality.getData()))));
 
-                Query<QualityDetails> query = qualityDetailsDAO.createQuery();
-                query.and(
-                        query.criteria("quality").equal(quality),
-                        query.criteria("isValidSchematron").equal(true)
-                );
-                qualityDetailsDAO.find(query).forEach(qualityDetails -> {
-                    try {
-                        Path file = Paths.get(String.format("%s/%s",applicationConfig.getRecollectFolder(String.format("%s", quality.getData())), qualityDetails.getInput()));
-                        FileUtils.copy(file, Paths.get(applicationConfig.getQualityFolder((String) map.get("_id"))));
-                    } catch (IOException e) {
-                        logger.error(e);
-                    }
-                });
+//                Query<QualityDetails> query = qualityDetailsDAO.createQuery();
+//                query.and(
+//                        query.criteria("quality").equal(quality),
+//                        query.criteria("isValidSchematron").equal(true)
+//                );
+//                qualityDetailsDAO.find(query).forEach(qualityDetails -> {
+//                    try {
+//                        Path file = Paths.get(String.format("%s/%s",applicationConfig.getRecollectFolder(String.format("%s", quality.getData())), qualityDetails.getInput()));
+//                        FileUtils.copy(file, Paths.get(applicationConfig.getQualityFolder((String) map.get("_id"))));
+//                    } catch (IOException e) {
+//                        logger.error(e);
+//                    }
+//                });
 
-                quality.setQualitySize(
-                        Math.toIntExact(
-                                Files.walk(Paths.get(applicationConfig.getQualityFolder(String.format("%s", quality.get_id()))))
-                                .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
-                                .filter(Files::isRegularFile).count()));
+//                quality.setQualitySize(
+//                        Math.toIntExact(
+//                                Files.walk(Paths.get(applicationConfig.getQualityFolder(String.format("%s", quality.get_id()))))
+//                                .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
+//                                .filter(Files::isRegularFile).count()));
 
                 quality.setErrorSize(
                         Math.toIntExact(
                             qualityDetailsDAO.countErrorsById(quality.get_id())));
+
+                quality.setQualitySize(quality.getDatasetSize() - quality.getErrorSize());
 
                 quality.setStatus(Status.END);
                 quality.setDuration(Time.duration(quality.getTimestamp(), DateTimeFormatter.ISO_TIME));
