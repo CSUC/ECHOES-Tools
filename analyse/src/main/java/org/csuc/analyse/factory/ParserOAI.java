@@ -7,6 +7,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.strategy.ParserMethod;
+import org.csuc.analyse.util.Garbage;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.javatuples.Pair;
 import org.openarchives.oai._2.OAIPMHtype;
@@ -28,6 +29,7 @@ public class ParserOAI implements Parser {
     private ParserMethod method;
 
     private AtomicInteger iter = new AtomicInteger(0);
+    private int buffer = 15000;
 
     public ParserOAI(ParserMethod method){
         logger.debug(String.format("analyse: %s", getClass().getSimpleName()));
@@ -58,7 +60,8 @@ public class ParserOAI implements Parser {
                 )
                 .subscribe(
                         (Pair<ParserMethod, URL> l) -> {
-                            logger.info("#{} Received in {} value {}", iter.incrementAndGet(), Thread.currentThread().getName(), l.getValue0());
+                            if ((iter.get() % buffer) == 0) Garbage.gc();
+                            logger.info("Received in {} value {}", Thread.currentThread().getName(), l.getValue0());
                         },
                         e -> logger.error("Error: " + e),
                         () -> logger.info(String.format("Completed "))
