@@ -17,6 +17,8 @@ public interface QualityDetailsDAO extends DAO<QualityDetails, ObjectId> {
     /*****************************************************id*****************************************************/
     QualityDetails getById(String objectId) throws Exception;
 
+    Query<QualityDetails> getValidById(String objectId) throws Exception;
+    Query<QualityDetails> getValid() throws Exception;
 
     /*****************************************************insert*****************************************************/
     Key<QualityDetails> insert(QualityDetails qualityDetails) throws Exception;
