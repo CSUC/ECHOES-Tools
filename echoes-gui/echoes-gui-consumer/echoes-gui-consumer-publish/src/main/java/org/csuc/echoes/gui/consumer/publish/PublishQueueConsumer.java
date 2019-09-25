@@ -7,18 +7,22 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
+import org.csuc.dao.QualityDAO;
+import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.Quality;
+import org.csuc.dao.entity.QualityDetails;
 import org.csuc.dao.impl.QualityDAOImpl;
+import org.csuc.dao.impl.QualityDetailsDAOImpl;
 import org.csuc.dao.impl.loader.LoaderDAOImpl;
 import org.csuc.dao.loader.LoaderDAO;
-import org.csuc.dao.QualityDAO;
+import org.csuc.echoes.gui.consumer.publish.utils.RdfDAO;
 import org.csuc.echoes.gui.consumer.publish.utils.Time;
 import org.csuc.entities.loader.Loader;
 import org.csuc.entities.loader.LoaderDetails;
@@ -26,14 +30,13 @@ import org.csuc.typesafe.server.Application;
 import org.csuc.typesafe.server.ServerConfig;
 import org.csuc.util.FormatType;
 import org.csuc.utils.Status;
+import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,62 +105,67 @@ public class PublishQueueConsumer extends EndPoint implements Runnable, Consumer
                 loader = loaderDAO.getById(map.get("_id").toString());
                 loader.setStatus(Status.PROGRESS);
 
-
                 Quality quality = qualityDAO.getById(map.get("uuid").toString());
 
-                loader.setSize(
-                        Math.toIntExact(Files.walk(Paths.get(applicationConfig.getQualityFolder(String.format("%s", quality.get_id()))))
-                                .filter(Files::isRegularFile).count())
-                );
+                loader.setSize(quality.getQualitySize());
 
                 loaderDAO.insert(loader);
 
-                Files.walk(Paths.get(applicationConfig.getQualityFolder(String.format("%s", quality.get_id()))))
-                        .filter(Files::isRegularFile)
-                        .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
-                        .parallel()
-                        .forEach((Path f) -> {
-                            CloseableHttpClient httpclient = HttpClients.createDefault();
+                QualityDetailsDAO qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, client.getDatastore());
 
-                            HttpPost httppost;
-                            if(Objects.nonNull(loader.getContextUri()))
-                                httppost = new HttpPost(String.format("%s?context-uri=%s", loader.getEndpoint(), loader.getContextUri()));
-                            else
-                                httppost = new HttpPost(loader.getEndpoint());
+                Query<QualityDetails> qualityDetailsQuery = qualityDetailsDAO.getValidById(quality.get_id());
 
-                            httppost.addHeader("content-type", FormatType.convert(loader.getContentType()).lang().getContentType().getContentType());
+                qualityDetailsQuery.fetch(new FindOptions().batchSize(50).noCursorTimeout(true)).forEach(qualityDetails -> {
+                    try {
+                        CloseableHttpClient httpclient = HttpClients.createDefault();
 
-                            FileEntity entity = new FileEntity(f.toFile());
+                        HttpPost httppost;
+                        if(Objects.nonNull(loader.getContextUri()))
+                            httppost = new HttpPost(String.format("%s?context-uri=%s", loader.getEndpoint(), loader.getContextUri()));
+                        else
+                            httppost = new HttpPost(loader.getEndpoint());
 
-                            httppost.setEntity(entity);
+                        httppost.addHeader("content-type", FormatType.convert(loader.getContentType()).lang().getContentType().getContentType());
 
-                            try {
-                                HttpResponse response = httpclient.execute(httppost);
-                                HttpEntity resEntity = response.getEntity();
+                        RdfDAO<ByteArrayOutputStream> outputStreamRdfDAO = new RdfDAO<>(qualityDetails, ByteArrayOutputStream::new);
 
-                                if (resEntity != null) {
-                                    LoaderDetails loaderDetails = new LoaderDetails();
+                        httppost.setEntity(new ByteArrayEntity(outputStreamRdfDAO.toRDF().toByteArray()));
 
-                                    loaderDetails.setValue(FilenameUtils.getName(f.getFileName().toString()));
-                                    loaderDetails.setLoader(loader);
-                                    loaderDetails.setStatus(response.getStatusLine().getStatusCode());
-                                    loaderDetails.setMessage(EntityUtils.toString(resEntity));
+                        HttpResponse response = httpclient.execute(httppost);
+                        HttpEntity resEntity = response.getEntity();
 
-                                    loaderDAO.getDatastore().save(loaderDetails);
-                                    //logger.info(response.getStatusLine().getStatusCode() + " " + EntityUtils.toString(resEntity));
-                                }
-                                httpclient.close();
+                        if (resEntity != null) {
+                            LoaderDetails loaderDetails = new LoaderDetails();
 
-                            } catch (IOException e) {
-                                //logger.error(String.format("%s %s\n%s", "ERROR", f, e));
-                                LoaderDetails loaderDetails = new LoaderDetails();
-                                loaderDetails.setLoader(loader);
-                                loaderDetails.setStatus(-1);
-                                loaderDetails.setMessage(e.toString());
+                            loaderDetails.setValue(FilenameUtils.getName(qualityDetails.getInput()));
+                            loaderDetails.setLoader(loader);
+                            loaderDetails.setStatus(response.getStatusLine().getStatusCode());
+                            loaderDetails.setMessage(EntityUtils.toString(resEntity));
 
-                                loaderDAO.getDatastore().save(loaderDetails);
-                            }
-                        });
+                            loaderDAO.getDatastore().save(loaderDetails);
+                            //logger.info(response.getStatusLine().getStatusCode() + " " + EntityUtils.toString(resEntity));
+                        }
+                        httpclient.close();
+
+                    } catch (Exception e) {
+                        logger.error("{}     {}", qualityDetails.get_id(), e);
+                        LoaderDetails loaderDetails = new LoaderDetails();
+                        loaderDetails.setLoader(loader);
+                        loaderDetails.setStatus(-1);
+                        loaderDetails.setMessage(e.toString());
+
+                        loaderDAO.getDatastore().save(loaderDetails);
+                    }
+                });
+
+
+//                Files.walk(Paths.get(applicationConfig.getQualityFolder(String.format("%s", quality.get_id()))))
+//                        .filter(Files::isRegularFile)
+//                        .filter(f-> FormatType.convert(quality.getContentType()).lang().getFileExtensions().stream().anyMatch(m->  f.toString().endsWith(String.format(".%s", m))))
+//                        .parallel()
+//                        .forEach((Path f) -> {
+//
+//                        });
 
                 loader = loaderDAO.getById(map.get("_id").toString());
                 loader.setStatus(Status.END);
