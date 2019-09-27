@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>9.3.25.v20180904</version>
+            <version>9.4.20.v20190813</version>
         </dependency>
 
         <dependency>
