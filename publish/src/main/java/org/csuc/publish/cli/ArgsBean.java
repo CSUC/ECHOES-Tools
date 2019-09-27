@@ -32,7 +32,7 @@ public class ArgsBean {
     @Option(name = "--hostname", usage = "hostname")
     private String hostname = "localhost:9999";
 
-    @Option(name = "-i", aliases = "--input", usage = "file or folder input", required = true)
+    @Option(name = "-i", aliases = "--input", usage = "file or folder input")
     private Path input;
 
     @Option(name = "--content-type", usage = "content type")
@@ -50,6 +50,21 @@ public class ArgsBean {
     @Option(name = "--context-uri", usage = "virtual graph")
     private String context_uri;
 
+    @Option(name = "--datastore", forbids = {"-i", "--deleteFiles"}, usage = "datastore")
+    private boolean datastore = false;
+
+    @Option(name = "--datastore-host", depends = {"--datastore"}, forbids = {"-i"}, usage = "host")
+    private String host = "localhost";
+
+    @Option(name = "--datastore-port",  depends = {"--datastore"}, forbids = {"-i"}, usage = "port")
+    private int port = 27017;
+
+    @Option(name = "--datastore-name",  depends = {"--datastore"}, forbids = {"-i"}, usage = "database name")
+    private String name = "quality";
+
+    //Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "database name")
+    @Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "quality identifier")
+    private String quality_id;
 
     public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -155,6 +170,46 @@ public class ArgsBean {
 
     public void setContext_uri(String context_uri) {
         this.context_uri = context_uri;
+    }
+
+    public boolean isDatastore() {
+        return datastore;
+    }
+
+    public void setDatastore(boolean datastore) {
+        this.datastore = datastore;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getQuality_id() {
+        return quality_id;
+    }
+
+    public void setQuality_id(String quality_id) {
+        this.quality_id = quality_id;
     }
 
     public void run() {

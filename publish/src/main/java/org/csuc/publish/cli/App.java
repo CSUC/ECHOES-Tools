@@ -10,16 +10,26 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.dao.QualityDetailsDAO;
+import org.csuc.dao.entity.QualityDetails;
+import org.csuc.dao.impl.QualityDetailsDAOImpl;
+import org.csuc.format.Datastore;
 import org.csuc.publish.BlazegraphResponse;
+import org.csuc.publish.RdfDAO;
+import org.csuc.util.StreamUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+import org.mongodb.morphia.query.FindOptions;
+import org.mongodb.morphia.query.Query;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,7 +52,7 @@ public class App {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Instant now = Instant.now();
 
         bean = new ArgsBean(args);
@@ -70,8 +80,26 @@ public class App {
                         logger.error(e);
                     }
                 }).join();
-            } else {
-                logger.info("select folderOrFile");
+            } else if (bean.isDatastore()) {
+                org.mongodb.morphia.Datastore datastore = new Datastore(bean.getHost(), bean.getPort(), bean.getName(), null, null).getDatastore();
+
+                QualityDetailsDAO qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, datastore);
+
+                Query<QualityDetails> qualityDetailsQuery =
+                        Objects.nonNull(bean.getQuality_id())
+                                ? qualityDetailsDAO.getValidById(bean.getQuality_id())
+                                : qualityDetailsDAO.getValid();
+
+                StreamUtils
+                        .asStream(qualityDetailsQuery.fetch(new FindOptions().batchSize(50).noCursorTimeout(true)))
+                        .parallel().forEach(qualityDetails -> {
+                    RdfDAO<ByteArrayOutputStream> outputStreamRdfDAO = new RdfDAO<>(qualityDetails, ByteArrayOutputStream::new);
+                    try {
+                        httpPost(bean.getContentType().lang().getContentType().getContentType(), qualityDetails.get_id(), outputStreamRdfDAO.toRDF());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         } finally {
             long diff = Duration.between(now, Instant.now()).getSeconds();
@@ -88,11 +116,10 @@ public class App {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httppost;
-        if(Objects.nonNull(bean.getContext_uri()))
+        if (Objects.nonNull(bean.getContext_uri()))
             httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql?context-uri=%s", bean.getHostname(), bean.getNamespace(), bean.getContext_uri()));
         else
             httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
-
 
 
         RequestConfig requestConfig =
@@ -118,7 +145,7 @@ public class App {
                     if (Integer.parseInt(blazegraphResponse.getModified()) != 0) {
                         logger.info(String.format("%s %s %s", "OK", data.getAbsolutePath(), blazegraphResponse.toString()));
 
-                        if(bean.isDeleteFiles()){
+                        if (bean.isDeleteFiles()) {
                             Files.delete(Paths.get(data.toURI()));
                             logger.info(String.format("%s deleted %s", "OK", data));
                         }
@@ -134,6 +161,47 @@ public class App {
             logger.error(String.format("%s %s\n%s", "ERROR", data.getAbsolutePath(), e));
         }
     }
+
+    private static void httpPost(String type, String id, ByteArrayOutputStream byteArrayOutputStream) {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        HttpPost httppost;
+        if (Objects.nonNull(bean.getContext_uri()))
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql?context-uri=%s", bean.getHostname(), bean.getNamespace(), bean.getContext_uri()));
+        else
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
+
+
+        RequestConfig requestConfig =
+                RequestConfig.copy(RequestConfig.DEFAULT)
+                        .setProxy(new HttpHost(bean.getHostname()))
+                        .build();
+
+        httppost.setConfig(requestConfig);
+
+        httppost.addHeader("content-type", type + ";charset=" + bean.getCharset());
+
+        httppost.setEntity(new ByteArrayEntity(byteArrayOutputStream.toByteArray()));
+
+        try {
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity resEntity = response.getEntity();
+
+            if (resEntity != null) {
+                BlazegraphResponse blazegraphResponse = xmlMapper(EntityUtils.toString(resEntity));
+                if (Objects.nonNull(blazegraphResponse)) {
+                    if (Integer.parseInt(blazegraphResponse.getModified()) != 0) {
+                        logger.info(String.format("%s %s %s", "OK", id, blazegraphResponse.toString()));
+                    } else logger.error(String.format("%s %s %s", "ERROR", id, blazegraphResponse.toString()));
+                } else logger.error(String.format("%s %s", "ERROR", id));
+            }
+            httpclient.close();
+
+        } catch (IOException e) {
+            logger.error(String.format("%s %s\n%s", "ERROR", id, e));
+        }
+    }
+
 
     /**
      * @param value

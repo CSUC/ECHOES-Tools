@@ -5,7 +5,6 @@ import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
-import org.csuc.dao.QualityDAO;
 import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.Quality;
 import org.csuc.dao.entity.QualityDetails;
@@ -38,6 +37,52 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
 
         logger.debug("[{}]\t[getById] - objectId: {}", QualityDetailsDAOImpl.class.getSimpleName(), objectId);
         return qualityDetailsDAO;
+    }
+
+    @Override
+    public Query<QualityDetails> getValidById(String objectId) throws Exception {
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.and(
+                        query.criteria("schema").doesNotExist(),
+                        query.criteria("schematron").doesNotExist(),
+                        query.or(
+                                query.criteria("edm.edm:ProvidedCHO.errorList").doesNotExist(),
+                                query.criteria("edm.edm:Place.errorList").doesNotExist(),
+                                query.criteria("edm.skos:Concept.errorList").doesNotExist(),
+                                query.criteria("edm.edm:TimeSpan.errorList").doesNotExist(),
+                                query.criteria("edm.edm:Agent.errorList").doesNotExist(),
+                                query.criteria("edm.ore:Aggregation.errorList").doesNotExist(),
+                                query.criteria("edm.edm:WebResource.errorList").doesNotExist()
+                        )
+                )
+        );
+
+        return query;
+    }
+
+    @Override
+    public Query<QualityDetails> getValid() throws Exception {
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("schema").doesNotExist(),
+                query.criteria("schematron").doesNotExist(),
+                query.or(
+                        query.criteria("edm.edm:ProvidedCHO.errorList").doesNotExist(),
+                        query.criteria("edm.edm:Place.errorList").doesNotExist(),
+                        query.criteria("edm.skos:Concept.errorList").doesNotExist(),
+                        query.criteria("edm.edm:TimeSpan.errorList").doesNotExist(),
+                        query.criteria("edm.edm:Agent.errorList").doesNotExist(),
+                        query.criteria("edm.ore:Aggregation.errorList").doesNotExist(),
+                        query.criteria("edm.edm:WebResource.errorList").doesNotExist()
+                )
+        );
+
+        return query;
     }
 
     @Override

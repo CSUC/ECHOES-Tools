@@ -44,6 +44,15 @@ public class Datastore implements FormatInterface {
         this.schema = schema;
     }
 
+    public Datastore(org.mongodb.morphia.Datastore datastore, Quality quality, Schema schema) {
+        logger.info("{}", getClass().getSimpleName());
+
+        this.datastore = datastore;
+
+        this.quality = quality;
+        this.schema = schema;
+    }
+
     @Override
     public void execute(Path path) throws IOException {
         qualityDetailsDAO.getDatastore().save(quality);
@@ -75,4 +84,7 @@ public class Datastore implements FormatInterface {
         qualityDetailsDAO.save(qualityDetails);
     }
 
+    public org.mongodb.morphia.Datastore getDatastore() {
+        return datastore;
+    }
 }
