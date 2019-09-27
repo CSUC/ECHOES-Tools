@@ -28,6 +28,10 @@
                     ]);
                     data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user;
                     break;
+                case "getAnalyseById":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id;
+                    break;
                 case "getAnalyseError":
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'analyse/user/' + _params.user + '/id/' + _params.id + '/error';
@@ -49,6 +53,14 @@
                         'dataset', 'format', 'user'
                     ]);
                     data.url = this.getApiBaseUrl() + 'quality/create';
+                    break;
+                case "createQualityReports":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id + '/create-report';
+                    break;
+                case "downloadQualityReport":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'quality/user/' + _params.user + '/id/' + _params.id + '/download-report';
                     break;
                 case "deleteQuality":
                     data = this.fillDataInObjectByList(data, _params, []);

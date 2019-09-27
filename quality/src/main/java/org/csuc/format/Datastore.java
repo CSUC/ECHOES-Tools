@@ -36,7 +36,18 @@ public class Datastore implements FormatInterface {
         MongoClient mongo = new MongoClient(host, port);
 
         datastore = morphia.createDatastore(mongo, database);
+        datastore.ensureIndexes();
+
         qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, datastore);
+
+        this.quality = quality;
+        this.schema = schema;
+    }
+
+    public Datastore(org.mongodb.morphia.Datastore datastore, Quality quality, Schema schema) {
+        logger.info("{}", getClass().getSimpleName());
+
+        this.datastore = datastore;
 
         this.quality = quality;
         this.schema = schema;
@@ -73,4 +84,7 @@ public class Datastore implements FormatInterface {
         qualityDetailsDAO.save(qualityDetails);
     }
 
+    public org.mongodb.morphia.Datastore getDatastore() {
+        return datastore;
+    }
 }

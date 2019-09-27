@@ -44,13 +44,13 @@ public class ArgsBean {
     @Option(name = "-t", aliases = "--type", usage = "type", required = true)
     private EnumTypes type;
 
-    @Option(name = "--datastore-host")
+    @Option(name = "--datastore-host", usage = "host")
     private String host = "localhost";
 
-    @Option(name = "--datastore-port")
+    @Option(name = "--datastore-port", usage = "port")
     private int port = 27017;
 
-    @Option(name = "--datastore-name")
+    @Option(name = "--datastore-name", usage = "database name")
     private String name = "quality";
 
     private Path out;
@@ -193,7 +193,7 @@ public class ArgsBean {
             logger.info("   QualityFile host                 :   {}", host);
             logger.info("   QualityFile port                 :   {}", port);
             logger.info("   QualityFile name                 :   {}", name);
-        }else if (Objects.nonNull(out))
+        } else if (Objects.nonNull(out))
             logger.info("   out                          :   {}", getOut());
     }
 }

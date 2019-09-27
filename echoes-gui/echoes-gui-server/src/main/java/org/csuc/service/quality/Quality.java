@@ -1,17 +1,19 @@
 package org.csuc.service.quality;
 
 import com.auth0.jwk.JwkException;
+import com.mongodb.WriteResult;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
 import org.csuc.client.Client;
+import org.csuc.dao.QualityDAO;
 import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.QualityDetails;
 import org.csuc.dao.entity.Status;
 import org.csuc.dao.impl.QualityDAOImpl;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
-import org.csuc.dao.QualityDAO;
+import org.csuc.poi.Report;
 import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.StreamUtils;
@@ -249,59 +251,134 @@ public class Quality {
         }
     }
 
+    @POST
+    @Path("/user/{user}/id/{id}/create-report")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response createReport(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @HeaderParam("Authorization") String authorization) {
 
-//    @DELETE
-//    @Path("/user/{user}/id/{id}/delete")
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    public Response detelete(
-//            @PathParam("user") String user,
-//            @PathParam("id") String id,
-//            @HeaderParam("Authorization") String authorization) {
-//
-//        if (Objects.isNull(user)) {
-//            throw new WebApplicationException(
-//                    Response.status(Response.Status.BAD_REQUEST)
-//                            .entity("user is mandatory")
-//                            .build()
-//            );
-//        }
-//
-//        if (Objects.isNull(id)) {
-//            throw new WebApplicationException(
-//                    Response.status(Response.Status.BAD_REQUEST)
-//                            .entity("id is mandatory")
-//                            .build()
-//            );
-//        }
-//
-//        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
-//        try {
-//            authoritzation.execute();
-//        } catch (JwkException e) {
-//            return Response.status(Response.Status.UNAUTHORIZED).build();
-//        }
-//
-//        try {
-////            AnalyseDAO analyseDAO = new AnalyseDAOImpl(org.csuc.entities.Analyse.class, client.getDatastore());
-////            AnalyseErrorDAO analyseErrorDAO = new AnalyseErrorDAOImpl(org.csuc.entities.AnalyseError.class, client.getDatastore());
-//
-//            analyseErrorDAO.deleteByReference(analyseDAO.getById(id));
-//
-//            WriteResult writeResult = analyseDAO.deleteById(id);
-//            logger.debug(writeResult);
-//
-//            Files.walk(Paths.get(applicationConfig.getParserFolder(id)))
-//                    .sorted(Comparator.reverseOrder())
-//                    .map(java.nio.file.Path::toFile)
-//                    .peek(logger::debug)
-//                    .forEach(File::delete);
-//
-//            return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
-//        } catch (Exception e) {
-//            logger.error(e);
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
-//    }
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
+        try {
+            authoritzation.execute();
+        } catch (JwkException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        try {
+            Report report = new Report(client.getDatastore());
+
+            report.create(id);
+
+            return Response.status(Response.Status.ACCEPTED).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/user/{user}/id/{id}/download-report")
+    @Produces({"application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", MediaType.APPLICATION_OCTET_STREAM})
+    public Response downloadReport(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        logger.info("[download-report] - {}", id);
+
+        try {
+            if(Files.notExists(Paths.get(String.format("/tmp/%s.xlsx", id)))){
+                new Report(client.getDatastore()).create(id);
+            }
+            return Response.status(200)
+                    .entity(Paths.get(String.format("/tmp/%s.xlsx", id)).toFile())
+                    .header("Content-Disposition", "attachment; filename=" + id + ".xlsx")
+                    .build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+
+    @DELETE
+    @Path("/user/{user}/id/{id}/delete")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response detelete(
+            @PathParam("user") String user,
+            @PathParam("id") String id,
+            @HeaderParam("Authorization") String authorization) {
+
+        if (Objects.isNull(user)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("user is mandatory")
+                            .build()
+            );
+        }
+
+        if (Objects.isNull(id)) {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("id is mandatory")
+                            .build()
+            );
+        }
+
+        Authoritzation authoritzation = new Authoritzation(user, authorization.split("\\s")[1]);
+        try {
+            authoritzation.execute();
+        } catch (JwkException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        try {
+            QualityDAO qualityDAO = new QualityDAOImpl(org.csuc.dao.entity.Quality.class, client.getDatastore());
+
+            WriteResult writeResult = qualityDAO.deleteById(id);
+
+            logger.debug(writeResult);
+
+            return Response.status(Response.Status.ACCEPTED).entity(writeResult).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 
     @GET
     @Path("/user/{user}/status/aggregation")

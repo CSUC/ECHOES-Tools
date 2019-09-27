@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.strategy.ParserMethod;
+import org.csuc.analyse.util.Garbage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,6 +27,7 @@ public class ParserFILE implements Parser {
     private ParserMethod method;
 
     private AtomicInteger iter = new AtomicInteger(0);
+    private int buffer = 15000;
 
     public ParserFILE(ParserMethod method) {
         logger.debug(String.format("analyse: %s", getClass().getSimpleName()));
@@ -40,7 +42,8 @@ public class ParserFILE implements Parser {
                     .filter(Files::isRegularFile)
 //                    .filter(f -> f.toString().endsWith(".xml"))
                     .forEach(f -> {
-                        logger.info(String.format("%s file: %s", iter.incrementAndGet(), f.getFileName()));
+                        if ((iter.incrementAndGet() % buffer) == 0) Garbage.gc();
+                        logger.info(String.format("%s file: %s", iter.get(), f.getFileName()));
                         try {
                             method.parser(f.toString());
                         } catch (Exception e) {

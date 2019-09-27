@@ -33,7 +33,7 @@
         function run(){
             restApi.qualityById({
                 user: vm.profile.sub,
-                id: vm._id,
+                id: vm._id
             }).then(function (_data) {
                 $log.info(_data);
 

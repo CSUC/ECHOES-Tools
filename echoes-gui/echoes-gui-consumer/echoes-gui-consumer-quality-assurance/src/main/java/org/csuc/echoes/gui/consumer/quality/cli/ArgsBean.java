@@ -20,6 +20,9 @@ public class ArgsBean {
     @Option(name="-h", aliases = "--help", help = true)
     private boolean help = false;
 
+    @Option(name = "-q", aliases = "--quality-config", usage = "quality file config", required = true)
+    private Path qualityFile;
+
     @Argument(index = 0, handler = PathOptionHandler.class, usage = "RabbitMQ config", metaVar = "{ rabbitmq.json | rabbitmq.conf | rabbitmq.properties }")
     private Path arguments;
 
@@ -70,7 +73,16 @@ public class ArgsBean {
         this.arguments = arguments;
     }
 
+    public Path getQualityFile() {
+        return qualityFile;
+    }
+
+    public void setQualityFile(Path qualityFile) {
+        this.qualityFile = qualityFile.toAbsolutePath();
+    }
+
     public void run(){
-        logger.info("config       :   {}", arguments);
+        logger.info("quality config file    :   {}", qualityFile);
+        logger.info("config                 :   {}", arguments);
     }
 }

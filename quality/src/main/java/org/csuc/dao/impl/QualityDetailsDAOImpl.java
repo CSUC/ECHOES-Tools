@@ -1,5 +1,6 @@
 package org.csuc.dao.impl;
 
+import com.mongodb.DBRef;
 import com.mongodb.WriteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,9 +8,9 @@ import org.bson.types.ObjectId;
 import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.Quality;
 import org.csuc.dao.entity.QualityDetails;
-import org.csuc.dao.QualityDAO;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
@@ -39,6 +40,52 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
     }
 
     @Override
+    public Query<QualityDetails> getValidById(String objectId) throws Exception {
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.and(
+                        query.criteria("schema").doesNotExist(),
+                        query.criteria("schematron").doesNotExist(),
+                        query.or(
+                                query.criteria("edm.edm:ProvidedCHO.errorList").doesNotExist(),
+                                query.criteria("edm.edm:Place.errorList").doesNotExist(),
+                                query.criteria("edm.skos:Concept.errorList").doesNotExist(),
+                                query.criteria("edm.edm:TimeSpan.errorList").doesNotExist(),
+                                query.criteria("edm.edm:Agent.errorList").doesNotExist(),
+                                query.criteria("edm.ore:Aggregation.errorList").doesNotExist(),
+                                query.criteria("edm.edm:WebResource.errorList").doesNotExist()
+                        )
+                )
+        );
+
+        return query;
+    }
+
+    @Override
+    public Query<QualityDetails> getValid() throws Exception {
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("schema").doesNotExist(),
+                query.criteria("schematron").doesNotExist(),
+                query.or(
+                        query.criteria("edm.edm:ProvidedCHO.errorList").doesNotExist(),
+                        query.criteria("edm.edm:Place.errorList").doesNotExist(),
+                        query.criteria("edm.skos:Concept.errorList").doesNotExist(),
+                        query.criteria("edm.edm:TimeSpan.errorList").doesNotExist(),
+                        query.criteria("edm.edm:Agent.errorList").doesNotExist(),
+                        query.criteria("edm.ore:Aggregation.errorList").doesNotExist(),
+                        query.criteria("edm.edm:WebResource.errorList").doesNotExist()
+                )
+        );
+
+        return query;
+    }
+
+    @Override
     public Key<QualityDetails> insert(QualityDetails qualityDetails) throws Exception {
         if (Objects.isNull(qualityDetails)) throw new Exception();
         Key<QualityDetails> result = save(qualityDetails);
@@ -62,19 +109,22 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
     public List<QualityDetails> getErrorsById(String objectId, int offset, int limit, String orderby) throws Exception {
         if (Objects.isNull(objectId)) throw new Exception();
 
-        logger.debug("[{}]\t[getByUser] - user: {}\toption:[offset: {}\tlimit: {}\torder: {}]", QualityDAOImpl.class.getSimpleName(), objectId, offset, limit, orderby);
-
-        QualityDAO qualityDAO = new QualityDAOImpl(Quality.class, getDatastore());
-
-        Quality quality = qualityDAO.getById(objectId);
+        logger.debug("[{}]\t[getErrorsById] - user: {}\toption:[offset: {}\tlimit: {}\torder: {}]", QualityDetailsDAOImpl.class.getSimpleName(), objectId, offset, limit, orderby);
 
         Query<QualityDetails> query = createQuery();
 
         query.and(
-                query.criteria("quality").equal(quality),
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
                 query.or(
-                        query.criteria("schema").notEqual(null),
-                        query.criteria("schematron").notEqual(null)
+                        query.criteria("schema").exists(),
+                        query.criteria("schematron").exists(),
+                        query.criteria("edm.edm:ProvidedCHO.errorList").exists(),
+                        query.criteria("edm.edm:Place.errorList").exists(),
+                        query.criteria("edm.skos:Concept.errorList").exists(),
+                        query.criteria("edm.edm:TimeSpan.errorList").exists(),
+                        query.criteria("edm.edm:Agent.errorList").exists(),
+                        query.criteria("edm.ore:Aggregation.errorList").exists(),
+                        query.criteria("edm.edm:WebResource.errorList").exists()
                 )
         );
 
@@ -84,22 +134,149 @@ public class QualityDetailsDAOImpl extends BasicDAO<QualityDetails, ObjectId> im
     }
 
     @Override
-    public long countErrorsById(String objectId) throws Exception {
+    public Query<QualityDetails> getErrorsById(String objectId) throws Exception {
         if (Objects.isNull(objectId)) throw new Exception();
-
-        logger.debug("[{}]\t[countErrorsById] - objectId: {}", QualityDAOImpl.class.getSimpleName(), objectId);
-
-        QualityDAO qualityDAO = new QualityDAOImpl(Quality.class, getDatastore());
-
-        Quality quality = qualityDAO.getById(objectId);
 
         Query<QualityDetails> query = createQuery();
 
         query.and(
-                query.criteria("quality").equal(quality),
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
                 query.or(
-                        query.criteria("schema").notEqual(null),
-                        query.criteria("schematron").notEqual(null)
+                        query.criteria("schema").exists(),
+                        query.criteria("schematron").exists(),
+                        query.criteria("edm.edm:ProvidedCHO.errorList").exists(),
+                        query.criteria("edm.edm:Place.errorList").exists(),
+                        query.criteria("edm.skos:Concept.errorList").exists(),
+                        query.criteria("edm.edm:TimeSpan.errorList").exists(),
+                        query.criteria("edm.edm:Agent.errorList").exists(),
+                        query.criteria("edm.ore:Aggregation.errorList").exists(),
+                        query.criteria("edm.edm:WebResource.errorList").exists()
+                )
+        );
+
+        return query;
+    }
+
+    @Override
+    public Query<QualityDetails> getStep1Errors(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.criteria("schema").exists()
+                );
+
+        return query;
+    }
+
+    @Override
+    public Query<QualityDetails> getStep2Errors(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.criteria("schematron").exists()
+        );
+
+        return query;
+    }
+
+    @Override
+    public Query<QualityDetails> getStep3Errors(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.or(
+                        query.criteria("edm.edm:ProvidedCHO.errorList").exists(),
+                        query.criteria("edm.edm:Place.errorList").exists(),
+                        query.criteria("edm.skos:Concept.errorList").exists(),
+                        query.criteria("edm.edm:TimeSpan.errorList").exists(),
+                        query.criteria("edm.edm:Agent.errorList").exists(),
+                        query.criteria("edm.ore:Aggregation.errorList").exists(),
+                        query.criteria("edm.edm:WebResource.errorList").exists()
+                )
+        );
+
+        return query;
+    }
+
+    @Override
+    public long countErrorsById(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        logger.debug("[{}]\t[countErrorsById] - objectId: {}", QualityDetailsDAOImpl.class.getSimpleName(), objectId);
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.or(
+                        query.criteria("schema").exists(),
+                        query.criteria("schematron").exists(),
+                        query.criteria("edm.edm:ProvidedCHO.errorList").exists(),
+                        query.criteria("edm.edm:Place.errorList").exists(),
+                        query.criteria("edm.skos:Concept.errorList").exists(),
+                        query.criteria("edm.edm:TimeSpan.errorList").exists(),
+                        query.criteria("edm.edm:Agent.errorList").exists(),
+                        query.criteria("edm.ore:Aggregation.errorList").exists(),
+                        query.criteria("edm.edm:WebResource.errorList").exists()
+                )
+        );
+
+        return query.count();
+    }
+
+    @Override
+    public long countErrorsStep1ById(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.criteria("schema").exists()
+        );
+
+        return query.count();
+    }
+
+    @Override
+    public long countErrorsStep2ById(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.criteria("schematron").exists()
+        );
+
+        return query.count();
+    }
+
+    @Override
+    public long countErrorsStep3ById(String objectId) throws Exception {
+        if (Objects.isNull(objectId)) throw new Exception();
+
+        Query<QualityDetails> query = createQuery();
+
+        query.and(
+                query.criteria("quality").equal(new DBRef(Quality.class.getAnnotation(Entity.class).value(), objectId)),
+                query.or(
+                        query.criteria("edm.edm:ProvidedCHO.errorList").exists(),
+                        query.criteria("edm.edm:Place.errorList").exists(),
+                        query.criteria("edm.skos:Concept.errorList").exists(),
+                        query.criteria("edm.edm:TimeSpan.errorList").exists(),
+                        query.criteria("edm.edm:Agent.errorList").exists(),
+                        query.criteria("edm.ore:Aggregation.errorList").exists(),
+                        query.criteria("edm.edm:WebResource.errorList").exists()
                 )
         );
 

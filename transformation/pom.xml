@@ -15,8 +15,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<rxjava2.version>2.1.7</rxjava2.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -47,7 +45,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.3</version>
+			<version>4.5.9</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
 		<dependency>
@@ -118,7 +116,6 @@
 		<dependency>
 			<groupId>io.reactivex.rxjava2</groupId>
 			<artifactId>rxjava</artifactId>
-			<version>${rxjava2.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/args4j/args4j -->
 		<dependency>
@@ -158,7 +155,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.1</version>
 				<configuration>
 					<shadedArtifactAttached>true</shadedArtifactAttached>
 					<createDependencyReducedPom>false</createDependencyReducedPom>
@@ -200,7 +197,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>

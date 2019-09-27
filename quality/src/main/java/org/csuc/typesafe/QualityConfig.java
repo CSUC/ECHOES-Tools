@@ -20,16 +20,5 @@ public class QualityConfig {
 
     public Config getQualityConfig() {
         return ConfigFactory.parseFile(filename.toFile()).resolve();
-//        Config defaultConfig = ConfigFactory.parseResources("quality.defaults.conf");
-//        if(Objects.nonNull(filename) && Files.exists(filename)){
-//            logger.debug("load config {}", filename);
-//            Config fallbackConfig = ConfigFactory.parseFile(filename.toFile())
-//                    .withFallback(defaultConfig)
-//                    .resolve();
-//            return fallbackConfig;
-//        }else{
-//            logger.debug("load config defaults.conf");
-//            return defaultConfig;
-//        }
     }
 }

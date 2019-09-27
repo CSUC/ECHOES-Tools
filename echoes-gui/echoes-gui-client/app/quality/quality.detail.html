@@ -39,7 +39,7 @@
         <tr ng-show="vm.data.errorSize">
             <td>error-size</td>
             <td ng-if="vm.data.errorSize > 0">
-                <a ui-sref="quality-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.errorSize}}</a>
+                <a ui-sref="quality-error({_id:'{{vm._id}}', page: 1, pagesize: 10})">{{vm.data.errorSize}}</a> - <a target="_blank" ng-href="/rest/api/quality/user/{{vm.profile.sub}}/id/{{vm._id}}/download-report"> Download report</a>
             </td>
             <td ng-if="vm.data.errorSize == 0">
                 {{vm.data.errorSize}}

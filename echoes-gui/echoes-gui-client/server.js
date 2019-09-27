@@ -55,7 +55,7 @@ app.get('/rest/api/analyse/user/:user/id/:id', function (req, res, next) {
 
 app.get('/rest/api/analyse/user/:user/id/:id/download', function (req, res, next) {
     var headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     };
 
     // console.log(headers)
@@ -64,7 +64,7 @@ app.get('/rest/api/analyse/user/:user/id/:id/download', function (req, res, next
         method: "GET",
         headers: headers,
         url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/analyse/user/` + req.params.user + '/id/' + req.params.id + '/download'
-    })
+    });
     r.pipe(res);
 
     r.on('response', function (resp) {
@@ -85,9 +85,9 @@ app.get('/rest/api/analyse/user/:user/id/:id/error', function (req, res, next) {
     }, function (error, response, body) {
         console.log(req.method, util.format('%s', response && response.statusCode),req.url);
 
-        if(response && response.statusCode == 202) res.json(JSON.parse(body));
+        if(response && response.statusCode == 202 ) res.json(JSON.parse(body));
         else{
-            res.status(400).end();
+            res.status(response.statusCode).end();
         }
     });
 });
@@ -165,7 +165,7 @@ app.post('/rest/api/analyse/create', function (req, res, next) {
 
         if(response && response.statusCode == 202)  res.json(body);
         else{
-            res.status(400).end();
+            res.status(response.statusCode).end();
         }
     });
 });
@@ -196,6 +196,42 @@ app.post('/rest/api/quality/create', function (req, res, next) {
         else{
             res.status(400).end();
         }
+    });
+});
+
+app.post('/rest/api/quality/user/:user/id/:ud/create-report', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    request({
+        method: 'POST',
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' +  req.params.id +  `/create-report`
+    }, function (error, response, body) {
+        console.log(req.method, util.format('%s', response && response.statusCode), req.url);
+
+        if(response && response.statusCode == 202)  res.json(body);
+        else{
+            res.status(400).end();
+        }
+    });
+});
+
+app.get('/rest/api/quality/user/:user/id/:id/download-report', function (req, res, next) {
+    var headers = {
+        'Authorization': req.headers.authorization
+    };
+
+    var r = request({
+        method: "GET",
+        headers: headers,
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' +  req.params.id +  `/download-report`
+    });
+    r.pipe(res);
+
+    r.on('response', function (resp) {
+        console.log(req.method, util.format('%s', resp && resp.statusCode), req.url);
     });
 });
 

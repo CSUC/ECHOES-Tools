@@ -2,109 +2,110 @@ package org.csuc.dao.entity.edm;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.csuc.adapter.BigIntegerAdapter;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Property;
 
-import java.util.Set;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity("content")
 public class Edm {
 
-    @Property("rdf:about")
-    private Object about;
-
-    @Property("edm:ProvidedCHO")
-    private Object providedCHO;
-
-    @Property("edm:WebResource")
-    private Object webResource;
-
-    @Property("edm:Agent")
-    private Object agent;
+    @Embedded("edm:ProvidedCHO")
+    private List<ProvidedCHO> providedCHO = new ArrayList<>();
 
     @Embedded("edm:Place")
-    private Set<Place> place;
+    private List<Place> place = new ArrayList<>();
 
-    @Property("edm:TimeSpan")
-    private Object timeSpan;
+    @Embedded("skos:Concept")
+    private List<Concept> concept = new ArrayList<>();
 
-    @Property("skos:Concept")
-    private Object concept;
+    @Embedded("edm:WebResource")
+    private List<WebResource> webResource = new ArrayList<>();
 
-    @Property("cc:License")
-    private Object license;
+    @Embedded("edm:Agent")
+    private List<Agent> agent = new ArrayList<>();
+
+    @Embedded("ore:Aggregation")
+    private List<Aggregation> aggregation = new ArrayList<>();
+
+    @Embedded("edm:TimeSpan")
+    private List<TimeSpan> timeSpan = new ArrayList<>();
+
+//    @Embedded("cc:License")
+//    private List license;
+
+//    @Embedded("svcs:Service")
+//    private List service;
 
     public Edm() {
     }
 
-    public Object getAbout() {
-        return about;
-    }
-
-    public void setAbout(Object about) {
-        this.about = about;
-    }
-
-    public Object getProvidedCHO() {
+    public List<ProvidedCHO> getProvidedCHO() {
         return providedCHO;
     }
 
-    public void setProvidedCHO(Object providedCHO) {
+    public void setProvidedCHO(List<ProvidedCHO> providedCHO) {
         this.providedCHO = providedCHO;
     }
 
-    public Object getWebResource() {
-        return webResource;
-    }
-
-    public void setWebResource(Object webResource) {
-        this.webResource = webResource;
-    }
-
-    public Object getAgent() {
-        return agent;
-    }
-
-    public void setAgent(Object agent) {
-        this.agent = agent;
-    }
-
-    public Set<Place> getPlace() {
+    public List<Place> getPlace() {
         return place;
     }
 
-    public void setPlace(Set<Place> place) {
+    public void setPlace(List<Place> place) {
         this.place = place;
     }
 
-    public Object getTimeSpan() {
-        return timeSpan;
-    }
-
-    public void setTimeSpan(Object timeSpan) {
-        this.timeSpan = timeSpan;
-    }
-
-    public Object getConcept() {
+    public List<Concept> getConcept() {
         return concept;
     }
 
-    public void setConcept(Object concept) {
+    public void setConcept(List<Concept> concept) {
         this.concept = concept;
     }
 
-    public Object getLicense() {
-        return license;
+    public List<Agent> getAgent() {
+        return agent;
     }
 
-    public void setLicense(Object license) {
-        this.license = license;
+    public void setAgent(List<Agent> agent) {
+        this.agent = agent;
+    }
+
+    public List<Aggregation> getAggregation() {
+        return aggregation;
+    }
+
+    public void setAggregation(List<Aggregation> aggregation) {
+        this.aggregation = aggregation;
+    }
+
+    public List<TimeSpan> getTimeSpan() {
+        return timeSpan;
+    }
+
+    public void setTimeSpan(List<TimeSpan> timeSpan) {
+        this.timeSpan = timeSpan;
+    }
+
+    public List<WebResource> getWebResource() {
+        return webResource;
+    }
+
+    public void setWebResource(List<WebResource> webResource) {
+        this.webResource = webResource;
     }
 
     @Override
     public String toString() {
-        JsonAdapter<Edm> jsonAdapter = new Moshi.Builder().build().adapter(Edm.class);
+        JsonAdapter<Edm> jsonAdapter =
+                new Moshi.Builder()
+                        .add(BigInteger.class, new BigIntegerAdapter().nullSafe())
+                        .build().adapter(Edm.class);
+
         return jsonAdapter.toJson(this);
     }
 }

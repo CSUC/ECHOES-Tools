@@ -13,14 +13,14 @@
 
     <groupId>org.csuc</groupId>
     <artifactId>publish</artifactId>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <packaging>jar</packaging>
 
     <name>Publish</name>
     <url>http://maven.apache.org</url>
 
     <properties>
-        <httpcomponents.httpclient.version>4.5.5</httpcomponents.httpclient.version>
+        <httpcomponents.httpclient.version>4.5.9</httpcomponents.httpclient.version>
         <httpcomponents.httpcore.version>4.4.9</httpcomponents.httpcore.version>
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
     </properties>
@@ -88,6 +88,12 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.csuc</groupId>
+            <artifactId>quality</artifactId>
+            <version>0.0.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,7 +101,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>a</id>

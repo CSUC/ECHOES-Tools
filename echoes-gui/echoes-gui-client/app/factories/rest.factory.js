@@ -21,6 +21,18 @@
             });
         };
 
+        data.getAnalyseById = function (_params) {
+            var searchData = restApiService.getNew("getAnalyseById", _params);
+
+            $log.info(searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
         data.getAnalyseError = function (_params) {
             var searchData = restApiService.getNew("getAnalyseError", _params);
 
@@ -366,9 +378,8 @@
             $log.info(searchData);
 
             return $http({
-                method: 'GET',
-                url: searchData.url,
-                params: searchData.object
+                method: 'DELETE',
+                url: searchData.url
             });
         };
 
@@ -376,6 +387,30 @@
             var searchData = restApiService.getNew("qualityErrors", _params);
 
             $log.info('qualityErrors: ', searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.createQualityReports = function (_params) {
+            var searchData = restApiService.getNew("createQualityReports", _params);
+
+            $log.info('createQualityReports: ', searchData);
+
+            return $http({
+                method: 'POST',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
+        data.downloadQualityReport = function (_params) {
+            var searchData = restApiService.getNew("downloadQualityReport", _params);
+
+            $log.info('downloadQualityReport: ', searchData);
 
             return $http({
                 method: 'GET',
