@@ -5,14 +5,14 @@
     <parent>
         <artifactId>echoes-gui</artifactId>
         <groupId>org.csuc</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-config</artifactId>
 
     <name>echoes-gui-config</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

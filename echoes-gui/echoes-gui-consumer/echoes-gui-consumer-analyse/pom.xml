@@ -11,7 +11,7 @@
     <artifactId>echoes-gui-consumer-analyse</artifactId>
 
     <name>echoes-gui-consumer-analyse</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
