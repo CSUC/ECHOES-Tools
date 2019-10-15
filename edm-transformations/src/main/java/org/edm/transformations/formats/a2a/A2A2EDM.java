@@ -8,8 +8,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import eu.europeana.corelib.definitions.jibx.*;
+import eu.europeana.corelib.definitions.jibx.Date;
 import nl.mindbus.a2a.*;
 import org.edm.transformations.formats.EDM;
 import org.apache.commons.lang3.StringUtils;
@@ -18,43 +21,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import eu.europeana.corelib.definitions.jibx.AgentType;
-import eu.europeana.corelib.definitions.jibx.AggregatedCHO;
-import eu.europeana.corelib.definitions.jibx.Aggregation;
-import eu.europeana.corelib.definitions.jibx.AltLabel;
-import eu.europeana.corelib.definitions.jibx.Concept;
-import eu.europeana.corelib.definitions.jibx.Contributor;
-import eu.europeana.corelib.definitions.jibx.Coverage;
-import eu.europeana.corelib.definitions.jibx.DataProvider;
-import eu.europeana.corelib.definitions.jibx.Date;
-import eu.europeana.corelib.definitions.jibx.DateOfBirth;
-import eu.europeana.corelib.definitions.jibx.Description;
-import eu.europeana.corelib.definitions.jibx.EdmType;
-import eu.europeana.corelib.definitions.jibx.Gender;
-import eu.europeana.corelib.definitions.jibx.HasMet;
-import eu.europeana.corelib.definitions.jibx.HasView;
-import eu.europeana.corelib.definitions.jibx.Identifier;
-import eu.europeana.corelib.definitions.jibx.IntermediateProvider;
-import eu.europeana.corelib.definitions.jibx.IsRelatedTo;
-import eu.europeana.corelib.definitions.jibx.IsShownAt;
-import eu.europeana.corelib.definitions.jibx.Language;
-import eu.europeana.corelib.definitions.jibx.LanguageCodes;
-import eu.europeana.corelib.definitions.jibx.PlaceOfBirth;
-import eu.europeana.corelib.definitions.jibx.PlaceType;
-import eu.europeana.corelib.definitions.jibx.PrefLabel;
-import eu.europeana.corelib.definitions.jibx.ProfessionOrOccupation;
-import eu.europeana.corelib.definitions.jibx.ProvidedCHOType;
-import eu.europeana.corelib.definitions.jibx.Provider;
-import eu.europeana.corelib.definitions.jibx.RDF;
-import eu.europeana.corelib.definitions.jibx.Related;
-import eu.europeana.corelib.definitions.jibx.Temporal;
-import eu.europeana.corelib.definitions.jibx.TimeSpanType;
 import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
-import eu.europeana.corelib.definitions.jibx.Rights1;
-import eu.europeana.corelib.definitions.jibx.Title;
-import eu.europeana.corelib.definitions.jibx.Type1;
-import eu.europeana.corelib.definitions.jibx.Type2;
-import eu.europeana.corelib.definitions.jibx.WebResourceType;
 import net.sf.saxon.functions.IriToUri;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.io.IoBuilder;
@@ -104,19 +71,29 @@ public class A2A2EDM extends RDF implements EDM {
 
                 AgentType a = new AgentType();
 
+                AtomicReference<String> first_name = new AtomicReference<>("");
+                AtomicReference<String> patronym = new AtomicReference<>("");;
+                AtomicReference<String> prefix = new AtomicReference<>("");;
+                AtomicReference<String> last_name = new AtomicReference<>("");;
+
+
                 Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameFirstName)
-                        .ifPresent((CtTransString present) -> {
-                            PrefLabel preflabel = new PrefLabel();
-                            preflabel.setString(present.getValue());
-                            a.getPrefLabelList().add(preflabel);
-                        });
+                        .ifPresent((CtTransString present) -> first_name.set(present.getValue()));
+
+                Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNamePatronym)
+                        .ifPresent((CtTransString present) -> patronym.set(String.format(" %s", present.getValue())));
+
+                Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNamePrefixLastName)
+                        .ifPresent((CtTransString present) -> prefix.set(String.format(" %s", present.getValue())));
 
                 Optional.ofNullable(person.getPersonName()).map(CtPersonName::getPersonNameLastName)
-                        .ifPresent((CtTransString present) -> {
-                            AltLabel altlabel = new AltLabel();
-                            altlabel.setString(present.getValue());
-                            a.getAltLabelList().add(altlabel);
-                        });
+                        .ifPresent((CtTransString present) -> last_name.set(String.format(" %s", present.getValue())));
+
+                String format_name =  String.format("%s%s%s%s", first_name.get(), patronym.get(), prefix.get(), last_name.get());
+
+                PrefLabel preflabel = new PrefLabel();
+                preflabel.setString(format_name);
+                a.getPrefLabelList().add(preflabel);
 
                 Optional.ofNullable(person.getPid()).ifPresent((String present) -> {
                     String iriToUri = IriToUri
@@ -221,6 +198,108 @@ public class A2A2EDM extends RDF implements EDM {
                     a.getProfessionOrOccupationList().add(professionOrOccupation);
                 }));
 
+                Optional.ofNullable(a2a.getSource()).ifPresent((CtSource source) -> {
+                    Optional.ofNullable(source.getSourcePlace()).ifPresent((CtPlace place) ->{
+                        Optional.ofNullable(place.getCountry()).ifPresent((CtTransString country) ->{
+                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                            IsRelatedTo isRelatedTo = new IsRelatedTo();
+                            Resource isRelatedToResource = new Resource();
+                            isRelatedToResource.setResource(IriToUri
+                                    .iriToUri(String.format("%s:%s", org.edm.transformations.formats.utils.PlaceType.COUNTRY.value(),
+                                            StringUtils.deleteWhitespace(country.getValue())))
+                                    .toString());
+
+                            isRelatedTo.setResource(isRelatedToResource);
+                            isRelatedTo.setString("");
+
+                            a.getIsRelatedToList().add(isRelatedTo);
+                        });
+
+                        Optional.ofNullable(place.getProvince()).ifPresent((CtTransString province) ->{
+                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                            IsRelatedTo isRelatedTo = new IsRelatedTo();
+                            Resource isRelatedToResource = new Resource();
+                            isRelatedToResource.setResource(IriToUri
+                                    .iriToUri(String.format("%s:%s", org.edm.transformations.formats.utils.PlaceType.PROVINCE.value(),
+                                            StringUtils.deleteWhitespace(province.getValue())))
+                                    .toString());
+
+                            isRelatedTo.setResource(isRelatedToResource);
+                            isRelatedTo.setString("");
+
+                            a.getIsRelatedToList().add(isRelatedTo);
+                        });
+
+                        Optional.ofNullable(place.getState()).ifPresent((CtTransString state) ->{
+                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                            IsRelatedTo isRelatedTo = new IsRelatedTo();
+                            Resource isRelatedToResource = new Resource();
+                            isRelatedToResource.setResource(IriToUri
+                                    .iriToUri(String.format("%s:%s", org.edm.transformations.formats.utils.PlaceType.STATE.value(),
+                                            StringUtils.deleteWhitespace(state.getValue())))
+                                    .toString());
+
+                            isRelatedTo.setResource(isRelatedToResource);
+                            isRelatedTo.setString("");
+
+                            a.getIsRelatedToList().add(isRelatedTo);
+                        });
+
+                        Optional.ofNullable(place.getPlace()).ifPresent((CtTransString pl) ->{
+                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                            IsRelatedTo isRelatedTo = new IsRelatedTo();
+                            Resource isRelatedToResource = new Resource();
+                            isRelatedToResource.setResource(IriToUri
+                                    .iriToUri(String.format("%s:%s", org.edm.transformations.formats.utils.PlaceType.PLACE.value(),
+                                            StringUtils.deleteWhitespace(pl.getValue())))
+                                    .toString());
+
+                            isRelatedTo.setResource(isRelatedToResource);
+                            isRelatedTo.setString("");
+
+                            a.getIsRelatedToList().add(isRelatedTo);
+                        });
+                    });
+
+                    Optional.ofNullable(source.getSourceIndexDate()).ifPresent((CtIndexDate present) -> {
+                        Set<Integer> setYear = new HashSet<>();
+                        setYear.add(present.getFrom().getYear());
+                        setYear.add(present.getTo().getYear());
+
+                        setYear.stream().filter(Objects::nonNull).forEach((Integer y) -> {
+                            eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                            IsRelatedTo isRelatedTo = new IsRelatedTo();
+                            Resource resource = new Resource();
+
+                            resource.setResource(IriToUri
+                                    .iriToUri(String.format("TimeSpan:%s", StringUtils.deleteWhitespace(y.toString())))
+                                    .toString());
+
+                            isRelatedTo.setResource(resource);
+                            isRelatedTo.setString("");
+
+                            a.getIsRelatedToList().add(isRelatedTo);
+                        });
+                    });
+
+                    Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
+                        IsPartOf isPartOf = new IsPartOf();
+                        Resource resource = new Resource();
+                        resource.setResource(IriToUri
+                                .iriToUri(String.format("Concept:%s", StringUtils.deleteWhitespace(present))).toString());
+
+                        isPartOf.setResource(resource);
+                        isPartOf.setString("");
+
+                        a.getIsPartOfList().add(isPartOf);
+                    });
+                });
+
                 choice.setAgent(a);
                 this.getChoiceList().add(choice);
             }));
@@ -322,24 +401,137 @@ public class A2A2EDM extends RDF implements EDM {
                 });
 
                 Optional.ofNullable(source.getSourceReference()).ifPresent((CtSourceReference present) -> {
-                    eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+                    if(Objects.nonNull(present.getPlace())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
 
-                    if(Objects.nonNull(present.getCollection())){
+                        Description description = new Description();
+                        description.setString(present.getPlace());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getInstitutionName())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getInstitutionName());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getArchive())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getArchive());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getCollection())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
                         Description description = new Description();
                         description.setString(present.getCollection());
 
                         c.setDescription(description);
-                        c.clearChoiceListSelect();
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getSection())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getSection());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
                     }
 
                     if(Objects.nonNull(present.getBook())){
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getBook());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getFolio())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getFolio());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getRolodeck())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getRolodeck());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getStack())) {
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getStack());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getDocumentNumber())){
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getDocumentNumber());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getRegistryNumber())){
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
+                        Description description = new Description();
+                        description.setString(present.getRegistryNumber());
+
+                        c.setDescription(description);
+
+                        provided.getChoiceList().add(c);
+                    }
+
+                    if(Objects.nonNull(present.getBook())){
+                        eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice c = new eu.europeana.corelib.definitions.jibx.EuropeanaType.Choice();
+
                         Title title = new Title();
                         title.setString(present.getBook());
 
                         c.setTitle(title);
-                    }
 
-                    provided.getChoiceList().add(c);
+                        provided.getChoiceList().add(c);
+                    }
                 });
 
                 Optional.ofNullable(source.getSourceType()).ifPresent((String present) -> {
