@@ -25,7 +25,12 @@ public class Place {
     public org.csuc.dao.entity.edm.Place quality(PlaceType placeType) throws Exception {
         org.csuc.dao.entity.edm.Place place = new org.csuc.dao.entity.edm.Place();
 
-        if (aboutType(placeType.getAbout())) place.getData().setAbout(placeType.getAbout());
+        try{
+            aboutType(placeType.getAbout());
+            place.getData().setAbout(placeType.getAbout());
+        }catch(Exception e){
+            place.getErrorList().add(new Error(EntityType.Place, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         //wgs84:lat
         if (Objects.nonNull(placeType.getLat()))

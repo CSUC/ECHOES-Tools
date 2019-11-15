@@ -24,7 +24,12 @@ public class Aggregation {
     public org.csuc.dao.entity.edm.Aggregation quality(eu.europeana.corelib.definitions.jibx.Aggregation aggregationType) throws Exception {
         org.csuc.dao.entity.edm.Aggregation aggregation = new org.csuc.dao.entity.edm.Aggregation();
 
-        if (aboutType(aggregationType.getAbout())) aggregation.getData().setAbout(aggregationType.getAbout());
+        try{
+            aboutType(aggregationType.getAbout());
+            aggregation.getData().setAbout(aggregationType.getAbout());
+        }catch (Exception e){
+            aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         //edm:aggregatedCHO
         if(Objects.nonNull(aggregationType.getAggregatedCHO())){

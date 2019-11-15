@@ -26,7 +26,12 @@ public class TimeSpan {
     public org.csuc.dao.entity.edm.TimeSpan quality(TimeSpanType timeSpanType) throws Exception {
         org.csuc.dao.entity.edm.TimeSpan timeSpan = new org.csuc.dao.entity.edm.TimeSpan();
 
-        if (aboutType(timeSpanType.getAbout())) timeSpan.getData().setAbout(timeSpanType.getAbout());
+        try{
+            aboutType(timeSpanType.getAbout());
+            timeSpan.getData().setAbout(timeSpanType.getAbout());
+        }catch (Exception e){
+            timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         //skos:prefLabel
         Optional.ofNullable(timeSpanType.getPrefLabelList()).ifPresent(prefLabels -> {

@@ -20,7 +20,12 @@ public class Concept {
     public org.csuc.dao.entity.edm.Concept quality(eu.europeana.corelib.definitions.jibx.Concept conceptType) throws Exception {
         org.csuc.dao.entity.edm.Concept concept = new org.csuc.dao.entity.edm.Concept();
 
-        if (aboutType(conceptType.getAbout())) concept.getData().setAbout(conceptType.getAbout());
+        try {
+            aboutType(conceptType.getAbout());
+            concept.getData().setAbout(conceptType.getAbout());
+        } catch (Exception e) {
+            concept.getErrorList().add(new Error(EntityType.Concept, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         conceptType.getChoiceList().forEach(choice -> {
             //skos:prefLabel

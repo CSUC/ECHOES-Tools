@@ -2,6 +2,8 @@ package org.csuc.util;
 
 public enum MetadataType {
 
+    rdf_about("rdf:about"),
+
     dc_contributor("dc:contributor"),
     dcterms_isReplacedBy("dcterms:isReplacedBy"),
     dc_coverage("dc:coverage"),

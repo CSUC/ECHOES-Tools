@@ -25,7 +25,12 @@ public class ProvidedCHO {
     public org.csuc.dao.entity.edm.ProvidedCHO quality(ProvidedCHOType providedCHOType) throws Exception {
         org.csuc.dao.entity.edm.ProvidedCHO provided = new org.csuc.dao.entity.edm.ProvidedCHO();
 
-        if (aboutType(providedCHOType.getAbout())) provided.getData().setAbout(providedCHOType.getAbout());
+        try{
+            aboutType(providedCHOType.getAbout());
+            provided.getData().setAbout(providedCHOType.getAbout());
+        }catch (Exception e){
+            provided.getErrorList().add(new Error(EntityType.ProvidedCHO, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         provided.getData().setType(providedCHOType.getType());
 

@@ -5,7 +5,8 @@ public enum QualityType {
     ResourceOrLiteralType("ResourceOrLiteralType"),
     LiteralType("LiteralType"),
     ResourceType("ResourceType"),
-    LanguageType("LanguageType");
+    LanguageType("LanguageType"),
+    AboutType("AboutType");;
 
     private final String type;
 

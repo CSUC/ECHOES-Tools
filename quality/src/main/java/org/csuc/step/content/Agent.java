@@ -25,7 +25,12 @@ public class Agent {
     public org.csuc.dao.entity.edm.Agent quality(AgentType agentType) throws Exception {
         org.csuc.dao.entity.edm.Agent agent = new org.csuc.dao.entity.edm.Agent();
 
-        if (aboutType(agentType.getAbout())) agent.getData().setAbout(agentType.getAbout());
+        try{
+            aboutType(agentType.getAbout());
+            agent.getData().setAbout(agentType.getAbout());
+        }catch (Exception e) {
+            agent.getErrorList().add(new Error(EntityType.Agent, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         //skos:prefLabel
         Optional.ofNullable(agentType.getPrefLabelList()).ifPresent(prefLabels -> {

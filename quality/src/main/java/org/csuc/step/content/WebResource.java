@@ -25,7 +25,12 @@ public class WebResource {
     public org.csuc.dao.entity.edm.WebResource quality(WebResourceType webResourceType) throws Exception {
         org.csuc.dao.entity.edm.WebResource webResource = new org.csuc.dao.entity.edm.WebResource();
 
-        if (aboutType(webResourceType.getAbout())) webResource.getData().setAbout(webResourceType.getAbout());
+        try{
+            aboutType(webResourceType.getAbout());
+            webResource.getData().setAbout(webResourceType.getAbout());
+        }catch (Exception e){
+            webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.rdf_about, QualityType.AboutType, e.getMessage(), LevelQuality.ERROR));
+        }
 
         //dc:description
         Optional.ofNullable(webResourceType.getDescriptionList()).ifPresent(descriptions -> {
