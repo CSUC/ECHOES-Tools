@@ -4,7 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.dao.entity.QualityDetails;
-import org.csuc.step.Schema;
+import org.csuc.step.StepInterface;
 import org.csuc.util.FormatType;
 import org.json.JSONObject;
 import org.json.XML;
@@ -20,21 +20,21 @@ public class Xml implements FormatInterface {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
-    private Schema schema;
+    private StepInterface<QualityDetails> stepInterface;
     private Path out;
 
-    public Xml(Schema schema) {
+    public Xml(StepInterface<QualityDetails> stepInterface) {
         logger.info("{}", getClass().getSimpleName());
 
-        Objects.requireNonNull(schema, "Schema must not be null");
-        this.schema = schema;
+        Objects.requireNonNull(stepInterface, "Schema must not be null");
+        this.stepInterface = stepInterface;
     }
 
-    public Xml(Schema schema, Path out) throws IOException {
+    public Xml(StepInterface<QualityDetails> stepInterface, Path out) throws IOException {
         logger.info("{}", getClass().getSimpleName());
 
-        Objects.requireNonNull(schema, "Schema must not be null");
-        this.schema = schema;
+        Objects.requireNonNull(stepInterface, "Schema must not be null");
+        this.stepInterface = stepInterface;
         this.out = Objects.isNull(out) ? null
                 : (Files.notExists(out) ? Files.createDirectories(out) : out);
     }
@@ -47,7 +47,7 @@ public class Xml implements FormatInterface {
                 .filter(f -> FormatType.RDFXML.lang().getFileExtensions().stream().anyMatch(m -> f.toString().endsWith(String.format(".%s", m))))
                 .forEach(p -> {
                     try {
-                        QualityDetails qualityDetails = schema.quality(p);
+                        QualityDetails qualityDetails = stepInterface.quality(p);
 
                         JSONObject json = new JSONObject(qualityDetails.toString());
                         String xml = XML.toString(json, "quality-details");
@@ -63,7 +63,7 @@ public class Xml implements FormatInterface {
 
     @Override
     public void execute(URL url) throws Exception {
-        QualityDetails qualityDetails = schema.quality(url);
+        QualityDetails qualityDetails = stepInterface.quality(url);
 
         JSONObject json = new JSONObject(qualityDetails.toString());
         String xml = XML.toString(json, "quality-details");
