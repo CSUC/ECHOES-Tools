@@ -7,6 +7,8 @@ import org.csuc.util.LevelQuality;
 import org.csuc.util.MetadataType;
 import org.csuc.util.QualityType;
 
+import java.util.Objects;
+
 import static org.csuc.util.DataType.*;
 
 public class Concept {
@@ -28,25 +30,31 @@ public class Concept {
         }
 
         conceptType.getChoiceList().forEach(choice -> {
+
             //skos:prefLabel
-            if (choice.ifPrefLabel()) {
-                try {
-                    literalType(choice.getPrefLabel());
-                    concept.getData().getChoiceList().add(choice);
-                } catch (Exception e) {
-                    concept.getErrorList().add(new Error(EntityType.Concept, MetadataType.skos_prefLabel, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:prefLabel\".level"))));
+            if(!Objects.equals(LevelQuality.convert(config.getString("\"skos:prefLabel\".level")), LevelQuality.OFF)) {
+                if (choice.ifPrefLabel()) {
+                    try {
+                        literalType(choice.getPrefLabel());
+                        concept.getData().getChoiceList().add(choice);
+                    } catch (Exception e) {
+                        concept.getErrorList().add(new Error(EntityType.Concept, MetadataType.skos_prefLabel, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:prefLabel\".level"))));
+                    }
                 }
             }
 
             //skos:related
-            if (choice.ifRelated()) {
-                try {
-                    resourceType(choice.getRelated());
-                    concept.getData().getChoiceList().add(choice);
-                } catch (Exception e) {
-                    concept.getErrorList().add(new Error(EntityType.Concept, MetadataType.skos_related, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:related\".level"))));
+            if(!Objects.equals(LevelQuality.convert(config.getString("\"skos:related\".level")), LevelQuality.OFF)) {
+                if (choice.ifRelated()) {
+                    try {
+                        resourceType(choice.getRelated());
+                        concept.getData().getChoiceList().add(choice);
+                    } catch (Exception e) {
+                        concept.getErrorList().add(new Error(EntityType.Concept, MetadataType.skos_related, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:related\".level"))));
+                    }
                 }
             }
+
         });
         return concept;
     }

@@ -33,59 +33,67 @@ public class WebResource {
         }
 
         //dc:description
-        Optional.ofNullable(webResourceType.getDescriptionList()).ifPresent(descriptions -> {
-            webResource.getData().setDescriptionList(
-                    descriptions.stream().map(m -> {
-                        try {
-                            resourceOrLiteralType(m);
-                            return m;
-                        } catch (Exception e) {
-                            webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dc_description, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:description\".level"))));
-                            return null;
-                        }
-                    }).filter(Objects::nonNull).collect(Collectors.toList())
-            );
-        });
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dc:description\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(webResourceType.getDescriptionList()).ifPresent(descriptions -> {
+                webResource.getData().setDescriptionList(
+                        descriptions.stream().map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                return m;
+                            } catch (Exception e) {
+                                webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dc_description, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:description\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
 
         //dc:format
-        Optional.ofNullable(webResourceType.getFormatList()).ifPresent(formats -> {
-            webResource.getData().setFormatList(
-                    formats.stream().map(m -> {
-                        try {
-                            resourceOrLiteralType(m);
-                            return m;
-                        } catch (Exception e) {
-                            webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dc_format, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:format\".level"))));
-                            return null;
-                        }
-                    }).filter(Objects::nonNull).collect(Collectors.toList())
-            );
-        });
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dc:format\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(webResourceType.getFormatList()).ifPresent(formats -> {
+                webResource.getData().setFormatList(
+                        formats.stream().map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                return m;
+                            } catch (Exception e) {
+                                webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dc_format, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:format\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
 
         //dcterms:created
-        Optional.ofNullable(webResourceType.getCreatedList()).ifPresent(createds -> {
-            webResource.getData().setCreatedList(
-                    createds.stream().map(m -> {
-                        try {
-                            resourceOrLiteralType(m);
-                            //DateType()
-                            return m;
-                        } catch (Exception e) {
-                            webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dcterms_created, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dcterms:created\".level"))));
-                            return null;
-                        }
-                    }).filter(Objects::nonNull).collect(Collectors.toList())
-            );
-        });
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dcterms:created\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(webResourceType.getCreatedList()).ifPresent(createds -> {
+                webResource.getData().setCreatedList(
+                        createds.stream().map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                //DateType()
+                                return m;
+                            } catch (Exception e) {
+                                webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.dcterms_created, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dcterms:created\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
 
         //edm:rights
-        if(Objects.nonNull(webResourceType.getRights())){
-            try {
-                resourceType(webResourceType.getRights());
-                //UriType()
-                webResource.getData().setRights(webResourceType.getRights());
-            } catch (Exception e) {
-                webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"edm:rights\".level")), LevelQuality.OFF)) {
+            if(Objects.nonNull(webResourceType.getRights())){
+                try {
+                    resourceType(webResourceType.getRights());
+                    //UriType()
+                    webResource.getData().setRights(webResourceType.getRights());
+                } catch (Exception e) {
+                    webResource.getErrorList().add(new Error(EntityType.WebResource, MetadataType.edm_rights, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:rights\".level"))));
+                }
             }
         }
 

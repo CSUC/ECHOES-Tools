@@ -13,12 +13,20 @@ public class QualityConfig {
     private static Logger logger = LogManager.getLogger(QualityConfig.class);
 
     private Path filename;
+    private String input;
 
     public QualityConfig(Path filename) {
         this.filename = Objects.requireNonNull(filename, "Path filename must not be null");
     }
 
+    public QualityConfig(String input) {
+        this.input = Objects.requireNonNull(input, "content must not be null");
+    }
+
     public Config getQualityConfig() {
-        return ConfigFactory.parseFile(filename.toFile()).resolve();
+        return Objects.nonNull(filename) ? ConfigFactory.parseFile(filename.toFile()).resolve()
+                :  Objects.nonNull(input) ? ConfigFactory.parseString(input).resolve()
+                : null;
+        //return ConfigFactory.parseFile(filename.toFile()).resolve();
     }
 }

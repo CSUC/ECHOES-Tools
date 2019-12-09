@@ -4,7 +4,8 @@ public enum LevelQuality {
 
     ERROR("error"),
     INFO("info"),
-    WARNING("warning");
+    WARNING("warning"),
+    OFF("off");
 
     private final String level;
 
