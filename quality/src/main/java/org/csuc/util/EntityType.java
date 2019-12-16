@@ -8,7 +8,8 @@ public enum EntityType {
     TimeSpan("edm:TimeSpan"),
     Agent("edm:Agent"),
     Aggregation("ore:Aggregation"),
-    WebResource("edm:WebResource");
+    WebResource("edm:WebResource"),
+    License("cc:License");
 
     private final String type;
 

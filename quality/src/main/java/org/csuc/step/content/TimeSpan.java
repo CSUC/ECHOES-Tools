@@ -12,8 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.csuc.util.DataType.aboutType;
-import static org.csuc.util.DataType.literalType;
+import static org.csuc.util.DataType.*;
 
 public class TimeSpan {
 
@@ -72,6 +71,103 @@ public class TimeSpan {
                     timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.edm_end, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:end\".level"))));
                 }
             }
+        }
+
+        //skos:altLabel
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"skos:altLabel\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(timeSpanType.getAltLabelList()).ifPresent(altLabels -> {
+                timeSpan.getData().setAltLabelList(
+                        altLabels.stream().map(m -> {
+                            try {
+                                literalType(m);
+                                return m;
+                            } catch (Exception e) {
+                                timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.skos_altLabel, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:altLabel\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
+
+        //skos:note
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"skos:note\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(timeSpanType.getNoteList()).ifPresent(noteList -> {
+                timeSpan.getData().setNoteList(
+                        noteList.stream().map(m -> {
+                            try {
+                                literalType(m);
+                                return m;
+                            } catch (Exception e) {
+                                timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.skos_note, QualityType.LiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"skos:note\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
+
+        //edm:isNextInSequence
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"edm:isNextInSequence\".level")), LevelQuality.OFF)) {
+            if (Objects.nonNull(timeSpanType.getIsNextInSequence())) {
+                try {
+                    resourceType(timeSpanType.getIsNextInSequence());
+                    timeSpan.getData().setIsNextInSequence(timeSpanType.getIsNextInSequence());
+                } catch (Exception e) {
+                    timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.edm_isNextInSequence, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isNextInSequence\".level"))));
+                }
+            }
+        }
+
+        //dcterms:hasPart
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dcterms:hasPart\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(timeSpanType.getHasPartList()).ifPresent(hasParts -> {
+                timeSpan.getData().setHasPartList(
+                        hasParts.stream().map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                return m;
+                            } catch (Exception e) {
+                                timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.dcterms_hasPart, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dcterms:hasPart\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
+
+        //owl:sameAs
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"owl:sameAs\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(timeSpanType.getSameAList()).ifPresent(sameAs -> {
+                timeSpan.getData().setSameAList(
+                        sameAs.stream().map(m -> {
+                            try {
+                                resourceType(m);
+                                return m;
+                            } catch (Exception e) {
+                                timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.owl_sameAs, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"owl:sameAs\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
+        }
+
+        //dcterms:isPartOf
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dcterms:isPartOf\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(timeSpanType.getIsPartOfList()).ifPresent(isPartOfs -> {
+                timeSpan.getData().setIsPartOfList(
+                        isPartOfs.stream().map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                return m;
+                            } catch (Exception e) {
+                                timeSpan.getErrorList().add(new Error(EntityType.TimeSpan, MetadataType.dcterms_isPartOf, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dcterms:isPartOf\".level"))));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toList())
+                );
+            });
         }
 
         return timeSpan;

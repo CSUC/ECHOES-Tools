@@ -140,6 +140,47 @@ public class Aggregation {
             });
         }
 
+        //dc:rights
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"dc:rights\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(aggregationType.getRightList()).ifPresent(rights -> {
+                aggregation.getData().setRightList(rights.stream()
+                        .map(m -> {
+                            try {
+                                resourceOrLiteralType(m);
+                                return m;
+                            } catch (Exception e) {
+                                aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.dc_rights, QualityType.ResourceOrLiteralType, e.getMessage(), LevelQuality.convert(config.getString("\"dc:rights\".level"))));
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList()));
+            });
+        }
+
+        //edm:ugc
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"edm:ugc\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(aggregationType.getUgc()).ifPresent(ugc -> {
+                try {
+                    aggregation.getData().setUgc(ugc);
+                } catch (Exception e) {
+                    aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_ugc, QualityType.UGCType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:ugc\".level"))));
+                }
+            });
+        }
+
+        //edm:isShownBy
+        if(!Objects.equals(LevelQuality.convert(config.getString("\"edm:isShownBy\".level")), LevelQuality.OFF)) {
+            Optional.ofNullable(aggregationType.getIsShownBy()).ifPresent(isShownBy -> {
+                try {
+                    resourceType(isShownBy);
+                    aggregation.getData().setIsShownBy(isShownBy);
+                } catch (Exception e) {
+                    aggregation.getErrorList().add(new Error(EntityType.Aggregation, MetadataType.edm_isShownBy, QualityType.ResourceType, e.getMessage(), LevelQuality.convert(config.getString("\"edm:isShownBy\".level"))));
+                }
+            });
+        }
+
         return aggregation;
     }
 }
