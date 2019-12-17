@@ -28,6 +28,10 @@
             <td>user</td>
             <td>{{vm.profile.nickname}}</td>
         </tr>
+        <tr  ng-show="vm.data.qualityConfig">
+            <td>quality config</td>
+            <td><a ng-click="vm.saveTextAsFile('quality.' + vm.data._id + '.conf')">download config</a></td>
+        </tr>
         <tr  ng-show="vm.data">
             <td>dataset-size</td>
             <td>{{vm.data.datasetSize}}</td>

@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -51,16 +50,13 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
 
     private Quality quality = null;
 
-    private Path qualityFile;
-
     /**
      * @param typesafeRabbitMQ
      * @throws IOException
      * @throws TimeoutException
      */
-    public QualityAssuranceQueueConsumer(Config typesafeRabbitMQ, Path qualityFile) throws IOException, TimeoutException {
+    public QualityAssuranceQueueConsumer(Config typesafeRabbitMQ) throws IOException, TimeoutException {
         super(typesafeRabbitMQ);
-        this.qualityFile = qualityFile;
     }
 
     @Override
@@ -110,7 +106,7 @@ public class QualityAssuranceQueueConsumer extends EndPoint implements Runnable,
                 org.csuc.quality.Quality q =
                         new org.csuc.quality.Quality(
                                 new Datastore(applicationConfig.getMongoDB().getHost(), applicationConfig.getMongoDB().getPort(), applicationConfig.getMongoDB().getDatabase(), quality,
-                                        new Schema(new Schematron(new Content(qualityFile)))));
+                                        new Schema(new Schematron(new Content(quality.getQualityConfig())))));
 
                 q.getFormatInterface().execute(Paths.get(applicationConfig.getRecollectFolder(String.format("%s", quality.getData()))));
 

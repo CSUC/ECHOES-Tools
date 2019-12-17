@@ -1,5 +1,6 @@
 package org.csuc.cli;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.util.format.FormatType;
@@ -9,11 +10,14 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +39,7 @@ public class ArgsBean {
     @Option(name = "-i", aliases = "--input", usage = "data input", required = true)
     private String input;
 
-    @Option(name = "-q", aliases = "--quality-config", usage = "quality file config", required = true)
+    @Option(name = "-q", aliases = "--quality-config", usage = "quality file config")
     private Path qualityFile;
 
     @Option(name = "-f", aliases = "--format", usage = "format", required = true)
@@ -121,8 +125,13 @@ public class ArgsBean {
         this.input = input;
     }
 
-    public Path getQualityFile() {
-        return qualityFile;
+    public String getQualityFile() throws IOException {
+        if(Objects.isNull(qualityFile) && Files.notExists(qualityFile)){
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("quality.defaults.conf");
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        }
+
+        return IOUtils.toString(new FileInputStream(qualityFile.toFile()), StandardCharsets.UTF_8);
     }
 
     public void setQualityFile(Path qualityFile) throws FileNotFoundException {

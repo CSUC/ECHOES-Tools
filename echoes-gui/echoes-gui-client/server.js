@@ -181,7 +181,8 @@ app.post('/rest/api/quality/create', function (req, res, next) {
     var formData = {
         dataset: req.body.dataset,
         format: req.body.format,
-        user: req.body.user
+        user: req.body.user,
+        quality: req.body.quality
     }
 
     request({
@@ -227,6 +228,18 @@ app.get('/rest/api/quality/user/:user/id/:id/download-report', function (req, re
         method: "GET",
         headers: headers,
         url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/user/` + req.params.user + '/id/' +  req.params.id +  `/download-report`
+    });
+    r.pipe(res);
+
+    r.on('response', function (resp) {
+        console.log(req.method, util.format('%s', resp && resp.statusCode), req.url);
+    });
+});
+
+app.get('/rest/api/quality/config-default.json', function (req, res, next) {
+    var r = request({
+        method: "GET",
+        url: `http://${process.env.API_HOSTNAME}:${process.env.API_PORT}/rest/quality/config-default.json`
     });
     r.pipe(res);
 

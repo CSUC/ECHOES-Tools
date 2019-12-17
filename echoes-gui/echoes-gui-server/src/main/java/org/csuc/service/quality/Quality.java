@@ -235,6 +235,7 @@ public class Quality {
             quality.setStatus(Status.QUEUE);
             quality.setUser(qualityRequest.getUser());
             quality.setData(qualityRequest.getDataset());
+            quality.setQualityConfig(qualityRequest.getQuality());
 
             Key<org.csuc.dao.entity.Quality> key = qualityDAO.insert(quality);
 
@@ -246,6 +247,7 @@ public class Quality {
             message.put("content-type", quality.getContentType());
             message.put("user", quality.getUser());
             message.put("dataset", quality.getData());
+            message.put("config", quality.getQualityConfig());
 
             new Producer(rabbitMQConfig.getQuality()).sendMessage(message);
 

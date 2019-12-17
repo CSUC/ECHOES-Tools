@@ -47,6 +47,9 @@ public class Quality {
     @Property("error-size")
     private int errorSize;
 
+    @Property("quality-config")
+    private String qualityConfig;
+
     public Quality() {
         this._id = UUID.randomUUID().toString();
     }
@@ -129,6 +132,14 @@ public class Quality {
 
     public void setErrorSize(int errorSize) {
         this.errorSize = errorSize;
+    }
+
+    public String getQualityConfig() {
+        return qualityConfig;
+    }
+
+    public void setQualityConfig(String qualityConfig) {
+        this.qualityConfig = qualityConfig;
     }
 
     @Override

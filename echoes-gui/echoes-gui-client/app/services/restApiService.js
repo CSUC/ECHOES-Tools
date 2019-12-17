@@ -50,7 +50,7 @@
                     break;
                 case "createQuality":
                     data = this.fillDataInObjectByList(data, _params, [
-                        'dataset', 'format', 'user'
+                        'dataset', 'format', 'user', 'quality'
                     ]);
                     data.url = this.getApiBaseUrl() + 'quality/create';
                     break;

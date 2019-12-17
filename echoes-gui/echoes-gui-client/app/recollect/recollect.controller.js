@@ -62,6 +62,8 @@
             });
         }
 
+
+
         function ngTableParams(data, count) {
             return new NgTableParams({
                 page: vm.page,
@@ -211,20 +213,34 @@
                         $scope.model.dataset = data._id;
                         $scope.model.type = data.format;
 
+                        $scope.level = ["OFF", "WARNING","ERROR", "INFO"]
+
+                        $http({
+                            method: 'GET',
+                            url: '/rest/api/quality/config-default.json'
+                        }).then(function successCallback(response) {
+                            $scope.config = response.data;
+                            console.log("config", response.data);
+                        }, function errorCallback(response) {
+                            console.log(response);
+                        });
+
                         $scope.submitForm = function (isValid) {
                             if (isValid) {
                                 var data = {
                                     'contentType': $scope.model.type,
                                     "uuid": $scope.model.dataset,
-                                    'user': vm.profile.sub
+                                    'user': vm.profile.sub,
+                                    'quality': angular.toJson($scope.config)
                                 };
 
-                                $log.info(data);
+                                $log.info("createQuality", data);
 
                                 restApi.createQuality({
                                     user: vm.profile.sub,
                                     format: $scope.model.type,
                                     dataset: $scope.model.dataset,
+                                    quality: angular.toJson($scope.config)
                                 }).then(function (_data) {
                                     $log.info(_data);
                                     ngDialog.close();
