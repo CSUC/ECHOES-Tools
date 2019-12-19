@@ -9,7 +9,7 @@ public class QualityRequest {
     private String dataset;
     private String format;
     private String user;
-
+    private String quality;
 
     public QualityRequest() {
     }
@@ -36,5 +36,13 @@ public class QualityRequest {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getQuality() {
+        return quality;
+    }
+
+    public void setQuality(String quality) {
+        this.quality = quality;
     }
 }

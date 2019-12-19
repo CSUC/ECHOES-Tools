@@ -203,6 +203,35 @@
                 <label>Content-Type</label>
                 {{model.type}}
             </div>
+            <div class="form-group">
+                <label>Quality Config</label>
+            </div>
+            <div class="accordion col-lg-12 form-group" id="accordion">
+                <div class="card" ng-repeat="(key, value) in config">
+                    <div class="card-header" id="heading{{$index}}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+                                {{key}}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapse{{$index}}" class="collapse" aria-labelledby="heading{{$index}}" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table">
+                                <tr ng-repeat="(key2, value2) in value">
+                                    <td><strong>{{ key2 }}</strong></td>
+                                    <td>
+                                        <select class="form-control" ng-model="model" ng-options="l for l in level" data-ng-init="model = value2.level" ng-change="update(key,key2,model)">
+                                            <option></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

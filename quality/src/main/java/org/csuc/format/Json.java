@@ -4,7 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.dao.entity.QualityDetails;
-import org.csuc.step.Schema;
+import org.csuc.step.StepInterface;
 import org.csuc.util.FormatType;
 
 import java.io.IOException;
@@ -18,21 +18,21 @@ public class Json implements FormatInterface {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
-    private Schema schema;
+    private StepInterface<QualityDetails> stepInterface;
     private Path out;
 
-    public Json(Schema schema) {
+    public Json(StepInterface stepInterface) {
         logger.info("{}", getClass().getSimpleName());
 
-        Objects.requireNonNull(schema, "Schema must not be null");
-        this.schema = schema;
+        Objects.requireNonNull(stepInterface, "Schema must not be null");
+        this.stepInterface = stepInterface;
     }
 
-    public Json(Schema schema, Path out) throws IOException {
+    public Json(StepInterface stepInterface, Path out) throws IOException {
         logger.info("{}", getClass().getSimpleName());
 
-        Objects.requireNonNull(schema, "Schema must not be null");
-        this.schema = schema;
+        Objects.requireNonNull(stepInterface, "Schema must not be null");
+        this.stepInterface = stepInterface;
         this.out = Objects.isNull(out) ? null
                 : (Files.notExists(out) ? Files.createDirectories(out) : out);
     }
@@ -45,7 +45,7 @@ public class Json implements FormatInterface {
                 .filter(f -> FormatType.RDFXML.lang().getFileExtensions().stream().anyMatch(m -> f.toString().endsWith(String.format(".%s", m))))
                 .forEach(p -> {
                     try {
-                        QualityDetails qualityDetails = schema.quality(p);
+                        QualityDetails qualityDetails = stepInterface.quality(p);
 
                         if (Objects.isNull(out)) logger.info(qualityDetails);
                         else
@@ -58,7 +58,7 @@ public class Json implements FormatInterface {
 
     @Override
     public void execute(URL url) throws Exception {
-        QualityDetails qualityDetails = schema.quality(url);
+        QualityDetails qualityDetails = stepInterface.quality(url);
 
         if (Objects.isNull(out)) logger.info(qualityDetails);
         else

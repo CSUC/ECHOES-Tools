@@ -2,7 +2,9 @@ package org.csuc.service.quality;
 
 import com.auth0.jwk.JwkException;
 import com.mongodb.WriteResult;
+import com.typesafe.config.ConfigRenderOptions;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.Producer;
@@ -14,6 +16,7 @@ import org.csuc.dao.entity.Status;
 import org.csuc.dao.impl.QualityDAOImpl;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
 import org.csuc.poi.Report;
+import org.csuc.typesafe.QualityConfig;
 import org.csuc.typesafe.consumer.Queues;
 import org.csuc.typesafe.server.Application;
 import org.csuc.utils.StreamUtils;
@@ -25,6 +28,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -230,6 +235,7 @@ public class Quality {
             quality.setStatus(Status.QUEUE);
             quality.setUser(qualityRequest.getUser());
             quality.setData(qualityRequest.getDataset());
+            quality.setQualityConfig(qualityRequest.getQuality());
 
             Key<org.csuc.dao.entity.Quality> key = qualityDAO.insert(quality);
 
@@ -241,6 +247,7 @@ public class Quality {
             message.put("content-type", quality.getContentType());
             message.put("user", quality.getUser());
             message.put("dataset", quality.getData());
+            message.put("config", quality.getQualityConfig());
 
             new Producer(rabbitMQConfig.getQuality()).sendMessage(message);
 
@@ -469,6 +476,24 @@ public class Quality {
                     .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
                     .header("content-disposition","attachment; filename = " + filename)
                     .build();
+        } catch (Exception e) {
+            logger.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/config-default.json")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getConfigJSON() {
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("quality.defaults.conf");
+            String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    new QualityConfig(input).getQualityConfig().root().render(ConfigRenderOptions.concise()))
+                    .type(MediaType.APPLICATION_JSON).build();
+
         } catch (Exception e) {
             logger.error(e);
             return Response.status(Response.Status.BAD_REQUEST).build();

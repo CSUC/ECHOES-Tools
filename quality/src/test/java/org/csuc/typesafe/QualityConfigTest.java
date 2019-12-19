@@ -1,0 +1,31 @@
+package org.csuc.typesafe;
+
+import com.typesafe.config.ConfigRenderOptions;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+
+
+public class QualityConfigTest {
+
+    private File file;
+    private String input;
+
+    @Before
+    public void setUp() throws Exception {
+        file = new File(getClass().getClassLoader().getResource("quality.defaults.conf").getFile());
+        input = "{\"cc:License\":{\"cc:deprecatedOn\":{\"level\":\"OFF\"},\"odrl:inheritFrom\":{\"level\":\"OFF\"}},\"edm:Agent\":{\"dc:date\":{\"level\":\"OFF\"},\"dc:identifier\":{\"level\":\"OFF\"},\"dcterms:hasPart\":{\"level\":\"OFF\"},\"dcterms:isPartOf\":{\"level\":\"OFF\"},\"edm:begin\":{\"level\":\"OFF\"},\"edm:end\":{\"level\":\"OFF\"},\"edm:hasMet\":{\"level\":\"WARNING\"},\"edm:isRelatedTo\":{\"level\":\"WARNING\"},\"foaf:name\":{\"level\":\"OFF\"},\"owl:sameAs\":{\"level\":\"OFF\"},\"rdaGr2:biographicalInformation\":{\"level\":\"INFO\"},\"rdaGr2:dateOfBirth\":{\"level\":\"INFO\"},\"rdaGr2:dateOfDeath\":{\"level\":\"INFO\"},\"rdaGr2:dateOfEstablishment\":{\"level\":\"OFF\"},\"rdaGr2:dateOfTermination\":{\"level\":\"OFF\"},\"rdaGr2:gender\":{\"level\":\"WARNING\"},\"rdaGr2:placeOfBirth\":{\"level\":\"INFO\"},\"rdaGr2:placeOfDeath\":{\"level\":\"INFO\"},\"rdaGr2:professionOrOccupation\":{\"level\":\"INFO\"},\"skos:altLabel\":{\"level\":\"WARNING\"},\"skos:note\":{\"level\":\"OFF\"},\"skos:prefLabel\":{\"level\":\"ERROR\"}},\"edm:Place\":{\"dcterms:hasPart\":{\"level\":\"OFF\"},\"dcterms:isPartOf\":{\"level\":\"OFF\"},\"edm:isNextInSequence\":{\"level\":\"OFF\"},\"owl:sameAs\":{\"level\":\"OFF\"},\"skos:altLabel\":{\"level\":\"INFO\"},\"skos:note\":{\"level\":\"INFO\"},\"skos:prefLabel\":{\"level\":\"ERROR\"},\"wgs84_pos:alt\":{\"level\":\"OFF\"},\"wgs84_pos:lat\":{\"level\":\"INFO\"},\"wgs84_pos:long\":{\"level\":\"INFO\"}},\"edm:ProvidedCHO\":{\"dc:contributor\":{\"level\":\"ERROR\"},\"dc:coverage\":{\"level\":\"WARNING\"},\"dc:creator\":{\"level\":\"ERROR\"},\"dc:date\":{\"level\":\"INFO\"},\"dc:description\":{\"level\":\"WARNING\"},\"dc:format\":{\"level\":\"WARNING\"},\"dc:identifier\":{\"level\":\"ERROR\"},\"dc:language\":{\"level\":\"WARNING\"},\"dc:publisher\":{\"level\":\"WARNING\"},\"dc:relation\":{\"level\":\"WARNING\"},\"dc:rights\":{\"level\":\"ERROR\"},\"dc:source\":{\"level\":\"WARNING\"},\"dc:subject\":{\"level\":\"WARNING\"},\"dc:title\":{\"level\":\"WARNING\"},\"dc:type\":{\"level\":\"WARNING\"},\"dcterms:alternative\":{\"level\":\"WARNING\"},\"dcterms:conformsTo\":{\"level\":\"OFF\"},\"dcterms:created\":{\"level\":\"ERROR\"},\"dcterms:extent\":{\"level\":\"WARNING\"},\"dcterms:hasFormat\":{\"level\":\"WARNING\"},\"dcterms:hasPart\":{\"level\":\"WARNING\"},\"dcterms:hasVersion\":{\"level\":\"OFF\"},\"dcterms:isFormatOf\":{\"level\":\"OFF\"},\"dcterms:isPartOf\":{\"level\":\"WARNING\"},\"dcterms:isReferencedBy\":{\"level\":\"WARNING\"},\"dcterms:isReplacedBy\":{\"level\":\"OFF\"},\"dcterms:isRequiredBy\":{\"level\":\"OFF\"},\"dcterms:isVersionOf\":{\"level\":\"OFF\"},\"dcterms:issued\":{\"level\":\"OFF\"},\"dcterms:medium\":{\"level\":\"OFF\"},\"dcterms:provenance\":{\"level\":\"OFF\"},\"dcterms:references\":{\"level\":\"OFF\"},\"dcterms:requires\":{\"level\":\"OFF\"},\"dcterms:spatial\":{\"level\":\"ERROR\"},\"dcterms:tableOfContents\":{\"level\":\"OFF\"},\"dcterms:temporal\":{\"level\":\"ERROR\"},\"edm:currentLocation\":{\"level\":\"OFF\"},\"edm:hasMet\":{\"level\":\"OFF\"},\"edm:hasType\":{\"level\":\"OFF\"},\"edm:incorporates\":{\"level\":\"OFF\"},\"edm:isDerivativeOf\":{\"level\":\"OFF\"},\"edm:isNextInSequence\":{\"level\":\"WARNING\"},\"edm:isRelatedTo\":{\"level\":\"WARNING\"},\"edm:isRepresentationOf\":{\"level\":\"OFF\"},\"edm:isSimilarTo\":{\"level\":\"OFF\"},\"edm:isSuccessorOf\":{\"level\":\"OFF\"},\"edm:realizes\":{\"level\":\"OFF\"},\"edm:type\":{\"level\":\"ERROR\"},\"owl:sameAs\":{\"level\":\"OFF\"}},\"edm:TimeSpan\":{\"dcterms:hasPart\":{\"level\":\"OFF\"},\"dcterms:isPartOf\":{\"level\":\"OFF\"},\"edm:begin\":{\"level\":\"ERROR\"},\"edm:end\":{\"level\":\"ERROR\"},\"edm:isNextInSequence\":{\"level\":\"OFF\"},\"owl:sameAs\":{\"level\":\"OFF\"},\"skos:altLabel\":{\"level\":\"OFF\"},\"skos:note\":{\"level\":\"OFF\"},\"skos:prefLabel\":{\"level\":\"ERROR\"}},\"edm:WebResource\":{\"dc:creator\":{\"level\":\"OFF\"},\"dc:description\":{\"level\":\"WARNING\"},\"dc:format\":{\"level\":\"WARNING\"},\"dc:rights\":{\"level\":\"OFF\"},\"dc:source\":{\"level\":\"OFF\"},\"dcterms:conformsTo\":{\"level\":\"OFF\"},\"dcterms:created\":{\"level\":\"WARNING\"},\"dcterms:extent\":{\"level\":\"OFF\"},\"dcterms:hasPart\":{\"level\":\"OFF\"},\"dcterms:isFormatOf\":{\"level\":\"OFF\"},\"dcterms:isPartOf\":{\"level\":\"OFF\"},\"dcterms:isReferencedBy\":{\"level\":\"OFF\"},\"dcterms:issued\":{\"level\":\"OFF\"},\"edm:isNextInSequence\":{\"level\":\"OFF\"},\"edm:rights\":{\"level\":\"ERROR\"},\"owl:sameAs\":{\"level\":\"OFF\"}},\"ore:Aggregation\":{\"dc:rights\":{\"level\":\"OFF\"},\"edm:aggregatedCHO\":{\"level\":\"ERROR\"},\"edm:dataProvider\":{\"level\":\"ERROR\"},\"edm:hasView\":{\"level\":\"WARNING\"},\"edm:intermediateProvider\":{\"level\":\"WARNING\"},\"edm:isShownAt\":{\"level\":\"WARNING\"},\"edm:isShownBy\":{\"level\":\"WARNING\"},\"edm:object\":{\"level\":\"WARNING\"},\"edm:provider\":{\"level\":\"ERROR\"},\"edm:rights\":{\"level\":\"ERROR\"},\"edm:ugc\":{\"level\":\"OFF\"}},\"skos:Concept\":{\"skos:altLabel\":{\"level\":\"OFF\"},\"skos:broadMatch\":{\"level\":\"OFF\"},\"skos:broader\":{\"level\":\"OFF\"},\"skos:closeMatch\":{\"level\":\"OFF\"},\"skos:exactMatch\":{\"level\":\"OFF\"},\"skos:inScheme\":{\"level\":\"OFF\"},\"skos:narrowMatch\":{\"level\":\"OFF\"},\"skos:narrower\":{\"level\":\"OFF\"},\"skos:notation\":{\"level\":\"OFF\"},\"skos:note\":{\"level\":\"OFF\"},\"skos:prefLabel\":{\"level\":\"ERROR\"},\"skos:related\":{\"level\":\"ERROR\"},\"skos:relatedMatch\":{\"level\":\"OFF\"}}}";
+    }
+
+    @Test
+    public void getQualityConfig() {
+        Assert.assertEquals(
+                new QualityConfig(input).getQualityConfig(),
+                new QualityConfig(file.toPath()).getQualityConfig()
+        );
+        System.out.println(new QualityConfig(input).getQualityConfig().root().render(ConfigRenderOptions.concise()));
+
+    }
+}

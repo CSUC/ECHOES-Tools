@@ -7,7 +7,7 @@ import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.Quality;
 import org.csuc.dao.entity.QualityDetails;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
-import org.csuc.step.Schema;
+import org.csuc.step.StepInterface;
 import org.csuc.util.FormatType;
 import org.mongodb.morphia.Morphia;
 
@@ -24,9 +24,9 @@ public class Datastore implements FormatInterface {
     private QualityDetailsDAO qualityDetailsDAO;
 
     private Quality quality;
-    private Schema schema;
+    private StepInterface<QualityDetails> stepInterface;
 
-    public Datastore(String host, int port, String database, Quality quality, Schema schema) {
+    public Datastore(String host, int port, String database, Quality quality, StepInterface stepInterface) {
         logger.info("{}", getClass().getSimpleName());
 
         Morphia morphia = new Morphia();
@@ -41,16 +41,16 @@ public class Datastore implements FormatInterface {
         qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, datastore);
 
         this.quality = quality;
-        this.schema = schema;
+        this.stepInterface = stepInterface;
     }
 
-    public Datastore(org.mongodb.morphia.Datastore datastore, Quality quality, Schema schema) {
+    public Datastore(org.mongodb.morphia.Datastore datastore, Quality quality, StepInterface stepInterface) {
         logger.info("{}", getClass().getSimpleName());
 
         this.datastore = datastore;
 
         this.quality = quality;
-        this.schema = schema;
+        this.stepInterface = stepInterface;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Datastore implements FormatInterface {
                 .filter(f -> FormatType.RDFXML.lang().getFileExtensions().stream().anyMatch(m -> f.toString().endsWith(String.format(".%s", m))))
                 .forEach(p -> {
                     try {
-                        QualityDetails qualityDetails = schema.quality(p);
+                        QualityDetails qualityDetails = stepInterface.quality(p);
                         qualityDetails.setQuality(quality);
 
                         qualityDetailsDAO.save(qualityDetails);
@@ -78,7 +78,7 @@ public class Datastore implements FormatInterface {
     public void execute(URL url) throws Exception {
         qualityDetailsDAO.getDatastore().save(quality);
 
-        QualityDetails qualityDetails = schema.quality(url);
+        QualityDetails qualityDetails = stepInterface.quality(url);
         qualityDetails.setQuality(quality);
 
         qualityDetailsDAO.save(qualityDetails);

@@ -22,6 +22,11 @@ public class Content extends QualityConfig implements StepInterface {
         logger.info("{}", getClass().getSimpleName());
     }
 
+    public Content(String config) {
+        super(config);
+        logger.info("{}", getClass().getSimpleName());
+    }
+
     @Override
     public QualityDetails quality(Path path) throws Exception {
         JibxUnMarshall jibxUnMarshall = new JibxUnMarshall(new FileInputStream(path.toFile()), StandardCharsets.UTF_8, RDF.class);
