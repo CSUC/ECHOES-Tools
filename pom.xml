@@ -206,7 +206,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<revision>1.7</revision>
+		<revision>1.8</revision>
 
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 
