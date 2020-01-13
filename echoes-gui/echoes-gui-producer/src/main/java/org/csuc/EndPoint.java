@@ -2,10 +2,13 @@ package org.csuc;
 
 import com.rabbitmq.client.*;
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
@@ -59,12 +62,17 @@ public abstract class EndPoint{
         channel = connection.createChannel();
 
         channel.basicRecover();
+
+        Map<String,Object> args = new HashMap<>();
+        for (Map.Entry<String, ConfigValue> entry : typesafeRabbitMQ.getConfig("arguments").entrySet()) {
+            args.put(entry.getKey(), entry.getValue().unwrapped());
+        }
+
         channel.queueDeclare(endPointName,
                 typesafeRabbitMQ.getBoolean("durable"),
                 typesafeRabbitMQ.getBoolean("exclusive"),
                 typesafeRabbitMQ.getBoolean("autoDelete"),
-                typesafeRabbitMQ.getIsNull("arguments") ? null : typesafeRabbitMQ.getObject("arguments").unwrapped());
-
+                typesafeRabbitMQ.getIsNull("arguments") ? null : args);
     }
 
 
