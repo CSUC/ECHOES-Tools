@@ -10,7 +10,6 @@ import org.apache.logging.log4j.io.IoBuilder;
 import org.csuc.core.HDFS;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.util.FormatType;
-import org.edm.transformations.formats.EDM;
 import org.edm.transformations.formats.a2a.A2A2EDM;
 import org.edm.transformations.formats.dc.DC2EDM;
 import org.edm.transformations.formats.ead.EAD2EDM;
@@ -52,21 +51,21 @@ public class TransformationUrl implements Transformation {
 
                 String uuid = UUID.randomUUID().toString();
 
-                EDM edm = null;
-
                 if (Objects.equals(A2AType.class, object.getClass()))
-                    edm = new A2A2EDM(uuid, (A2AType) object, arguments);
+                    new A2A2EDM(uuid, (A2AType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), formatType);
 
                 if (Objects.equals(OaiDcType.class, object.getClass()))
-                    edm = new DC2EDM(uuid, (OaiDcType) object, arguments);
+                    new DC2EDM(uuid, (OaiDcType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), formatType);
 
                 if (Objects.equals(Memorix.class, object.getClass()))
-                    new MEMORIX2EDM(uuid, (Memorix) object, arguments).transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
+                    new MEMORIX2EDM(uuid, (Memorix) object, arguments)
+                            .transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
 
                 if (Objects.equals(Ead.class, object.getClass()))
-                    new EAD2EDM(uuid, (Ead) object, arguments).transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
-
-                edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), formatType);
+                    new EAD2EDM(uuid, (Ead) object, arguments)
+                            .transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
             }
         } catch (Exception e) {
             throwables.add(e);
@@ -89,21 +88,21 @@ public class TransformationUrl implements Transformation {
 
                 File filename = new File(String.format("%s/%s.%s", out, uuid, formatType.extensions().stream().findFirst().get()));
 
-                EDM edm = null;
-
                 if (Objects.equals(A2AType.class, object.getClass()))
-                    edm = new A2A2EDM(uuid, (A2AType) object, arguments);
+                    new A2A2EDM(uuid, (A2AType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename), formatType);
 
                 if (Objects.equals(OaiDcType.class, object.getClass()))
-                    edm = new DC2EDM(uuid, (OaiDcType) object, arguments);
+                    new DC2EDM(uuid, (OaiDcType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename), formatType);
 
                 if (Objects.equals(Memorix.class, object.getClass()))
-                    new MEMORIX2EDM(uuid, (Memorix) object, arguments).transformation(new FileOutputStream(filename), arguments);
+                    new MEMORIX2EDM(uuid, (Memorix) object, arguments)
+                            .transformation(new FileOutputStream(filename), arguments);
 
                 if (Objects.equals(Ead.class, object.getClass()))
-                    new EAD2EDM(uuid, (Ead) object, arguments).transformation(new FileOutputStream(filename), arguments);
-
-                edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename), formatType);
+                    new EAD2EDM(uuid, (Ead) object, arguments)
+                            .transformation(new FileOutputStream(filename), arguments);
             }
         } catch (Exception e) {
             throwables.add(e);
@@ -130,21 +129,21 @@ public class TransformationUrl implements Transformation {
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-                EDM edm = null;
-
                 if (Objects.equals(A2AType.class, object.getClass()))
-                    edm = new A2A2EDM(uuid, (A2AType) object, arguments);
+                    new A2A2EDM(uuid, (A2AType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, byteArrayOutputStream, formatType);
 
                 if (Objects.equals(OaiDcType.class, object.getClass()))
-                    edm = new DC2EDM(uuid, (OaiDcType) object, arguments);
+                    new DC2EDM(uuid, (OaiDcType) object, arguments)
+                            .creation(StandardCharsets.UTF_8, true, byteArrayOutputStream, formatType);
 
                 if (Objects.equals(Memorix.class, object.getClass()))
-                    new MEMORIX2EDM(uuid, (Memorix) object, arguments).transformation(byteArrayOutputStream, arguments);
+                    new MEMORIX2EDM(uuid, (Memorix) object, arguments)
+                            .transformation(byteArrayOutputStream, arguments);
 
                 if (Objects.equals(Ead.class, object.getClass()))
-                    new EAD2EDM(uuid, (Ead) object, arguments).transformation(byteArrayOutputStream, arguments);
-
-                edm.creation(StandardCharsets.UTF_8, true, byteArrayOutputStream, formatType);
+                    new EAD2EDM(uuid, (Ead) object, arguments)
+                            .transformation(byteArrayOutputStream, arguments);
 
                 byte[] bytes = byteArrayOutputStream.toByteArray();
                 InputStream inputStream = new ByteArrayInputStream(bytes);
