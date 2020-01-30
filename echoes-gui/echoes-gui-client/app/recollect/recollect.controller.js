@@ -250,6 +250,9 @@
                                 });
                             }
                         };
+                        $scope.update = function(k,k2,v) {
+                            $scope.config[k][k2].level = v;
+                        };
                     }]
                 });
         };
