@@ -8,7 +8,7 @@
 		<version>${revision}</version>
 	</parent>
 
-	<version>1.3.3</version>
+	<version>1.3.3.rev1</version>
 	<artifactId>analyse</artifactId>
 	<packaging>jar</packaging>
 
@@ -97,11 +97,6 @@
 					<artifactId>log4j</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
-		<dependency>
-			<groupId>io.reactivex.rxjava2</groupId>
-			<artifactId>rxjava</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
 		<dependency>

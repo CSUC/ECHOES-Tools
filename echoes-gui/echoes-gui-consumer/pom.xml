@@ -78,13 +78,13 @@
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>analyse</artifactId>
-                <version>1.3.3</version>
+                <version>1.3.3.rev1</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>transformation</artifactId>
-                <version>1.3.8</version>
+                <version>1.3.8.rev1</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

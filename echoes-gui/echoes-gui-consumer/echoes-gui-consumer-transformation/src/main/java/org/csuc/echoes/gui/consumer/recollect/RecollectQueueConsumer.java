@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -139,7 +140,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     recollect.getProperties(),
                                     FormatType.convert(recollect.getFormat())
                             );
-                        } catch (IOException e) {
+                        } catch (IOException | URISyntaxException e) {
                         }
 
                     }).join();

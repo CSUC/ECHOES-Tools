@@ -11,9 +11,9 @@ import java.util.Map;
 
 public interface Transformation  {
 
-    void console(SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException;
+    void console(SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException, URISyntaxException;
 
-    void path(Path out, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException;
+    void path(Path out, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException, URISyntaxException;
 
     void hdfs(String hdfsuri, String hdfuser, String hdfshome, org.apache.hadoop.fs.Path path, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException, URISyntaxException;
 
