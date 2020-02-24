@@ -4,15 +4,15 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.analyse.strategy.ParserMethod;
+import org.csuc.analyse.util.Garbage;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.javatuples.Pair;
 import org.openarchives.oai._2.OAIPMHtype;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalTime;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -24,8 +24,8 @@ public class ParserOAI implements Parser {
 
     private ParserMethod method;
 
-    private AtomicInteger iter = new AtomicInteger(0);
-    private int buffer = 15000;
+    private int buffer = 1000;
+    private AtomicInteger atomicInteger = new AtomicInteger();
 
     public ParserOAI(ParserMethod method){
         logger.debug(String.format("analyse: %s", getClass().getSimpleName()));
@@ -44,29 +44,41 @@ public class ParserOAI implements Parser {
         logger.info(String.format("Completed "));
     }
 
-    public static <T> T intenseCalculation(T value) throws Exception {
-        logger.info("Calculating {} {} on thread {}", ((Pair<ParserMethod, URL>) value).getValue0(), LocalTime.now(), Thread.currentThread().getName());
-
-        ((Pair<ParserMethod, URL>) value).getValue0().parser(((Pair<ParserMethod, URL>) value).getValue1());
-
-        return value;
-    }
-
     /**
      *
      * @param url
-     * @throws MalformedURLException
      */
-    private void iterate(URL url) throws Exception {
-        OAIPMHtype oaipmHtype =
-                    (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+    private void iterate(URL url) {
+        logger.info("#{} - {}", atomicInteger.get(), url);
 
-        intenseCalculation(new Pair<>(method, url));
+        try{
+            OAIPMHtype oaipmHtype = (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
 
-        if (oaipmHtype.getListRecords().getResumptionToken() != null)
-            if (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty())
-                iterate(next(url, oaipmHtype.getListRecords().getResumptionToken().getValue()));
+            Pair<ParserMethod, URL> pair = new Pair<>(method, url);
+            pair.getValue0().parser(pair.getValue1());
+
+            if (oaipmHtype.getListRecords().getResumptionToken() != null) {
+                while (!oaipmHtype.getListRecords().getResumptionToken().getValue().isEmpty()) {
+                    if ((atomicInteger.incrementAndGet() % buffer) == 0) Garbage.gc();
+
+                    url = new URL(String.format("%s?verb=ListRecords&resumptionToken=%s", url.toString().replaceAll("\\?verb=.+", ""), oaipmHtype.getListRecords().getResumptionToken().getValue()));
+
+                    logger.info("#{} - {}", atomicInteger.get(), url);
+
+                    oaipmHtype = (OAIPMHtype) new JaxbUnmarshal(url, new Class[]{OAIPMHtype.class}).getObject();
+
+                    if (Objects.nonNull(oaipmHtype)) {
+                        pair = new Pair<>(method, url);
+                        pair.getValue0().parser(pair.getValue1());
+                    }
+                }
+            }
+        }catch (Exception e){
+            logger.error(e);
+            logger.error("{}", url);
+        }
     }
+
 
     @Override
     public synchronized void XML(OutputStream outs) {
@@ -86,11 +98,5 @@ public class ParserOAI implements Parser {
     @Override
     public synchronized void HDFS_JSON(FileSystem fileSystem, org.apache.hadoop.fs.Path dest) throws IOException {
         method.createHDFS_JSON(fileSystem, dest);
-    }
-
-
-    private URL next(URL url, String resumptionToken) throws MalformedURLException {
-        return new URL(String.format("%s?verb=ListRecords&resumptionToken=%s",
-                url.toString().replaceAll("\\?verb=.+", ""), resumptionToken));
     }
 }

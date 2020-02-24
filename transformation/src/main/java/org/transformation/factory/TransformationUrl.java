@@ -18,6 +18,8 @@ import org.edm.transformations.formats.utils.SchemaType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
 import javax.xml.bind.JAXBIntrospector;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +43,10 @@ public class TransformationUrl implements Transformation {
     @Override
     public void console(SchemaType schemaType, Map<String, String> arguments, FormatType formatType) {
         try {
-            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
+            XMLStreamReader xmlr = xmlif.createXMLStreamReader(input.openStream());
+            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
             if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                 Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -68,15 +73,19 @@ public class TransformationUrl implements Transformation {
                             .transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
             }
         } catch (Exception e) {
-            throwables.add(e);
             logger.error(e.getMessage());
+            logger.error("{}", input);
+            throwables.add(e);
         }
     }
 
     @Override
     public void path(Path out, SchemaType schemaType, Map<String, String> arguments, FormatType formatType) throws IOException {
         try {
-            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
+            XMLStreamReader xmlr = xmlif.createXMLStreamReader(input.openStream());
+            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
             if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                 Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -105,8 +114,9 @@ public class TransformationUrl implements Transformation {
                             .transformation(new FileOutputStream(filename), arguments);
             }
         } catch (Exception e) {
-            throwables.add(e);
             logger.error(e.getMessage());
+            logger.error("{}", input);
+            throwables.add(e);
         }
     }
 
@@ -115,7 +125,10 @@ public class TransformationUrl implements Transformation {
         HDFS hdfs = new HDFS(hdfsuri, hdfuser, hdfshome);
 
         try {
-            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(input, classType);
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
+            XMLStreamReader xmlr = xmlif.createXMLStreamReader(input.openStream());
+            JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
             if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                 Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -150,8 +163,9 @@ public class TransformationUrl implements Transformation {
                 HDFS.write(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(path, filename), inputStream, true);
             }
         } catch (Exception e) {
-            throwables.add(e);
             logger.error(e.getMessage());
+            logger.error("{}", input);
+            throwables.add(e);
         }
     }
 

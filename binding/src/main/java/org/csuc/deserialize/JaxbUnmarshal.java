@@ -214,9 +214,9 @@ public class JaxbUnmarshal {
 	}
 	
 	
-	public JaxbUnmarshal(XMLStreamReader xmlStreamReader, Class[] classType) {
+	public JaxbUnmarshal(XMLStreamReader xmlStreamReader, Class[] classType) throws JAXBException, SAXException {
 		logger.debug(String.format("read XMLStreamReader %s", xmlStreamReader));
-		try {
+//		try {
 			JAXBContext jc = JAXBContext.newInstance(classType);
 		    Unmarshaller u = jc.createUnmarshaller();
 			u.setSchema(addSchema(classType));
@@ -228,9 +228,9 @@ public class JaxbUnmarshal {
             else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
-		} catch (JAXBException | SAXException e) {
-			logger.error(String.format("JaxbUnmarshal XMLStreamReader %s", e));
-		}		
+//		} catch (JAXBException | SAXException e) {
+//			logger.error(String.format("JaxbUnmarshal XMLStreamReader %s", e));
+//		}
 	}
 
 	public JaxbUnmarshal(XMLEventReader xmlEventReader, Class[] classType) {

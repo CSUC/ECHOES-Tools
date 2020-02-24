@@ -18,6 +18,8 @@ import org.edm.transformations.formats.utils.SchemaType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 
 import javax.xml.bind.JAXBIntrospector;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,7 +46,10 @@ public class TransformationFile implements Transformation {
                 .filter(Files::isRegularFile)
                 .forEach(f -> {
                     try {
-                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                        XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(f.toFile()));
+                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
                         if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                             Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -71,6 +76,8 @@ public class TransformationFile implements Transformation {
                                         .transformation(IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(), arguments);
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage());
+                        logger.error("{}", f);
                         throwables.add(e);
 //                        throw new RuntimeException(e);
                     }
@@ -83,7 +90,10 @@ public class TransformationFile implements Transformation {
                 .filter(Files::isRegularFile)
                 .forEach(f -> {
                     try {
-                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                        XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(f.toFile()));
+                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
                         if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                             Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -112,6 +122,8 @@ public class TransformationFile implements Transformation {
                                         .transformation(new FileOutputStream(filename), arguments);
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage());
+                        logger.error("{}", f);
                         throwables.add(e);
 //                        throw new RuntimeException(e);
                     }
@@ -126,7 +138,10 @@ public class TransformationFile implements Transformation {
                 .filter(Files::isRegularFile)
                 .forEach(f -> {
                     try {
-                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        //JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(f.toFile(), classType);
+                        XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                        XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(f.toFile()));
+                        JaxbUnmarshal jaxbUnmarshal = new JaxbUnmarshal(xmlr, classType);
 
                         if (Objects.nonNull(jaxbUnmarshal.getObject())) {
                             Object object = JAXBIntrospector.getValue(jaxbUnmarshal.getObject());
@@ -161,6 +176,8 @@ public class TransformationFile implements Transformation {
                             HDFS.write(hdfs.getFileSystem(), new org.apache.hadoop.fs.Path(path, filename), inputStream, true);
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage());
+                        logger.error("{}", f);
                         throwables.add(e);
 //                        throw new RuntimeException(e);
                     }

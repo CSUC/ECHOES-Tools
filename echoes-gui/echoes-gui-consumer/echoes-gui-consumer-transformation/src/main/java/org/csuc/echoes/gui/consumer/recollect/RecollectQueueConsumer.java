@@ -33,6 +33,7 @@ import org.transformation.factory.TransformationOai;
 import org.transformation.factory.TransformationUrl;
 
 import javax.xml.bind.JAXBIntrospector;
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -140,7 +141,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                                     recollect.getProperties(),
                                     FormatType.convert(recollect.getFormat())
                             );
-                        } catch (IOException | URISyntaxException e) {
+                        } catch (IOException | URISyntaxException | XMLStreamException e) {
                         }
 
                     }).join();
