@@ -227,7 +227,7 @@
 		<moshi.version>1.8.0</moshi.version>
 		<amqp.client.version>5.7.3</amqp.client.version>
 		<org.apache.jena.version>3.9.0</org.apache.jena.version>
-		<rxjava2.version>2.2.12</rxjava2.version>
+		<rxjava2.version>2.2.19</rxjava2.version>
 		<maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
 
 		<echoes.path>/tmp/echoes</echoes.path>
