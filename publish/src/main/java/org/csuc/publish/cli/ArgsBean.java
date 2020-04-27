@@ -2,6 +2,7 @@ package org.csuc.publish.cli;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.typesafe.HDFSConfig;
 import org.csuc.util.FormatType;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -22,6 +23,8 @@ import java.util.Scanner;
 public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
+
+    private HDFSConfig hdfsConfig = HDFSConfig.config(null);
 
     @Option(name = "-h", aliases = "--help", help = true)
     private boolean help = false;
@@ -50,21 +53,21 @@ public class ArgsBean {
     @Option(name = "--context-uri", usage = "virtual graph")
     private String context_uri;
 
-    @Option(name = "--datastore", forbids = {"-i", "--deleteFiles"}, usage = "datastore")
-    private boolean datastore = false;
+    @Option(name="--hdfs", forbids = {"-i", "--input"}, usage = "hdfs")
+    private boolean hdfs = false;
 
-    @Option(name = "--datastore-host", depends = {"--datastore"}, forbids = {"-i"}, usage = "host")
-    private String host = "localhost";
+    @Option(name="--hdfs-uri", depends={"--hdfs"}, usage = "hdfs-uri")
+    private String hdfsuri = hdfsConfig.getUri();
 
-    @Option(name = "--datastore-port",  depends = {"--datastore"}, forbids = {"-i"}, usage = "port")
-    private int port = 27017;
+    @Option(name="--hdfs-user", depends={"--hdfs"}, usage = "hdfs-user")
+    private String hdfsuser = hdfsConfig.getUser();
 
-    @Option(name = "--datastore-name",  depends = {"--datastore"}, forbids = {"-i"}, usage = "database name")
-    private String name = "quality";
+    @Option(name="--hdfs-home", depends={"--hdfs"}, usage = "hdfs-home")
+    private String hdfshome = hdfsConfig.getHome();
 
-    //Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "database name")
-    @Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "quality identifier")
-    private String quality_id;
+    @Option(name="--hdfs-input", depends={"--hdfs"}, usage = "hdfs-input")
+    private String hdfsinput;
+
 
     public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -172,44 +175,53 @@ public class ArgsBean {
         this.context_uri = context_uri;
     }
 
-    public boolean isDatastore() {
-        return datastore;
+    public HDFSConfig getHdfsConfig() {
+        return hdfsConfig;
     }
 
-    public void setDatastore(boolean datastore) {
-        this.datastore = datastore;
+    public void setHdfsConfig(HDFSConfig hdfsConfig) {
+        this.hdfsConfig = hdfsConfig;
     }
 
-    public String getHost() {
-        return host;
+    public boolean isHdfs() {
+        return hdfs;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setHdfs(boolean hdfs) {
+        this.hdfs = hdfs;
     }
 
-    public int getPort() {
-        return port;
+    public String getHdfsuri() {
+        return hdfsuri;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setHdfsuri(String hdfsuri) {
+        this.hdfsuri = hdfsuri;
     }
 
-    public String getName() {
-        return name;
+    public String getHdfsuser() {
+        return hdfsuser;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setHdfsuser(String hdfsuser) {
+        this.hdfsuser = hdfsuser;
     }
 
-    public String getQuality_id() {
-        return quality_id;
+    public String getHdfshome() {
+        return hdfshome;
     }
 
-    public void setQuality_id(String quality_id) {
-        this.quality_id = quality_id;
+    public void setHdfshome(String hdfshome) {
+        this.hdfshome = hdfshome;
+    }
+
+
+    public String getHdfsinput() {
+        return hdfsinput;
+    }
+
+    public void setHdfsinput(String hdfsinput) {
+        this.hdfsinput = hdfsinput;
     }
 
     public void run() {
@@ -217,7 +229,15 @@ public class ArgsBean {
         logger.info("   Content-Type    :   {}", contentType);
         logger.info("   Namespace       :   {}", namespace);
         logger.info("   context_uri     :   {}", context_uri);
-        logger.info("   Input           :   {}", input);
+        if(isHdfs()){
+            logger.info("   hdfs            :   {}", hdfs);
+            logger.info("   hdfs-uri        :   {}", hdfsuri);
+            logger.info("   hdfs-user       :   {}", hdfsuser);
+            logger.info("   hdfs-home       :   {}", hdfshome);
+            logger.info("   hdfs-input      :   {}", hdfsinput);
+        }else{
+            logger.info("   Input           :   {}", input);
+        }
         logger.info("   Charset         :   {}", charset);
         logger.info("   Delete files    :   {}", deleteFiles);
         logger.info("   Threads         :   {}", threads);

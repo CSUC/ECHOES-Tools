@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.LocatedFileStatus;
+import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -17,6 +20,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.core.HDFS;
 import org.csuc.dao.QualityDetailsDAO;
 import org.csuc.dao.entity.QualityDetails;
 import org.csuc.dao.impl.QualityDetailsDAOImpl;
@@ -80,26 +84,26 @@ public class App {
                         logger.error(e);
                     }
                 }).join();
-            } else if (bean.isDatastore()) {
-                org.mongodb.morphia.Datastore datastore = new Datastore(bean.getHost(), bean.getPort(), bean.getName(), null, null).getDatastore();
+            } else if (bean.isHdfs()) {
+                HDFS hdfs = new HDFS(bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome());
 
-                QualityDetailsDAO qualityDetailsDAO = new QualityDetailsDAOImpl(QualityDetails.class, datastore);
+                //Job job = Job.getInstance(hdfs.getFileSystem().getConf());
+                RemoteIterator<LocatedFileStatus> fileStatusListIterator =
+                        hdfs.getFileSystem().listFiles(new org.apache.hadoop.fs.Path(System.getProperty("hadoop.home.dir"), "transformation"), true);
 
-                Query<QualityDetails> qualityDetailsQuery =
-                        Objects.nonNull(bean.getQuality_id())
-                                ? qualityDetailsDAO.getValidById(bean.getQuality_id())
-                                : qualityDetailsDAO.getValid();
+                while(fileStatusListIterator.hasNext()){
+                    LocatedFileStatus fileStatus = fileStatusListIterator.next();
+                    logger.info(fileStatus.getPath().toString());
 
-                StreamUtils
-                        .asStream(qualityDetailsQuery.fetch(new FindOptions().batchSize(50).noCursorTimeout(true)))
-                        .parallel().forEach(qualityDetails -> {
-                    RdfDAO<ByteArrayOutputStream> outputStreamRdfDAO = new RdfDAO<>(qualityDetails, ByteArrayOutputStream::new);
-                    try {
-                        httpPost(bean.getContentType().lang().getContentType().getContentType(), qualityDetails.get_id(), outputStreamRdfDAO.toRDF());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+                    HDFS.get(
+                            hdfs.getFileSystem(),
+                            fileStatus.getPath(),
+                            byteArrayOutputStream);
+
+                    httpPost(bean.getContentType().lang().getContentType().getContentType(), byteArrayOutputStream);
+                }
             }
         } finally {
             long diff = Duration.between(now, Instant.now()).getSeconds();
@@ -199,6 +203,46 @@ public class App {
 
         } catch (IOException e) {
             logger.error(String.format("%s %s\n%s", "ERROR", id, e));
+        }
+    }
+
+    private static void httpPost(String type, ByteArrayOutputStream byteArrayOutputStream) {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        HttpPost httppost;
+        if (Objects.nonNull(bean.getContext_uri()))
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql?context-uri=%s", bean.getHostname(), bean.getNamespace(), bean.getContext_uri()));
+        else
+            httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
+
+
+        RequestConfig requestConfig =
+                RequestConfig.copy(RequestConfig.DEFAULT)
+                        .setProxy(new HttpHost(bean.getHostname()))
+                        .build();
+
+        httppost.setConfig(requestConfig);
+
+        httppost.addHeader("content-type", type + ";charset=" + bean.getCharset());
+
+        httppost.setEntity(new ByteArrayEntity(byteArrayOutputStream.toByteArray()));
+
+        try {
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity resEntity = response.getEntity();
+
+            if (resEntity != null) {
+                BlazegraphResponse blazegraphResponse = xmlMapper(EntityUtils.toString(resEntity));
+                if (Objects.nonNull(blazegraphResponse)) {
+                    if (Integer.parseInt(blazegraphResponse.getModified()) != 0) {
+                        logger.info(String.format("%s %s", "OK", blazegraphResponse.toString()));
+                    } else logger.error(String.format("%s %s", "ERROR", blazegraphResponse.toString()));
+                } else logger.error(String.format("%s", "ERROR"));
+            }
+            httpclient.close();
+
+        } catch (IOException e) {
+            logger.error(String.format("%s\n%s", "ERROR", e));
         }
     }
 
