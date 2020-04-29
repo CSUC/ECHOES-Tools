@@ -10,7 +10,8 @@ package org.csuc.util.type;
 public enum EnumTypes {
 
     URL("url"),
-    FILE("file");
+    FILE("file"),
+    HDFS("hdfs");
 
     private final String name;
 

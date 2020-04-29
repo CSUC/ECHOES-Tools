@@ -3,6 +3,7 @@ package org.csuc.cli;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.typesafe.HDFSConfig;
 import org.csuc.util.format.FormatType;
 import org.csuc.util.type.EnumTypes;
 import org.kohsuke.args4j.CmdLineException;
@@ -33,6 +34,8 @@ public class ArgsBean {
 
     private static Logger logger = LogManager.getLogger(ArgsBean.class);
 
+    private HDFSConfig hdfsConfig = HDFSConfig.config(null);
+
     @Option(name = "-h", aliases = "--help", help = true, required = false)
     private boolean help = false;
 
@@ -60,6 +63,15 @@ public class ArgsBean {
     private Path out;
 
     private String job = UUID.randomUUID().toString();
+
+    @Option(name="--hdfs-uri", usage = "hdfs-uri")
+    private String hdfsuri = hdfsConfig.getUri();
+
+    @Option(name="--hdfs-user", usage = "hdfs-user")
+    private String hdfsuser = hdfsConfig.getUser();
+
+    @Option(name="--hdfs-home", usage = "hdfs-home")
+    private String hdfshome = hdfsConfig.getHome();
 
     public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -191,11 +203,48 @@ public class ArgsBean {
         this.type = type;
     }
 
+    public HDFSConfig getHdfsConfig() {
+        return hdfsConfig;
+    }
+
+    public void setHdfsConfig(HDFSConfig hdfsConfig) {
+        this.hdfsConfig = hdfsConfig;
+    }
+
+    public String getHdfsuri() {
+        return hdfsuri;
+    }
+
+    public void setHdfsuri(String hdfsuri) {
+        this.hdfsuri = hdfsuri;
+    }
+
+    public String getHdfsuser() {
+        return hdfsuser;
+    }
+
+    public void setHdfsuser(String hdfsuser) {
+        this.hdfsuser = hdfsuser;
+    }
+
+    public String getHdfshome() {
+        return hdfshome;
+    }
+
+    public void setHdfshome(String hdfshome) {
+        this.hdfshome = hdfshome;
+    }
+
     public void run() {
         logger.info("   Input                        :   {}", input);
         logger.info("   QualityInterface config      :   {}", qualityFile);
 
         logger.info("   Type                         :   {}", type);
+        if(type.equals(EnumTypes.HDFS)){
+            logger.info("   hdfs-uri                     :   {}", hdfsuri);
+            logger.info("   hdfs-user                    :   {}", hdfsuser);
+            logger.info("   hdfs-home                    :   {}", hdfshome);
+        }
         logger.info("   Format                       :   {}", formatType);
 
         if (formatType.equals(FormatType.DATASTORE)) {
@@ -204,5 +253,6 @@ public class ArgsBean {
             logger.info("   QualityFile name                 :   {}", name);
         } else if (Objects.nonNull(out))
             logger.info("   out                          :   {}", getOut());
+
     }
 }

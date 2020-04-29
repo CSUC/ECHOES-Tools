@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>quality</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.3.rev1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -1,15 +1,17 @@
 package org.csuc.format;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.core.HDFS;
 import org.csuc.dao.entity.QualityDetails;
 import org.csuc.step.StepInterface;
 import org.csuc.util.FormatType;
 import org.json.JSONObject;
 import org.json.XML;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,6 +73,33 @@ public class Xml implements FormatInterface {
         if (Objects.isNull(out)) logger.info(qualityDetails);
         else
             Files.write(Paths.get(String.format("%s/%s.xml", out, qualityDetails.get_id())), xml.getBytes());
+    }
+
+    @Override
+    public void execute(FileSystem fileSystem, org.apache.hadoop.fs.Path path) throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        final File f = Files.createTempFile(path.getName(), ".tmp").toFile();
+
+        HDFS.get(
+                fileSystem,
+                path,
+                byteArrayOutputStream);
+
+        try(OutputStream outputStream = new FileOutputStream(f)) {
+            byteArrayOutputStream.writeTo(outputStream);
+        }
+
+        QualityDetails qualityDetails = stepInterface.quality(f.toPath());
+
+        JSONObject json = new JSONObject(qualityDetails.toString());
+        String xml = XML.toString(json, "quality-details");
+
+        if (Objects.isNull(out)) logger.info(qualityDetails);
+        else
+            Files.write(Paths.get(String.format("%s/%s.xml", out, FilenameUtils.removeExtension(path.getName()))), xml.getBytes());
+
+        f.deleteOnExit();
     }
 
 }

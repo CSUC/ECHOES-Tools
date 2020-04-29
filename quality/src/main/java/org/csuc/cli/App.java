@@ -3,8 +3,12 @@
  */
 package org.csuc.cli;
 
+import org.apache.hadoop.fs.LocatedFileStatus;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.core.HDFS;
 import org.csuc.format.Datastore;
 import org.csuc.format.Json;
 import org.csuc.format.Xml;
@@ -65,6 +69,21 @@ public class App {
                     quality.getFormatInterface().execute(Paths.get(bean.getInput()));
                 if (bean.getType().equals(EnumTypes.URL))
                     quality.getFormatInterface().execute(new URL(bean.getInput()));
+                if(bean.getType().equals(EnumTypes.HDFS)){
+//                    quality.getFormatInterface().execute(hdfs.getFileSystem(), new Path(bean.getInput()));
+                    HDFS hdfs = new HDFS(bean.getHdfsuri(), bean.getHdfsuser(), bean.getHdfshome());
+
+                    //Job job = Job.getInstance(hdfs.getFileSystem().getConf());
+                    RemoteIterator<LocatedFileStatus> fileStatusListIterator =
+                            hdfs.getFileSystem().listFiles(new org.apache.hadoop.fs.Path(System.getProperty("hadoop.home.dir"), "quality"), true);
+
+                    while(fileStatusListIterator.hasNext()) {
+                        LocatedFileStatus fileStatus = fileStatusListIterator.next();
+                        logger.info(fileStatus.getPath().toString());
+
+                        quality.getFormatInterface().execute(hdfs.getFileSystem(), fileStatus.getPath());
+                    }
+                }
             }
 
             logger.info(String.format("End Quality %s", TimeUtils.duration(inici, DateTimeFormatter.ISO_TIME)));
