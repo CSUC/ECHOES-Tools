@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <mongodb.morphia.version>1.3.2</mongodb.morphia.version>
-        <mongo.java.driver.version>3.8.2</mongo.java.driver.version>
+        <mongo.java.driver.version>3.12.4</mongo.java.driver.version>
     </properties>
 
     <dependencies>
