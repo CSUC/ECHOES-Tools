@@ -210,7 +210,7 @@
 
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 
-		<jersey.version>2.29</jersey.version>
+		<jersey.version>2.31</jersey.version>
 		<cobertura.maven.plugin>2.7</cobertura.maven.plugin>
 		<junit.version>4.12</junit.version>
 		<log4j2.version>2.11.1</log4j2.version>
