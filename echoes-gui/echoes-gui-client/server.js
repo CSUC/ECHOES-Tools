@@ -730,7 +730,8 @@ app.post('/rest/api/loader/create', function (req, res, next) {
         contentType: req.body.contentType,
         contextUri: req.body.contextUri,
         user: req.body.user,
-        uuid: req.body.uuid
+        uuid: req.body.uuid,
+        replace: req.body.replace
     }
 
     request({

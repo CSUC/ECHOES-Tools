@@ -51,6 +51,10 @@ public class Loader {
     @Property("loader-total")
     private int total;
 
+    @Property("replace")
+    private boolean replace;
+
+
     public Loader() {
         this._id = UUID.randomUUID().toString();
     }
@@ -141,6 +145,14 @@ public class Loader {
 
     public void setContextUri(String contextUri) {
         this.contextUri = contextUri;
+    }
+
+    public boolean isReplace() {
+        return replace;
+    }
+
+    public void setReplace(boolean replace) {
+        this.replace = replace;
     }
 
     @Override

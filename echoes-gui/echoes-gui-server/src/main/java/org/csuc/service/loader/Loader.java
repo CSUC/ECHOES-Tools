@@ -218,6 +218,7 @@ public class Loader {
             loader.setUser(loaderRequest.getUser());
             loader.setUuid(loaderRequest.getUuid());
             loader.setStatus(Status.QUEUE);
+            loader.setReplace(loaderRequest.isReplace());
 
             Key<org.csuc.entities.loader.Loader> key = loaderDAO.insert(loader);
 
@@ -230,6 +231,7 @@ public class Loader {
             message.put("contentType", loader.getContentType());
             message.put("contextUri", loader.getContextUri());
             message.put("uuid", loader.getUuid());
+            message.put("replace", loader.isReplace());
 
             new Producer(rabbitMQConfig.getLoader()).sendMessage(message);
 

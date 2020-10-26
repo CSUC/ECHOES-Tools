@@ -20,7 +20,7 @@
         <echoes.gui.server.version>0.0.5</echoes.gui.server.version>
         <echoes.gui.consumer.analyse.version>0.0.4</echoes.gui.consumer.analyse.version>
         <echoes.gui.consumer.transformation.version>0.0.3</echoes.gui.consumer.transformation.version>
-        <echoes.gui.consumer.publish.version>0.0.5</echoes.gui.consumer.publish.version>
+        <echoes.gui.consumer.publish.version>0.0.6</echoes.gui.consumer.publish.version>
         <echoes.gui.consumer.zip.version>0.0.2</echoes.gui.consumer.zip.version>
         <echoes.gui.consumer.quality.assurance.version>0.0.5</echoes.gui.consumer.quality.assurance.version>
 

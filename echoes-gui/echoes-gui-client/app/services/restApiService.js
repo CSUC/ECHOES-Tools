@@ -78,7 +78,7 @@
                     break;
                 case "createLoader":
                     data = this.fillDataInObjectByList(data, _params, [
-                        'endpoint', 'contentType', 'contextUri', 'uuid', 'user'
+                        'endpoint', 'contentType', 'contextUri', 'uuid', 'user','replace'
                     ]);
                     data.url = this.getApiBaseUrl() + 'loader/create';
                     break;
