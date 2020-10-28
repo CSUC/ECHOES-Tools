@@ -6,11 +6,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.riot.RDFParser;
+import org.apache.jena.riot.lang.CollectorStreamTriples;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.csuc.client.Client;
@@ -33,15 +38,19 @@ import org.csuc.utils.Status;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 /**
  * @author amartinez
@@ -119,6 +128,28 @@ public class PublishQueueConsumer extends EndPoint implements Runnable, Consumer
                     try {
                         CloseableHttpClient httpclient = HttpClients.createDefault();
 
+                        RdfDAO<ByteArrayOutputStream> outputStreamRdfDAO = new RdfDAO<>(qualityDetails, ByteArrayOutputStream::new);
+
+                        if(loader.isReplace()){
+                            CollectorStreamTriples inputStream = new CollectorStreamTriples();
+
+                            RDFParser.source(new ByteArrayInputStream(outputStreamRdfDAO.toRDF().toByteArray())).lang(FormatType.convert(loader.getContentType()).lang()).parse(inputStream);
+
+                            inputStream.getCollected().stream().map(Triple::getSubject).map(Node::getURI).collect(Collectors.toSet()).forEach(subject->{
+                                try {
+                                    HttpDelete httpDelete =
+                                            new HttpDelete(String.format("%s?c=%s&s=%s",
+                                                    loader.getEndpoint(), URLEncoder.encode(String.format("<%s>", loader.getContextUri()), StandardCharsets.UTF_8.toString()), URLEncoder.encode(String.format("<%s>",subject), StandardCharsets.UTF_8.toString())));
+
+                                    HttpResponse response = httpclient.execute(httpDelete);
+                                    HttpEntity entity = response.getEntity();
+                                    if (entity != null) logger.info("[DELETE] - {} {}", subject, EntityUtils.toString(entity));
+                                } catch (IOException e) {
+                                    logger.error(e);
+                                }
+                            });
+                        }
+
                         HttpPost httppost;
                         if(Objects.nonNull(loader.getContextUri()))
                             httppost = new HttpPost(String.format("%s?context-uri=%s", loader.getEndpoint(), loader.getContextUri()));
@@ -127,7 +158,7 @@ public class PublishQueueConsumer extends EndPoint implements Runnable, Consumer
 
                         httppost.addHeader("content-type", FormatType.convert(loader.getContentType()).lang().getContentType().getContentType());
 
-                        RdfDAO<ByteArrayOutputStream> outputStreamRdfDAO = new RdfDAO<>(qualityDetails, ByteArrayOutputStream::new);
+
 
                         httppost.setEntity(new ByteArrayEntity(outputStreamRdfDAO.toRDF().toByteArray()));
 

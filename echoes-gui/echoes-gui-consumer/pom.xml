@@ -72,7 +72,7 @@
             <dependency>
                 <groupId>org.csuc</groupId>
                 <artifactId>echoes-gui-database</artifactId>
-                <version>0.0.3</version>
+                <version>0.0.4</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

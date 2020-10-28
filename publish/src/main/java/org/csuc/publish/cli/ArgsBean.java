@@ -36,7 +36,7 @@ public class ArgsBean {
     private Path input;
 
     @Option(name = "--content-type", usage = "content type")
-    private FormatType contentType = FormatType.RDFXML;
+    private String contentType = FormatType.RDFXML.toString();
 
     @Option(name = "-n", aliases = "--namespace", usage = "namespace")
     private String namespace = "kb";
@@ -65,6 +65,9 @@ public class ArgsBean {
     //Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "database name")
     @Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "quality identifier")
     private String quality_id;
+
+    @Option(name = "--replace-data", usage = "replace data")
+    private boolean replace = true;
 
     public ArgsBean(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -140,11 +143,11 @@ public class ArgsBean {
         this.hostname = hostname;
     }
 
-    public FormatType getContentType() {
+    public String getContentType() {
         return contentType;
     }
 
-    public void setContentType(FormatType contentType) {
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
@@ -212,6 +215,14 @@ public class ArgsBean {
         this.quality_id = quality_id;
     }
 
+    public boolean isReplace() {
+        return replace;
+    }
+
+    public void setReplace(boolean replace) {
+        this.replace = replace;
+    }
+
     public void run() {
         logger.info("   Hostname        :   {}", hostname);
         logger.info("   Content-Type    :   {}", contentType);
@@ -221,6 +232,7 @@ public class ArgsBean {
         logger.info("   Charset         :   {}", charset);
         logger.info("   Delete files    :   {}", deleteFiles);
         logger.info("   Threads         :   {}", threads);
+        logger.info("   Replace data    :   {}", replace);
     }
 
     public void promptEnterKey() {

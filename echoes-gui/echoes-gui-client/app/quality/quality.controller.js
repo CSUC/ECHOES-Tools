@@ -135,6 +135,8 @@
               $scope.model.dataset = data._id;
               $scope.model.type = data.contentType;
 
+              $scope.model.replace = true;
+
               $scope.submitForm = function (isValid) {
                 if (isValid) {
                   var data = {
@@ -142,7 +144,8 @@
                     'contentType': $scope.model.type,
                     'contextUri' : $scope.model.context,
                     "uuid": $scope.model.dataset,
-                    'user': vm.profile.sub
+                    'user': vm.profile.sub,
+                    'replace':  $scope.model.replace
                   };
 
                   $log.info(data);
@@ -153,6 +156,7 @@
                     contentType: $scope.model.type,
                     contextUri : $scope.model.context,
                     uuid: $scope.model.dataset,
+                    replace:  $scope.model.replace
                   }).then(function (_data) {
                     $log.info(_data);
                     ngDialog.close();

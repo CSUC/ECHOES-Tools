@@ -11,6 +11,7 @@ public class LoaderRequest {
     private String contextUri;
     private String user;
     private String uuid;
+    private boolean replace;
 
 
     public LoaderRequest() {
@@ -54,5 +55,13 @@ public class LoaderRequest {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean isReplace() {
+        return replace;
+    }
+
+    public void setReplace(boolean replace) {
+        this.replace = replace;
     }
 }

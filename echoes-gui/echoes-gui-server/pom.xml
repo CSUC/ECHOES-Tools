@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>echoes-gui-server</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <packaging>jar</packaging>
     <name>echoes-gui-server</name>
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>org.csuc</groupId>
             <artifactId>echoes-gui-database</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
