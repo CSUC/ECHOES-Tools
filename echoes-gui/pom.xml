@@ -25,7 +25,7 @@
         <echoes.gui.consumer.quality.assurance.version>0.0.5</echoes.gui.consumer.quality.assurance.version>
 
 
-        <typesafe.config.version>1.3.3</typesafe.config.version>
+        <typesafe.config.version>1.4.1</typesafe.config.version>
         <moshi.version>1.6.0</moshi.version>
         <amqp.client.version>5.2.0</amqp.client.version>
         <commons.lang3.version>3.8.1</commons.lang3.version>
