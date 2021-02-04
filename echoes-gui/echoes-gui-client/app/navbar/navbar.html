@@ -33,7 +33,7 @@
                        ui-sref="quality">Quality assurance</a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ng-if="vm.auth.isAuthenticated()"
+                    <a ng-if="vm.auth.isAuthenticated() && vm.isAdmin"
                        ui-sref="loader">Publish</a>
                 </li>
             </ul>

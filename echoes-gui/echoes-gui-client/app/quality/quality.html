@@ -68,7 +68,7 @@
                                         <span class="glyphicon glyphicon-remove text-danger"></span>
                                     </a>
                                 </td>
-                                <td title="'publish'">
+				<td ng-if="vm.isAdmin" title="'publish'">
                                     <a ng-click="sendLoader(data)" ng-if="data.status == 'END'
                                      && ( data.qualitySize > 0 && data.qualitySize < data.datasetSize || data.qualitySize == data.datasetSize && data.qualitySize > 0)">
                                         <span class="glyphicon glyphicon-send"></span>
@@ -112,13 +112,13 @@
                 {{model.type}}
             </div>
 
-            <!-- Context URI -->
+ 	    <!-- Context URI -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.context.$pristine
              || userForm.context.$invalid || userForm.context.$invalid && userForm.context.$dirty}">
                 <label>Context-URI*</label>
-                <input type="text" name="context" class="form-control" ng-model="model.context" required>
-                <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">
-                    context-uri is
+                <select name="context" class="form-control" ng-model="model.context"
+                        ng-options="value for value in options.contextUri" required></select>
+                <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">context-uri is
                     required.</p>
             </div>
 

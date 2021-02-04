@@ -108,14 +108,15 @@
                     required.</p>
             </div>
 
-            <!-- Context URI -->
+	    <!-- Context URI -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.context.$pristine
              || userForm.context.$invalid || userForm.context.$invalid && userForm.context.$dirty}">
                 <label>Context-URI*</label>
-                <input type="text" name="context" class="form-control" ng-model="model.context" required>
-                <p ng-show="userForm.context.$invalid && userForm.context.$error.required" class="help-block">context-uri is
+                <select name="context" class="form-control" ng-model="model.context"
+                        ng-options="value for value in options.contextUri" required></select>
+                <p ng-show="userForm.format.$invalid && userForm.format.$error.required" class="help-block">context-uri is
                     required.</p>
-            </div>
+            </div>	
 
             <!-- Replace data -->
             <div class="form-group">

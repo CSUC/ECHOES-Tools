@@ -187,6 +187,10 @@
                     data = this.fillDataInObjectByList(data, _params, []);
                     data.url = this.getApiBaseUrl() + 'loader/user/' + _params.user + '/count';
                     break;
+                case "getRoles":
+                    data = this.fillDataInObjectByList(data, _params, []);
+                    data.url = this.getApiBaseUrl() + 'user/' + _params.user + '/roles';
+                    break;
             }
             return data;
         }

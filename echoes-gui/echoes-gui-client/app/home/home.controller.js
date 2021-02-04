@@ -25,6 +25,7 @@
             });
         }
 
+
         function run(){
             status('END').then(function (d) {
                 increase('END').then(function (i) {
@@ -50,6 +51,7 @@
                     vm.increase_progress = i;
                 });
             });
+
 
             dashboard();
         }

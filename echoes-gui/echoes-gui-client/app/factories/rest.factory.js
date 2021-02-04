@@ -431,6 +431,18 @@
             });
         };
 
+	data.getRoles = function (_params) {
+            var searchData = restApiService.getNew("getRoles", _params);
+
+            $log.info('getRoles: ', searchData);
+
+            return $http({
+                method: 'GET',
+                url: searchData.url,
+                params: searchData.object
+            });
+        };
+
         //
 
         return data;

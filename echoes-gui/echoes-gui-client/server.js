@@ -891,7 +891,27 @@ app.post('/upload', function(req, res) {
     res.status(200).send(req.files.file)
 });
 
+/****************** ROLES ******************/
+app.get('/rest/api/user/:user/roles', function (req, res, next) {
+     var options = { method: 'POST',
+         url: `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
+         headers: { 'content-type': 'application/json' },
+         body: `{"client_id":"dZTnDCvSdSxcu72oje3AwoScNdhPXtKG","client_secret":"hyu9-u0pwSPft6GMctyJ3B8ODaL8AgzYLA3PEdiL0ZwGlemnWnuhFdrvjnj0-QuE","audience":"${process.env.AUTH0_AUDIENCE}","grant_type":"client_credentials"}` };
 
+     request(options, function (error, response, body) {
+         if (error) throw new Error(error);
+
+         var options_roles = { method: 'GET',
+             url: 'https://echoescsuc.eu.auth0.com/api/v2/users/' + req.params.user + '/roles',
+             headers: { authorization: 'Bearer '+ JSON.parse(body)['access_token'] } };
+
+         request(options_roles, function (error, response, body) {
+             if (error) throw new Error(error);
+	     console.log(body)
+	     res.json(body);
+         });
+     });
+});
 /****************************************************************/
 
 app.get('/*', function(req, res) {

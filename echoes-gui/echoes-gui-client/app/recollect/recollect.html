@@ -153,12 +153,21 @@
                     required.</p>
             </div>
 
-            <!-- PROVIDER -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.provider.$pristine
-             || userForm.provider.$invalid && userForm.provider.$error.pattern || userForm.provider.$invalid && userForm.provider.$dirty}">
-                <label>provider*</label>
-                <input type="text" name="provider" class="form-control" ng-model="model.provider" required>
+	    <!-- PROVIDER -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.provider.$invalid && userForm.provider.$pristine }">
+                <label>data provider*</label>
+                <select name="provider" class="form-control" ng-model="model.provider"
+                        ng-options="value for value in options.provider" required></select>
                 <p ng-show="userForm.provider.$invalid && userForm.provider.$error.required" class="help-block">provider is
+                    required.</p>
+            </div>
+
+            <!-- DATA PROVIDER -->
+            <div class="form-group" ng-class="{ 'has-error' : userForm.dataProvider.$invalid && userForm.dataProvider.$pristine }">
+                <label>data provider*</label>
+                <select name="dataProvider" class="form-control" ng-model="model.dataProvider"
+                        ng-options="value for value in options.dataProvider" required></select>
+                <p ng-show="userForm.dataProvider.$invalid && userForm.dataProvider.$error.required" class="help-block">dataprovider is
                     required.</p>
             </div>
 
