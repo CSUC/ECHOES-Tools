@@ -14,12 +14,47 @@
         }
     }
 
-    navbarController.$inject = ['authService'];
+    navbarController.$inject = ['authService', '$scope', '$log', 'restApi'];
 
-    function navbarController(authService) {
+    function navbarController(authService, $scope, $log, restApi) {
 
         var vm = this;
         vm.auth = authService;
-    }
+        vm.profile;
+        vm.isAdmin = false;
 
+        if (authService.isAuthenticated()) {
+            if (authService.getCachedProfile()) {
+                restApi.getRoles({
+                    user: authService.getCachedProfile().sub
+                }).then(function (_data) {
+                    console.log("ROLES:", _data)
+                    angular.forEach(angular.fromJson(_data.data), function (role) {
+                        console.log("ROLE:", role);
+                        if (role['name'] == 'ADMIN') {
+                            vm.isAdmin = true;
+                        }
+                    });
+                }).catch(function (_data) {
+                    console.log(_data);
+                });
+            } else {
+                authService.getProfile(function (err, profile) {
+                    restApi.getRoles({
+                        user: profile.sub
+                    }).then(function (_data) {
+                        console.log("ROLES:", _data)
+                        angular.forEach(angular.fromJson(_data.data), function (role) {
+                            console.log("ROLE:", role);
+                            if (role['name'] == 'ADMIN') {
+                                vm.isAdmin = true;
+                            }
+                        });
+                    }).catch(function (_data) {
+                        console.log(_data);
+                    });
+                });
+            }
+        }
+    }
 })();

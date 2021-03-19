@@ -24,14 +24,38 @@
     vm.page = $stateParams.page;
     vm.count = $stateParams.count;
 
+    vm.isAdmin = false;
+
     if (authService.getCachedProfile()) {
       vm.profile = authService.getCachedProfile();
       run(vm.page, vm.count)
+      restApi.getRoles({
+        user: vm.profile.sub
+      }).then(function (_data) {
+        angular.forEach(angular.fromJson(_data.data), function (role) {
+          if (role['name'] == 'ADMIN') {
+            vm.isAdmin = true;
+          }
+        });
+      }).catch(function (_data) {
+        console.log(_data);
+      });
     } else {
       authService.getProfile(function (err, profile) {
         vm.profile = profile;
         $scope.$apply();
         run(vm.page, vm.count)
+        restApi.getRoles({
+          user: vm.profile.sub
+        }).then(function (_data) {
+          angular.forEach(angular.fromJson(_data.data), function (role) {
+            if (role['name'] == 'ADMIN') {
+              vm.isAdmin = true;
+            }
+          });
+        }).catch(function (_data) {
+          console.log(_data);
+        });
       });
     }
 
@@ -125,9 +149,11 @@
 
               $scope.options = {
                 endpoints: [
-                  "http://blazegraph.test.csuc.cat/namespace/test/sparql"
+                  "http://blazegraph.test.csuc.cat/namespace/test/sparql",
+                  "http://blazegraph.test.csuc.cat/namespace/echoes_quads/sparql"
                 ],
-                types: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"]
+                types: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
+                contextUri: ["vg:erfgoed","vg:tresoar","vg:gencat","vg:test"]
               }
 
               $scope.model = {};

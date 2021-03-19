@@ -128,7 +128,9 @@
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
                             format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
                             edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"],
-                            properties: ["dataProvider", "language", "rights"],
+                            provider: ["Erfgoed", "Tresoar", "Gencat"],
+                            dataProvider: ["Erfgoed", "Tresoar", "Gencat"],
+                            properties: ["language", "rights"],
                             types: ["oai", "url", "file"]
                         };
 
@@ -142,6 +144,7 @@
 
                                 Object.assign(properties, { edmType : $scope.model.edmType});
                                 Object.assign(properties, { provider : $scope.model.provider});
+                                Object.assign(properties, { dataProvider : $scope.model.dataProvider});
 
                                 $scope.properties.forEach(function(value, index) {
                                     if(value.key != null && value.value != null){
