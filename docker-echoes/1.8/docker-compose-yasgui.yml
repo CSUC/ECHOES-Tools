@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  yasgui:
+    build:
+      context: ./yasgui
+      dockerfile: Dockerfile
+    image: 'echoes/yasgui:4.2.8'
+    container_name: yasgui
+    environment:
+      DEFAULT_SPARQL_ENDPOINT: 'http://blazegraph.test.csuc.cat/namespace/echoes_quads/sparql'
+    ports:
+      - '3000:80'

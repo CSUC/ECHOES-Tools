@@ -1,0 +1,20 @@
+version: '3.9'
+services:  
+  mongodb:
+    image: 'mongo:latest'
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - '27017-27019:27017-27019'
+    volumes:
+      - /tmp/data:/data/db:rw
+  echoes:
+    build:
+      context: ./echoes-tools
+      dockerfile: Dockerfile
+    image: 'echoes/echoes-tools:1.8'
+    container_name: echoes-tools
+    volumes:
+      - ./data:/tmp/data:rw
+    depends_on:
+      - mongodb

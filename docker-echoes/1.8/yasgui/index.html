@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://unpkg.com/@triply/yasgui@4.2.8/build/yasgui.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/@triply/yasgui@4.2.8/build/yasgui.min.js"></script>
+</head>
+<body>
+  <div id="yasgui"></div>
+  <script>
+    const yasgui = new Yasgui(document.getElementById("yasgui"), {
+      requestConfig:{endpoint:"http://example.com/sparql"} // default SPARQL endpoint
+      ,copyEndpointOnNewTab: false,
+  });
+</script>
+</body>
+</html>
