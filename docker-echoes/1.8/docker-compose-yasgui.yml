@@ -7,6 +7,6 @@ services:
     image: 'echoes/yasgui:4.2.8'
     container_name: yasgui
     environment:
-      DEFAULT_SPARQL_ENDPOINT: 'http://blazegraph.test.csuc.cat/namespace/echoes_quads/sparql'
+      DEFAULT_SPARQL_ENDPOINT: '${DEFAULT_SPARQL_ENDPOINT}'
     ports:
-      - '3000:80'
+      - '${EXPOSE_YASGUI_PORT}:80'

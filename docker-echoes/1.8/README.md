@@ -1,3 +1,7 @@
+## SET ENVIRONMENT
+```
+cp .env.example .env
+```
 ## RUN ECHOES
 ```
 docker-compose -f docker-compose-echoes.yml run -d echoes

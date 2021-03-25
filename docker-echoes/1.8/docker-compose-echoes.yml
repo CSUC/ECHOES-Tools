@@ -5,9 +5,9 @@ services:
     container_name: mongodb
     restart: unless-stopped
     ports:
-      - '27017-27019:27017-27019'
+      - '${EXPOSE_MONGODB_PORT}-27019:27017-27019'
     volumes:
-      - /tmp/data:/data/db:rw
+      - ${MONGODB_DATA}:/data/db:rw
   echoes:
     build:
       context: ./echoes-tools
@@ -15,6 +15,6 @@ services:
     image: 'echoes/echoes-tools:1.8'
     container_name: echoes-tools
     volumes:
-      - ./data:/tmp/data:rw
+      - ${ECHOES_DATA}:/tmp/data:rw
     depends_on:
       - mongodb

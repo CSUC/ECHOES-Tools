@@ -6,8 +6,8 @@ services:
     container_name: namenode
     restart: always
     ports:
-      - 9870:9870
-      - 9000:9000
+      - ${EXPOSE_NAMENODE_UI_PORT}:9870
+      - ${EXPOSE_NAMENODE_MASTER_PORT}:9000
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
     environment:
