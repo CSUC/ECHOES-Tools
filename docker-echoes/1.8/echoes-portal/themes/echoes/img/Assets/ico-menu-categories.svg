@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="15px" viewBox="0 0 23 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>ico menu categories</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="Explore-results-list-Real" transform="translate(-1050.000000, -351.000000)" stroke="#80CFE3">
+            <g id="Menu-categorias-body" transform="translate(1027.000000, 335.000000)">
+                <g id="menu-categories" transform="translate(24.000000, 17.000000)">
+                    <g id="Line">
+                        <path d="M0,0.8 L20.9101563,0.8" stroke-width="2"></path>
+                        <path d="M0,6.8 L20.9101563,6.8" stroke-width="2"></path>
+                        <path d="M0,12.8 L20.9101563,12.8" stroke-width="2"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

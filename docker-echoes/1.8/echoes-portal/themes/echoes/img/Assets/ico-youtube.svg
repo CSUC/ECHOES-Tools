@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="15px" viewBox="0 0 20 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>ico-youtube</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0 0.000535714286 19.421 0.000535714286 19.421 14.7241071 0 14.7241071"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="footer-real" transform="translate(-1254.000000, -38.000000)">
+            <g id="ico-youtube" transform="translate(1254.000000, 38.000000)">
+                <g id="Group-3">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M12.6597,7.65803571 L7.3487,10.3719643 C7.2077,10.44375 7.0437,10.3344643 7.0437,10.1651786 L7.0437,4.56803571 C7.0437,4.39875 7.2117,4.28732143 7.3537,4.36446429 L12.6647,7.24767857 C12.8217,7.33339286 12.8197,7.57660714 12.6597,7.65803571 M15.3877,0.000535714286 L4.0337,0.000535714286 C1.8057,0.000535714286 -0.0003,1.93446429 -0.0003,4.32160714 L-0.0003,10.4030357 C-0.0003,12.7901786 1.8057,14.7241071 4.0337,14.7241071 L15.3877,14.7241071 C17.6147,14.7241071 19.4217,12.7901786 19.4217,10.4030357 L19.4217,4.32160714 C19.4217,1.93446429 17.6147,0.000535714286 15.3877,0.000535714286" id="Fill-1" fill="#CBCBCB" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

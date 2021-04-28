@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    padding: 10px;
+    background: #ecf0f1;
+    font-family: helvetica, sans-serif;
+    font-weight: 200;
+}
+.btn {
+    border: none;
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 3px;
+    font-family: Arial;
+    color: #ffffff;
+    padding: 5px 10px 5px 10px;
+    text-decoration: none;
+    margin: 5px;
+}
+
+.active {
+    background: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+.box {
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    padding: 10px;
+    height: 100px;
+    width: 30%;
+    float: left;
+    margin: 1%;
+    text-align: center;
+    border-radius: 3px;
+    color: #fff;
+}
+.spacer {
+    clear: both;
+    height: 20px;
+}

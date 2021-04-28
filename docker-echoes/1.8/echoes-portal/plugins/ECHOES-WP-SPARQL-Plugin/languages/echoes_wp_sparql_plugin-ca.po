@@ -1,0 +1,540 @@
+# Copyright (C) 2019 ECHOES WP SPARQL Plugin
+# This file is distributed under the same license as the ECHOES WP SPARQL Plugin package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ECHOES WP SPARQL Plugin 1.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/"
+"echoes_wp_sparql_plugin\n"
+"POT-Creation-Date: 2019-06-26 11:58:54+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-06-26 14:06+0200\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ca\n"
+
+#: app/controllers/agents_controller.php:241
+msgid "Details of Person"
+msgstr "Detalls de la persona"
+
+#. Plugin Name of the plugin/theme
+msgid "ECHOES WP SPARQL Plugin"
+msgstr "ECHOES WP SPARQL Plugin"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/CSUC/ECHOES-WP-SPARQL-Plugin"
+msgstr "https://github.com/CSUC/ECHOES-WP-SPARQL-Plugin"
+
+#. Description of the plugin/theme
+msgid ""
+"Queries a SPARQL endpoint based on EDM RDF metadata to show different "
+"visualizations"
+msgstr ""
+"Consulta un endpoint SPARQL basat en metadades EDM RDF per a mostrar "
+"diferents visualitzacions."
+
+#. Author of the plugin/theme
+msgid "CSUC"
+msgstr "CSUC"
+
+#. Author URI of the plugin/theme
+msgid "http://www.csuc.cat/en"
+msgstr "http://www.csuc.cat/en"
+
+#### PAGES ####
+##. Agents 
+#. Nothing to say 
+msgid "Full list of people"
+msgstr "Llistat complet de persones" 
+
+#. TRANSLATORS: plural form for group of humans ("%d" will be substituted by
+#. a number at runtime) 
+msgid "%s People"
+msgstr "%s persones" 
+
+#. TRANSLATORS: singular form for group of humans ("%d" will be substituted by
+#. a number at runtime) 
+msgid "%s Person"
+msgstr "%s persona"
+
+#. Searching by label 
+msgid "Searching by"
+msgstr "Buscant per"
+
+#. Gender 
+msgid "Gender" 
+msgstr "Gènere" 
+
+#. Profession or ocupation
+msgid "Profession or Occupation"
+msgstr "Professió o ocupació" 
+
+#. Birth 
+msgid "Birth" 
+msgstr "Naixement" 
+
+#. helper/details_helper.php
+#: TRANSLATORS: An example of a sentence would be: 
+#: "Date of birth: 13/08/1955 *in* Barcelona"  
+msgid "in" 
+msgstr "a"
+
+#. Death
+msgid "Death"
+msgstr "Mort" 
+
+#. Relations
+#: views/providers/details.php
+msgid "Relations"
+msgstr "Relacions" 
+
+#. Digital objects
+msgid "Digital objects" 
+msgstr "Objectes digitals" 
+
+#. Show more... label 
+msgid "Show more..."  
+msgstr "Ensenya més..." 
+
+#. TRANSLATORS: Meaning "Places Known".
+msgid "Places Met" 
+msgstr "Llocs coneguts" 
+
+#. Concepts 
+#: views/providers/details.php
+msgid "Concepts" 
+msgstr "Conceptes" 
+
+#. Places
+#: views/providers/details.php
+msgid "Places"
+msgstr "Llocs" 
+
+#. TRANSLATORS: Meaning "Day of the month" 
+#: views/providers/details.php
+msgid "Dates" 
+msgstr "Dates" 
+
+#. Fullscreen mode
+#: views/providers/details.php
+msgid "Go fullscreen" 
+msgstr "Pantalla completa"
+
+#. TRANSLATORS: "%1$i" and "%2$i" will both
+#. be substituted by integers at runtime 
+#: helpers/pagination_helper.php 
+msgid "Page %1$d of %2$d"
+msgstr "Pàgina %1$d de %2$d"
+
+msgid "Date Of Birth"
+msgstr "Data de naixement" 
+
+msgid "Date Of Death"
+msgstr "Data de defunció" 
+
+#. TRANSLATORS: Role of a concept (?)
+msgid "Role"
+msgstr "Rol" 
+
+msgid "Digital object"
+msgstr "Objecte digital" 
+
+msgid "Place Of Birth"
+msgstr "Lloc de naixement" 
+
+msgid "Place Of Death"
+msgstr "Lloc de defunció"
+
+#. TRANSLATORS: Meaning "Known places"
+msgid "Met Place" 
+msgstr "Lloc conegut" 
+
+#: helper/details_helper.php
+msgid "First name"
+msgstr "Nom"
+
+#: helper/details_helper.php 
+msgid "Last name"
+msgstr "Cognom"
+
+#: helper/details_helper.php 
+msgid "Search"
+msgstr "Buscar" 
+
+#. TRANSLATORS: Meaning "extract data" 
+#: helper/details_helper.php
+msgid "Get Data"
+msgstr "Extreure dades" 
+
+#: helper/icons_helper.php 
+msgid "TEXT"
+msgstr "TEXT" 
+
+#: helper/icons_helper.php 
+msgid "IMAGE"
+msgstr "IMATGE" 
+
+#: helper/icons_helper.php 
+msgid "SOUND"
+msgstr "SO" 
+
+#: helper/icons_helper.php 
+msgid "VIDEO"
+msgstr "VÍDEO" 
+
+#: helper/icons_helper.php 
+msgid "3D"
+msgstr "3D" 
+
+#: helper/icons_helper.php 
+msgid "Met this place"
+msgstr "Coneix aquest lloc" 
+
+#: helper/icons_helper.php 
+msgid "Was born in this place"
+msgstr "Va néixer en aquest lloc" 
+
+#: helper/icons_helper.php 
+msgid "Died in this place"
+msgstr "Va morir en aquest lloc" 
+
+#: helper/icons_helper.php 
+msgid "People's relation to Places"
+msgstr "Relació entre persones i llocs" 
+
+#: helper/icons_helper.php 
+msgid "Digital objects types" 
+msgstr "Tipus d'objectes digitals" 
+
+#: helper/icons_helper.php 
+msgid "Man" 
+msgstr "Home" 
+
+#: helper/icons_helper.php 
+msgid "Woman" 
+msgstr "Dona" 
+
+#: helper/icons_helper.php 
+msgid "Unknown"
+msgstr "Desconegut" 
+
+#: helper/icons_helper.php 
+msgid "Time"
+msgstr "Temps"
+
+#: helper/details_helper 
+msgid "Download" 
+msgstr "Descarregar"  
+
+#: helper/details_helper 
+msgid "View" 
+msgstr "Veure" 
+
+#: helper/details_helper
+msgid "Binary" 
+msgstr "Binari" 
+
+#### CONCEPTS 
+#. TRANSLATORS: singular form for concept ("%d" will be substituted by
+#. a number at runtime) 
+#: controller
+msgid "%d Concept"
+msgstr "%d Concepte" 
+
+#. TRANSLATORS: plural form for concept ("%d" will be substituted by
+#. a number at runtime) 
+#: controller
+msgid "%d Concepts"
+msgstr "%d Conceptes"
+
+#: controller
+msgid "List of Concepts"
+msgstr "Llista de conceptes" 
+
+#: controller 
+msgid "Digital Objects related"
+msgstr "Objectes digitals relacionats"
+
+#. TRANSLATORS: "%s" will be substituted by a name at runtime 
+#: controller 
+msgid "Concept %s"
+msgstr "Concepte %s" 
+
+#. TRANSLATORS: The complete sentence is: 
+#. "List of Digitals Objects of Concept: 'some_concept_name'"
+#: conceptsses/browse.php
+msgid "List of Digital Objects"
+msgstr "Llista d'objectes digitals" 
+
+#: conceptsses/browse.php
+msgid "of Concept" 
+msgstr "del concepte" 
+
+#: conceptsses/browse.php
+msgid "Refine the results"
+msgstr "Refinar els resultats" 
+
+#: conteptsses/bubble_chart.php 
+msgid "See more detail"
+msgstr "Mostrar més detalls" 
+
+#: conteptsses/bubble_chart.php 
+msgid "Top 10 Concepts Bubblechart"
+msgstr "Top 10 gràfics de dispersió de conceptes" 
+
+#### PLACES 
+#: places/map.php 
+msgid "Shift + Left click"
+msgstr "Shift + Click esquerre" 
+
+#: places/map.php
+msgid "and drag the mouse to select the area to load the places and zoom in."
+msgstr "i arrastra el ratolí per seleccionar l'àrea en què es carregaran les localitzacions." 
+
+#: places/map.php
+msgid "Note: Click the magnifying icon on the map to search for a specific city." 
+msgstr "Nota: Feu clic a la lupa del mapa per buscar una ciutat específica." 
+
+#### PROVIDERS 
+#: controller
+msgid "%s Digital Object" 
+msgstr "%s Objecte Digital" 
+
+#: controller
+msgid "%s Digital Objects" 
+msgstr "%s Objectes Digitals" 
+
+#: controller 
+msgid "Digital Objects"
+msgstr "Objectes Digitals"
+
+#: controller 
+msgid "Details of Digital Object"
+msgstr "Detalls de l'objecte digital"
+
+#: views/providers/details.php
+msgid "Identifier(s)"
+msgstr "Identificador(s)"
+
+#: views/providers/details.php
+msgid "Alternative name(s)"
+msgstr "Nom(s) alternatiu(s)"
+
+#: views/providers/details.php
+msgid "Description"
+msgstr "Descripció"
+
+#: views/providers/details.php
+msgid "Type"
+msgstr "Tipus"
+
+#: views/providers/details.php
+msgid "Language"
+msgstr "Llengua"
+
+#: views/providers/details.php
+msgid "Creator"
+msgstr "Creador"
+
+#: views/providers/details.php
+msgid "Publisher(s)"
+msgstr "Editor(s)"
+
+#: views/providers/details.php
+msgid "Format"
+msgstr "Format"
+
+#: views/providers/details.php
+msgid "Rights"
+msgstr "Drets"
+
+#: views/providers/details.php
+msgid "Source"
+msgstr "Font"
+
+#: views/providers/details.php
+# msgid "Relations"
+# msgstr "Relacions"
+
+#: views/providers/details.php
+# msgid "Places"
+# msgstr "Llocs"
+
+#: views/providers/details.php
+# msgid "Dates"
+# msgstr "Dates"
+
+#: views/providers/details.php
+# msgid "Concepts"
+# msgstr "Conceptes"
+
+#: views/providers/details.php
+msgid "People"
+msgstr "Persones"
+
+#: controller
+msgid "Historical News" 
+msgstr "Notícies històriques" 
+
+#: controller
+msgid "TimeSpan" 
+msgstr "Línia temporal" 
+
+#: controller
+msgid "Concept" 
+msgstr "Concepte" 
+
+#: controller
+msgid "Place" 
+msgstr "Lloc" 
+
+#### TIMESPANS 
+#: controller
+msgid "TimeSpans"
+msgstr "Línies de temps" 
+
+#: controller
+msgid "%d TimeSpan"
+msgstr "%d Línia de temps"
+
+#: controller
+msgid "%d TimeSpans"
+msgstr "%d Línies de temps" 
+
+#. TRANSLATORS: Already defined 
+#: controller
+#: msgid "Digital Objects related"
+#: msgstr "Objectes digitals relacionats" 
+
+#. TRANSLATORS: %s will be substituted by a name on runtime
+#: controller
+msgid "TimeSpan %s"
+msgstr "Línia de temps %s"
+
+#: views/timespans/heatmap.php
+msgid "Explore period of time"
+msgstr "Explorar període de temps"
+
+#. TRANSLATORS: example: from 1999 "To" 2013
+#: views/timespans/heatmap.php
+msgid "To"
+msgstr ""
+
+#### OTHERS 
+#: views/general/search.php 
+#: views/gemeral/search_timespans.php
+#: views/places/search.php
+msgid "There are no results"
+msgstr "No s'han trobat resultats"
+
+#. Facet helper
+#: app/helpers/facet_helper.php 
+msgid "Institution"
+msgstr "Institució"
+
+#: app/helpers/facet_helper.php 
+msgid "Year of birth"
+msgstr "Data de naixament"
+
+#: app/helpers/facet_helper.php 
+msgid "Name"
+msgstr "Nom"
+
+#: app/controllers/providers_controller.php
+msgid "Number of images"
+msgstr "Nombre d'imatges"
+
+#: app/controllers/providers_controller.php 
+msgid "Searching place"
+msgstr "Buscant per lloc"
+
+#. Map 
+#: app/views/map.php
+msgid "Aggregation"
+msgstr "Agregació"
+
+## New time related translations  
+#: app/controllers/timespans_controller.php
+msgid "Searching by year"
+msgstr "Cercant per any"
+
+#: app/controllers/timespans_controller.php
+msgid "Searching by years"
+msgstr "Cercant per anys"
+
+#: app/helpers/facet_helper.php
+msgid "Year of Digital Object"
+msgstr "Any de l'objecte digital"
+
+#: app/views/timespan/heatmap.php
+msgid "Filter by"
+msgstr "Filtrant per"
+
+#. TRANSLATORS: Initial letter for each day of the week starting on Sunday
+#: app/views/timespan/heatmap.php
+msgid "SMTWTFS"
+msgstr "DDDDDDD"
+
+#: app/views/timespan/heatmap.php
+msgid "Total"
+msgstr "Total"
+
+#: app/views/timespan/heatmap.php
+msgid "Select to view"
+msgstr "Selecciona per veure"
+
+#: app/helpers/details_helper.php 
+msgid "Year"
+msgstr "Any"
+
+#: app/views/timespan/heatmap.php
+msgid "Jan"
+msgstr "Gen"
+
+#: app/views/timespan/heatmap.php
+msgid "Feb"
+msgstr "Feb"
+
+#: app/views/timespan/heatmap.php
+msgid "Mar"
+msgstr "Mar"
+
+#: app/views/timespan/heatmap.php
+msgid "Apr"
+msgstr "Abr"
+
+#: app/views/timespan/heatmap.php
+msgid "May"
+msgstr "Mai"
+
+#: app/views/timespan/heatmap.php
+msgid "Jun"
+msgstr "Jun"
+
+#: app/views/timespan/heatmap.php
+msgid "Jul"
+msgstr "Jul"
+
+#: app/views/timespan/heatmap.php
+msgid "Aug"
+msgstr "Ago"
+
+#: app/views/timespan/heatmap.php
+msgid "Sep"
+msgstr "Set"
+
+#: app/views/timespan/heatmap.php
+msgid "Oct"
+msgstr "Oct"
+
+#: app/views/timespan/heatmap.php
+msgid "Nov"
+msgstr "Nov"
+
+#: app/views/timespan/heatmap.php
+msgid "Dec"
+msgstr "Dec"
+

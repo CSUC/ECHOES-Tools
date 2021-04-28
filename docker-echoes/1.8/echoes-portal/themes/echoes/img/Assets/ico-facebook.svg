@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="19px" viewBox="0 0 8 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>ico-facebook</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.00016 0 7.84 0 7.84 18.9990048 0.00016 18.9990048"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="footer-real" transform="translate(-1150.000000, -34.000000)">
+            <g id="ico-facebook" transform="translate(1150.000000, 34.000000)">
+                <g id="Group-3">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M1.69456,3.67957619 L1.69456,6.29524286 L0.00016,6.29524286 L0.00016,9.49357619 L1.69456,9.49357619 L1.69456,18.9990048 L5.17616,18.9990048 L5.17616,9.49357619 L7.51136,9.49357619 C7.51136,9.49357619 7.72976,7.96000476 7.83616,6.28348095 L5.18816,6.28348095 L5.18816,4.09667143 C5.18816,3.77005238 5.56816,3.32943333 5.94336,3.32943333 L7.84016,3.32943333 L7.84016,-9.04761905e-05 L5.26096,-9.04761905e-05 C1.60896,-9.04761905e-05 1.69456,3.2018619 1.69456,3.67957619" id="Fill-1" fill="#CBCBCB" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

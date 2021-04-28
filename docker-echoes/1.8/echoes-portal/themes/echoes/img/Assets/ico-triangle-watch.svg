@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="13px" viewBox="0 0 11 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Triangle-watch</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="header-real" transform="translate(-1041.000000, -33.000000)" fill="#F3106A">
+            <g id="Triangle-watch" transform="translate(1041.227273, 32.500000)">
+                <polygon id="Triangle" transform="translate(5.363636, 7.000000) rotate(-270.000000) translate(-5.363636, -7.000000) " points="5.36363636 2 11.7272727 12 -1 12"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

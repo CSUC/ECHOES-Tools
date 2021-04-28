@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>ico-people</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Home-Real" transform="translate(-947.000000, -759.000000)" fill="#FFFFFF">
+            <g id="buscadores" transform="translate(150.000000, 744.000000)">
+                <g id="People" transform="translate(782.000000, 0.000000)">
+                    <g id="ico-people" transform="translate(15.000000, 15.000000)">
+                        <path d="M12.5,12.5 C9.592,12.5 7.227,10.134 7.227,7.227 C7.227,4.319 9.592,1.953 12.5,1.953 C15.407,1.953 17.773,4.319 17.773,7.227 C17.773,10.134 15.407,12.5 12.5,12.5 M21.339,16.161 C19.977,14.8 18.357,13.792 16.589,13.182 C18.482,11.877 19.727,9.695 19.727,7.227 C19.727,3.242 16.485,0 12.5,0 C8.516,0 5.273,3.242 5.273,7.227 C5.273,9.695 6.518,11.877 8.411,13.182 C6.643,13.792 5.022,14.8 3.661,16.161 C1.3,18.522 0,21.661 0,25 L1.953,25 C1.953,19.185 6.685,14.453 12.5,14.453 C18.315,14.453 23.047,19.185 23.047,25 L25,25 C25,21.661 23.699,18.522 21.339,16.161" id="Fill-1"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

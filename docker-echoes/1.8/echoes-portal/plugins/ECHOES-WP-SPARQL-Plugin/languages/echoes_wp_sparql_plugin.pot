@@ -1,0 +1,530 @@
+# Copyright (C) 2019 ECHOES WP SPARQL Plugin
+# This file is distributed under the same license as the ECHOES WP SPARQL Plugin package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ECHOES WP SPARQL Plugin 1.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/echoes_wp_sparql_plugin\n"
+"POT-Creation-Date: 2019-06-26 11:58:54+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: app/controllers/agents_controller.php:241
+msgid "Details of Person"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "ECHOES WP SPARQL Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/CSUC/ECHOES-WP-SPARQL-Plugin"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Queries a SPARQL endpoint based on EDM RDF metadata to show different "
+"visualizations"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "CSUC"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.csuc.cat/en"
+msgstr ""
+
+#### PAGES ####
+##. Agents 
+
+#. Nothing to say 
+msgid "Full list of people"
+msgstr "" 
+
+#. TRANSLATORS: plural form for group of humans ("%d" will be substituted by
+#. a number at runtime) 
+msgid "%s People"
+msgstr "" 
+
+#. TRANSLATORS: singular form for group of humans ("%d" will be substituted by
+#. a number at runtime) 
+msgid "%s Person"
+msgstr ""
+
+#. Searching by label 
+msgid "Searching by"
+msgstr ""
+
+#. Gender 
+msgid "Gender" 
+msgstr "" 
+
+#. Profession or ocupation
+msgid "Profession or Occupation"
+msgstr "" 
+
+#. Birth 
+msgid "Birth" 
+msgstr "" 
+
+#. helper/details_helper.php
+#: TRANSLATORS: An example of a sentence would be: 
+#: "Date of birth: 13/08/1955 *in* Barcelona"  
+msgid "in" 
+msgstr ""
+
+#. Death
+msgid "Death"
+msgstr "" 
+
+#. Relations
+msgid "Relations"
+msgstr "" 
+
+#. Digital objects
+msgid "Digital objects" 
+msgstr "" 
+
+#. Show more... label 
+msgid "Show more..."  
+msgstr "" 
+
+#. TRANSLATORS: Meaning "Places Known".
+msgid "Places Met" 
+msgstr "" 
+
+#. Concepts 
+msgid "Concepts" 
+msgstr "" 
+
+#. Places
+msgid "Places"
+msgstr "" 
+
+#. TRANSLATORS: Meaning "Day of the month" 
+msgid "Dates" 
+msgstr "" 
+
+#. Fullscreen mode
+msgid "Go fullscreen" 
+msgstr ""
+
+#. TRANSLATORS: "%1$i" and "%2$i" will both
+#. be substituted by integers at runtime 
+#: helpers/pagination_helper.php 
+msgid "Page %1$d of %2$d"
+msgstr ""
+
+msgid "Date Of Birth"
+msgstr "" 
+
+msgid "Date Of Death"
+msgstr "" 
+
+#. TRANSLATORS: Role of a concept (?)
+msgid "Role"
+msgstr "" 
+
+msgid "Digital object"
+msgstr "" 
+
+msgid "Place Of Birth"
+msgstr "" 
+
+msgid "Place Of Death" 
+msgstr "" 
+
+#. TRANSLATORS: Meaning "Known places"
+msgid "Met Place" 
+msgstr "" 
+
+##. HELPERS
+#: helper/details_helper.php
+msgid "First name"
+msgstr ""
+
+#: helper/details_helper.php 
+msgid "Last name"
+msgstr ""
+
+#: helper/details_helper.php 
+msgid "Search"
+msgstr "" 
+
+#. TRANSLATORS: Meaning "extract data" 
+#: helper/details_helper.php
+msgid "Get Data"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "TEXT"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "IMAGE"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "SOUND"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "VIDEO"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "3D"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Met this place"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Was born in this place"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Died in this place"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "People's relation to Places"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Digital objects types" 
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Man" 
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Woman" 
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Unknown"
+msgstr "" 
+
+#: helper/icons_helper.php 
+msgid "Time"
+msgstr ""
+
+#: helper/details_helper 
+msgid "Download" 
+msgstr ""  
+
+#: helper/details_helper 
+msgid "View" 
+msgstr "" 
+
+#: helper/details_helper
+msgid "Binary" 
+msgstr "" 
+
+#### CONCEPTS 
+#. TRANSLATORS: singular form for concept ("%d" will be substituted by
+#. a number at runtime) 
+#: controller
+msgid "%d Concept"
+msgstr "" 
+
+#. TRANSLATORS: plural form for concept ("%d" will be substituted by
+#. a number at runtime) 
+#: controller
+msgid "%d Concepts"
+msgstr ""
+
+#: controller
+msgid "List of Concepts"
+msgstr "" 
+
+#: controller 
+msgid "Digital Objects related"
+msgstr ""
+
+#. TRANSLATORS: "%s" will be substituted by a name at runtime 
+#: controller 
+msgid "Concept %s"
+msgstr "" 
+
+#. TRANSLATORS: The complete sentence is: 
+#. "List of Digitals Objects of Concept: 'some_concept_name'"
+#: conceptsses/browse.php
+msgid "List of Digital Objects"
+msgstr "" 
+
+#: conceptsses/browse.php
+msgid "of Concept" 
+msgstr "" 
+
+#: conceptsses/browse.php
+msgid "Refine the results"
+msgstr "" 
+
+#: conteptsses/bubble_chart.php 
+msgid "See more detail"
+msgstr "" 
+
+#: conteptsses/bubble_chart.php 
+msgid "Top 10 Concepts Bubblechart"
+msgstr "" 
+
+#### PLACES 
+#: places/map.php 
+msgid "Shift + Left click"
+msgstr "" 
+
+#: places/map.php
+msgid "and drag the mouse to select the area to load the places and zoom in."
+msgstr "" 
+
+#: places/map.php
+msgid "Note: Click the magnifying icon on the map to search for a specific city." 
+msgstr "" 
+
+#### PROVIDERS 
+#: controller
+msgid "%s Digital Object" 
+msgstr "" 
+
+#: controller
+msgid "%s Digital Objects" 
+msgstr "" 
+
+#: controller 
+msgid "Digital Objects"
+msgstr ""
+
+#: controller 
+msgid "Details of Digital Object"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Identifier(s)"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Alternative name(s)"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Description"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Type"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Language"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Creator"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Publisher(s)"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Format"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Rights"
+msgstr ""
+
+#: views/providers/details.php
+msgid "Source"
+msgstr ""
+
+#: views/providers/details.php
+# msgid "Relations"
+# msgstr ""
+
+#: views/providers/details.php
+# msgid "Places"
+# msgstr ""
+
+#: views/providers/details.php
+# msgid "Dates"
+# msgstr ""
+
+#: views/providers/details.php
+# msgid "Concepts"
+# msgstr ""
+
+#: views/providers/details.php
+msgid "People"
+msgstr ""
+
+#: controller
+msgid "Historical News" 
+msgstr "" 
+
+#: controller
+msgid "TimeSpan" 
+msgstr "" 
+
+#: controller
+msgid "Concept" 
+msgstr "" 
+
+#: controller
+msgid "Place" 
+msgstr "" 
+
+#### TIMESPANS 
+#: controller
+msgid "TimeSpans"
+msgstr "" 
+
+#: controller
+msgid "%d TimeSpan"
+msgstr ""
+
+#: controller
+msgid "%d TimeSpans"
+msgstr "" 
+
+#: controller
+msgid "Digital Objects related"
+msgstr "" 
+
+#. TRANSLATORS: %s will be substituted by a name on runtime
+#: controller
+msgid "TimeSpan %s"
+msgstr ""
+
+#: views/timespans/heatmap.php
+msgid "Explore period of time"
+msgstr ""
+
+#. TRANSLATORS: example: from 1999 "To" 2013
+#: views/timespans/heatmap.php
+msgid "To"
+msgstr ""
+
+
+#### OTHERS 
+#: views/general/search.php 
+#: views/gemeral/search_timespans.php
+#: views/places/search.php
+msgid "There are no results"
+msgstr ""
+
+#. Facet helper
+#: app/helpers/facet_helper.php 
+msgid "Institution"
+msgstr ""
+
+#: app/helpers/facet_helper.php 
+msgid "Year of birth"
+msgstr ""
+
+#: app/helpers/facet_helper.php 
+msgid "Name"
+msgstr "" 
+
+#: app/controllers/providers_controller.php
+msgid "Number of images"
+msgstr ""
+
+#: app/controllers/providers_controller.php 
+msgid "Searching place"
+msgstr ""
+
+#. Map 
+#: app/views/map.php
+msgid "Aggregation"
+msgstr ""
+
+## New time related translations  
+#: app/controllers/timespans_controller.php
+msgid "Searching by year"
+msgstr ""
+
+#: app/controllers/timespans_controller.php
+msgid "Searching by years"
+msgstr ""
+
+#: app/helpers/facet_helper.php
+msgid "Year of Digital Object"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Filter by"
+msgstr ""
+
+#. TRANSLATORS: Initial letter for each day of the week starting on Sunday
+#: app/views/timespan/heatmap.php
+msgid "SMTWTFS"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Total"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Select to view"
+msgstr ""
+
+#: app/helpers/details_helper.php 
+msgid "Year"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Jan"
+msgstr "" 
+
+#: app/views/timespan/heatmap.php
+msgid "Feb"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Mar"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Apr"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "May"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Jun"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Jul"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Aug"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Sep"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Oct"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Nov"
+msgstr ""
+
+#: app/views/timespan/heatmap.php
+msgid "Dec"
+msgstr ""
