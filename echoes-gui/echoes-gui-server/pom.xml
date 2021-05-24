@@ -190,7 +190,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-nosql</artifactId>
-            <version>9.3.25.v20180904</version>
+            <version>11.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.csuc</groupId>
