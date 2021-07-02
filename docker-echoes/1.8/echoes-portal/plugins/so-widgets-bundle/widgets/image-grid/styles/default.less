@@ -1,0 +1,22 @@
+@spacing: default;
+
+.sow-image-grid-wrapper {
+	padding-top: @spacing;
+	line-height: 0;
+	text-align:center;
+
+	.sow-image-grid-image {
+		padding: 0 @spacing @spacing @spacing;
+		display: inline-block;
+
+		> a {
+			display: inline-block;
+		}
+
+		img {
+			opacity: 0;
+			max-width:100%;
+			height:auto;
+		}
+	}
+}

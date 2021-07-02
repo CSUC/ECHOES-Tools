@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1003px" height="1000px" viewBox="0 0 1003 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.1 (15681) - http://www.bohemiancoding.com/sketch -->
+    <title>tabs</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Exportable" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Tabs" sketch:type="MSLayerGroup" transform="translate(0.000000, -119.000000)">
+            <g id="tabs" transform="translate(0.000000, 119.000000)" sketch:type="MSShapeGroup">
+                <rect id="Rectangle-1" stroke="#979797" fill="#5E9FEA" x="0" y="0" width="1003" height="1000"></rect>
+                <path d="M2.00799351,1 C0.899009316,1 0,1.88939268 0,3.00799351 L0,997.205466 C0,998.31445 0.636304917,998.577154 1.40895761,997.804502 L996.804502,2.40895761 C997.582648,1.63081181 997.324067,1 996.205466,1 L2.00799351,1 Z" id="Rectangle-12" fill="#6EAAEF"></path>
+                <g id="Capa_1" transform="translate(277.000000, 331.000000)" fill="#FFFFFF">
+                    <path d="M387.210938,0 L260.15625,0 L223.2,49.275 L190.335938,0 L62.7890625,0 L0,94.1765625 L0,337.5 L450,337.5 L450,84.375 L387.210938,0 L387.210938,0 Z M421.875,309.375 L28.125,309.375 L28.125,102.684375 L77.8359375,28.125 L175.289062,28.125 L231.539062,112.5 L421.875,112.5 L421.875,309.375 L421.875,309.375 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,198 @@
+msgid ""
+msgstr "MIME-Version: 1.0\n"
+
+#. Name.
+msgid "Ultimate Addons for SiteOrigin"
+msgstr ""
+
+#. Short description.
+msgid "An ultimate collection of addons for SiteOrigin. SiteOrigin Widgets Bundle is required."
+msgstr ""
+
+#. Screenshot description.
+msgid "Manage which widgets you want enabled or disabled."
+msgstr ""
+
+#. Found in description header.
+msgid "Addon Widgets Customizations"
+msgstr ""
+
+#. Found in description list item.
+msgid "Tabs Widget - Now you can easily add tabbed content on any page."
+msgstr ""
+
+#. Found in description list item.
+msgid "Toggle Widget - Will help you add content in toggle."
+msgstr ""
+
+#. Found in description list item.
+msgid "Testimonial Widget - Comes with a custom post type (testimonial) with a widget to display testimonials as testimonial grid or testimonial rotator."
+msgstr ""
+
+#. Found in description list item.
+msgid "FAQs Widget - This also comes with a custom post type for faqs and with a widget to display faqs on any page."
+msgstr ""
+
+#. Found in description list item.
+msgid "Service Box Widget- This is for adding nice service boxes or feature boxes to any page you may have icon or image on top or left."
+msgstr ""
+
+#. Found in description list item.
+msgid "Blog Posts Widget- There are currently 2 blog style widgets which you can use to display post loops to any page."
+msgstr ""
+
+#. Found in description list item.
+msgid "Divider Widget - This will help you to add different styles of divider b/w content sections."
+msgstr ""
+
+#. Found in description list item.
+msgid "Spacer Widget - Of-course some times you need a space b/w content sections, so here it is."
+msgstr ""
+
+#. Found in description list item.
+msgid "Team Widget - Display your team members easily with this widget."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "[vimeo https://vimeo.com/134485964]"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Important: You must activate widgets you need to use from Plugins &gt; SiteOrigin Widgets so that they can be available to use.</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "This is an Addon plugin for SiteOrigin Widgets Bundle plugin which will add some (and growing) amazing widgets for you to build up your content pages easily using SiteOrigin page builder. For more info visit <a href=\"http://ingenious-web.com/ultimate-addons-for-siteorigin/\">Ultimate Addons' Page.</a>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "The collection is growing, but here's what we have so far."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Once you enable a widget, you'll be able to use it anywhere standard widgets are used. You can manage your widgets by going to Plugins &gt; SiteOrigin Widgets in your WordPress admin."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Each widget has it's styling options within it same as Siteorigin Widgets."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Special thanks to SiteOrigin for the help in developing this plugin.</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Please Rate this plugin if it's been useful for you and you liked it.</strong>"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Upload and install in the same way you'd install any other plugin."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed bugs as reported by different users."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "New option - Icon right in Service Box"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "New option - Image right alignment in blog list widget"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "New Option - Two column grid in blog list widget"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "New Option - some other little link possibilities to blog widgets."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "New Widget - Team Members widget added."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Changed CSS for grid columns. Old css was still conflicting with themes."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed CSS issues on couple of Widgets."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed couple of small bugs."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Removed Bootstrap dependency"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed JQuery conflict, now using WordPress bundled JQuery."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Added TinyMCE editor to some widgets such as Tabs, toggle"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed some other bugs."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Re-coded all Widgets to utilize SiteoRigin's API more better."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Each Widget now has it's own options, same as SiteOrigin's Widget bundle widgets."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Each Widget now can be styled differently as each one has it's own styling options as well."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Removed Titan Framework Dependency."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Customized bootstrap css used to just use the bootstrap Grid CSS, excluded all other css from Bootstrap css file."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed some small bugs as well."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fatal Error require_once() issue fix from the last update."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Version Issue fix"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "very small fix"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Integrated Widgets Customizations via The Customizer"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed some bugs &amp; issues &amp; cleaned up some files"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Small UI Improvements"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Initial Upload of the plugin"
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "We will add FAQs very soon."
+msgstr ""

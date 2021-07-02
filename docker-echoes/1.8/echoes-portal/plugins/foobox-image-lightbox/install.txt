@@ -1,0 +1,11 @@
+Simple Install
+1. Login to WordPress and go to Plugins > Add New > Upload
+2. Upload foobox-free.zip and activate
+3. FooBox should work out of the box with any linked images
+4. Goto Settings > FooBox Settings to change the default configuration
+
+Manual Install
+1. Upload the foobox-free folder to your /wp-content/plugins/ directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. FooBox should work out of the box with any WordPress Gallery
+4. Goto Settings > FooBox Settings to change the default settings

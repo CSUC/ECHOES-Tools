@@ -1,0 +1,254 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FooBox Free Image Lightbox\n"
+"POT-Creation-Date: 2014-06-24 22:05+0200\n"
+"PO-Revision-Date: 2014-06-25 19:22+0100\n"
+"Last-Translator: Borisa Djuraskovic <borisad@webhostinghub.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: foobox-free.php:85
+msgid "This cannot be turned off in the FREE version"
+msgstr "Ovo ne može da se pokrene u besplatnoj verziji"
+
+#: foobox-free.php:196
+msgid ""
+"Sorry, but you can't run the FREE and PRO version of FooBox at the same time!"
+msgstr "Ne možete da pokrenete besplatnu i Pro verziju FooBoxa u isto vreme!"
+
+#: includes/class-foogallery-foobox-free-extension.php:12
+msgid "FooBox Free"
+msgstr "FooBox Free"
+
+#: includes/class-settings.php:13
+msgid "General"
+msgstr "Opšte"
+
+#: includes/class-settings.php:17
+msgid "What do you want to attach FooBox to?"
+msgstr "Za šta želite da stavite FooBox?"
+
+#: includes/class-settings.php:22
+msgid "WordPress Galleries"
+msgstr "WordPress galerije"
+
+#: includes/class-settings.php:23
+msgid "Enable FooBox for all WordPress image galleries."
+msgstr "Omogućiti FooBox za sve WordPress slike galerije"
+
+#: includes/class-settings.php:32
+msgid "WordPress Images With Captions"
+msgstr "WordPress slike sa kadrovima"
+
+#: includes/class-settings.php:33
+msgid "Enable FooBox for all WordPress images that have captions."
+msgstr "Omogućiti FooBox za sve WordPress slike koje imaju kadrove"
+
+#: includes/class-settings.php:42
+msgid "Attachment Images"
+msgstr "Slike dodataka"
+
+#: includes/class-settings.php:43
+msgid "Enable FooBox for all media images included in posts or pages."
+msgstr "Omogućiti  FooBox za sve slike medija u postovima ili stranicama."
+
+#: includes/class-settings.php:52
+msgid "Show us some love! We would really appreciate your support."
+msgstr "Pružite nam podršku"
+
+#: includes/class-settings.php:57
+msgid "Show \"powered by\" link"
+msgstr "Prikažite \"omogućeno od\" link"
+
+#: includes/class-settings.php:58
+msgid ""
+"Help support this free plugin by displaying a small \"powered by foobox\" "
+"link under the lightbox."
+msgstr ""
+"Pomozite podržavanju ovog plugina prikazivanjem malogl \"omogućio foobox\" "
+"lina ispod lightboxa."
+
+#: includes/class-settings.php:59
+msgid "View the demo on this page to see the \"powered by\" link in action."
+msgstr ""
+"Pregledati demo na ovoj stranici da biste videli \"omogućeno od strane\" "
+"link.."
+
+#: includes/class-settings.php:68
+msgid "Become an affiliate"
+msgstr "Postanite saradnike"
+
+#: includes/class-settings.php:69
+msgid " and paste in your affiliate URL above."
+msgstr "i stavite povezani URL iznad."
+
+#: includes/class-settings.php:74
+msgid "Affiliate Link"
+msgstr "Povezani Link"
+
+#: includes/class-settings.php:75
+msgid ""
+"If you show the \"powered by\" link, you can promote FooBox and make a "
+"commission from sales. Everybody wins!"
+msgstr ""
+"Ako pokaže \"omogućeno od\" link, možete da promovišete FooBox i napravite "
+"procenat od prodaje. Svako dobija!"
+
+#: includes/class-settings.php:83
+msgid "Display Settings"
+msgstr "Prikaz postavki"
+
+#: includes/class-settings.php:88
+msgid "Fit To Screen"
+msgstr "Na veličinu za ekran"
+
+#: includes/class-settings.php:89
+msgid "Force smaller images to fit the screen dimensions."
+msgstr "Manje slike da bi stale na ekran"
+
+#: includes/class-settings.php:98
+msgid "Hide Page Scrollbars"
+msgstr "Sakriti Scrollbar stranice"
+
+#: includes/class-settings.php:99
+msgid "Hide the page's scrollbars when FooBox is visible."
+msgstr "Sakriti scrollbar stranice kada je FooBox vidljiv."
+
+#: includes/class-settings.php:108
+msgid "Show Counter"
+msgstr "Prikazati brojač"
+
+#: includes/class-settings.php:109
+msgid ""
+"Shows a counter under the FooBox modal when viewing a gallery of images."
+msgstr ""
+"Shows a counter under the FooBox modal when viewing a gallery of images."
+
+#: includes/class-settings.php:117
+msgid "Show Captions On Hover"
+msgstr "Prikazati kadroe kada lebdi"
+
+#: includes/class-settings.php:118
+msgid "Only show the caption when hovering over the image."
+msgstr "Prikazati samo kadar kada lebdi preko slike."
+
+#: includes/class-settings.php:126
+msgid "Error Message"
+msgstr "Greška poruke"
+
+#: includes/class-settings.php:127
+msgid "The error message to display when an image has trouble loading."
+msgstr ""
+"Poruka sa greškom se prikazuje kada se pojavi problem prilikom učitavanja "
+"slike."
+
+#: includes/class-settings.php:128
+msgid "Could not load the item"
+msgstr "Stavka ne može da se učita"
+
+#: includes/class-settings.php:138
+msgid "Advanced"
+msgstr "Unapredjeno"
+
+#: includes/class-settings.php:142
+msgid "Close On Overlay Click"
+msgstr "Zatvoriti na klik"
+
+#: includes/class-settings.php:143
+msgid "Should the FooBox lightbox close when the overlay is clicked."
+msgstr "Treba li FooBox lightbox close da se zatvori kada se klikne"
+
+#: includes/class-settings.php:151
+msgid "Disable Other Lightboxes"
+msgstr "Onemogućiti ostale Lightbox-ove"
+
+#: includes/class-settings.php:152
+msgid ""
+"Certain themes and plugins use a hard-coded lightbox, which make it very "
+"difficult to override.<br>By enabling this setting, we inject a small amount "
+"of javascript onto the page which attempts to get around this issue.<br>But "
+"please note this is not guaranteed, as we cannot account for every lightbox "
+"solution out there :)"
+msgstr ""
+"Određene teme i pluginovi koriste hard - kodirani lightboxl , koji je jako "
+"teško premostiti . <br> Uključivanjem ove postavke , možemo ubrizgati malu "
+"količinu JavaScripta na strani koja pokušava da predje oko ovog pitanja . "
+"<br> Imajte na umu ovo nije zagarantovano , kao što ne može da vrednujemo "
+"svako lightbox rešenje  :)"
+
+#: includes/class-settings.php:159
+msgid "Enable Debug Mode"
+msgstr "Omogući debug mode"
+
+#: includes/class-settings.php:160
+msgid "Show an extra debug information tab to help debug any issues."
+msgstr "Prikazati extra debug info tab za pomoć prilikom debug problema."
+
+#: includes/class-settings.php:172
+msgid "Debug"
+msgstr "Debug"
+
+#: includes/class-settings.php:176
+msgid "Debug Information"
+msgstr "Debug informacije"
+
+#: includes/class-settings.php:184
+msgid "FooBot Says..."
+msgstr "FooBot kaže..."
+
+#: includes/class-settings.php:195
+msgid "Upgrade to PRO!"
+msgstr "Upgrade na PRO!"
+
+#: includes/class-settings.php:197
+msgid "Upgrade to the PRO version!"
+msgstr "Upgrade na PRO verziju!"
+
+#: includes/class-settings.php:201
+msgid "There are tons of reasons..."
+msgstr "Ima mnogo razloga"
+
+#: includes/foopluginbase/classes/class-foo-plugin-base.php:313
+msgid " Settings"
+msgstr "Postavke"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select An Image"
+msgstr "Izabrati slikuI"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select Image"
+msgstr "Izabrati sliku"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:361
+msgid "Settings restored to default values"
+msgstr "Postavke vraćene na default vrednosti"
+
+#: includes/foopluginbase/views/settings.php:91
+msgid "Save Changes"
+msgstr "Sačuvati promene"
+
+#: includes/foopluginbase/views/settings.php:93
+msgid ""
+"Are you sure you want to restore all settings back to their default values?"
+msgstr ""
+"Da li ste sigurni da želite da vratite sve postavke ne default vrednosti?"
+
+#: includes/foopluginbase/views/settings.php:95
+msgid "Restore Defaults"
+msgstr "Vrati default"
+
+#: includes/recommend.php:1
+msgid "Check out our awesome partners!"
+msgstr "Pogledajte nše sjajne partnere"

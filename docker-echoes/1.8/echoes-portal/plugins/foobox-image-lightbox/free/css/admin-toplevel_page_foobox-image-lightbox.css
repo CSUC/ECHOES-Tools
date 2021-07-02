@@ -1,0 +1,11 @@
+a.nav-tab:focus {
+	box-shadow: none;
+}
+
+.foobox-getting-started.about-wrap img {
+	border: none;
+}
+
+.foobox-getting-started.about-wrap .feature-section img {
+	margin-bottom: 0;
+}

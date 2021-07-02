@@ -1,0 +1,82 @@
+@import "../../../base/less/mixins";
+
+@nav_color_hex: #FFFFFF;
+@nav_size: 25;
+
+@slide_padding: 50px;
+@slide_padding_extra_top: 0px;
+@slide_padding_sides: 10px;
+@slide_width: 1280px;
+@slide_height: default;
+@responsive_breakpoint: 780px;
+@slide_height_responsive: default;
+
+@text_size: default;
+@text_color: default;
+@heading_shadow: default;
+@heading_color: default;
+
+.sow-slider-base {
+
+	ul.sow-slider-images {
+
+		.sow-slider-image-wrapper {
+			padding: @slide_padding+@slide_padding_extra_top @slide_padding_sides @slide_padding @slide_padding_sides;
+
+			max-width: @slide_width;
+			height: @slide_height;
+
+			@media (max-width: @responsive_breakpoint) {
+				// If no responsive height is set, remove slider height
+				& when not ( isnumber( @slide_height_responsive ) ) {
+					height: auto;
+				}
+				
+				// If responsive height is set, use it
+				& when ( isnumber( @slide_height_responsive ) ) {
+					height: @slide_height_responsive;
+				}
+			}
+
+			// These heading tag styles and the paragraph tag styles below are only be used for old version of the
+			// layout slider widget which still allowed setting heading and text color and size.
+			& when ( iscolor( @heading_color ) ) {
+				h1, h2, h3, h4, h5, h6 {
+					line-height: 1.375em;
+					color: @heading_color;
+					margin: 0.1em 0;
+
+					& when ( isnumber( @heading_shadow ) ) {
+						text-shadow: 0 2px 2px rgba(0, 0, 0, @heading_shadow/100);
+					}
+
+				}
+			}
+
+			& when ( iscolor( @text_color ) ) {
+				p {
+					color: @text_color;
+					text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+					margin: 1em 0;
+					font-size: @text_size;
+				}
+			}
+		}
+	}
+
+	.sow-slider-pagination {
+		li a {
+			background: @nav_color_hex;
+		}
+	}
+
+	.sow-slide-nav {
+
+		font-size: ~"@{nav_size}px";
+
+		a {
+			color: @nav_color_hex;
+		}
+	}
+
+}

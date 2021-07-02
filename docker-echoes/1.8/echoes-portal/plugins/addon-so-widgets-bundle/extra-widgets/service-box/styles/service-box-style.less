@@ -1,0 +1,81 @@
+/*service Box*/
+
+.service_top{text-align: center;}
+.service_top .content h3{margin: 10px;}
+.service_top .content .btn_style{margin: 10px 0; display: inline-block; text-decoration: none; outline: none;}
+
+
+.service_left{text-align: left;}
+.service_left .icon{vertical-align: top; padding-right: 15px; display: table-cell;}
+.service_left .icon_image{vertical-align: top; padding-right: 15px; display: table-cell;}
+.service_left .icon_image img{max-width: none;}
+.service_left .content{display: table-cell;}
+.service_left .content h3{margin-top: 0;}
+.service_left .content .btn_style{margin: 10px 0; display: inline-block; text-decoration: none;  outline: none;}
+
+
+.service_right{text-align: right;}
+.service_right .icon{vertical-align: top; padding-left: 15px; display: table-cell;}
+.service_right .icon_image{vertical-align: top; padding-left: 15px; display: table-cell;}
+.service_right .icon_image img{max-width: none;}
+.service_right .content{display: table-cell;}
+.service_right .content h3{margin-top: 0;}
+.service_right .content .btn_style{margin: 10px 0; display: inline-block; text-decoration: none; outline: none;}
+
+
+
+
+
+@background_color: transparent;
+@icon_color: #000000;
+@title_color: #000000;
+@content_color: #000000;
+@box_padding: 10px;
+@box_border: solid;
+@box_border_width: 0px;
+@box_border_color: #e4e4e4;
+@btn_bg:transparent;
+@btn_bg_hover:transparent;
+@btn_font_color:#000000;
+@btn_font_hover_color:#000000;
+
+.service_top, .service_left, .service_right    {
+  background-color: @background_color;
+  padding: @box_padding;
+}
+
+.top_b{border-top: @box_border; border-width: @box_border_width; border-color: @box_border_color;}
+.right_b{border-right: @box_border; border-width: @box_border_width; border-color: @box_border_color;}
+.bottom_b{border-bottom: @box_border; border-width: @box_border_width; border-color: @box_border_color;}
+.left_b{border-left: @box_border; border-width: @box_border_width; border-color: @box_border_color;}
+
+
+.icon{
+  color: @icon_color;
+  line-height: 0;
+}
+
+
+.icon_image {
+  margin-bottom: 15px;
+}
+
+.content h3{
+  color: @title_color;
+}
+
+.content {
+  color: @content_color;
+}
+
+
+.service_top .content .btn_style, .service_left .content .btn_style, .service_right .content .btn_style{
+  background-color: @btn_bg;
+  color: @btn_font_color;
+}
+
+.service_top .content .btn_style:hover, .service_left .content .btn_style:hover, .service_right .content .btn_style:hover{
+  background-color: @btn_bg_hover;
+  color: @btn_font_hover_color;
+}
+

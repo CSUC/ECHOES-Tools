@@ -1,0 +1,1 @@
+var sowb=window.sowb||{};jQuery(function(e){sowb.setupVideoPlayers=function(){var e=jQuery("video.sow-video-widget");if(!e.is(":visible")||e.data("initialized"))return e;e.mediaelementplayer(),e.data("initialized",!0)},sowb.setupVideoPlayers(),e(sowb).on("setup_widgets",sowb.setupVideoPlayers)}),window.sowb=sowb;

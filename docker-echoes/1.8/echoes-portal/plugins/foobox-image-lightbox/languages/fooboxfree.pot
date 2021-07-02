@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FooBox Free Image Lightbox\n"
+"POT-Creation-Date: 2015-01-20 16:35+0200\n"
+"PO-Revision-Date: 2015-01-20 16:35+0200\n"
+"Last-Translator: Brad Vincent <brad@fooplugins.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: foobox-free.php:90
+msgid "This cannot be turned off in the FREE version"
+msgstr ""
+
+#: foobox-free.php:207
+#, php-format
+msgid ""
+"Thanks for using %s, get 50%% off the PRO version by using the coupon %s!!"
+msgstr ""
+
+#: foobox-free.php:209
+#, php-format
+msgid "Also, did you know about our free %s plugin?"
+msgstr ""
+
+#: foobox-free.php:211
+msgid ""
+"It's an awesome new gallery plugin that supports image galleries and albums "
+"and integrates with FooBox seamlessly!"
+msgstr ""
+
+#: foobox-free.php:212
+msgid "Hide this notice"
+msgstr ""
+
+#: foobox-free.php:245
+msgid ""
+"Sorry, but you can't run the FREE and PRO version of FooBox at the same time!"
+msgstr ""
+
+#: includes/class-foogallery-foobox-free-extension.php:13
+msgid "FooBox Free"
+msgstr ""
+
+#: includes/class-settings.php:13
+msgid "General"
+msgstr ""
+
+#: includes/class-settings.php:17
+msgid "What do you want to attach FooBox to?"
+msgstr ""
+
+#: includes/class-settings.php:22
+msgid "WordPress Galleries"
+msgstr ""
+
+#: includes/class-settings.php:23
+msgid "Enable FooBox for all WordPress image galleries."
+msgstr ""
+
+#: includes/class-settings.php:32
+msgid "WordPress Images With Captions"
+msgstr ""
+
+#: includes/class-settings.php:33
+msgid "Enable FooBox for all WordPress images that have captions."
+msgstr ""
+
+#: includes/class-settings.php:42
+msgid "Attachment Images"
+msgstr ""
+
+#: includes/class-settings.php:43
+msgid "Enable FooBox for all media images included in posts or pages."
+msgstr ""
+
+#: includes/class-settings.php:52
+msgid "Show us some love! We would really appreciate your support."
+msgstr ""
+
+#: includes/class-settings.php:57
+msgid "Show \"powered by\" link"
+msgstr ""
+
+#: includes/class-settings.php:58
+msgid ""
+"Help support this free plugin by displaying a small \"powered by foobox\" "
+"link under the lightbox."
+msgstr ""
+
+#: includes/class-settings.php:59
+msgid "View the demo on this page to see the \"powered by\" link in action."
+msgstr ""
+
+#: includes/class-settings.php:68
+msgid "Become an affiliate"
+msgstr ""
+
+#: includes/class-settings.php:69
+msgid " and paste in your affiliate URL above."
+msgstr ""
+
+#: includes/class-settings.php:74
+msgid "Affiliate Link"
+msgstr ""
+
+#: includes/class-settings.php:75
+msgid ""
+"If you show the \"powered by\" link, you can promote FooBox and make a "
+"commission from sales. Everybody wins!"
+msgstr ""
+
+#: includes/class-settings.php:83
+msgid "Display Settings"
+msgstr ""
+
+#: includes/class-settings.php:88
+msgid "Fit To Screen"
+msgstr ""
+
+#: includes/class-settings.php:89
+msgid "Force smaller images to fit the screen dimensions."
+msgstr ""
+
+#: includes/class-settings.php:98
+msgid "Hide Page Scrollbars"
+msgstr ""
+
+#: includes/class-settings.php:99
+msgid "Hide the page's scrollbars when FooBox is visible."
+msgstr ""
+
+#: includes/class-settings.php:108
+msgid "Show Counter"
+msgstr ""
+
+#: includes/class-settings.php:109
+msgid ""
+"Shows a counter under the FooBox modal when viewing a gallery of images."
+msgstr ""
+
+#: includes/class-settings.php:117
+msgid "Show Captions On Hover"
+msgstr ""
+
+#: includes/class-settings.php:118
+msgid "Only show the caption when hovering over the image."
+msgstr ""
+
+#: includes/class-settings.php:126
+msgid "Error Message"
+msgstr ""
+
+#: includes/class-settings.php:127
+msgid "The error message to display when an image has trouble loading."
+msgstr ""
+
+#: includes/class-settings.php:128
+msgid "Could not load the item"
+msgstr ""
+
+#: includes/class-settings.php:138
+msgid "Advanced"
+msgstr ""
+
+#: includes/class-settings.php:142
+msgid "Close On Overlay Click"
+msgstr ""
+
+#: includes/class-settings.php:143
+msgid "Should the FooBox lightbox close when the overlay is clicked."
+msgstr ""
+
+#: includes/class-settings.php:151
+msgid "Disable Other Lightboxes"
+msgstr ""
+
+#: includes/class-settings.php:152
+msgid ""
+"Certain themes and plugins use a hard-coded lightbox, which make it very "
+"difficult to override.<br>By enabling this setting, we inject a small amount "
+"of javascript onto the page which attempts to get around this issue.<br>But "
+"please note this is not guaranteed, as we cannot account for every lightbox "
+"solution out there :)"
+msgstr ""
+
+#: includes/class-settings.php:159
+msgid "Enable Debug Mode"
+msgstr ""
+
+#: includes/class-settings.php:160
+msgid "Show an extra debug information tab to help debug any issues."
+msgstr ""
+
+#: includes/class-settings.php:172
+msgid "Debug"
+msgstr ""
+
+#: includes/class-settings.php:176
+msgid "Debug Information"
+msgstr ""
+
+#: includes/class-settings.php:184
+msgid "FooBot Says..."
+msgstr ""
+
+#: includes/class-settings.php:195
+msgid "Upgrade to PRO!"
+msgstr ""
+
+#: includes/class-settings.php:197
+msgid "Upgrade to the PRO version!"
+msgstr ""
+
+#: includes/class-settings.php:201
+msgid "There are tons of reasons..."
+msgstr ""
+
+#: includes/foopluginbase/classes/class-foo-plugin-base.php:313
+msgid " Settings"
+msgstr ""
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select An Image"
+msgstr ""
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select Image"
+msgstr ""
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:361
+msgid "Settings restored to default values"
+msgstr ""
+
+#: includes/foopluginbase/views/settings.php:91
+msgid "Save Changes"
+msgstr ""
+
+#: includes/foopluginbase/views/settings.php:93
+msgid ""
+"Are you sure you want to restore all settings back to their default values?"
+msgstr ""
+
+#: includes/foopluginbase/views/settings.php:95
+msgid "Restore Defaults"
+msgstr ""
+
+#: includes/recommend.php:1
+msgid "Check out our awesome partners!"
+msgstr ""

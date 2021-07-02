@@ -1,0 +1,146 @@
+a.nav-tab:focus {
+	box-shadow: none;
+}
+
+.medium_textarea {
+  width:400px;
+  height:100px;
+}
+
+.short_input {
+  width:15em !important;
+}
+
+.long_input {
+  width:90% !important;
+}
+
+.image-upload-button {
+  cursor: pointer;
+}
+
+.yellow-message {
+  background-color: lightYellow; border: solid 1px #E6DB55; padding:3px 10px;
+}
+
+.red-message {
+  background-color: #ffebe8; border: solid 1px #c00; padding:3px 10px;
+}
+
+.demo-gallery { display: block; }
+
+.demo-gallery span { display:none; }
+
+.demo-gallery a
+{
+  display: inline-block;
+  margin: 10px;
+  text-align: center;
+  padding: 2px;
+  border: 1px solid #9D9B8B;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+  .demo-gallery a img
+  {
+    padding: 2px;
+    display: block;
+  }
+
+  .demo-gallery a:hover
+  {
+    opacity: 0.8;
+  }
+
+
+#foobox-free-settings-wrapper {
+	width: 100%;
+}
+
+#foobox-free-settings-main {
+	padding: 0;
+	margin: 0;
+}
+
+#foobox-free-settings-sidebar {
+	margin: 0;
+	width:250px;
+	padding: 0 0 0 20px;
+	position: absolute;
+	right: 0;
+}
+
+#foobox-free-settings-header {
+	position: absolute;
+	width: 300px;
+	height: 67px;
+	background: url('img/demo.png') no-repeat;
+	margin-left: -200px;
+	margin-top: -20px;
+}
+
+ul.foobox_features {
+	padding: 10px;
+}
+
+ul.foobox_features li {
+	margin-left:10px;
+	background: url('img/tick.png') no-repeat left top;
+	padding-left: 25px;
+	padding-bottom: 10px;
+	display: inline-block;
+	width: 33%;
+}
+
+ul.foobox_features.tick2 li {
+	background: url('img/tick2.png') no-repeat left top;
+}
+
+ul.foobox_features.tick3 li {
+	background: url('img/tick3.png') no-repeat left top;
+}
+
+ul.foobox_features.single_column li {
+	display: block;
+	width: 100%;
+}
+
+.caption_call_to_action {
+	color: #FFF;
+	font-size: 24px;
+	border-radius: 10px;
+	margin:20px;
+}
+
+#foobox-free-upgrade p {
+	font-weight: bold;
+}
+
+#upgrade_tab td, #upgrade_tab th {
+	padding:0 !important;
+}
+
+#foobot_says_tab tr:first-child {
+	display: none !important;
+}
+
+@media only screen and (max-width: 500px) {
+	.foobox-free-settings-wrapper .foobox-free-settings-sidebar {
+		position: relative;
+		padding: 0;
+	}
+
+	div.demo-gallery {
+		width: 100%;
+	}
+
+	div.demo-gallery img {
+		height: 120px;
+	}
+
+	ul.foobox_features li {
+		width: 50%;
+	}
+}
