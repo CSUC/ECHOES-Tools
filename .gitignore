@@ -306,4 +306,13 @@ hadoop-hdfs-project/hadoop-hdfs-httpfs/downloads
 hadoop-common-project/hadoop-common/src/test/resources/contract-test-options.xml
 hadoop-tools/hadoop-openstack/src/test/resources/contract-test-options.xml
 
+## Docker
+docker-echoes/*/data
+docker-echoes/*/db
+
+docker-echoes/*/gui/env/.env
+docker-echoes/*/gui/env/auth0.env
+docker-echoes/*/gui/env/auth0-variables.js
+
+
 # End of https://www.gitignore.io/api/apachehadoop

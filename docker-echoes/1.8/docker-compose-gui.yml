@@ -12,23 +12,47 @@ services:
       test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 10s
     networks:
-      - echoes-tools
+      - echoes-gui
     volumes:
       - ./db:/data/db
-  echoes:
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - echoes-gui
+    volumes:
+      - 'rabbitmq_data:/data'
+
+  echoes-gui:
     build:
-      context: ./echoes-tools
+      context: ./gui
       dockerfile: Dockerfile
-    image: 'echoes/echoes-tools:1.8'
-    container_name: echoes-tools
-    hostname: echoes-tools
+    image: 'echoes/echoes-gui:1.8'
+    container_name: echoes-gui
+    hostname: echoes-gui
+    ports:
+      - "3000:3000"
+      - "8080"
     volumes:
       - ${ECHOES_SOURCE_FOLDER}:${ECHOES_TARGET_FOLDER}/source:rw
     depends_on:
       - mongodb
+      - rabbitmq
     networks:
-      - echoes-tools
+      - echoes-gui
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M
 
 networks:
-  echoes-tools:
+  echoes-gui:
     driver: bridge
+
+volumes:
+  rabbitmq_data:

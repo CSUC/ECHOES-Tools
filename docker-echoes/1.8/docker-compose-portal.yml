@@ -13,7 +13,7 @@ services:
       WORDPRESS_DB_NAME: exampledb
     volumes:
       - wordpress:/var/www/html
-      - ./echoes-portal/plugins/wp-mvc/:/var/www/html/wp-content/plugins/wp-mvc
+#      - ./echoes-portal/plugins/wp-mvc/:/var/www/html/wp-content/plugins/wp-mvc
       - ./echoes-portal/plugins/ECHOES-WP-SPARQL-Plugin/:/var/www/html/wp-content/plugins/ECHOES-WP-SPARQL-Plugin
       - ./echoes-portal/themes/echoes/:/var/www/html/wp-content/themes/echoes
       - ./echoes-portal/themes/echoes-child/:/var/www/html/wp-content/themes/echoes-child
