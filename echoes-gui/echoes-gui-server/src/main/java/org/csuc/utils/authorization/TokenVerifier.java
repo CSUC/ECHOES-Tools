@@ -11,7 +11,7 @@ import java.security.PublicKey;
 import java.security.interfaces.RSAKey;
 import java.util.Objects;
 
-import static org.csuc.typesafe.authoritzation.AuthoritzationConfig.DOMAIN;
+import static org.csuc.utils.authorization.AuthoritzationConfig.DOMAIN;
 
 /**
  * @author amartinez

@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
-import static org.csuc.typesafe.authoritzation.AuthoritzationConfig.DOMAIN;
+import static org.csuc.utils.authorization.AuthoritzationConfig.DOMAIN;
 
 /**
  * @author amartinez
