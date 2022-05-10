@@ -16,4 +16,4 @@ jobs:
       - name: Build with Maven
         run: |
           mvn validate
-          mvn --batch-mode --update-snapshots package
+          mvn install -DskipTests=true
