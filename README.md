@@ -6,7 +6,7 @@ ECHOES tries to provide a modular IT architecture, based on open source, to heri
 
 The partners of this project are Erfgoed Leiden en Omstreken (ELO), Tresoar (TRES), the Diputació de Barcelona (DIBA), the Generalitat de Catalunya (GENCAT); and as a technological partner the Consorci de Serveis Universitaris de Catalunya (CSUC).
 
-## Tools [![Build Status](https://travis-ci.org/CSUC/ECHOES-Tools.svg?branch=develop)](https://travis-ci.org/CSUC/ECHOES-Tools) [![codecov](https://codecov.io/gh/CSUC/ECHOES-Tools/branch/develop/graph/badge.svg)](https://codecov.io/gh/CSUC/ECHOES-Tools)
+## Tools [![Java Maven CI](https://github.com/CSUC/ECHOES-Tools/actions/workflows/main.yml/badge.svg)](https://github.com/CSUC/ECHOES-Tools/actions/workflows/main.yml)
 Java Tools to generate EDM compliant items from diferent metadata schema sources (standars as Dublin Core, A2A, etc. or custom schemas).
 Mapped items can be loaded in a DataLake (based on [Blazegraph](https://github.com/blazegraph)) to exploit them from SPARQL End Point (base on [YASGUI](https://github.com/OpenTriply/YASGUI)) or using the DataLake API.
 
