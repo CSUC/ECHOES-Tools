@@ -75,6 +75,11 @@
             <!-- METHOD -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.method.$invalid && userForm.method.$pristine }">
                 <label>Method*</label>
+		<p>
+			<small class="text-muted">
+				Choose the methodology for processing XML. SAX stands for Simple API for XML; DOM is for Document Object Model; and XSLT is for Extensible Stylesheet Language Transformations.		
+			</small>
+		</p>
                 <select name="method" class="form-control" ng-model="model.method"
                         ng-options="value for value in options.methods" required></select>
                 <p ng-show="userForm.method.$invalid && userForm.method.$error.required" class="help-block">method is
@@ -84,6 +89,11 @@
             <!-- Type -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.type.$invalid && userForm.type.$pristine}">
                 <label>Type*</label>
+		<p>
+	                <small class="text-muted">
+				Choose which input you’d like to analyse: OAI for an OAI-PMH set; URL in case you have a specific address; and File for uploaded files.
+	                </small>
+		</p>
                 <select name="type" class="form-control" ng-model="model.type"
                         ng-options="value for value in options.types" required></select>
                 <p ng-show="userForm.type.$invalid && userForm.type.$error.required" class="help-block">type is
@@ -102,6 +112,11 @@
             <!-- Format -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.format.$invalid && userForm.format.$pristine }">
                 <label>Format*</label>
+		<p>
+                	<small class="text-muted">
+				Define the format in which you’d like to display the results.
+                        </small>
+		</p>
                 <select name="format" class="form-control" ng-model="model.format"
                         ng-options="value for value in options.formats" required></select>
                 <p ng-show="userForm.format.$invalid && userForm.format.$error.required" class="help-block">format is

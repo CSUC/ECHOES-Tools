@@ -1,4 +1,4 @@
-package org.csuc.typesafe.authoritzation;
+package org.csuc.utils.authorization;
 
 import com.typesafe.config.ConfigBeanFactory;
 import com.typesafe.config.ConfigFactory;
