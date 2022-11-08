@@ -7,13 +7,60 @@
             <div class="panel panel-default" ng-show="vm.data._size > 0">
                 <div class="panel-heading"><h3>Statistics</h3></div>
                 <div class="panel-body">
-                    <div class="col-lg-2"></div>
-                    <div class="col-lg-8">
-                        <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
-                                chart-labels="vm.chart.labels"
-                                chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    <div class="col-xs-6 col-sm-6 col-lg-2 hidden-xs hidden-sm hidden-md"></div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'END' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('END')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'END' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">END</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-2"></div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'ERROR' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('ERROR')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'ERROR' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">ERROR</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'QUEUE' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('QUEUE')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'QUEUE' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">QUEUE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'PROGRESS' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('PROGRESS')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'PROGRESS' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">PROGRESS</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -29,11 +76,11 @@
                             <tr ng-repeat="data in $data">
                                 <td title="'job'">
                                     <span ng-if="data.status == 'ERROR'"
-                                        class="glyphicon glyphicon-remove-sign text-danger"></span>
+                                          class="glyphicon glyphicon-remove-sign text-danger"></span>
                                     <span ng-if="data.status == 'END'"
-                                        class="glyphicon glyphicon-ok-sign text-success"></span>
+                                          class="glyphicon glyphicon-ok-sign text-success"></span>
                                     <span ng-if="data.status == 'PROGRESS'"
-                                        class="glyphicon glyphicon-play-circle text-info"></span>
+                                          class="glyphicon glyphicon-play-circle text-info"></span>
                                     <span ng-if="data.status == 'QUEUE'" class="glyphicon glyphicon-hourglass"></span>
                                 </td>
                                 <td title="'status'">
@@ -99,10 +146,11 @@
             <!-- Type -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.type.$invalid && userForm.type.$pristine}">
                 <label>Type*</label>
-		<p>
-                        <small class="text-muted">
-				Choose which input you’d like to recollect: OAI for an OAI-PMH set; URL in case you have a specific address; and File for uploaded files.
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        Choose which input you’d like to recollect: OAI for an OAI-PMH set; URL in case you have a
+                        specific address; and File for uploaded files.
+                    </small>
                 </p>
                 <select name="type" class="form-control" ng-model="model.type"
                         ng-options="value for value in options.types" required></select>
@@ -123,7 +171,8 @@
             </div>
 
             <!-- FILE -->
-            <div ng-if="model.type == 'file'" class="form-group" ng-class="{ 'has-error' : userForm.file.$invalid && userForm.file.$pristine}">
+            <div ng-if="model.type == 'file'" class="form-group"
+                 ng-class="{ 'has-error' : userForm.file.$invalid && userForm.file.$pristine}">
                 <label>File*</label>
                 <div id="dropzone1" class="dropzone" options="dzOptions" callbacks="dzCallbacks" ng-dropzone></div>
                 <input type="hidden" name="file" class="form-control" ng-model="model.file" required>
@@ -134,12 +183,14 @@
             <!-- schema -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.schema.$invalid && userForm.schema.$pristine }">
                 <label>Schema*</label>
-		 <p>
-                        <small class="text-muted">
-				Select the appropriate schema according to the data input. A2A is used for historical records concerning people; DC is for describing digital resources; EAD is for encoding descriptive information regarding archival records; and Memorix for custom metadata schema.
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        Select the appropriate schema according to the data input. A2A is used for historical records
+                        concerning people; DC is for describing digital resources; EAD is for encoding descriptive
+                        information regarding archival records; and Memorix for custom metadata schema.
+                    </small>
                 </p>
-		<select name="schema" class="form-control" ng-model="model.schema"
+                <select name="schema" class="form-control" ng-model="model.schema"
                         ng-options="value for value in options.schema" required></select>
                 <p ng-show="userForm.schema.$invalid && userForm.schema.$error.required" class="help-block">schema is
                     required.</p>
@@ -148,10 +199,11 @@
             <!-- format -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.format.$invalid && userForm.format.$pristine }">
                 <label>Format*</label>
-		<p>
-                        <small class="text-muted">
-				Define the format with which you’d like to get the results. Be aware that if you want to test result file on Quality Assurance module you will need to choose RDFXML.
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        Define the format with which you’d like to get the results. Be aware that if you want to test
+                        result file on Quality Assurance module you will need to choose RDFXML.
+                    </small>
                 </p>
                 <select name="format" class="form-control" ng-model="model.format"
                         ng-options="value for value in options.format" required></select>
@@ -160,12 +212,13 @@
             </div>
 
             <!-- EDMTYPE -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.edmType.$invalid && userForm.edmType.$pristine }">
+            <div class="form-group"
+                 ng-class="{ 'has-error' : userForm.edmType.$invalid && userForm.edmType.$pristine }">
                 <label>EDM Type*</label>
-		<p>
-                        <small class="text-muted">
-				Define the class of data. 
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        Define the class of data.
+                    </small>
                 </p>
 
                 <select name="edmType" class="form-control" ng-model="model.edmType"
@@ -174,44 +227,50 @@
                     required.</p>
             </div>
 
-	    <!-- PROVIDER -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.provider.$invalid && userForm.provider.$pristine }">
+            <!-- PROVIDER -->
+            <div class="form-group"
+                 ng-class="{ 'has-error' : userForm.provider.$invalid && userForm.provider.$pristine }">
                 <label>Provider*</label>
-		<p>
-                        <small class="text-muted">
-				The name or identifier of the data provider of the object.
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        The name or identifier of the data provider of the object.
+                    </small>
                 </p>
                 <select name="provider" class="form-control" ng-model="model.provider"
                         ng-options="value for value in options.provider" required></select>
-                <p ng-show="userForm.provider.$invalid && userForm.provider.$error.required" class="help-block">provider is
+                <p ng-show="userForm.provider.$invalid && userForm.provider.$error.required" class="help-block">provider
+                    is
                     required.</p>
             </div>
 
             <!-- DATA PROVIDER -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.dataProvider.$invalid && userForm.dataProvider.$pristine }">
+            <div class="form-group"
+                 ng-class="{ 'has-error' : userForm.dataProvider.$invalid && userForm.dataProvider.$pristine }">
                 <label>Data provider*</label>
-		<p>
-                        <small class="text-muted">
-				The name or identifier of the data provider of the object.
-                        </small>
+                <p>
+                    <small class="text-muted">
+                        The name or identifier of the data provider of the object.
+                    </small>
                 </p>
                 <select name="dataProvider" class="form-control" ng-model="model.dataProvider"
                         ng-options="value for value in options.dataProvider" required></select>
-                <p ng-show="userForm.dataProvider.$invalid && userForm.dataProvider.$error.required" class="help-block">dataprovider is
+                <p ng-show="userForm.dataProvider.$invalid && userForm.dataProvider.$error.required" class="help-block">
+                    dataprovider is
                     required.</p>
             </div>
 
-	    <!-- LANGUAGE -->
-            <div class="form-group" ng-class="{ 'has-error' : userForm.language.$invalid && userForm.language.$pristine }">
+            <!-- LANGUAGE -->
+            <div class="form-group"
+                 ng-class="{ 'has-error' : userForm.language.$invalid && userForm.language.$pristine }">
                 <label>Language</label>
                 <select name="language" class="form-control" ng-model="model.language"
                         ng-options="value for value in options.language" required></select>
-                <p ng-show="userForm.language.$invalid && userForm.language.$error.required" class="help-block">language is
+                <p ng-show="userForm.language.$invalid && userForm.language.$error.required" class="help-block">language
+                    is
                     required.</p>
             </div>
 
-	    <!-- rights -->
+            <!-- rights -->
             <div class="form-group" ng-class="{ 'has-error' : userForm.rights.$invalid && userForm.rights.$pristine }">
                 <label>Rights</label>
                 <select name="rights" class="form-control" ng-model="model.rights"
@@ -220,24 +279,24 @@
                     required.</p>
             </div>
 
-	    <!--            <div class="form-group">-->
-<!--                <label>Properties</label>-->
+            <!--            <div class="form-group">-->
+            <!--                <label>Properties</label>-->
 
-<!--                <ul style="list-style: none;">-->
-<!--                    <li ng-repeat="property in properties">-->
-<!--                        <label>-->
-<!--                            <select name="key" class="form-control" ng-model="property.key"-->
-<!--                                    ng-options="value for value in options.properties"></select></label>-->
-<!--                        <label>-->
-<!--                            <input name="value" ng-model="property.value">-->
-<!--                        </label>-->
-<!--                        <button class="btn btn-default" ng-click="properties.splice($index, 1)" aria-label="Remove"><span class="glyphicon glyphicon-remove text-danger"></span></button>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <button class="btn btn-default" ng-click="properties.push({})"><span class="glyphicon glyphicon-plus">Add</span></button>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
+            <!--                <ul style="list-style: none;">-->
+            <!--                    <li ng-repeat="property in properties">-->
+            <!--                        <label>-->
+            <!--                            <select name="key" class="form-control" ng-model="property.key"-->
+            <!--                                    ng-options="value for value in options.properties"></select></label>-->
+            <!--                        <label>-->
+            <!--                            <input name="value" ng-model="property.value">-->
+            <!--                        </label>-->
+            <!--                        <button class="btn btn-default" ng-click="properties.splice($index, 1)" aria-label="Remove"><span class="glyphicon glyphicon-remove text-danger"></span></button>-->
+            <!--                    </li>-->
+            <!--                    <li>-->
+            <!--                        <button class="btn btn-default" ng-click="properties.push({})"><span class="glyphicon glyphicon-plus">Add</span></button>-->
+            <!--                    </li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
 
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -268,18 +327,22 @@
                 <div class="card" ng-repeat="(key, value) in config">
                     <div class="card-header" id="heading{{$index}}">
                         <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapse{{$index}}" aria-expanded="true"
+                                    aria-controls="collapse{{$index}}">
                                 {{key}}
                             </button>
                         </h2>
                     </div>
-                    <div id="collapse{{$index}}" class="collapse" aria-labelledby="heading{{$index}}" data-parent="#accordion">
+                    <div id="collapse{{$index}}" class="collapse" aria-labelledby="heading{{$index}}"
+                         data-parent="#accordion">
                         <div class="card-body">
                             <table class="table">
                                 <tr ng-repeat="(key2, value2) in value">
                                     <td><strong>{{ key2 }}</strong></td>
                                     <td>
-                                        <select class="form-control" ng-model="model" ng-options="l for l in level" data-ng-init="model = value2.level" ng-change="update(key,key2,model)">
+                                        <select class="form-control" ng-model="model" ng-options="l for l in level"
+                                                data-ng-init="model = value2.level" ng-change="update(key,key2,model)">
                                             <option></option>
                                         </select>
                                     </td>

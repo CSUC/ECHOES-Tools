@@ -4,13 +4,59 @@
             <div class="panel panel-default" ng-show="vm.data._size > 0">
                 <div class="panel-heading"><h3>Statistics</h3></div>
                 <div class="panel-body">
-                    <div class="col-lg-2"></div>
-                    <div class="col-lg-8">
-                        <canvas class="chart chart-doughnut" chart-data="vm.chart.data"
-                                chart-labels="vm.chart.labels"
-                                chart-options="vm.chart.options" chart-colors="vm.chart.colors"></canvas>
+                    <div class="col-xs-6 col-sm-6 col-lg-2 hidden-xs hidden-sm hidden-md"></div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'END' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('END')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'END' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">END</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-2"></div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'ERROR' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('ERROR')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'ERROR' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">ERROR</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'QUEUE' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('QUEUE')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'QUEUE' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">QUEUE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-2">
+                        <div class="thumbnail">
+                            <div class="caption p-3 text-center">
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'PROGRESS' ) != -1">
+                                    {{vm.chart.data[vm.chart.labels.indexOf('PROGRESS')]}}
+                                </div>
+                                <div class="h1 m-0" ng-if="vm.chart.labels.indexOf( 'PROGRESS' ) == -1">
+                                    0
+                                </div>
+                                <div class="text-muted mb-4">PROGRESS</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
