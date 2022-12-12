@@ -26,21 +26,22 @@
     "angular": "^1.6.1",
     "angular-auth0": "^3.0.0",
     "angular-bootstrap-form-validation": "^0.9.7",
-    "angular-chart.js": "^1.1.1",
+    "angular-chart.js": "1.1.1",
     "angular-jwt": "^0.1.8",
     "angular-messages": "1.7.0",
     "angular-ui-bootstrap": "^2.5.6",
     "angular-uuid": "0.0.4",
-    "auth0-js": "^9.0.1",
+    "auth0-js": "9.19.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
-    "chart.js": "2.7.2",
+    "chart.js": "2.9.3",
     "cors": "^2.8.1",
     "dotenv": "^4.0.0",
     "dropzone": "^5.4.0",
+    "events": "^3.0.0",
     "express": "^4.14.0",
     "express-fileupload": "^1.1.1-alpha.3",
-    "express-jwt": "^5.1.0",
+    "express-jwt": "^7.7.5",
     "express-jwt-authz": "^1.0.0",
     "jwks-rsa": "^1.1.1",
     "method-override": "^2.3.10",
@@ -52,10 +53,9 @@
     "particlesjs": "^2.2.3",
     "request": "^2.87.0",
     "requestify": "^0.2.5",
-    "util": "^0.11.0",
-    "events": "^3.0.0"
+    "util": "^0.11.0"
   },
   "devDependencies": {
-    "npm-check": "^5.5.2"
+    "npm-check": "^5.9.2"
   }
 }

@@ -128,7 +128,12 @@
                             schema: ["A2A", "DC", "MEMORIX", "EAD"],
                             format: ["RDFXML","NTRIPLES","TURTLE","JSONLD","RDFJSON","NQ","NQUADS","TRIG","RDFTHRIFT","TRIX"],
                             edmType: ["TEXT", "VIDEO", "IMAGE", "SOUND", "3D"],
-                            properties: ["dataProvider", "language", "rights"],
+                            provider: ["Erfgoed", "Tresoar", "Gencat","Test"],
+                            dataProvider: ["Erfgoed", "Tresoar", "Gencat","Test"],
+			    language:["ar","az","be","bg","bs","ca","cs","cy","da","de","el","en","es","et","eu","fi","fr","ga","gd","gl","he","hi","hr","hu","hy","ie","is","it","ja","ka","ko","lt","lv","mk","mt","mul","nl","no","pl","pt","ro","ru","sk","sl","sq","sr","sv","tr","uk","yi","zh"],
+                            rights: ["http://creativecommons.org/publicdomain/mark/1.0/","http://rightsstatements.org/vocab/NoC-NC/1.0/","http://rightsstatements.org/vocab/NoC-OKLR/1.0/","http://creativecommons.org/publicdomain/zero/1.0/","http://creativecommons.org/licenses/by/4.0/","http://creativecommons.org/licenses/by-sa/4.0/","http://creativecommons.org/licenses/by-nd/4.0/","http://creativecommons.org/licenses/by-nc/4.0/","http://creativecommons.org/licenses/by-nc-sa/4.0/","http://creativecommons.org/licenses/by-nc-nd/4.0/","http://rightsstatements.org/vocab/InC/1.0/","http://rightsstatements.org/vocab/InC-EDU/1.0/","http://rightsstatements.org/vocab/InC-OW-EU/1.0/","http://rightsstatements.org/vocab/CNE/1.0/"],
+			    //properties: ["language", "rights"],
+                            properties: ["rights"],
                             types: ["oai", "url", "file"]
                         };
 
@@ -142,6 +147,9 @@
 
                                 Object.assign(properties, { edmType : $scope.model.edmType});
                                 Object.assign(properties, { provider : $scope.model.provider});
+                                Object.assign(properties, { dataProvider : $scope.model.dataProvider});
+				Object.assign(properties, { language : $scope.model.language});
+				Object.assign(properties, { rights : $scope.model.rights});
 
                                 $scope.properties.forEach(function(value, index) {
                                     if(value.key != null && value.value != null){
@@ -258,3 +266,4 @@
         };
     }
 })();
+
