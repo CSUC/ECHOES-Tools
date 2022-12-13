@@ -21,11 +21,11 @@ WORKDIR /home/echoes/ECHOES-Tools
 COPY --chown=echoes:echoes ./env/auth0-variables.js /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-client/auth0-variables.js
 COPY --chown=echoes:echoes ./env/auth0.env /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-server/src/main/resources/auth0.env
 COPY --chown=echoes:echoes ./env/.env /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-client/.env
-COPY --chown=echoes:echoes ./env/echoes-gui-server.default.conf /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-config/src/main/resources/echoes-gui-server.conf
-COPY --chown=echoes:echoes ./env/rabbitmq.defaults.conf /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-config/src/main/resources/rabbitmq.conf
+COPY --chown=echoes:echoes ./env/echoes-gui-server.default.conf /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-config/src/main/resources/echoes-gui-server.default.conf
+COPY --chown=echoes:echoes ./env/rabbitmq.defaults.conf /home/echoes/ECHOES-Tools/echoes-gui/echoes-gui-config/src/main/resources/rabbitmq.defaults.conf
 
 RUN git submodule update --init --recursive \
     && mvn validate \
     && mvn install -DskipTests
 
-#ENTRYPOINT ["pm2", "start", "bin/echoes-gui-client.json"]
+CMD ["pm2-runtime","start","/home/echoes/ECHOES-Tools/bin/echoes-gui-client.json"]

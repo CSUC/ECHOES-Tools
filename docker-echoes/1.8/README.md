@@ -1,4 +1,4 @@
-## SET ENVIRONMENT
+    ## SET ENVIRONMENT
 ```
 cp .env.example .env
 ```
