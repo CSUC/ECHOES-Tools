@@ -19,7 +19,7 @@
         <geonames.version>1.0</geonames.version>
         <typesafe.config.version>1.3.4</typesafe.config.version>
         <moshi.version>1.8.0</moshi.version>
-        <org.json.version>20190722</org.json.version>
+        <org.json.version>20230227</org.json.version>
         <ph.schematron.version>5.0.8</ph.schematron.version>
 
         <binding.version>1.3</binding.version>
