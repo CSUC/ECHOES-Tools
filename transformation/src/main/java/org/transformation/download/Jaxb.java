@@ -36,55 +36,45 @@ public class Jaxb implements Download {
 
     private static Logger logger = LogManager.getLogger(Jaxb.class);
 
-    private RecordType record;
+    private String uuid;
     private Object object;
     private SchemaType schemaType;
 
 
-    public Jaxb(RecordType record, Object object, SchemaType shSchemaType) {
-        this.record = record;
+    public Jaxb(String uuid, Object object) {
+        this.uuid = uuid;
         this.object = object;
-        this.schemaType = shSchemaType;
     }
 
     @Override
     public void execute(Map<String, String> properties) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
-        EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
+               EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
             edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream());
 
         logger.info(String.format("Donwload item (%s) identifier %s",
-                object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                object.getClass().getSimpleName(), uuid));
     }
 
     @Override
     public void execute(Map<String, String> properties, FormatType formatType) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
         EDM edm = getMetadataSchema(IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), properties);
 
         if (Objects.nonNull(edm))
             edm.creation(StandardCharsets.UTF_8, true, IoBuilder.forLogger(Jaxb.class).setLevel(Level.INFO).buildOutputStream(), formatType);
 
         logger.info(String.format("Donwload item (%s) identifier %s",
-                object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                object.getClass().getSimpleName(), uuid));
     }
 
     @Override
     public void execute(Path outs, Map<String, String> properties) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
         Path filename = Paths.get(
                 String.format("%s/%s.rdf",
                     outs,
                     RegExUtils.replaceAll(
-                            record.getHeader().getIdentifier(),
+                            uuid,
                             "[^a-zA-Z0-9.-]",
                             "_"
                     )
@@ -98,20 +88,17 @@ public class Jaxb implements Download {
                 edm.creation(StandardCharsets.UTF_8, true, new FileOutputStream(filename.toFile()));
 
             logger.info(String.format("Donwload item (%s) identifier %s",
-                    object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                    object.getClass().getSimpleName(), uuid));
         }
     }
 
     @Override
     public void execute(Path outs, Map<String, String> properties, FormatType formatType) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
-        Path filename = Paths.get(
+              Path filename = Paths.get(
                 String.format("%s/%s.%s",
                         outs,
                         RegExUtils.replaceAll(
-                                record.getHeader().getIdentifier(),
+                                uuid,
                                 "[^a-zA-Z0-9.-]",
                                 "_"
                         ),
@@ -127,18 +114,15 @@ public class Jaxb implements Download {
             }
 
             logger.info(String.format("Donwload item (%s) identifier %s",
-                    object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                    object.getClass().getSimpleName(), uuid));
         }
     }
 
     @Override
     public void execute(FileSystem fileSystem, org.apache.hadoop.fs.Path dest, Map<String, String> properties) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
         String filename = String.format("%s.rdf",
                 RegExUtils.replaceAll(
-                        record.getHeader().getIdentifier(),
+                        uuid,
                         "[^a-zA-Z0-9.-]",
                         "_"
                 )
@@ -157,17 +141,14 @@ public class Jaxb implements Download {
         }
 
         logger.info(String.format("Donwload item (%s) identifier %s",
-                object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                object.getClass().getSimpleName(), uuid));
     }
 
     @Override
     public void execute(FileSystem fileSystem, org.apache.hadoop.fs.Path dest, Map<String, String> properties, FormatType formatType) throws Exception {
-        if (!Objects.equals(schemaType.getType(), object.getClass()))
-            throw new Exception(String.format("RecordType \"%s\" is not a %s valid schema", record.getHeader().getIdentifier(), schemaType));
-
         String filename = String.format("%s.%s",
                 RegExUtils.replaceAll(
-                        record.getHeader().getIdentifier(),
+                        uuid,
                         "[^a-zA-Z0-9.-]",
                         "_"
                 ),
@@ -187,7 +168,7 @@ public class Jaxb implements Download {
         }
 
         logger.info(String.format("Donwload item (%s) identifier %s",
-                object.getClass().getSimpleName(), record.getHeader().getIdentifier()));
+                object.getClass().getSimpleName(), uuid));
     }
 
     /**
@@ -201,23 +182,37 @@ public class Jaxb implements Download {
     private EDM getMetadataSchema(OutputStream outputStream, Map<String, String> properties) throws Exception {
         EDM edm = null;
 
-        switch (schemaType){
-            case A2A:
-                edm = new A2A2EDM(record.getHeader().getIdentifier(), (A2AType) object, properties);
-                break;
-            case DC:
-                edm = new DC2EDM(record.getHeader().getIdentifier(), (OaiDcType) object, properties);
-                break;
-            case MEMORIX:
-                new MEMORIX2EDM(record.getHeader().getIdentifier(), (Memorix) object, properties).transformation(outputStream, properties);
-                break;
-            case EAD:
-                new EAD2EDM(record.getHeader().getIdentifier(), (Ead) object, properties).transformation(outputStream, properties);
-                break;
-            default:
-                logger.info(String.format("%s Unknow MetadataType", record.getHeader().getIdentifier()));
-                break;
+        if(object instanceof A2AType){
+            edm = new A2A2EDM(uuid, (A2AType) object, properties);
         }
+        if(object instanceof OaiDcType){
+            edm = new DC2EDM(uuid, (OaiDcType) object, properties);
+
+        }
+        if(object instanceof Ead){
+            new EAD2EDM(uuid, (Ead) object, properties).transformation(outputStream, properties);
+        }
+        if(object instanceof Memorix){
+            new MEMORIX2EDM(uuid, (Memorix) object, properties).transformation(outputStream, properties);
+        }
+
+//        switch (schemaType){
+//            case A2A:
+//                edm = new A2A2EDM(uuid, (A2AType) object, properties);
+//                break;
+//            case DC:
+//                edm = new DC2EDM(uuid, (OaiDcType) object, properties);
+//                break;
+//            case MEMORIX:
+//                new MEMORIX2EDM(uuid, (Memorix) object, properties).transformation(outputStream, properties);
+//                break;
+//            case EAD:
+//                new EAD2EDM(uuid, (Ead) object, properties).transformation(outputStream, properties);
+//                break;
+//            default:
+//                logger.info(String.format("%s Unknow MetadataType", uuid));
+//                break;
+//        }
         return edm;
     }
 }

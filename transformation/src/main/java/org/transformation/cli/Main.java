@@ -10,10 +10,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
-import org.transformation.factory.Transformation;
-import org.transformation.factory.TransformationFile;
-import org.transformation.factory.TransformationOai;
-import org.transformation.factory.TransformationUrl;
+import org.transformation.factory.*;
 import org.transformation.util.EnumTypes;
 import org.transformation.util.TimeUtils;
 
@@ -59,7 +56,7 @@ public class Main {
         try {
             Transformation transformation = null;
             
-            if (bean.getType().equals(EnumTypes.OAI))   transformation = new TransformationOai(new URL(bean.getInput()), classType, bean.getThreads(), 15000);
+            if (bean.getType().equals(EnumTypes.OAI))   transformation = new TransformationOai2(new URL(bean.getInput()), classType);
             else if (bean.getType().equals(EnumTypes.URL))  transformation = new TransformationUrl(new URL(bean.getInput()), classType);
             else if (bean.getType().equals(EnumTypes.FILE)) transformation = new TransformationFile(Paths.get(bean.getInput()), classType);
 
@@ -69,12 +66,14 @@ public class Main {
                             ? new org.apache.hadoop.fs.Path(MessageFormat.format("transformation/{0}", job))
                             : new org.apache.hadoop.fs.Path(MessageFormat.format("transformation/{0}/{1}", job, bean.getArguments().get("set")));
 
-                    transformation.hdfs(bean.getHdfsuri(),bean.getHdfsuser(), bean.getHdfshome(), path, bean.getSchema(), bean.getArguments(), bean.getFormat());
+                    transformation.hdfs(bean.getHdfsuri(),bean.getHdfsuser(), bean.getHdfshome(), path, bean.getArguments(), bean.getFormat());
                 } else {
-                    if (Objects.nonNull(bean.getOut())) transformation.path(bean.getOut(), bean.getSchema(), bean.getArguments(), bean.getFormat());
-                    else   transformation.console(bean.getSchema(), bean.getArguments(), bean.getFormat());
+                    if (Objects.nonNull(bean.getOut())) transformation.path(bean.getOut(), bean.getArguments(), bean.getFormat());
+                    else   transformation.console(bean.getArguments(), bean.getFormat());
                 }
-
+//                if(Objects.nonNull(transformation.getExceptions()) && !transformation.getExceptions().isEmpty()){
+//                    transformation.getExceptions().forEach(logger::error);
+//                }
             }
         } catch (Exception e) {
             logger.error(e);

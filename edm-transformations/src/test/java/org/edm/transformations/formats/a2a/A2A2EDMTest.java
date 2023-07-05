@@ -2,11 +2,13 @@ package org.edm.transformations.formats.a2a;
 
 import eu.europeana.corelib.definitions.jibx.RDF;
 import nl.mindbus.a2a.A2AType;
-import org.csuc.util.FormatType;
-import org.edm.transformations.formats.EDM;
-import org.edm.transformations.formats.FactoryEDM;
+import org.apache.commons.io.input.ReaderInputStream;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.csuc.deserialize.JaxbUnmarshal;
 import org.csuc.deserialize.JibxUnMarshall;
+import org.edm.transformations.formats.EDM;
+import org.edm.transformations.formats.FactoryEDM;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.nio.charset.StandardCharsets.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.*;
 
 public class A2A2EDMTest {
@@ -70,6 +72,11 @@ public class A2A2EDMTest {
     public void creation1() throws Exception {
         StringWriter writer = new StringWriter();
         a2a.creation(UTF_8, true, writer);
+
+        Model model = ModelFactory.createDefaultModel();
+        model.read(new ReaderInputStream(new StringReader(writer.toString()), UTF_8), "RDFXML");
+        model.write(System.out, "NTRIPLES");
+
         assertTrue(!writer.toString().isEmpty());
     }
 

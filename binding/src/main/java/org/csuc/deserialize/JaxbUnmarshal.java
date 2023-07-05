@@ -8,6 +8,7 @@ import nl.memorix_maior.api.rest._3.Memorix;
 import nl.mindbus.a2a.A2AType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.csuc.custom.multirecords.Metadata;
 import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 import org.w3c.dom.Node;
@@ -191,6 +192,7 @@ public class JaxbUnmarshal {
 			u.setEventHandler( vec );
 			u.setSchema(addSchema(classType));
 
+
 			// turn off the JAXB provider's default quality mechanism to
 			// avoid duplicate quality
 			u.setValidating( false );
@@ -221,11 +223,11 @@ public class JaxbUnmarshal {
 		    Unmarshaller u = jc.createUnmarshaller();
 			u.setSchema(addSchema(classType));
 
-            Object obj = u.unmarshal(xmlStreamReader);
-
-            if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) obj).getValue();
-            else data = obj;
+//            Object obj = u.unmarshal(xmlStreamReader);
+//
+//            if(obj instanceof JAXBElement)
+//                data = ((JAXBElement<Object>) obj).getValue();
+//            else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		} catch (JAXBException | SAXException e) {
@@ -240,11 +242,11 @@ public class JaxbUnmarshal {
 		    Unmarshaller u = jc.createUnmarshaller();
 			u.setSchema(addSchema(classType));
 
-            Object obj = u.unmarshal(xmlEventReader);
-
-            if(obj instanceof JAXBElement)
-                data = ((JAXBElement<Object>) obj).getValue();
-            else data = obj;
+//            Object obj = u.unmarshal(xmlEventReader);
+//
+//            if(obj instanceof JAXBElement)
+//                data = ((JAXBElement<Object>) obj).getValue();
+//            else data = obj;
 
             logger.debug(String.format("isValidating %s", validationEvent.isValidating() ));
 		}catch (JAXBException | SAXException e) {
@@ -265,10 +267,15 @@ public class JaxbUnmarshal {
 
 		Stream.of(classType).forEach(type ->{
 			if(Objects.equals(type, A2AType.class))	list.add(new StreamSource(A2AType.class.getClassLoader().getResource("A2AAllInOne_v.1.7.xsd").toExternalForm()));
-			if(Objects.equals(type, OaiDcType.class)) list.add(new StreamSource(OaiDcType.class.getClassLoader().getResource("oai_dc.xsd").toExternalForm()));
+			if(Objects.equals(type, OaiDcType.class)){
+				list.add(new StreamSource(OaiDcType.class.getClassLoader().getResource("oai_dc.xsd").toExternalForm()));
+				list.add(new StreamSource(OaiDcType.class.getClassLoader().getResource("simpledc20021212.xsd").toExternalForm()));
+				list.add(new StreamSource(OaiDcType.class.getClassLoader().getResource("xml.xsd").toExternalForm()));
+			}
 			if(Objects.equals(type, Ead.class)) list.add(new StreamSource(Ead.class.getClassLoader().getResource("apeEAD.xsd").toExternalForm()));
 			if(Objects.equals(type, Memorix.class)) list.add(new StreamSource(Memorix.class.getClassLoader().getResource("MRX-API-ANY.xsd").toExternalForm()));
 			if(Objects.equals(type, OAIPMHtype.class)) list.add(new StreamSource(OAIPMHtype.class.getClassLoader().getResource("OAI-PMH.xsd").toExternalForm()));
+			if(Objects.equals(type, Metadata.class)) list.add(new StreamSource(Metadata.class.getClassLoader().getResource("multirecord.xsd").toExternalForm()));
 		});
 
 		Source[] schemaFiles = list.toArray(new Source[list.size()]);

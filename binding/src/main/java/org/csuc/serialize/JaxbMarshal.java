@@ -39,6 +39,16 @@ public class JaxbMarshal {
 
 	}
 
+	public JaxbMarshal(Object object, Class[] classType) {
+		try {
+			JAXBContext oaidcContext = JAXBContext.newInstance(classType);
+			this.marshaller = oaidcContext.createMarshaller();
+			this.object = object;
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+	}
 
 	public void marshaller(OutputStream stream) throws JAXBException {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.toString());

@@ -8,10 +8,9 @@
         <artifactId>metadata.schema.definitions</artifactId>
         <version>1.1</version>
     </parent>
-    <artifactId>metadata-schema-definitions-oaidc</artifactId>
-    <version>1.2</version>
-    <name>metadata-schema-definitions-oaidc</name>
-    <url>http://maven.apache.org</url>
+    <artifactId>metadata-schema-definitions-custom</artifactId>
+    <version>0.0.1</version>
+    <name>metadata-schema-definitions-custom</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -29,25 +28,22 @@
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>add-source-for-oaidc</id>
+                        <id>add-source-for-custom</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <schemaDirectory>src/main/resources</schemaDirectory>
                             <schemaIncludes>
-                                <include>oai_dc.xsd</include>
+                                <include>multirecord.xsd</include>
                             </schemaIncludes>
-                            <generateDirectory>target/generated-sources/xjc-oaidc</generateDirectory>
+                            <bindingDirectory>src/main/resources</bindingDirectory>
+                            <bindingIncludes>
+                                <include>bindings.xml</include>
+                            </bindingIncludes>
+                            <generateDirectory>target/generated-sources/xjc-custom</generateDirectory>
                             <extension>true</extension>
                             <cleanPackageDirectories>true</cleanPackageDirectories>
-<!--                            <plugins>-->
-<!--                                <plugin>-->
-<!--                                    <groupId>org.jvnet.jaxb2_commons</groupId>-->
-<!--                                    <artifactId>jaxb2-basics</artifactId>-->
-<!--                                    <version>1.11.1</version>-->
-<!--                                </plugin>-->
-<!--                            </plugins>-->
                         </configuration>
                     </execution>
                 </executions>
@@ -64,7 +60,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${basedir}/target/generated-sources/xjc-oaidc</source>
+                                <source>${basedir}/target/generated-sources/xjc-custom</source>
                             </sources>
                         </configuration>
                     </execution>

@@ -21,16 +21,12 @@ import org.csuc.util.FormatType;
 import org.csuc.utils.Status;
 import org.csuc.utils.recollect.StatusLink;
 import org.csuc.utils.recollect.TransformationType;
-import org.edm.transformations.formats.utils.SchemaType;
 import org.openarchives.oai._2.ListRecordsType;
 import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2.ResumptionTokenType;
 import org.openarchives.oai._2_0.oai_dc.OaiDcType;
 import org.transformation.download.Download;
-import org.transformation.factory.Transformation;
-import org.transformation.factory.TransformationFile;
-import org.transformation.factory.TransformationOai;
-import org.transformation.factory.TransformationUrl;
+import org.transformation.factory.*;
 
 import javax.xml.bind.JAXBIntrospector;
 import java.io.File;
@@ -122,7 +118,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                 //Recollect
                 Class<?>[] classType = new Class[]{OAIPMHtype.class, A2AType.class, OaiDcType.class, Memorix.class, Ead.class};
 
-                if(Objects.equals(TransformationType.OAI, recollect.getType())) transformation = new TransformationOai(new URL(recollect.getInput()), classType);
+                if(Objects.equals(TransformationType.OAI, recollect.getType())) transformation = new TransformationOai2(new URL(recollect.getInput()), classType);
                 if(Objects.equals(TransformationType.URL, recollect.getType()))   transformation = new TransformationUrl(new URL(recollect.getInput()), classType);
                 if(Objects.equals(TransformationType.FILE, recollect.getType()))  transformation = new TransformationFile(Paths.get(recollect.getInput()), classType);
 
@@ -135,7 +131,6 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                         try {
                             transformation.path(
                                     path,
-                                    SchemaType.convert(recollect.getSchema()),
                                     recollect.getProperties(),
                                     FormatType.convert(recollect.getFormat())
                             );
@@ -147,7 +142,7 @@ public class RecollectQueueConsumer extends EndPoint implements Runnable, Consum
                     if(Objects.nonNull(transformation.getExceptions()))
                         logger.info(transformation.getExceptions());
 
-                    recollect.setSize(size(recollect.getInput()));
+                    //recollect.setSize(size(recollect.getInput()));
                     recollect.setStatus(Status.END);
                     recollect.setDuration(Time.duration(recollect.getTimestamp(), DateTimeFormatter.ISO_TIME));
 
