@@ -16,7 +16,7 @@
       Default content type for all elements is xs:string with xml:lang
       attribute available.
 
-      Supercedes version of 2002-03-12. 
+      Supercedes version of 2002-03-12.
       Amended to remove namespace declaration for http://www.w3.org/XML/1998/namespace namespace,
       and to reference lang attribute via built-in xml: namespace prefix.
       xs:appinfo also removed.
@@ -24,7 +24,7 @@
   </xs:annotation>
 
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
-             schemaLocation="http://www.w3.org/2001/03/xml.xsd"/>
+             schemaLocation="xml.xsd"/>
 
   <xs:element name="title" type="elementType"/>
   <xs:element name="creator" type="elementType"/>

@@ -6,6 +6,8 @@ import org.csuc.util.FormatType;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.BooleanOptionHandler;
+import org.kohsuke.args4j.spi.ExplicitBooleanOptionHandler;
 import org.kohsuke.args4j.spi.IntOptionHandler;
 
 import java.io.FileNotFoundException;
@@ -66,7 +68,7 @@ public class ArgsBean {
     @Option(name = "--quality-id", depends = {"--datastore"}, forbids = {"-i"}, usage = "quality identifier")
     private String quality_id;
 
-    @Option(name = "--replace-data", usage = "replace data")
+    @Option(name = "--replace-data", usage = "replace data", handler = ExplicitBooleanOptionHandler.class)
     private boolean replace = true;
 
     public ArgsBean(String[] args) {

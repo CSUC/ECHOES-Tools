@@ -3,6 +3,30 @@
  */
 package org.edm.transformations.formats.a2a;
 
+import eu.europeana.corelib.definitions.jibx.Date;
+import eu.europeana.corelib.definitions.jibx.*;
+import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
+import net.sf.saxon.functions.IriToUri;
+import nl.mindbus.a2a.*;
+import org.apache.commons.io.input.ReaderInputStream;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFLanguages;
+import org.apache.jena.riot.RDFParser;
+import org.apache.jena.riot.system.ErrorHandlerFactory;
+import org.apache.jena.riot.system.stream.StreamManager;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.io.IoBuilder;
+import org.csuc.deserialize.JibxUnMarshall;
+import org.csuc.serialize.JibxMarshall;
+import org.csuc.util.FormatType;
+import org.edm.transformations.formats.EDM;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -11,23 +35,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import eu.europeana.corelib.definitions.jibx.*;
-import eu.europeana.corelib.definitions.jibx.Date;
-import nl.mindbus.a2a.*;
-import org.edm.transformations.formats.EDM;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import eu.europeana.corelib.definitions.jibx.ResourceOrLiteralType.Resource;
-import net.sf.saxon.functions.IriToUri;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.io.IoBuilder;
-import org.csuc.deserialize.JibxUnMarshall;
-import org.csuc.serialize.JibxMarshall;
-import org.csuc.util.FormatType;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author amartinez
@@ -997,22 +1005,20 @@ public class A2A2EDM extends RDF implements EDM {
     @Override
     public void creation(FormatType formatType) throws Exception {
         if (!Objects.equals(this, new RDF())){
-            File file = Files.createTempFile(identifier, ".xml").toFile();
-
             try {
-                JibxMarshall.marshall(this, StandardCharsets.UTF_8.toString(),
-                        false, new FileOutputStream(file), RDF.class, -1);
+                StringWriter writer = new StringWriter();
+                creation(UTF_8, true, writer);
 
-                Model model = RDFDataMgr.loadModel(file.toString());
+                Model model = ModelFactory.createDefaultModel();
+                model.read(new ReaderInputStream(new StringReader(writer.toString()), UTF_8), "RDFXML");
 
                 RDFDataMgr.write(
                         IoBuilder.forLogger(getClass()).setLevel(Level.INFO).buildOutputStream(),
                         model,
                         formatType.lang());
+
             }catch (Exception e){
                 logger.error(e);
-            }finally {
-                file.delete();
             }
         }
     }
@@ -1030,7 +1036,8 @@ public class A2A2EDM extends RDF implements EDM {
             else{
                 File file = Files.createTempFile(identifier, ".xml").toFile();
                 try{
-                    JibxMarshall.marshall(this, encoding.toString(), alone, new FileOutputStream(file), RDF.class, -1);
+                    //JibxMarshall.marshall(this, encoding.toString(), alone, new FileOutputStream(file), RDF.class, -1);
+                    creation(encoding, alone, new FileOutputStream(file));
 
                     Model model = RDFDataMgr.loadModel(file.toString());
 

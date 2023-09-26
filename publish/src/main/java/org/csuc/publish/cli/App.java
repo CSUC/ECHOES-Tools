@@ -39,6 +39,7 @@ import org.mongodb.morphia.query.Query;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -153,12 +154,12 @@ public class App {
                 httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
 
 
-            RequestConfig requestConfig =
-                    RequestConfig.copy(RequestConfig.DEFAULT)
-                            .setProxy(new HttpHost(bean.getHostname()))
-                            .build();
-
-            httppost.setConfig(requestConfig);
+//            RequestConfig requestConfig =
+//                    RequestConfig.copy(RequestConfig.DEFAULT)
+//                            .setProxy(new HttpHost(bean.getHostname()))
+//                            .build();
+//
+//            httppost.setConfig(requestConfig);
 
             //httppost.addHeader("content-type", type + ";charset=" + bean.getCharset());
             httppost.addHeader("content-type", FormatType.convert(type).lang().getContentType().getContentType());
@@ -193,7 +194,7 @@ public class App {
         }
     }
 
-    private static void httpPost(String type, String id, ByteArrayOutputStream byteArrayOutputStream, boolean replace) {
+    private static void httpPost(String type, String id, ByteArrayOutputStream byteArrayOutputStream, boolean replace) throws UnsupportedEncodingException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httppost;
@@ -203,12 +204,12 @@ public class App {
             httppost = new HttpPost(String.format("http://%s/namespace/%s/sparql", bean.getHostname(), bean.getNamespace()));
 
 
-        RequestConfig requestConfig =
-                RequestConfig.copy(RequestConfig.DEFAULT)
-                        .setProxy(new HttpHost(bean.getHostname()))
-                        .build();
-
-        httppost.setConfig(requestConfig);
+//        RequestConfig requestConfig =
+//                RequestConfig.copy(RequestConfig.DEFAULT)
+//                        .setProxy(new HttpHost(bean.getHostname()))
+//                        .build();
+//
+//        httppost.setConfig(requestConfig);
 
         httppost.addHeader("content-type", type + ";charset=" + bean.getCharset());
         httppost.addHeader("content-type", FormatType.convert(type).lang().getContentType().getContentType());

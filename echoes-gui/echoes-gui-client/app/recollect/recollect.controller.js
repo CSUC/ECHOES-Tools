@@ -163,7 +163,7 @@
                                 var data = {
                                     'format': $scope.model.format,
                                     'type': $scope.model.type,
-                                    'schema': $scope.model.schema,
+                                    'schema': null,
                                     'properties': properties,
                                     'user': vm.profile.sub,
                                     'filename': ( typeof $scope.model.file === 'undefined' ) ? null : $scope.model.file.name,
