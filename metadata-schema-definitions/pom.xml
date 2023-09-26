@@ -23,6 +23,7 @@
 		<module>metadata-schema-definitions-oaidc</module>
 		<module>metadata-schema-definitions-ead</module>
 		<module>metadata-schema-definitions-memorix</module>
+		<module>metadata-schema-definitions-custom</module>
     </modules>
 
 	<dependencyManagement>

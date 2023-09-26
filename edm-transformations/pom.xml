@@ -52,6 +52,11 @@
             <artifactId>metadata-schema-definitions-memorix</artifactId>
             <version>1.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.csuc</groupId>
+			<artifactId>metadata-schema-definitions-custom</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>

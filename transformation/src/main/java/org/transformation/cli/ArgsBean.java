@@ -43,9 +43,6 @@ public class ArgsBean {
     @Option(name = "-t", aliases = "--type", usage = "choice type", required = true)
     private EnumTypes type;
 
-    @Option(name = "--schema", aliases = "-s", usage = "SCHEMA")
-    private SchemaType schema;
-
     @Option(name = "--format", usage = "format out")
     private FormatType format = FormatType.RDFXML;
 
@@ -134,14 +131,6 @@ public class ArgsBean {
 
     public void setType(EnumTypes type) {
         this.type = type;
-    }
-
-    public SchemaType getSchema() {
-        return schema;
-    }
-
-    public void setSchema(SchemaType schema) {
-        this.schema = schema;
     }
 
     public FormatType getFormat() {
@@ -235,7 +224,6 @@ public class ArgsBean {
 
     public void run() throws IOException {
         logger.info("   Type                    :   {}", type);
-        logger.info("   Schema                  :   {}", schema);
         logger.info("   Format                  :   {}", format);
         logger.info("   Input                   :   {}", input);
         if (isHdfs()) {

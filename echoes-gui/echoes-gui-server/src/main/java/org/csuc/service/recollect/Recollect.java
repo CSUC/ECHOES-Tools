@@ -180,7 +180,7 @@ public class Recollect {
             if(Objects.nonNull(recollectRequest.getProperties())) recollect.setProperties(recollectRequest.getProperties());
             recollect.setUser(recollectRequest.getUser());
             recollect.setFormat(recollectRequest.getFormat());
-            recollect.setSchema(recollectRequest.getSchema());
+            //recollect.setSchema(recollectRequest.getSchema());
             recollect.setFilename(recollectRequest.getFilename());
 
             recollect.setStatus(Status.QUEUE);
@@ -194,7 +194,7 @@ public class Recollect {
             message.put("_id", recollect.get_id());
             message.put("input", recollect.getInput());
             message.put("format", recollect.getFormat());
-            message.put("schema", recollect.getSchema());
+            //message.put("schema", recollect.getSchema());
             message.put("properties", recollect.getProperties());
 
 

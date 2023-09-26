@@ -29,7 +29,7 @@
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
-        <Logger name="org.transformation.cli.Main" level="debug" additivity="true">
+        <Logger name="org.transformation.cli" level="debug" additivity="true">
             <appender-ref ref="RollingFile" level="info"/>
         </Logger>
 
