@@ -11,10 +11,10 @@ USER echoes
 WORKDIR /home/echoes
 
 # INSTALL
-ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.3/Analyse-1.3.3.jar /home/echoes/analyse.jar
-ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.3/Publish-1.3.7.jar /home/echoes/publish.jar
-ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.3/Quality-0.0.3.jar /home/echoes/quality.jar
-ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.3/Transformation-1.3.8.jar /home/echoes/transformation.jar
+ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.4/Analyse-1.3.3.jar /home/echoes/analyse.jar
+ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.4/Publish-1.3.7.jar /home/echoes/publish.jar
+ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.4/Quality-0.0.3.jar /home/echoes/quality.jar
+ADD https://github.com/CSUC/ECHOES-Tools/releases/download/1.8.4/1.3.9_alpha_rev1 /home/echoes/transformation.jar
 
 USER root
 RUN chown -R echoes:echoes /home/echoes
